@@ -1,7 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "entry.h"
+#include "client_info.h"
+#include "entrylist.h"
 #include <qtablewidget.h>
 #include <QMainWindow>
 #include <QVector2D>
@@ -9,6 +10,10 @@
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
+
+extern EntryList EL;
+extern Client_info client_info;
+extern const QString APP_NAME;
 
 class MainWindow : public QMainWindow
 {
@@ -23,7 +28,8 @@ public:
 
     QString currDate() const;
     QString currTime() const;
-    void create_pdf(QString filename) const;
+    void create_pdf(QString filename);
+    void reset_entry();
 
 private slots:
     void on_add_entry_btn_released();
@@ -39,6 +45,9 @@ private slots:
     void on_tableWidget_cellChanged(int row, int column);
 
     void on_generatePDF_btn_clicked();
+
+    void closeEvent (QCloseEvent *event);
+
 
 private:
     Ui::MainWindow *ui;

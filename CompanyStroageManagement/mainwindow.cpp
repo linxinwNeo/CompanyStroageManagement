@@ -1,15 +1,12 @@
 #include "mainwindow.h"
-#include "client_info.h"
-#include "entrylist.h"
+#include "helper_functions.h"
 #include "ui_mainwindow.h"
 
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QCloseEvent>
 
 using namespace std;
-
-extern EntryList EL;
-extern Client_info client_info;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -46,6 +43,15 @@ LD MainWindow::get_total() const
 void MainWindow::on_add_entry_btn_released()
 {
 //    qDebug() << "add_entry_btn_released!";
+    QString text = this->ui->PRECIO_LE->text();
+    if (!is_float(text)) {
+        QMessageBox Msgbox(this);
+        Msgbox.setText("Please enter a valid PRECIO U.");
+        Msgbox.exec();
+        this->ui->PRECIO_LE->setText(QString::number( text.toDouble(), 'f', 2 ));
+        return;
+    }
+
     UL CAJA = this->ui->CAJA_LE->text().toLong();
     UL CANTIDAD = this->ui->CANTIDAD_LE->text().toLong();
     UL CANT_POR_CAJA = this->ui->CANT_POR_CAJA_LE->text().toLong();
@@ -74,13 +80,10 @@ void MainWindow::on_add_entry_btn_released()
     }
 
     // reset entry
-    this->on_reset_entry_btn_released();
+    this->reset_entry();
 }
 
-
-// reset entry texts
-void MainWindow::on_reset_entry_btn_released()
-{
+void MainWindow::reset_entry(){
     this->ui->CAJA_LE->setText("");
     this->ui->CANTIDAD_LE->setText("");
     this->ui->CANT_POR_CAJA_LE->setText("");
@@ -91,8 +94,30 @@ void MainWindow::on_reset_entry_btn_released()
 }
 
 
+// reset entry texts
+void MainWindow::on_reset_entry_btn_released()
+{
+    QMessageBox::StandardButton resBtn = QMessageBox::question( this, APP_NAME,
+                                                                tr("你确定要重置此栏所有信息吗?\n"),
+                                                                QMessageBox::Yes | QMessageBox::No,
+                                                                QMessageBox::Yes);
+    if (resBtn == QMessageBox::No) { // return if the user don't want to clear the information
+        return;
+    }
+    this->reset_entry();
+}
+
+
 void MainWindow::on_reset_info_btn_released()
 {
+    QMessageBox::StandardButton resBtn = QMessageBox::question( this, APP_NAME,
+                                                                tr("你确定要重置此栏所有信息吗?\n"),
+                                                                QMessageBox::Yes | QMessageBox::No,
+                                                                QMessageBox::Yes);
+    if (resBtn == QMessageBox::No) { // return if the user don't want to clear the information
+        return;
+    }
+
     this->ui->CLIENTE_LE->setText("");
     this->ui->DOMICILIO_LE->setText("");
     this->ui->CIUDAD_LE->setText("");
@@ -107,6 +132,14 @@ void MainWindow::on_reset_info_btn_released()
 // remove all rows
 void MainWindow::on_reset_table_btn_released()
 {
+    QMessageBox::StandardButton resBtn = QMessageBox::question( this, APP_NAME,
+                                                                tr("你确定要清空表格吗?\n"),
+                                                                QMessageBox::No | QMessageBox::Yes,
+                                                                QMessageBox::Yes);
+    if (resBtn == QMessageBox::No) {
+        return;
+    }
+
     table->clearContents();
     table->setRowCount(0);
     EL.clear_memory();
@@ -115,11 +148,27 @@ void MainWindow::on_reset_table_btn_released()
 
 void MainWindow::on_delete_row_btn_clicked()
 {
+    QMessageBox::StandardButton resBtn = QMessageBox::question( this, APP_NAME,
+                                                                tr("你确定要删除这（几）行吗?\n"),
+                                                                QMessageBox::No | QMessageBox::Yes,
+                                                                QMessageBox::Yes);
+    if (resBtn == QMessageBox::No) {
+        return;
+    }
+
     QItemSelectionModel *select = table->selectionModel();
     if(!select->hasSelection()) return; // check if anything is selected
 
     // for each row, delete items
     auto num = select->selectedRows().size();
+    if(num == 0){
+        QMessageBox Msgbox(this);
+        Msgbox.setText("没有选中任何一行。请点击要删除的某一行的号码，\n或者同时按住SHIFT或者CTRL进行多选。");
+        Msgbox.setStyleSheet("QLabel{min-width: 400px; min-height: 50px;}");
+        Msgbox.exec();
+        return;
+    }
+
     for(UL i = 0; i<num; i++){
         auto first_selected_row = select->selectedRows()[0];
         EL.remove_entry( first_selected_row.row() );
@@ -163,6 +212,14 @@ void MainWindow::on_tableWidget_cellChanged(int row, int column)
 
 void MainWindow::on_generatePDF_btn_clicked()
 {
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "是否确定生产pdf文件", "确定生成pdf文件？",
+                                QMessageBox::Yes|QMessageBox::No);
+    if (reply == QMessageBox::No) {
+        return;
+    }
+
+
     // save client info first
     client_info.CLIENTE = this->ui->CLIENTE_LE->text();
     client_info.DOMICILIO = this->ui->DOMICILIO_LE->text();
@@ -190,3 +247,17 @@ void MainWindow::on_generatePDF_btn_clicked()
     this->create_pdf(filename);
 }
 
+
+void MainWindow::closeEvent (QCloseEvent *event)
+{
+    QMessageBox::StandardButton resBtn = QMessageBox::question( this, APP_NAME,
+                                                                tr("你确定要退出吗?\n"),
+                                                                QMessageBox::No | QMessageBox::Yes,
+                                                                QMessageBox::Yes);
+    if (resBtn != QMessageBox::Yes) {
+        event->ignore();
+    }
+    else {
+        event->accept();
+    }
+}

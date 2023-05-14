@@ -2,6 +2,8 @@
 #include "client_info.h"
 #include "entrylist.h"
 
+#include <QMessageBox>
+#include <QFileDialog>
 #include <QPdfWriter>
 #include <QPainter>
 #include <QDate>
@@ -26,7 +28,7 @@ QString MainWindow::currTime() const
     return time.toString("hh:mm:ss");
 }
 
-void MainWindow::create_pdf(QString filename) const {
+void MainWindow::create_pdf(QString filename) {
     // setting up the pdf format
     QPdfWriter pdf_file(filename);
     pdf_file.setPageSize(QPageSize::A4);
@@ -103,12 +105,10 @@ void MainWindow::create_pdf(QString filename) const {
 
         // PRECIO U.
         painter.drawText(QRect(0, y - height*0.009, x + width*0.116, y - height*0.009), QString::number((double)entry->PRECIO, 'f', 2), option);
-//        painter.drawText(QPointF(x, y), QString::number((double)entry->PRECIO, 'f', 2));
         x += width * 0.129;
 
         // IMPORTE
         painter.drawText(QRect(0, y - height*0.009, x + width*0.13, y - height*0.009), QString::number((double)entry->IMPORTE, 'f', 2), option);
-//        painter.drawText(QPointF(x, y), QString::number((double)entry->IMPORTE, 'f', 2));
 
         // increment y
         y += height * 0.02;
@@ -123,14 +123,18 @@ void MainWindow::create_pdf(QString filename) const {
 
     // IVA
     painter.drawText(QRect(0, height * 0.875, width * 0.93, height * 0.875), "0.00", option);
-    //painter.drawText(QPointF(width * 0.82, height * 0.885), "0.00");
 
     // TOTAL
     painter.drawText(QRect(0, height * 0.907, width * 0.93, height * 0.907), QString::number((double)this->get_total(), 'f', 2), option);
-//    painter.drawText(QPointF(width * 0.82, height * 0.918), QString::number((double)this->get_total(), 'f', 2));
 
     // bottom left num
     painter.drawText(QPointF(width * 0.07, height * 0.91), client_info.bottom_left_num);
 
     painter.end();
+
+
+    QMessageBox Msgbox(this);
+    Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
+    Msgbox.setText(".pdf 文件创建成功");
+    Msgbox.exec();
 }

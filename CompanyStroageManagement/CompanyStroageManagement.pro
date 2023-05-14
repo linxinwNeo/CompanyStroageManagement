@@ -20,6 +20,7 @@ HEADERS += \
     client_info.h \
     entry.h \
     entrylist.h \
+    helper_functions.h \
     mainwindow.h
 
 FORMS += \

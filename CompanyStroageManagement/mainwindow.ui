@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout_19">
+   <layout class="QHBoxLayout" name="horizontalLayout_7">
     <item>
      <widget class="QWidget" name="widget_9" native="true">
       <property name="maximumSize">
@@ -34,16 +34,16 @@
            <number>10</number>
           </property>
           <property name="leftMargin">
-           <number>0</number>
+           <number>5</number>
           </property>
           <property name="topMargin">
-           <number>0</number>
+           <number>5</number>
           </property>
           <property name="rightMargin">
-           <number>0</number>
+           <number>5</number>
           </property>
           <property name="bottomMargin">
-           <number>0</number>
+           <number>5</number>
           </property>
           <item>
            <widget class="QWidget" name="CLIENTE_Container" native="true">
@@ -64,11 +64,11 @@
               <number>0</number>
              </property>
              <item>
-              <widget class="QLineEdit" name="lineEdit_2">
-               <property name="maximumSize">
+              <widget class="QLabel" name="label_15">
+               <property name="minimumSize">
                 <size>
                  <width>100</width>
-                 <height>16777215</height>
+                 <height>0</height>
                 </size>
                </property>
                <property name="text">
@@ -76,9 +76,6 @@
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
-               </property>
-               <property name="readOnly">
-                <bool>true</bool>
                </property>
               </widget>
              </item>
@@ -114,11 +111,11 @@
               <number>0</number>
              </property>
              <item>
-              <widget class="QLineEdit" name="lineEdit_3">
-               <property name="maximumSize">
+              <widget class="QLabel" name="label_14">
+               <property name="minimumSize">
                 <size>
                  <width>100</width>
-                 <height>16777215</height>
+                 <height>0</height>
                 </size>
                </property>
                <property name="text">
@@ -126,9 +123,6 @@
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
-               </property>
-               <property name="readOnly">
-                <bool>true</bool>
                </property>
               </widget>
              </item>
@@ -164,11 +158,11 @@
               <number>0</number>
              </property>
              <item>
-              <widget class="QLineEdit" name="lineEdit_5">
-               <property name="maximumSize">
+              <widget class="QLabel" name="label_13">
+               <property name="minimumSize">
                 <size>
                  <width>100</width>
-                 <height>16777215</height>
+                 <height>0</height>
                 </size>
                </property>
                <property name="text">
@@ -176,9 +170,6 @@
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
-               </property>
-               <property name="readOnly">
-                <bool>true</bool>
                </property>
               </widget>
              </item>
@@ -214,11 +205,11 @@
               <number>0</number>
              </property>
              <item>
-              <widget class="QLineEdit" name="lineEdit_7">
-               <property name="maximumSize">
+              <widget class="QLabel" name="label_12">
+               <property name="minimumSize">
                 <size>
                  <width>100</width>
-                 <height>16777215</height>
+                 <height>0</height>
                 </size>
                </property>
                <property name="text">
@@ -226,9 +217,6 @@
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
-               </property>
-               <property name="readOnly">
-                <bool>true</bool>
                </property>
               </widget>
              </item>
@@ -264,11 +252,11 @@
               <number>0</number>
              </property>
              <item>
-              <widget class="QLineEdit" name="lineEdit_9">
-               <property name="maximumSize">
+              <widget class="QLabel" name="label_10">
+               <property name="minimumSize">
                 <size>
                  <width>100</width>
-                 <height>16777215</height>
+                 <height>0</height>
                 </size>
                </property>
                <property name="text">
@@ -276,9 +264,6 @@
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
-               </property>
-               <property name="readOnly">
-                <bool>true</bool>
                </property>
               </widget>
              </item>
@@ -314,17 +299,11 @@
               <number>0</number>
              </property>
              <item>
-              <widget class="QLineEdit" name="lineEdit_15">
+              <widget class="QLabel" name="label_11">
                <property name="minimumSize">
                 <size>
-                 <width>170</width>
+                 <width>200</width>
                  <height>0</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>180</width>
-                 <height>16777215</height>
                 </size>
                </property>
                <property name="text">
@@ -332,9 +311,6 @@
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
-               </property>
-               <property name="readOnly">
-                <bool>true</bool>
                </property>
               </widget>
              </item>
@@ -370,17 +346,11 @@
               <number>0</number>
              </property>
              <item>
-              <widget class="QLineEdit" name="lineEdit_18">
+              <widget class="QLabel" name="label_9">
                <property name="minimumSize">
                 <size>
-                 <width>100</width>
+                 <width>200</width>
                  <height>0</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>120</width>
-                 <height>16777215</height>
                 </size>
                </property>
                <property name="text">
@@ -389,15 +359,12 @@
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
                </property>
-               <property name="readOnly">
-                <bool>true</bool>
-               </property>
               </widget>
              </item>
              <item>
               <widget class="QLineEdit" name="DISCOUNT_LE">
                <property name="text">
-                <string>0</string>
+                <string>0.00</string>
                </property>
               </widget>
              </item>
@@ -423,34 +390,25 @@
               <number>0</number>
              </property>
              <item>
-              <widget class="QLineEdit" name="lineEdit_16">
+              <widget class="QLabel" name="label_8">
                <property name="minimumSize">
                 <size>
-                 <width>170</width>
+                 <width>200</width>
                  <height>0</height>
                 </size>
                </property>
-               <property name="maximumSize">
-                <size>
-                 <width>180</width>
-                 <height>16777215</height>
-                </size>
-               </property>
                <property name="text">
-                <string>bottom_left num</string>
+                <string>bottom left num</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
-               </property>
-               <property name="readOnly">
-                <bool>true</bool>
                </property>
               </widget>
              </item>
              <item>
               <widget class="QLineEdit" name="bottom_left_num_LE">
                <property name="text">
-                <string>0</string>
+                <string>0.00</string>
                </property>
               </widget>
              </item>
@@ -462,6 +420,9 @@
        </item>
        <item>
         <widget class="QPushButton" name="reset_info_btn">
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
          <property name="text">
           <string>重置信息</string>
          </property>
@@ -493,16 +454,16 @@
            <number>10</number>
           </property>
           <property name="leftMargin">
-           <number>0</number>
+           <number>5</number>
           </property>
           <property name="topMargin">
-           <number>0</number>
+           <number>5</number>
           </property>
           <property name="rightMargin">
-           <number>0</number>
+           <number>5</number>
           </property>
           <property name="bottomMargin">
-           <number>0</number>
+           <number>5</number>
           </property>
           <item>
            <widget class="QWidget" name="widget_8" native="true">
@@ -541,11 +502,11 @@
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QLineEdit" name="lineEdit_23">
-                  <property name="maximumSize">
+                 <widget class="QLabel" name="label">
+                  <property name="minimumSize">
                    <size>
                     <width>100</width>
-                    <height>16777215</height>
+                    <height>0</height>
                    </size>
                   </property>
                   <property name="text">
@@ -553,9 +514,6 @@
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="readOnly">
-                   <bool>true</bool>
                   </property>
                  </widget>
                 </item>
@@ -588,11 +546,11 @@
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QLineEdit" name="lineEdit_25">
-                  <property name="maximumSize">
+                 <widget class="QLabel" name="label_2">
+                  <property name="minimumSize">
                    <size>
                     <width>100</width>
-                    <height>16777215</height>
+                    <height>0</height>
                    </size>
                   </property>
                   <property name="text">
@@ -600,9 +558,6 @@
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="readOnly">
-                   <bool>true</bool>
                   </property>
                  </widget>
                 </item>
@@ -635,11 +590,11 @@
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QLineEdit" name="lineEdit_27">
-                  <property name="maximumSize">
+                 <widget class="QLabel" name="label_3">
+                  <property name="minimumSize">
                    <size>
-                    <width>120</width>
-                    <height>16777215</height>
+                    <width>100</width>
+                    <height>0</height>
                    </size>
                   </property>
                   <property name="text">
@@ -647,9 +602,6 @@
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="readOnly">
-                   <bool>true</bool>
                   </property>
                  </widget>
                 </item>
@@ -682,11 +634,11 @@
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QLineEdit" name="lineEdit_21">
-                  <property name="maximumSize">
+                 <widget class="QLabel" name="label_4">
+                  <property name="minimumSize">
                    <size>
                     <width>100</width>
-                    <height>16777215</height>
+                    <height>0</height>
                    </size>
                   </property>
                   <property name="text">
@@ -694,9 +646,6 @@
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="readOnly">
-                   <bool>true</bool>
                   </property>
                  </widget>
                 </item>
@@ -732,11 +681,11 @@
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QLineEdit" name="lineEdit_17">
-                  <property name="maximumSize">
+                 <widget class="QLabel" name="label_5">
+                  <property name="minimumSize">
                    <size>
                     <width>100</width>
-                    <height>16777215</height>
+                    <height>0</height>
                    </size>
                   </property>
                   <property name="text">
@@ -744,9 +693,6 @@
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="readOnly">
-                   <bool>true</bool>
                   </property>
                  </widget>
                 </item>
@@ -782,11 +728,11 @@
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QLineEdit" name="lineEdit_29">
-                  <property name="maximumSize">
+                 <widget class="QLabel" name="label_6">
+                  <property name="minimumSize">
                    <size>
                     <width>100</width>
-                    <height>16777215</height>
+                    <height>0</height>
                    </size>
                   </property>
                   <property name="text">
@@ -794,9 +740,6 @@
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="readOnly">
-                   <bool>true</bool>
                   </property>
                  </widget>
                 </item>
@@ -829,11 +772,11 @@
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QLineEdit" name="lineEdit_19">
-                  <property name="maximumSize">
+                 <widget class="QLabel" name="label_7">
+                  <property name="minimumSize">
                    <size>
                     <width>100</width>
-                    <height>16777215</height>
+                    <height>0</height>
                    </size>
                   </property>
                   <property name="text">
@@ -841,9 +784,6 @@
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="readOnly">
-                   <bool>true</bool>
                   </property>
                  </widget>
                 </item>
@@ -861,24 +801,52 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="add_entry_btn">
-            <property name="text">
-             <string>加入此条目</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="reset_entry_btn">
-            <property name="text">
-             <string>重置条目</string>
-            </property>
+           <widget class="QWidget" name="widget_12" native="true">
+            <layout class="QHBoxLayout" name="horizontalLayout_6">
+             <item>
+              <widget class="QPushButton" name="add_entry_btn">
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="text">
+                <string>加入此条目</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="reset_entry_btn">
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="text">
+                <string>重置条目</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </widget>
           </item>
          </layout>
         </widget>
        </item>
        <item>
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
         <widget class="QPushButton" name="generatePDF_btn">
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
          <property name="text">
           <string>生成PDF</string>
          </property>
@@ -937,6 +905,9 @@
          <layout class="QHBoxLayout" name="horizontalLayout_18">
           <item>
            <widget class="QPushButton" name="delete_row_btn">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
             <property name="text">
              <string>删除选中行</string>
             </property>
@@ -944,6 +915,9 @@
           </item>
           <item>
            <widget class="QPushButton" name="reset_table_btn">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
             <property name="text">
              <string>重置表格</string>
             </property>
@@ -970,10 +944,17 @@
     <property name="title">
      <string>Menu</string>
     </property>
+    <addaction name="separator"/>
+    <addaction name="incomingAction_2"/>
    </widget>
    <addaction name="menuMenu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="incomingAction_2">
+   <property name="text">
+    <string>设计中</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
