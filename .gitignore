@@ -30,3 +30,11 @@
 *.exe
 *.out
 *.app
+
+
+# Mac specific
+**/.DS_Store
+
+# QT specific
+*build-*
+*.pro.user
