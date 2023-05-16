@@ -7,4 +7,7 @@
     <qresource prefix="/pdfs">
         <file>resources/template.pdf</file>
     </qresource>
+    <qresource prefix="/excels">
+        <file>resources/example.xlsx</file>
+    </qresource>
 </RCC>

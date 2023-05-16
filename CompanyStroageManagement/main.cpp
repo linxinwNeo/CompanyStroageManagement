@@ -8,6 +8,7 @@
 EntryList EL;
 Client_info client_info;
 const QString APP_NAME = "Yi Hong Ding Stroage Management System";
+QString stroagefilePath;
 
 int main(int argc, char *argv[])
 {
@@ -15,7 +16,7 @@ int main(int argc, char *argv[])
 
     MainWindow w;
     // setting up the window
-    w.setWindowIcon(QIcon(":/images/icon.png"));
+    w.setWindowIcon(QIcon(":/imgs/resources/icon.png"));
     w.setWindowTitle(APP_NAME);
     w.show();
     return a.exec();

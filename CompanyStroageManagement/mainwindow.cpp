@@ -5,8 +5,11 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QCloseEvent>
+#include <QAxObject>
 
 using namespace std;
+
+extern QString stroagefilePath;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -19,6 +22,37 @@ MainWindow::MainWindow(QWidget *parent)
     table->setRowCount(0);
     table->setColumnCount(7);
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+
+    // open stroage file for editing
+    QString fileContent;
+    QString filter = tr("XLSX (*.xlsx)");
+    stroagefilePath = QFileDialog::getOpenFileName(this, "where is the stroage file", "", filter);
+    if(stroagefilePath.isEmpty())
+        exit(0);
+    qDebug() << stroagefilePath;
+
+    QAxObject excel("Excel.Application", 0);
+    excel.setProperty("Visible", false); //隐藏打开的excel文件界面
+    QAxObject *workbooks = excel.querySubObject("WorkBooks");
+    QAxObject *workbook = workbooks->querySubObject("Open(QString, QVariant)", stroagefilePath); //打开文件
+    QAxObject * worksheet = workbook->querySubObject("WorkSheets(int)", 1); //访问第一个工作表
+    QAxObject * usedrange = worksheet->querySubObject("UsedRange");
+    QAxObject * rows = usedrange->querySubObject("Rows");
+    int intRows = rows->property("Count").toInt(); //行数
+
+    QString Range = "A1:B" +QString::number(intRows);
+    QAxObject *allEnvData = worksheet->querySubObject("Range(QString)", Range); //读取范围
+    QVariant allEnvDataQVariant = allEnvData->property("Value");
+    QVariantList allEnvDataList = allEnvDataQVariant.toList();
+
+    for(int i=0; i< intRows; i++)
+    {
+        QVariantList allEnvDataList_i =  allEnvDataList[i].toList() ;
+        QString data1 = allEnvDataList_i[0].toString(); //第i行第0列的数据
+        qDebug() << data1;
+    }
+    workbooks->dynamicCall("Close()");
+    excel.dynamicCall("Quit()");
 }
 
 
@@ -238,7 +272,6 @@ void MainWindow::on_generatePDF_btn_clicked()
     }
 
     // ask for the path to store the file
-    QString fileContent;
     QString filter = tr("PDF (*.pdf)");
     QString filename= QFileDialog::getSaveFileName(this, "where do you want to place", "list", filter);
     if(filename.isEmpty())
