@@ -1,15 +1,9 @@
 #include "mainwindow.h"
-#include "helper_functions.h"
 #include "ui_mainwindow.h"
+#include "GlobalVars.h"
 
-#include <QMessageBox>
-#include <QFileDialog>
 #include <QCloseEvent>
-#include <QAxObject>
 
-using namespace std;
-
-extern QString stroagefilePath;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -24,12 +18,14 @@ MainWindow::MainWindow(QWidget *parent)
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
     // open stroage file for editing
-    QString fileContent;
-    QString filter = tr("XLSX (*.xlsx)");
-    stroagefilePath = QFileDialog::getOpenFileName(this, "where is the stroage file", "", filter);
+    QString filter = tr("Microsoft Excel Open XML Spreadsheet (*.xlsx)");
+    stroagefilePath = QFileDialog::getOpenFileName(this, "Select the stroage file",
+                                                   QStandardPaths::writableLocation(QStandardPaths::DesktopLocation),
+                                                   filter);
     if(stroagefilePath.isEmpty())
-        exit(0);
-    qDebug() << stroagefilePath;
+        exit(-1);
+
+    qDebug() << "stroagefile path is" << stroagefilePath;
 
     QAxObject excel("Excel.Application", 0);
     excel.setProperty("Visible", false); //隐藏打开的excel文件界面
@@ -95,7 +91,7 @@ void MainWindow::on_add_entry_btn_released()
     double IMPORTE = this->ui->IMPORTE_LE->text().toDouble();
     double btm_left_num = this->ui->bottom_left_num_LE->text().toDouble();
 
-    vector<QString> items = {QString::number(CAJA), QString::number(CANTIDAD),
+    std::vector<QString> items = {QString::number(CAJA), QString::number(CANTIDAD),
                               QString::number(CANT_POR_CAJA), CLAVE, Description,
                               QString::number(PRECIO), QString::number(IMPORTE),
                               QString::number(btm_left_num)};

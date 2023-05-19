@@ -10,8 +10,6 @@
 #include <QTime>
 #include <QFile>
 
-using namespace std;
-
 extern EntryList EL;
 extern Client_info client_info;
 extern QString filename;

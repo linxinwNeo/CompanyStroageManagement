@@ -5,13 +5,11 @@
 #include <vector>
 #include <QDebug>
 
-using namespace std;
-
 class EntryList
 {
 public:
     // variables
-    vector<Entry *> entries;
+    std::vector<Entry *> entries;
 
     // functions
     inline EntryList();

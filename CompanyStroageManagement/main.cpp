@@ -1,14 +1,6 @@
 #include "mainwindow.h"
 #include <QApplication>
-#include <QDebug>
-#include "client_info.h"
-#include "entrylist.h"
-#include <QString>
-
-EntryList EL;
-Client_info client_info;
-const QString APP_NAME = "Yi Hong Ding Stroage Management System";
-QString stroagefilePath;
+#include "GlobalVars.h"
 
 int main(int argc, char *argv[])
 {

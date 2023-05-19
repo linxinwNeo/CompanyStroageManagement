@@ -9,6 +9,8 @@ CONFIG += c++17 qaxcontainer
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    Excel.cpp \
+    GlobalVars.cpp \
     client_info.cpp \
     create_PDF.cpp \
     entry.cpp \
@@ -17,6 +19,9 @@ SOURCES += \
     mainwindow.cpp
 
 HEADERS += \
+    Excel.h \
+    GlobalVars.h \
+    Predefined.h \
     client_info.h \
     entry.h \
     entrylist.h \
