@@ -2,9 +2,7 @@
 #define ENTRY_H
 
 #include <QString>
-
-#define UL unsigned long int
-#define LD long double
+#include "Predefined.h"
 
 class Entry
 {

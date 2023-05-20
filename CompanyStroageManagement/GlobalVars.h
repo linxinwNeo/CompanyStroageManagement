@@ -3,14 +3,10 @@
 
 #include <QDebug>
 #include <QString>
-#include <QMessageBox>
-#include <QFileDialog>
-
 
 #include "Predefined.h"
-#include "client_info.h"
-#include "entrylist.h"
-#include "helper_functions.h"
+#include "DataStructures/client_info.h"
+#include "DataStructures/entrylist.h"
 
 extern EntryList EL;
 extern Client_info client_info;

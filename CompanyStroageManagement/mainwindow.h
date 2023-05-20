@@ -1,8 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "client_info.h"
-#include "entrylist.h"
+#include "DataStructures/client_info.h"
 #include <qtablewidget.h>
 #include <QMainWindow>
 #include <QVector2D>
@@ -10,10 +9,6 @@
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
-
-extern EntryList EL;
-extern Client_info client_info;
-extern const QString APP_NAME;
 
 class MainWindow : public QMainWindow
 {

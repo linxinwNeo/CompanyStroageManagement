@@ -1,4 +1,4 @@
-#include "client_info.h"
+#include "DataStructures/client_info.h"
 
 Client_info::Client_info(QString CLIENTE, QString DOMICILIO, QString CIUDAD,
                          QString RFC, QString AGENTE,

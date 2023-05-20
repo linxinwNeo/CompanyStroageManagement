@@ -1,9 +1,11 @@
 #include "mainwindow.h"
+#include "helper_functions.h"
 #include "ui_mainwindow.h"
 #include "GlobalVars.h"
 
 #include <QCloseEvent>
-
+#include <QMessageBox>
+#include <QFileDialog>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -16,39 +18,6 @@ MainWindow::MainWindow(QWidget *parent)
     table->setRowCount(0);
     table->setColumnCount(7);
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-
-    // open stroage file for editing
-    QString filter = tr("Microsoft Excel Open XML Spreadsheet (*.xlsx)");
-    stroagefilePath = QFileDialog::getOpenFileName(this, "Select the stroage file",
-                                                   QStandardPaths::writableLocation(QStandardPaths::DesktopLocation),
-                                                   filter);
-    if(stroagefilePath.isEmpty())
-        exit(-1);
-
-    qDebug() << "stroagefile path is" << stroagefilePath;
-
-    QAxObject excel("Excel.Application", 0);
-    excel.setProperty("Visible", false); //隐藏打开的excel文件界面
-    QAxObject *workbooks = excel.querySubObject("WorkBooks");
-    QAxObject *workbook = workbooks->querySubObject("Open(QString, QVariant)", stroagefilePath); //打开文件
-    QAxObject * worksheet = workbook->querySubObject("WorkSheets(int)", 1); //访问第一个工作表
-    QAxObject * usedrange = worksheet->querySubObject("UsedRange");
-    QAxObject * rows = usedrange->querySubObject("Rows");
-    int intRows = rows->property("Count").toInt(); //行数
-
-    QString Range = "A1:B" +QString::number(intRows);
-    QAxObject *allEnvData = worksheet->querySubObject("Range(QString)", Range); //读取范围
-    QVariant allEnvDataQVariant = allEnvData->property("Value");
-    QVariantList allEnvDataList = allEnvDataQVariant.toList();
-
-    for(int i=0; i< intRows; i++)
-    {
-        QVariantList allEnvDataList_i =  allEnvDataList[i].toList() ;
-        QString data1 = allEnvDataList_i[0].toString(); //第i行第0列的数据
-        qDebug() << data1;
-    }
-    workbooks->dynamicCall("Close()");
-    excel.dynamicCall("Quit()");
 }
 
 

@@ -1,7 +1,3 @@
-#include "mainwindow.h"
-#include "client_info.h"
-#include "entrylist.h"
-
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QPdfWriter>
@@ -10,9 +6,10 @@
 #include <QTime>
 #include <QFile>
 
-extern EntryList EL;
-extern Client_info client_info;
-extern QString filename;
+#include "GlobalVars.h"
+#include "mainwindow.h"
+#include "DataStructures/client_info.h"
+#include "DataStructures/entrylist.h"
 
 QString MainWindow::currDate() const
 {
@@ -40,7 +37,7 @@ void MainWindow::create_pdf(QString filename) {
 
 
     // set background as the template
-    painter.drawImage(QRect(0, 0, width, height), QImage(":/imgs/resources/template.png"));
+    painter.drawImage(QRect(0, 0, width, height), QImage(":/resources/template.png"));
 
     QPen pen;
     pen.setColor(Qt::black);

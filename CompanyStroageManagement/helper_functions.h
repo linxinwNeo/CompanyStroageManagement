@@ -2,7 +2,6 @@
 #define HELPER_FUNCTIONS_H
 
 #include <QString>
-#include <QMessageBox>
 
 inline bool is_float(const QString text);
 inline bool is_int(const QString text);

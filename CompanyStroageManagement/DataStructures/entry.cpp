@@ -1,4 +1,4 @@
-#include "entry.h"
+#include "DataStructures/entry.h"
 
 Entry::Entry(UL CAJA, UL CANTIDAD, UL CANT_POR_CAJA ,
              QString CLAVE, QString Description, LD PRECIO,

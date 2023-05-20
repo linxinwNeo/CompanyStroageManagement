@@ -1,4 +1,4 @@
-#include "entrylist.h"
+#include "DataStructures/entrylist.h"
 
 void EntryList::clear_memory()
 {

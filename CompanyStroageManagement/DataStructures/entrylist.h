@@ -1,9 +1,10 @@
 #ifndef ENTRYLIST_H
 #define ENTRYLIST_H
 
-#include "entry.h"
 #include <vector>
 #include <QDebug>
+#include "entry.h"
+
 
 class EntryList
 {
