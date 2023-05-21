@@ -2,6 +2,8 @@
 #include "helper_functions.h"
 #include "ui_mainwindow.h"
 #include "GlobalVars.h"
+#include "flags.h"
+#include "Excel_IO/Excel.h"
 
 #include <QCloseEvent>
 #include <QMessageBox>
@@ -18,12 +20,20 @@ MainWindow::MainWindow(QWidget *parent)
     table->setRowCount(0);
     table->setColumnCount(7);
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+
+
+    // check if previous excel exists
+    // if no, ask for a excel file
+    // if yes, use the previous one
+    excel = new Excel();
+    excel->read_excel();
 }
 
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    if(excel != nullptr) delete excel;
 }
 
 
@@ -248,10 +258,14 @@ void MainWindow::on_generatePDF_btn_clicked()
 
 void MainWindow::closeEvent (QCloseEvent *event)
 {
-    QMessageBox::StandardButton resBtn = QMessageBox::question( this, APP_NAME,
-                                                                tr("你确定要退出吗?\n"),
-                                                                QMessageBox::No | QMessageBox::Yes,
-                                                                QMessageBox::Yes);
+    QMessageBox msg(this);
+    msg.setText(tr("你确定要退出吗?\n"));
+    msg.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
+    msg.setDefaultButton(QMessageBox::Yes);
+    msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+    msg.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
+
+    int resBtn = msg.exec();
     if (resBtn != QMessageBox::Yes) {
         event->ignore();
     }
@@ -259,3 +273,10 @@ void MainWindow::closeEvent (QCloseEvent *event)
         event->accept();
     }
 }
+
+
+void MainWindow::on_is_preview_CB_clicked(bool checked)
+{
+    is_preview_list = checked;
+}
+

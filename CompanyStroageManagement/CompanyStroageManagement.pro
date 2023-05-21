@@ -21,6 +21,7 @@ SOURCES += \
     Excel_IO/Excel.cpp \
     GlobalVars.cpp \
     create_PDF.cpp \
+    flags.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -31,7 +32,8 @@ HEADERS += \
     Excel_IO/Excel.h \
     GlobalVars.h \
     Predefined.h \
-    QXlsxHeaders.h \
+    QXlsx/QXlsxHeaders.h \
+    flags.h \
     helper_functions.h \
     mainwindow.h
 
@@ -47,14 +49,14 @@ macx: {
 }
 
 
-
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-RESOURCES += \
-    resources.qrc
 
 DISTFILES += \
+
+RESOURCES += \
+    resources.qrc
 

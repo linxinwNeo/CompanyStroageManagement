@@ -25,6 +25,7 @@ public:
     QString currTime() const;
     void create_pdf(QString filename);
     void reset_entry();
+    QString get_stroage_excel_file();
 
 private slots:
     void on_add_entry_btn_released();
@@ -43,6 +44,7 @@ private slots:
 
     void closeEvent (QCloseEvent *event);
 
+    void on_is_preview_CB_clicked(bool checked);
 
 private:
     Ui::MainWindow *ui;
