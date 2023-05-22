@@ -170,3 +170,13 @@ void Stroage::modify_excel(Model* model) const
     excel->set_value(model->get_sheetName(), model->get_row(), model->get_col() + 3,
                      QString::number(model->get_EXISTENCIAS()));
 }
+
+void Stroage::readDB() const
+{
+
+}
+
+void Stroage::save2DB() const
+{
+
+}

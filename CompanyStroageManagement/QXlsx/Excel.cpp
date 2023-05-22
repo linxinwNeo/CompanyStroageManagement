@@ -1,4 +1,4 @@
-#include "Excel_IO/Excel.h"
+#include "QXlsx/Excel.h"
 #include "GlobalVars.h"
 #include <QMessageBox>
 #include <QVector>

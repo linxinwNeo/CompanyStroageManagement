@@ -30,7 +30,11 @@ public:
 
     void modify_excel(Model*) const;
 
+    void readDB() const;
+    void save2DB() const;
+
     const std::unordered_map<QString, Model*> get_model_list() const {return this->model_list;};
+
 };
 
 

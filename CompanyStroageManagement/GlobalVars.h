@@ -7,12 +7,13 @@
 #include "DataStructures/stroage.h"
 #include "DataStructures/client_info.h"
 #include "DataStructures/entrylist.h"
-#include "Excel_IO/Excel.h"
+#include "QXlsx/Excel.h"
 #include "addbackwindow.h"
 
 extern EntryList EL_add;
 extern EntryList EL_deduct;
 extern AddbackWindow* win;
+extern QString DB_FNAME;
 
 extern Client_info client_info;
 extern QString stroagefilePath;

@@ -20,8 +20,9 @@ SOURCES += \
     DataStructures/entrylist.cpp \
     DataStructures/model.cpp \
     DataStructures/stroage.cpp \
-    Excel_IO/Excel.cpp \
+    FileLoader/Database.cpp \
     GlobalVars.cpp \
+    QXlsx/Excel.cpp \
     addbackwindow.cpp \
     create_PDF.cpp \
     flags.cpp \
@@ -34,9 +35,10 @@ HEADERS += \
     DataStructures/entrylist.h \
     DataStructures/model.h \
     DataStructures/stroage.h \
-    Excel_IO/Excel.h \
+    FileLoader/Database.h \
     GlobalVars.h \
     Predefined.h \
+    QXlsx/Excel.h \
     QXlsx/QXlsxHeaders.h \
     addbackwindow.h \
     flags.h \

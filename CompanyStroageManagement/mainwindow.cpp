@@ -3,7 +3,7 @@
 #include "ui_mainwindow.h"
 #include "GlobalVars.h"
 #include "flags.h"
-#include "Excel_IO/Excel.h"
+#include "QXlsx/Excel.h"
 
 #include <QCloseEvent>
 #include <QMessageBox>

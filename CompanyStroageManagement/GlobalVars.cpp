@@ -7,6 +7,7 @@ Client_info client_info;
 QString stroagefilePath;
 Excel* excel = nullptr;
 AddbackWindow* win = nullptr;
+QString DB_FNAME = "stroage.db";
 
 class Stroage stroage;
 
