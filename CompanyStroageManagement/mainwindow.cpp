@@ -42,14 +42,14 @@ MainWindow::~MainWindow()
 }
 
 
-LD MainWindow::get_discount_value() const
+double MainWindow::get_discount_value() const
 {
-    return (LD)(client_info.DISCOUNT * 0.01 * (LD)EL_deduct.subtotal());
+    return (client_info.DISCOUNT * 0.01 * EL_deduct.subtotal());
 }
 
-LD MainWindow::get_total() const
+double MainWindow::get_total() const
 {
-    return (LD)((LD)EL_deduct.subtotal() - this->get_discount_value());
+    return EL_deduct.subtotal() - this->get_discount_value();
 }
 
 
@@ -243,6 +243,7 @@ void MainWindow::on_generatePDF_btn_clicked()
     client_info.CONDICIONES = this->ui->CONDICIONES_LE->text();
     client_info.bottom_left_num = this->ui->bottom_left_num_LE->text();
     client_info.DISCOUNT = this->ui->DISCOUNT_LE->text().toDouble();
+    qDebug() << "DISCOUNT" << client_info.DISCOUNT;
 
     if(client_info.DISCOUNT < 0. || client_info.DISCOUNT > 100.){
         QMessageBox Msgbox(this);
@@ -257,18 +258,20 @@ void MainWindow::on_generatePDF_btn_clicked()
     if(filename.isEmpty())
         return;
 
-    // deduct items in the stroage
-    bool b = stroage.deduct();
     QMessageBox Msgbox(this);
+    if(!is_preview_list){
+        // deduct items in the stroage
+        bool b = stroage.deduct();
 
-    // check if deducting successful
-    if(!b){
-
-        Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
-        Msgbox.setText("扣除货物失败");
-        Msgbox.exec();
-        return;
+        // check if deducting successful
+        if(!b){
+            Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
+            Msgbox.setText("扣除货物失败");
+            Msgbox.exec();
+            return;
+        }
     }
+
 
     // create PDF file
     this->create_pdf(filename);

@@ -11,6 +11,7 @@ class Excel
 {
 public:
     QString fpath;
+    QXlsx::Document * xlsx = nullptr;
 
     Excel();
     Excel(const QString);
@@ -19,6 +20,7 @@ public:
     void read_excel();
     void set_value(const QString sheetName, const UI row, const UI col, const QString new_val);
     void reset_path();
+    void save_excel();
 };
 
 #endif // EXCEL_H

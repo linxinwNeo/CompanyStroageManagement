@@ -2,6 +2,8 @@
 #include "GlobalVars.h"
 #include <QMessageBox>
 #include <QVector>
+#include <QTime>
+#include <QDateTime>
 
 // default constructor
 // check if previous excel exists in last_opened_xlsx.txt
@@ -24,8 +26,8 @@ Excel::Excel()
 
         if(!line.isEmpty()){
             this->fpath = line;
-            QXlsx::Document xlsxR(this->fpath);
-            if(xlsxR.load()){
+            xlsx = new QXlsx::Document(this->fpath);
+            if(xlsx->load()){
                 return; // exit when we got the file
             }
             QMessageBox Msgbox(nullptr);
@@ -61,12 +63,13 @@ Excel::Excel()
 Excel::Excel(const QString full_path_to_Excel)
 {
     this->fpath = full_path_to_Excel;
+
 }
 
 
 Excel::~Excel()
 {
-
+    if(this->xlsx != nullptr) delete this->xlsx;
 }
 
 void Excel::read_excel()
@@ -79,42 +82,41 @@ void Excel::read_excel()
         Msgbox.setStyleSheet("QLabel{min-width: 400px; min-height: 50px;}");
     }
 
-    Document xlsxR(this->fpath);
-    if(!xlsxR.load()){
+    if(this->xlsx == nullptr) xlsx = new Document(this->fpath);
+
+    if(!xlsx->load()){
         QMessageBox Msgbox(nullptr);
         Msgbox.setText(FATAL_ERROR_MESSAGE);
         Msgbox.setStyleSheet("QLabel{min-width: 400px; min-height: 50px;}");
         exit(1);
     }
 
-    QStringList sheetNames = xlsxR.sheetNames();
-    const UI num_sheets = xlsxR.sheetNames().size();
+    QStringList sheetNames = xlsx->sheetNames();
+    const UI num_sheets = xlsx->sheetNames().size();
     qDebug() << sheetNames;
-    for(UI i = 0; i < sheetNames.size(); i++){
+    for(UI i = 0; i < num_sheets; i++){
         const QString cur_sheet_name = sheetNames[i];
         qDebug() << "Reading worksheet:" << cur_sheet_name;
-        xlsxR.selectSheet(cur_sheet_name); // switch sheet
-        Worksheet* cur_sheet = xlsxR.currentWorksheet();
+        xlsx->selectSheet(cur_sheet_name); // switch sheet
+        Worksheet* cur_sheet = xlsx->currentWorksheet();
         if( cur_sheet == nullptr || cur_sheet->isHidden() || cur_sheet->sheetType() != AbstractSheet::SheetType::ST_WorkSheet ) continue;
         int maxRow = cur_sheet->dimension().lastRow();
         int maxCol = -1;
         int col_of_MODELO = -1;
-        int col_of_VENTAS = -1;
         int row_of_VENTAS = -1;
 
         // find VENTA's position
         for(UI j = 1; j < 100; j++){ // row
-            if(xlsxR.isRowHidden(j)) continue;
+            if(xlsx->isRowHidden(j)) continue;
             for(UI i = 1; i < 10; i++){ // col
-                if(xlsxR.isColumnHidden(i)) continue;
+                if(xlsx->isColumnHidden(i)) continue;
 
-                Cell* cell = xlsxR.cellAt(j, i);
+                Cell* cell = xlsx->cellAt(j, i);
                 if(cell == nullptr) continue;
                 QVariant var = cell->value();
                 QString str = var.toString();
                 if(str.contains("VENTAS")){
                     maxCol = i+1;
-                    col_of_VENTAS = i;
                     row_of_VENTAS = j;
                 }
             }
@@ -122,7 +124,7 @@ void Excel::read_excel()
 
         // find position of modelo
         for(UI i = 1; i < maxCol; i++){ // col
-            Cell* cell = xlsxR.cellAt(row_of_VENTAS, i);
+            Cell* cell = xlsx->cellAt(row_of_VENTAS, i);
             if(cell == nullptr) continue;
             QVariant var = cell->value();
             QString str = var.toString();
@@ -165,9 +167,8 @@ void Excel::read_excel()
 
         // reading models
         for(UI i = row_of_VENTAS+1; i < maxRow; i++){
-            if(xlsxR.isRowHidden(i)) continue;
-
-            Cell* cell = xlsxR.cellAt(i, col_of_MODELO);
+            if(xlsx->isRowHidden(i)) continue;
+            Cell* cell = cur_sheet->cellAt(i, col_of_MODELO);
             if(cell == nullptr) continue;
             QVariant var = cell->value();
             QString str = var.toString();
@@ -181,16 +182,16 @@ void Excel::read_excel()
             double PZSXCJA, INICIAL, EXISTENCIAS, VENTAS;
             PZSXCJA = INICIAL = EXISTENCIAS = VENTAS = 0;
 
-            auto c = xlsxR.cellAt(i, col_of_MODELO+1);
+            auto c = cur_sheet->cellAt(i, col_of_MODELO+1);
             if(c != nullptr)  PZSXCJA = c->value().toDouble();
 
-            c = xlsxR.cellAt(i, col_of_MODELO+2);
+            c = cur_sheet->cellAt(i, col_of_MODELO+2);
             if(c != nullptr)  INICIAL = c->value().toDouble();
 
-            c = xlsxR.cellAt(i, col_of_MODELO+3);
+            c = cur_sheet->cellAt(i, col_of_MODELO+3);
             if(c != nullptr)  EXISTENCIAS = c->value().toDouble();
 
-            c = xlsxR.cellAt(i, col_of_MODELO+4);
+            c = cur_sheet->cellAt(i, col_of_MODELO+4);
             if(c != nullptr)  VENTAS = c->value().toDouble();
 
             Model* model = new Model(model_name, cur_sheet_name,
@@ -205,46 +206,60 @@ void Excel::set_value(const QString sheetName, const UI row, const UI col, const
 {
     using namespace QXlsx;
 
-    Document xlsxW(this->fpath);
-    if(!xlsxW.load()){
+    if(!xlsx->load()){
         QMessageBox Msgbox(nullptr);
         Msgbox.setText(FATAL_ERROR_MESSAGE);
         Msgbox.setStyleSheet("QLabel{min-width: 400px; min-height: 50px;}");
-        Msgbox.show();
+        Msgbox.exec();
         exit(0);
     }
 
     // switch to the correct sheet
-    xlsxW.selectSheet(sheetName); // switch sheet
-    Worksheet* cur_sheet = xlsxW.currentWorksheet();
+    xlsx->selectSheet(sheetName); // switch sheet
+    Worksheet* cur_sheet = xlsx->currentWorksheet();
     if(cur_sheet == nullptr || cur_sheet->sheetName() != sheetName){
         QMessageBox Msgbox(nullptr);
         Msgbox.setText(FATAL_ERROR_MESSAGE);
         Msgbox.setStyleSheet("QLabel{min-width: 400px; min-height: 50px;}");
-        Msgbox.show();
+        Msgbox.exec();
         exit(0);
     }
 
     CellReference c(row, col);
     QVariant val(new_val);
-    bool b = xlsxW.write(c, val);
+    bool b = xlsx->write(c, val);
     if(b == false){
         QMessageBox Msgbox(nullptr);
         Msgbox.setText(FATAL_ERROR_MESSAGE);
         Msgbox.setStyleSheet("QLabel{min-width: 400px; min-height: 50px;}");
-        Msgbox.show();
+        Msgbox.exec();
         exit(0);
     }
+}
 
+void Excel::save_excel() {
+    using namespace QXlsx;
 
-    b = xlsxW.save();
-    if(b == false){
-        QMessageBox Msgbox(nullptr);
+    QMessageBox Msgbox(nullptr);
+
+    if(!xlsx->load()){
         Msgbox.setText(FATAL_ERROR_MESSAGE);
         Msgbox.setStyleSheet("QLabel{min-width: 400px; min-height: 50px;}");
-        Msgbox.show();
-        exit(0);
+        Msgbox.exec();
+        exit(-1);
     }
+
+    QTime t = t.currentTime();
+    bool b = xlsx->save();
+    qDebug() << "Saving excel takes" << t.msecsTo(t.currentTime())/1000. << "sec\n";
+
+    if(b == false){
+        Msgbox.setText(FATAL_ERROR_MESSAGE);
+        Msgbox.setStyleSheet("QLabel{min-width: 400px; min-height: 50px;}");
+        Msgbox.exec();
+        exit(-2);
+    }
+
 }
 
 void Excel::reset_path()

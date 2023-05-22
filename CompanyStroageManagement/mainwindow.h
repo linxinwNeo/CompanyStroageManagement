@@ -18,8 +18,8 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    LD get_discount_value() const;
-    LD get_total() const;
+    double get_discount_value() const;
+    double get_total() const;
 
     QString currDate() const;
     QString currTime() const;

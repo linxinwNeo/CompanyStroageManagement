@@ -74,6 +74,7 @@ bool Stroage::deduct()
         }
     }
 
+    excel->save_excel();
     return true;
 }
 
@@ -82,6 +83,7 @@ bool Stroage::deduct(Model * m, double num) const
 {
     if(m == nullptr)
         return false; // model doesn't exist
+
     double cur_EXIST = m->get_EXISTENCIAS();
     double cur_VENTAS = m->get_VENTAS();
     m->set_EXISTENCIAS(cur_EXIST - num);
@@ -128,6 +130,7 @@ bool Stroage::addBack()
         }
     }
 
+    excel->save_excel();
     return true;
 }
 
@@ -162,8 +165,8 @@ bool Stroage::addBack(const QString model_name, double num)
 void Stroage::modify_excel(Model* model) const
 {
     if(excel == nullptr || model == nullptr){ return; }
-    excel->set_value(model->get_sheetName(), model->get_row(), model->get_col(),
+    excel->set_value(model->get_sheetName(), model->get_row(), model->get_col() + 4,
                      QString::number(model->get_VENTAS()));
-    excel->set_value(model->get_sheetName(), model->get_row(), model->get_col(),
+    excel->set_value(model->get_sheetName(), model->get_row(), model->get_col() + 3,
                      QString::number(model->get_EXISTENCIAS()));
 }

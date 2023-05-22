@@ -71,7 +71,7 @@ Entry *EntryList::get_entry(const UL idx)
 // calculate the subtotal
 double EntryList::subtotal() const
 {
-    UL subtotal = 0;
+    double subtotal = 0;
     for(auto entry : this->entries){
         subtotal += entry->IMPORTE;
     }

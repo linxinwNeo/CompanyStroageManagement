@@ -52,6 +52,7 @@ void MainWindow::create_pdf(QString filename) {
 
     // CLIENTE
     painter.drawText(QPointF(width * 0.13, height * 0.172), client_info.CLIENTE);
+    qDebug() << "CLIENTE" << client_info.CLIENTE;
 
     // AGENTE
     painter.drawText(QPointF(width * 0.78, height * 0.168), client_info.AGENTE);
@@ -75,6 +76,7 @@ void MainWindow::create_pdf(QString filename) {
     painter.drawText(QPointF(width * 0.78, height * 0.25), client_info.CONDICIONES);
 
     double y = height * 0.31;
+    qDebug() << EL_deduct.size();
     for(auto entry : EL_deduct.entries){
         double x = width * 0.06; // reset x for each entry
 
@@ -110,17 +112,17 @@ void MainWindow::create_pdf(QString filename) {
     }
 
     // SUBTOTAL
-    painter.drawText(QRect(0, height * 0.815, width * 0.93, height * 0.815), QString::number((double)EL_deduct.subtotal(), 'f', 2), option);
+    painter.drawText(QRect(0, height * 0.815, width * 0.93, height * 0.815), QString::number(EL_deduct.subtotal(), 'f', 2), option);
 
     // DESCUENTO
-    painter.drawText(QRect(0, height * 0.84, width * 0.93, height * 0.84), QString::number((double)this->get_discount_value(), 'f', 2), option);
+    painter.drawText(QRect(0, height * 0.84, width * 0.93, height * 0.84), QString::number(this->get_discount_value(), 'f', 2), option);
     painter.drawText(QRect(0, height * 0.84, width * 1, height * 0.84), "(" + QString::number(client_info.DISCOUNT) + "%)", option);
 
     // IVA
     painter.drawText(QRect(0, height * 0.875, width * 0.93, height * 0.875), "0.00", option);
 
     // TOTAL
-    painter.drawText(QRect(0, height * 0.907, width * 0.93, height * 0.907), QString::number((double)this->get_total(), 'f', 2), option);
+    painter.drawText(QRect(0, height * 0.907, width * 0.93, height * 0.907), QString::number(this->get_total(), 'f', 2), option);
 
     // bottom left num
     painter.drawText(QPointF(width * 0.07, height * 0.91), client_info.bottom_left_num);
