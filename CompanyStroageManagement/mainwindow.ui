@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1898</width>
-    <height>926</height>
+    <height>1010</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -961,14 +961,20 @@
      <string>Menu</string>
     </property>
     <addaction name="separator"/>
-    <addaction name="incomingAction_2"/>
+    <addaction name="change_excel_action"/>
+    <addaction name="addBack_action"/>
    </widget>
    <addaction name="menuMenu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="incomingAction_2">
+  <action name="addBack_action">
    <property name="text">
-    <string>设计中</string>
+    <string>增加库存</string>
+   </property>
+  </action>
+  <action name="change_excel_action">
+   <property name="text">
+    <string>更改库存文件路径</string>
    </property>
   </action>
  </widget>

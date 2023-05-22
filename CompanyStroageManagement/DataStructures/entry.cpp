@@ -1,8 +1,8 @@
 #include "DataStructures/entry.h"
 
-Entry::Entry(UL CAJA, UL CANTIDAD, UL CANT_POR_CAJA ,
-             QString CLAVE, QString Description, LD PRECIO,
-             LD IMPORTE, LD btm_left_num)
+Entry::Entry(double CAJA, UL CANTIDAD, UL CANT_POR_CAJA ,
+             QString CLAVE, QString Description, double PRECIO,
+             double IMPORTE, double btm_left_num)
 {
     this->CAJA = CAJA;
     this->CANTIDAD = CANTIDAD;

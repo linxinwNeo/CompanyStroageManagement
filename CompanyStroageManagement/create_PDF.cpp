@@ -75,7 +75,7 @@ void MainWindow::create_pdf(QString filename) {
     painter.drawText(QPointF(width * 0.78, height * 0.25), client_info.CONDICIONES);
 
     double y = height * 0.31;
-    for(auto entry : EL.entries){
+    for(auto entry : EL_deduct.entries){
         double x = width * 0.06; // reset x for each entry
 
         // CAJA
@@ -110,7 +110,7 @@ void MainWindow::create_pdf(QString filename) {
     }
 
     // SUBTOTAL
-    painter.drawText(QRect(0, height * 0.815, width * 0.93, height * 0.815), QString::number((double)EL.subtotal(), 'f', 2), option);
+    painter.drawText(QRect(0, height * 0.815, width * 0.93, height * 0.815), QString::number((double)EL_deduct.subtotal(), 'f', 2), option);
 
     // DESCUENTO
     painter.drawText(QRect(0, height * 0.84, width * 0.93, height * 0.84), QString::number((double)this->get_discount_value(), 'f', 2), option);
@@ -126,10 +126,4 @@ void MainWindow::create_pdf(QString filename) {
     painter.drawText(QPointF(width * 0.07, height * 0.91), client_info.bottom_left_num);
 
     painter.end();
-
-
-    QMessageBox Msgbox(this);
-    Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
-    Msgbox.setText(".pdf 文件创建成功");
-    Msgbox.exec();
 }

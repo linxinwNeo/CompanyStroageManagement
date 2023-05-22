@@ -18,8 +18,11 @@ SOURCES += \
     DataStructures/client_info.cpp \
     DataStructures/entry.cpp \
     DataStructures/entrylist.cpp \
+    DataStructures/model.cpp \
+    DataStructures/stroage.cpp \
     Excel_IO/Excel.cpp \
     GlobalVars.cpp \
+    addbackwindow.cpp \
     create_PDF.cpp \
     flags.cpp \
     main.cpp \
@@ -29,15 +32,19 @@ HEADERS += \
     DataStructures/client_info.h \
     DataStructures/entry.h \
     DataStructures/entrylist.h \
+    DataStructures/model.h \
+    DataStructures/stroage.h \
     Excel_IO/Excel.h \
     GlobalVars.h \
     Predefined.h \
     QXlsx/QXlsxHeaders.h \
+    addbackwindow.h \
     flags.h \
     helper_functions.h \
     mainwindow.h
 
 FORMS += \
+    addbackwindow.ui \
     mainwindow.ui
 
 win32 {

@@ -8,6 +8,7 @@
 #include <QCloseEvent>
 #include <QMessageBox>
 #include <QFileDialog>
+#include "addbackwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -21,12 +22,14 @@ MainWindow::MainWindow(QWidget *parent)
     table->setColumnCount(7);
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
+    win = new AddbackWindow(this);
 
     // check if previous excel exists
     // if no, ask for a excel file
     // if yes, use the previous one
     excel = new Excel();
-    excel->read_excel();
+    excel->read_excel(); // read excel file and create stroage file
+    qDebug() << "stroage size" << stroage.size();
 }
 
 
@@ -34,17 +37,19 @@ MainWindow::~MainWindow()
 {
     delete ui;
     if(excel != nullptr) delete excel;
+
+    if(win != nullptr) delete win;
 }
 
 
 LD MainWindow::get_discount_value() const
 {
-    return (LD)(client_info.DISCOUNT * 0.01 * (LD)EL.subtotal());
+    return (LD)(client_info.DISCOUNT * 0.01 * (LD)EL_deduct.subtotal());
 }
 
 LD MainWindow::get_total() const
 {
-    return (LD)((LD)EL.subtotal() - this->get_discount_value());
+    return (LD)((LD)EL_deduct.subtotal() - this->get_discount_value());
 }
 
 
@@ -61,7 +66,7 @@ void MainWindow::on_add_entry_btn_released()
         return;
     }
 
-    UL CAJA = this->ui->CAJA_LE->text().toLong();
+    double CAJA = this->ui->CAJA_LE->text().toDouble();
     UL CANTIDAD = this->ui->CANTIDAD_LE->text().toLong();
     UL CANT_POR_CAJA = this->ui->CANT_POR_CAJA_LE->text().toLong();
     QString CLAVE = this->ui->CLAVE_LE->text();
@@ -77,22 +82,22 @@ void MainWindow::on_add_entry_btn_released()
 
     Entry* new_entry = new Entry(CAJA, CANTIDAD, CANT_POR_CAJA,
                                  CLAVE, Description, PRECIO, IMPORTE, btm_left_num);
-    EL.add_entry(new_entry);
+    EL_deduct.add_entry(new_entry);
 
     this->table->insertRow(this->table->rowCount());
     // add entry to the table as well
-    UL row = EL.num_entries()-1;
+    UL row = EL_deduct.num_entries()-1;
     for(int col = 0; col < 8; col++){
-        QTableWidgetItem *item = new QTableWidgetItem;
-        item->setText( items[col] );
-        table->setItem(row, col, item);
+        QTableWidgetItem *tableWidgetItem = new QTableWidgetItem();
+        tableWidgetItem->setText( items[col] );
+        table->setItem(row, col, tableWidgetItem);
     }
 
-    // reset entry
-    this->reset_entry();
+    // reset entry form
+    this->reset_entry_form();
 }
 
-void MainWindow::reset_entry(){
+void MainWindow::reset_entry_form(){
     this->ui->CAJA_LE->setText("");
     this->ui->CANTIDAD_LE->setText("");
     this->ui->CANT_POR_CAJA_LE->setText("");
@@ -113,7 +118,7 @@ void MainWindow::on_reset_entry_btn_released()
     if (resBtn == QMessageBox::No) { // return if the user don't want to clear the information
         return;
     }
-    this->reset_entry();
+    this->reset_entry_form();
 }
 
 
@@ -151,7 +156,7 @@ void MainWindow::on_reset_table_btn_released()
 
     table->clearContents();
     table->setRowCount(0);
-    EL.clear_memory();
+    EL_deduct.clear_memory();
 }
 
 
@@ -180,7 +185,7 @@ void MainWindow::on_delete_row_btn_clicked()
 
     for(UL i = 0; i<num; i++){
         auto first_selected_row = select->selectedRows()[0];
-        EL.remove_entry( first_selected_row.row() );
+        EL_deduct.remove_entry( first_selected_row.row() );
         table->removeRow( first_selected_row.row() );
     }
 }
@@ -188,18 +193,18 @@ void MainWindow::on_delete_row_btn_clicked()
 
 void MainWindow::on_tableWidget_cellChanged(int row, int column)
 {
-    auto entry = EL.get_entry(row);
+    auto entry = EL_deduct.get_entry(row);
     if(!entry) return;
 
     switch(column){
     case 0:
-        entry->CAJA = this->table->item(row, 0)->text().toLong();
+        entry->CAJA = this->table->item(row, 0)->text().toDouble();
         break;
     case 1:
-        entry->CANTIDAD = this->table->item(row, 1)->text().toLong();
+        entry->CANTIDAD = this->table->item(row, 1)->text().toDouble();
         break;
     case 2:
-        entry->CANT_POR_CAJA = this->table->item(row, 2)->text().toLong();
+        entry->CANT_POR_CAJA = this->table->item(row, 2)->text().toDouble();
         break;
     case 3:
         entry->CLAVE = this->table->item(row, 3)->text();
@@ -252,7 +257,27 @@ void MainWindow::on_generatePDF_btn_clicked()
     if(filename.isEmpty())
         return;
 
+    // deduct items in the stroage
+    bool b = stroage.deduct();
+    QMessageBox Msgbox(this);
+
+    // check if deducting successful
+    if(!b){
+
+        Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
+        Msgbox.setText("扣除货物失败");
+        Msgbox.exec();
+        return;
+    }
+
+    // create PDF file
     this->create_pdf(filename);
+
+
+    // display creation success file
+    Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
+    Msgbox.setText(".pdf 文件创建成功");
+    Msgbox.exec();
 }
 
 
@@ -278,5 +303,30 @@ void MainWindow::closeEvent (QCloseEvent *event)
 void MainWindow::on_is_preview_CB_clicked(bool checked)
 {
     is_preview_list = checked;
+}
+
+
+void MainWindow::on_addBack_action_triggered()
+{
+    if(win == nullptr) win = new AddbackWindow(this);
+    win->show();
+}
+
+
+void MainWindow::on_change_excel_action_triggered()
+{
+    QMessageBox Msgbox(nullptr);
+    Msgbox.setText("读取文件中，请稍等");
+    Msgbox.setStyleSheet("QLabel{min-width: 400px; min-height: 50px;}");
+    Msgbox.show();
+
+    // delete .txt file
+    excel->reset_path();
+
+    delete excel;
+    stroage.reset();
+
+    excel = new Excel();
+    excel->read_excel(); // read excel file and create stroage file
 }
 

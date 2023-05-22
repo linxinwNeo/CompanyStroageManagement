@@ -24,6 +24,8 @@ public:
     inline UL num_entries() const;
     Entry *get_entry(const UL);
 
+    UI size() const {return this->entries.size();};
+
     double subtotal() const;
 };
 

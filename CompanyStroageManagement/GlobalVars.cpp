@@ -1,10 +1,14 @@
 #include "GlobalVars.h"
 
 
-EntryList EL;
+EntryList EL_deduct;
+EntryList EL_add;
 Client_info client_info;
 QString stroagefilePath;
 Excel* excel = nullptr;
+AddbackWindow* win = nullptr;
+
+class Stroage stroage;
 
 const QString APP_NAME = "Yi Hong Ding Stroage Management System";
 const QString FATAL_ERROR_MESSAGE = "出现无法解决的错误，请联系制作者。";

@@ -11,6 +11,8 @@ int main(int argc, char *argv[])
     // setting up the window
     w.setWindowTitle(APP_NAME);
     w.show();
+
+
     return a.exec();
 }
 

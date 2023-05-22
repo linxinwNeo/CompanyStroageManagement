@@ -24,10 +24,12 @@ public:
     QString currDate() const;
     QString currTime() const;
     void create_pdf(QString filename);
-    void reset_entry();
+    void reset_entry_form();
     QString get_stroage_excel_file();
 
 private slots:
+    void closeEvent (QCloseEvent *event);
+
     void on_add_entry_btn_released();
 
     void on_reset_entry_btn_released();
@@ -42,9 +44,11 @@ private slots:
 
     void on_generatePDF_btn_clicked();
 
-    void closeEvent (QCloseEvent *event);
-
     void on_is_preview_CB_clicked(bool checked);
+
+    void on_addBack_action_triggered();
+
+    void on_change_excel_action_triggered();
 
 private:
     Ui::MainWindow *ui;

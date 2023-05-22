@@ -17,6 +17,8 @@ public:
     ~Excel();
 
     void read_excel();
+    void set_value(const QString sheetName, const UI row, const UI col, const QString new_val);
+    void reset_path();
 };
 
 #endif // EXCEL_H
