@@ -20,7 +20,6 @@ SOURCES += \
     DataStructures/entrylist.cpp \
     DataStructures/model.cpp \
     DataStructures/stroage.cpp \
-    FileLoader/Database.cpp \
     GlobalVars.cpp \
     QXlsx/Excel.cpp \
     addbackwindow.cpp \
@@ -35,7 +34,6 @@ HEADERS += \
     DataStructures/entrylist.h \
     DataStructures/model.h \
     DataStructures/stroage.h \
-    FileLoader/Database.h \
     GlobalVars.h \
     Predefined.h \
     QXlsx/Excel.h \
