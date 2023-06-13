@@ -5,6 +5,12 @@
 #include "xlsxcelllocation.h"
 #include <QString>
 
+struct Container{
+    QString type; // CONTENEDOR or PEDIMENTO or CUBREBOCAS
+    QString ID; // usually numbers with spaces
+    QString num;
+};
+
 class Model
 {
 private:
@@ -13,8 +19,11 @@ private:
     UI row;
     UI col;
 
+    Container container; // can be empty...
+
     QString MODELO;
-    double PZSXCJA;
+
+    double PZSXCJA; // sometimes called PIEZAS
     double INICIAL;
     double EXISTENCIAS;
     double VENTAS;

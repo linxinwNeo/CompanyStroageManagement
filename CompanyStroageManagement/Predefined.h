@@ -6,6 +6,7 @@
 #define LD long double
 
 #include <QtGlobal>
+
 #ifdef Q_OS_WIN
 #define WIN
 #endif
