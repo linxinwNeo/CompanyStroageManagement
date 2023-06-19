@@ -194,9 +194,9 @@ void Excel::read_excel()
             c = cur_sheet->cellAt(i, col_of_MODELO+4);
             if(c != nullptr)  VENTAS = c->value().toDouble();
 
-            Model* model = new Model(model_name, cur_sheet_name,
+            QSharedPointer<Model> model (new Model(model_name, cur_sheet_name,
                                      PZSXCJA, INICIAL, EXISTENCIAS, VENTAS,
-                                     i, col_of_MODELO);
+                                                  i, col_of_MODELO) );
             stroage.add_model(model);
         }
     }

@@ -22,12 +22,12 @@ MainWindow::MainWindow(QWidget *parent)
     table->setColumnCount(7);
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
-    win = new AddbackWindow(this);
+    win = QSharedPointer<AddbackWindow> ( new AddbackWindow( this ) );
 
     // check if previous excel exists
     // if no, ask for a excel file
     // if yes, use the previous one
-    excel = new Excel();
+    excel = QSharedPointer<Excel> ( new Excel() );
     excel->read_excel(); // read excel file and create stroage file
     qDebug() << "stroage size" << stroage.size();
 }
@@ -36,9 +36,9 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
-    if(excel != nullptr) delete excel;
 
-    if(win != nullptr) delete win;
+    excel = nullptr;
+    win = nullptr;
 }
 
 
@@ -75,18 +75,18 @@ void MainWindow::on_add_entry_btn_released()
     double IMPORTE = this->ui->IMPORTE_LE->text().toDouble();
     double btm_left_num = this->ui->bottom_left_num_LE->text().toDouble();
 
-    std::vector<QString> items = {QString::number(CAJA), QString::number(CANTIDAD),
+    QVector<QString> items = {QString::number(CAJA), QString::number(CANTIDAD),
                               QString::number(CANT_POR_CAJA), CLAVE, Description,
                               QString::number(PRECIO), QString::number(IMPORTE),
                               QString::number(btm_left_num)};
 
-    Entry* new_entry = new Entry(CAJA, CANTIDAD, CANT_POR_CAJA,
-                                 CLAVE, Description, PRECIO, IMPORTE, btm_left_num);
-    EL_deduct.add_entry(new_entry);
+    QSharedPointer<Entry> new_entry ( new Entry(CAJA, CANTIDAD, CANT_POR_CAJA,
+                                              CLAVE, Description, PRECIO, IMPORTE, btm_left_num) );
+    EL_deduct.add_entry( new_entry );
 
     this->table->insertRow(this->table->rowCount());
     // add entry to the table as well
-    UL row = EL_deduct.num_entries()-1;
+    UL row = EL_deduct.num_entries() - 1;
     for(int col = 0; col < 8; col++){
         QTableWidgetItem *tableWidgetItem = new QTableWidgetItem();
         tableWidgetItem->setText( items[col] );
@@ -183,7 +183,7 @@ void MainWindow::on_delete_row_btn_clicked()
         return;
     }
 
-    for(UL i = 0; i<num; i++){
+    for(UL i = 0; i < num; i++) {
         auto first_selected_row = select->selectedRows()[0];
         EL_deduct.remove_entry( first_selected_row.row() );
         table->removeRow( first_selected_row.row() );
@@ -311,7 +311,8 @@ void MainWindow::on_is_preview_CB_clicked(bool checked)
 
 void MainWindow::on_addBack_action_triggered()
 {
-    if(win == nullptr) win = new AddbackWindow(this);
+    if(win.isNull()) win = QSharedPointer<AddbackWindow>  (new AddbackWindow(this));
+
     win->show();
 }
 
@@ -326,10 +327,10 @@ void MainWindow::on_change_excel_action_triggered()
     // delete .txt file
     excel->reset_path();
 
-    delete excel;
+    excel = nullptr;
     stroage.reset();
 
-    excel = new Excel();
+    excel = QSharedPointer<Excel> ( new Excel() );
     excel->read_excel(); // read excel file and create stroage file
 }
 

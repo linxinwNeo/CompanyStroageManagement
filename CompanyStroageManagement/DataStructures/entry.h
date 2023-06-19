@@ -21,7 +21,6 @@ public:
     Entry(double CAJA = 0, UL CANTIDAD = 0, UL CANT_POR_CAJA = 0,
           QString CLAVE = "", QString Description = "",
           double PRECIO = 0., double IMPORTE = 0., double btm_left_num = 0.);
-
 };
 
 #endif // ENTRY_H

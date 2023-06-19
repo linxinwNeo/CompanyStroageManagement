@@ -21,7 +21,7 @@ private:
 
     Container container; // can be empty...
 
-    QString MODELO;
+    QString MODELO; // identifier of this model
 
     double PZSXCJA; // sometimes called PIEZAS
     double INICIAL;

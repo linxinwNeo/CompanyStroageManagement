@@ -35,13 +35,13 @@ void AddbackWindow::on_add_entry_btn_clicked()
     double CAJA = this->ui->CAJA_LE->text().toDouble();
     QString CLAVE = this->ui->CLAVE_LE->text();
 
-    Entry* new_entry = new Entry(CAJA, 0, 0,
-                                 CLAVE, "", 0., 0., 0.);
+    QSharedPointer<Entry> new_entry (new Entry(CAJA, 0, 0,
+                                              CLAVE, "", 0., 0., 0.) );
 
     EL_add.add_entry(new_entry);
     this->table->insertRow(this->table->rowCount());
 
-    std::vector<QString> items = { CLAVE, QString::number(CAJA) };
+    QVector<QString> items = { CLAVE, QString::number(CAJA) };
     // add entry to the table as well
     UL row = EL_add.num_entries()-1;
     for(int col = 0; col < 2; col++){

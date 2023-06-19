@@ -1,7 +1,8 @@
 #ifndef ENTRYLIST_H
 #define ENTRYLIST_H
 
-#include <vector>
+#include <QVector>
+#include <QSharedPointer>
 #include <QDebug>
 #include "entry.h"
 
@@ -10,19 +11,19 @@ class EntryList
 {
 public:
     // variables
-    std::vector<Entry *> entries;
+   QVector< QSharedPointer<Entry> > entries;
 
     // functions
     inline EntryList();
     inline ~EntryList();
     void clear_memory();
 
-    void add_entry(Entry*);
+    void add_entry(QSharedPointer<Entry>& entry);
     void remove_entry();
     void remove_entry(const UL);
-    void update_entry(const UL, Entry*);
+    void update_entry(const UL, QSharedPointer<Entry>& entry);
     inline UL num_entries() const;
-    Entry *get_entry(const UL);
+    QSharedPointer<Entry> get_entry(const UL);
 
     UI size() const {return this->entries.size();};
 

@@ -2,17 +2,13 @@
 
 void EntryList::clear_memory()
 {
-    for(Entry* e : this->entries){
-        if(e) delete e;
-    }
-
     this->entries.clear();
 }
 
-void EntryList::add_entry(Entry * to_be_added)
+void EntryList::add_entry(QSharedPointer<Entry>& entry_to_be_added)
 {
-    if(to_be_added){
-        this->entries.push_back(to_be_added);
+    if(!entry_to_be_added.isNull()){
+        this->entries.push_back(entry_to_be_added);
     }
 }
 
@@ -20,8 +16,6 @@ void EntryList::add_entry(Entry * to_be_added)
 void EntryList::remove_entry()
 {
     if(this->num_entries() != 0){
-        auto entry = this->entries[ this->entries.size()-1 ];
-        delete entry;
         this->entries.pop_back();
     }
 }
@@ -35,15 +29,12 @@ void EntryList::remove_entry(const UL idx)
         return;
     }
 
-    auto entry = this->entries[ idx ];
-    delete entry;
-
     this->entries.erase(this->entries.begin() + idx); // get this idx out from the vector
 }
 
 
 // update one entry
-void EntryList::update_entry(const UL idx, Entry* e)
+void EntryList::update_entry(const UL idx, QSharedPointer<Entry>& e)
 {
     // check if the idx is valid
     if( idx >= this->num_entries()-1 ) {
@@ -51,20 +42,18 @@ void EntryList::update_entry(const UL idx, Entry* e)
         return;
     }
 
-    if(this->entries[idx] != nullptr){
-        delete this->entries[idx];
-    }
     this->entries[idx] = e;
 }
 
 // return an entry at idx
-Entry *EntryList::get_entry(const UL idx)
+QSharedPointer<Entry> EntryList::get_entry(const UL idx)
 {
     // check if the idx is valid
     if( idx >= this->num_entries() ) {
         qDebug() << "Entry *EntryList::get_entry(const UL idx): idx invalid!";
         return nullptr;
     }
+
     return this->entries[idx];
 }
 

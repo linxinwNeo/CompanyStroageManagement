@@ -9,12 +9,8 @@ Stroage::Stroage()
 
 Stroage::~Stroage()
 {
-    if(model_list.size() == 0) return;
+    this->reset();
 
-    for (auto it : this->model_list)
-        delete it.second;
-
-    model_list.clear();
     return;
 }
 
@@ -24,43 +20,43 @@ void Stroage::reset()
 {
     if(model_list.size() == 0) return;
 
-    for (auto it : this->model_list)
-        delete it.second;
-
     model_list.clear();
 }
 
 
-// add the model to the unordered map
-bool Stroage::add_model(Model * m)
+// add the model to the HashTable
+// if this model exists, return false
+// if this model does not exist, add it.
+bool Stroage::add_model(QSharedPointer<Model> m)
 {
-    if( this->search(m->get_MODELO()) != nullptr ){
+    if( !this->search(m->get_MODELO()).isNull() ){
         return false;
     }
+
     this->model_list[m->get_MODELO()] = m;
     return true;
 }
 
 
 // search for the model
-Model *Stroage::search(const QString model_name)
+QSharedPointer<Model> Stroage::search(const QString model_name)
 {
-    auto model = this->model_list.find(model_name);
-    if( model == this->model_list.end() ){
-        return nullptr;
+    if(this->model_list.contains(model_name)){
+        return this->model_list[model_name];
     }
-    return model->second;
+
+    return nullptr;
 }
 
 bool Stroage::deduct()
 {
     // make sure all items can be found
-    QVector<Model*> models;
+    QVector< QSharedPointer<Model> > models;
     models.reserve(30);
 
-    for(Entry* e : EL_deduct.entries){
+    for(QSharedPointer<Entry> e : EL_deduct.entries){
         QString model_name = e->CLAVE;
-        auto model = this->search(model_name);
+        QSharedPointer<Model> model = this->search(model_name);
         if( model == nullptr ){
             return false;
         }
@@ -79,7 +75,7 @@ bool Stroage::deduct()
 }
 
 // deduct num from model
-bool Stroage::deduct(Model * m, double num) const
+bool Stroage::deduct(QSharedPointer<Model> m, double num) const
 {
     if(m == nullptr)
         return false; // model doesn't exist
@@ -111,10 +107,10 @@ bool Stroage::deduct(const QString model_name, double num)
 bool Stroage::addBack()
 {
     // make sure all items can be found
-    QVector<Model*> models;
+    QVector< QSharedPointer<Model> > models;
     models.reserve(30);
 
-    for(Entry* e : EL_add.entries){
+    for(QSharedPointer<Entry> e : EL_add.entries){
         QString model_name = e->CLAVE;
         auto model = this->search(model_name);
         if( model == nullptr ){
@@ -134,7 +130,7 @@ bool Stroage::addBack()
     return true;
 }
 
-bool Stroage::addBack(Model * m, double num) const
+bool Stroage::addBack(QSharedPointer<Model> m, double num) const
 {
     if(m == nullptr)
         return false; // model doesn't exist
@@ -143,7 +139,7 @@ bool Stroage::addBack(Model * m, double num) const
     m->set_EXISTENCIAS(cur_EXIST + num);
     m->set_VENTAS(cur_VENTAS - num);
 
-    this->modify_excel(m);
+    this->modify_excel( m );
     return true;
 }
 
@@ -162,7 +158,7 @@ bool Stroage::addBack(const QString model_name, double num)
 }
 
 
-void Stroage::modify_excel(Model* model) const
+void Stroage::modify_excel(QSharedPointer<Model> model) const
 {
     if(excel == nullptr || model == nullptr){ return; }
     excel->set_value(model->get_sheetName(), model->get_row(), model->get_col() + 4,

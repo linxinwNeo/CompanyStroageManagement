@@ -2,6 +2,7 @@
 #define GLOBALVARS_H
 
 #include <QString>
+#include <QSharedPointer>
 
 #include "Predefined.h"
 #include "DataStructures/stroage.h"
@@ -12,13 +13,13 @@
 
 extern EntryList EL_add;
 extern EntryList EL_deduct;
-extern AddbackWindow* win;
+extern QSharedPointer< AddbackWindow > win;
 extern QString DB_FNAME;
 
 extern Client_info client_info;
 extern QString stroagefilePath;
 extern const QString APP_NAME;
-extern Excel* excel;
+extern QSharedPointer<Excel> excel;
 extern Stroage stroage;
 
 extern const QString APP_NAME;
