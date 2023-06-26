@@ -2,7 +2,7 @@
 
 Client_info::Client_info(QString CLIENTE, QString DOMICILIO, QString CIUDAD,
                          QString RFC, QString AGENTE,
-                         QString CONDICIONES, QString bottom_left_num, double DISCOUNT)
+                         QString CONDICIONES, double bottom_left_num, double DISCOUNT)
 {
     this->CLIENTE = CLIENTE;
     this->DOMICILIO = DOMICILIO;

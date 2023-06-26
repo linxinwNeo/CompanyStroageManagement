@@ -15,37 +15,39 @@ QXLSX_SOURCEPATH=./QXlsx/source/    # current QXlsx source path is ./source/
 include(./QXlsx/QXlsx.pri)
 
 SOURCES += \
+    DataStructures/Inventory.cpp \
     DataStructures/client_info.cpp \
     DataStructures/entry.cpp \
     DataStructures/entrylist.cpp \
     DataStructures/model.cpp \
-    DataStructures/stroage.cpp \
+    FileLoader/readTxt.cpp \
     GlobalVars.cpp \
     QXlsx/Excel.cpp \
-    addbackwindow.cpp \
     create_PDF.cpp \
     flags.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    submitEntry.cpp
 
 HEADERS += \
+    DataStructures/Inventory.h \
     DataStructures/client_info.h \
     DataStructures/entry.h \
     DataStructures/entrylist.h \
     DataStructures/model.h \
-    DataStructures/stroage.h \
+    FileLoader/readTxt.h \
     GlobalVars.h \
     Predefined.h \
     QXlsx/Excel.h \
     QXlsx/QXlsxHeaders.h \
-    addbackwindow.h \
     flags.h \
     helper_functions.h \
-    mainwindow.h
+    mainwindow.h \
+    submitEntry.h
 
 FORMS += \
-    addbackwindow.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    submitEntry.ui
 
 win32 {
     RC_FILE = exe_icon.rc
@@ -62,7 +64,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 
-DISTFILES += \
+DISTFILES +=
 
 RESOURCES += \
     resources.qrc

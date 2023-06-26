@@ -17,13 +17,13 @@ def read_Prizes_file(file_path, models):
         model.DESCRIPTION_CN = remove_lineSwitcher(row[1]) # description_Chinese
         model.PRIZE = row[10] # prize
 
+    # we only read the first sheet
+    # third_worksheets = workbook.worksheets[2]
+    # # Iterate through all rows in the sheet
+    # for row in third_worksheets.iter_rows(values_only=True, min_row = 2):
+    #     model_code = remove_non_alnum_hyphen(str(row[0])) # remove chinese in code
+    #     if model_code in models:
+    #         model = models[model_code]
+    #     else: continue # if not found this model, ignore
 
-    third_worksheets = workbook.worksheets[2]
-    # Iterate through all rows in the sheet
-    for row in third_worksheets.iter_rows(values_only=True, min_row = 2):
-        model_code = remove_non_alnum_hyphen(str(row[0])) # remove chinese in code
-        if model_code in models:
-            model = models[model_code]
-        else: continue # if not found this model, ignore
-
-        model.PRIZE = row[10] # prize
+    #     model.PRIZE = row[10] # prize

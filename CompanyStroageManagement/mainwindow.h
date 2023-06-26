@@ -30,26 +30,7 @@ public:
 private slots:
     void closeEvent (QCloseEvent *event);
 
-    void on_add_entry_btn_released();
-
-    void on_reset_entry_btn_released();
-
-    void on_reset_info_btn_released();
-
-    void on_reset_table_btn_released();
-
-    void on_delete_row_btn_clicked();
-
-    void on_tableWidget_cellChanged(int row, int column);
-
     void on_generatePDF_btn_clicked();
-
-    void on_is_preview_CB_clicked(bool checked);
-
-    void on_addBack_action_triggered();
-
-    void on_change_excel_action_triggered();
-
 private:
     Ui::MainWindow *ui;
     QTableWidget* table;

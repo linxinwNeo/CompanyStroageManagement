@@ -4,6 +4,8 @@
 #include <QString>
 #include "Predefined.h"
 
+#define EntryPtr QSharedPointer<Entry>
+
 class Entry
 {
 public:

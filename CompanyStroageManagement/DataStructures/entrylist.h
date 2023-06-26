@@ -11,7 +11,7 @@ class EntryList
 {
 public:
     // variables
-   QVector< QSharedPointer<Entry> > entries;
+    QVector< QSharedPointer<Entry> > entries;
 
     // functions
     inline EntryList();
@@ -33,7 +33,7 @@ public:
 
 EntryList::EntryList()
 {
-    this->entries.reserve(20);
+    this->entries.reserve(40);
 }
 
 EntryList::~EntryList()
