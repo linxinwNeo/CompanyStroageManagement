@@ -3,21 +3,22 @@
 #include <QTime>
 #include <QDateTime>
 #include <QFileDialog>
-#include "readTxt.h"
+#include "ReadFile.h"
 #include <QStandardPaths>
 #include "GlobalVars.h"
 
-ReadTxt::ReadTxt()
+ReadFile::ReadFile()
 {
     inventory = Inventory();
+    this->container_idx_of_models.clear();
 }
 
-ReadTxt::~ReadTxt()
+ReadFile::~ReadFile()
 {
 }
 
 // read models file
-void ReadTxt::read_Models(const QString& path)
+void ReadFile::read_Models(const QString& path)
 {
     QFile file(path);
     QTextStream in(&file);
@@ -54,9 +55,7 @@ void ReadTxt::read_Models(const QString& path)
             m->container = nullptr;
         }
         else{
-            // get the container instance with the corresponding ID and put it here
-//            m->container = containerID;
-
+            this->container_idx_of_models[m] = containerID.toInt();
         }
 
         inventory.add(m);
@@ -67,12 +66,12 @@ void ReadTxt::read_Models(const QString& path)
 }
 
 // read containers file
-void ReadTxt::read_Containers(const QString &path)
+void ReadFile::read_Containers(const QString &path)
 {
 
 }
 
-QString ReadTxt::get_file_path()
+QString ReadFile::get_file_path()
 {
     QString filter = "Vector Field File (*.3dvf);; Polygonal File Format (*.ply)";
     QString filename = QFileDialog::getOpenFileName(nullptr, "Save File",

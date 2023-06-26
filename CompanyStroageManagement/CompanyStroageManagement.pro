@@ -20,7 +20,8 @@ SOURCES += \
     DataStructures/entry.cpp \
     DataStructures/entrylist.cpp \
     DataStructures/model.cpp \
-    FileLoader/readTxt.cpp \
+    FileLoader/ReadFile.cpp \
+    FileLoader/WriteFile.cpp \
     GlobalVars.cpp \
     QXlsx/Excel.cpp \
     create_PDF.cpp \
@@ -35,7 +36,8 @@ HEADERS += \
     DataStructures/entry.h \
     DataStructures/entrylist.h \
     DataStructures/model.h \
-    FileLoader/readTxt.h \
+    FileLoader/ReadFile.h \
+    FileLoader/WriteFile.h \
     GlobalVars.h \
     Predefined.h \
     QXlsx/Excel.h \

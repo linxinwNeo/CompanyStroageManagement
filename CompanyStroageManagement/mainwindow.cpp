@@ -8,7 +8,7 @@
 #include <QCloseEvent>
 #include <QMessageBox>
 #include <QFileDialog>
-#include "FileLoader/readTxt.h"
+#include "FileLoader/ReadFile.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -23,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
     // read inventory.txt file
-    ReadTxt tet;
+    ReadFile tet;
     tet.read_Models(DB_FNAME);
 }
 

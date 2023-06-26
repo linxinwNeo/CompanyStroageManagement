@@ -1,21 +1,24 @@
-#ifndef READTXT_H
-#define READTXT_H
+#ifndef READFILE_H
+#define READFILE_H
 
 #include "DataStructures/model.h"
 #include <QString>
 #include <QFile>
 #include <QSharedPointer>
 
-class ReadTxt {
+class ReadFile {
+private:
+    QHash<ModelPtr, UI> container_idx_of_models;
+
 public:
     static QString get_file_path();
 
     // member functions
-    ReadTxt();
-    ~ReadTxt();
+    ReadFile();
+    ~ReadFile();
 
     void read_Models(const QString& path);
     void read_Containers(const QString& path);
 };
 
-#endif //READTXT_H
+#endif //READFILE_H

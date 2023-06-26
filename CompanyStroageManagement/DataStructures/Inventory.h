@@ -9,14 +9,14 @@
  */
 class Inventory
 {
-private:
+public:
     QSet<ModelPtr> model_set;
     QVector<ModelPtr> model_vec;
 
     QHash<QString, ContainerPtr> container_map;
     QVector<ContainerPtr> container_vec;
 
-public:
+
     Inventory();
     ~Inventory();
 
