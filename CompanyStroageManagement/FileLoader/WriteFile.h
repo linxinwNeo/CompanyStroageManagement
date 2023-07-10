@@ -9,8 +9,8 @@ public:
     WriteFile();
     ~WriteFile();
 
-    void containers2txt(const QString& path);
     void models2txt(const QString& path);
+    void models2xlsx(const QString& path);
 };
 
 #endif // WRITEFILE_H

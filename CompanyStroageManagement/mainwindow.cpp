@@ -60,7 +60,7 @@ void MainWindow::on_generatePDF_btn_clicked()
 
     // ask for the path to store the file
     QString filter = tr("PDF (*.pdf)");
-    QString filename= QFileDialog::getSaveFileName(this, GET_DESTINATION_MESSAGE, "list", filter);
+    QString filename = QFileDialog::getSaveFileName(this, GET_DESTINATION_MESSAGE, "list", filter);
     if(filename.isEmpty())
         return;
 

@@ -6,13 +6,9 @@ WriteFile::WriteFile()
 
 }
 
-// write containers to a containers.txt file
-void WriteFile::containers2txt(const QString &path)
-{
 
-}
-
-// write models to a models.txt file
+/* write models to a models.txt file
+ * for each model, we need to output its properties, more specifically, output the container's ID */
 void WriteFile::models2txt(const QString &path)
 {
     QFile file(path);
@@ -34,7 +30,7 @@ void WriteFile::models2txt(const QString &path)
         out << QString::number(m->NUM_LEFT_BOXES) + split_item;
         out << QString::number(m->NUM_ITEMS_PER_BOX) + split_item;
         if(m->container.isNull()){
-            out << "-1\n";
+            out << "-1\n"; // if this model does not have a container, we put -1 to indicate
         }
         else{
             out << m->container->ID + "\n";
@@ -42,4 +38,10 @@ void WriteFile::models2txt(const QString &path)
     }
     file.close();
     return;
+}
+
+/* write the models to a xlsx file */
+void WriteFile::models2xlsx(const QString &path)
+{
+
 }

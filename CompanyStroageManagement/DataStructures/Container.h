@@ -9,13 +9,13 @@
 #define ContainerPtr QSharedPointer<Container>
 
 // one container contains many models and these models are unique in this container
-// some models may exist in other container but hasthe same <MODEL_CODE>
+// some models may exist in other containers and have the the same <MODEL_CODE>
 
 class Model;
 
 class Container {
 public:
-    QString ID;
+    QString ID; // the combination of characters and numbers
     QVector<QSharedPointer<Model>> models;
 
     Container();

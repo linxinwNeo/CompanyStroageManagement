@@ -43,12 +43,6 @@ void Inventory::add(QSharedPointer<Model> &m)
 }
 
 
-QSharedPointer<Model> Inventory::get_Model(const UI &idx)
-{
-    return this->model_vec[idx];
-}
-
-
 // slow O(n) search
 QSharedPointer<Model> Inventory::get_Model(const QString &MODEL_CODE)
 {
@@ -61,10 +55,12 @@ QSharedPointer<Model> Inventory::get_Model(const QString &MODEL_CODE)
     return nullptr;
 }
 
+
 bool Inventory::contains_model(const QSharedPointer<Model> &m) const
 {
     return this->model_set.contains(m);
 }
+
 
 bool Inventory::contains_model(const QString &MODEL_CODE) const
 {

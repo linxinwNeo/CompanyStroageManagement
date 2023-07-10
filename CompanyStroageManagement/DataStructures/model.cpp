@@ -51,6 +51,12 @@ double Model::TOTAL_PRIZE(UI num_items) const {
 }
 
 
+double Model::TOTAL_PRIZE(double num_boxes) const
+{
+    return this->PRIZE * num_boxes * this->NUM_ITEMS_PER_BOX;
+}
+
+
 // deduct this many items
 // note: we need to check if one container no longer
 void Model::deduct_items(UI num_items)

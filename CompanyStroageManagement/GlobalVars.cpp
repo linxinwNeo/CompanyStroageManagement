@@ -20,3 +20,5 @@ const QString EXCEL_SELECT_A_VALID_XLSX_FILE = "你必须选择一个有效的XL
 
 const QString PDF_MESSAGE_1 = "是否确定生产pdf文件";
 const QString PDF_MESSAGE_2 = "确定生成pdf文件？";
+
+const QString GET_DESTINATION_MESSAGE = "想将文件保存在哪里？";

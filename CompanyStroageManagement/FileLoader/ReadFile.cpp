@@ -10,14 +10,13 @@
 ReadFile::ReadFile()
 {
     inventory = Inventory();
-    this->container_idx_of_models.clear();
 }
 
 ReadFile::~ReadFile()
 {
 }
 
-// read models file
+/* read models file, while reading models, we also build container instances */
 void ReadFile::read_Models(const QString& path)
 {
     QFile file(path);
@@ -65,11 +64,6 @@ void ReadFile::read_Models(const QString& path)
     qDebug() << "Reading" << path << "done, it has" << inventory.models_size() << "Models";
 }
 
-// read containers file
-void ReadFile::read_Containers(const QString &path)
-{
-
-}
 
 QString ReadFile::get_file_path()
 {
