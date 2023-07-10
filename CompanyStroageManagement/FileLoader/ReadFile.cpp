@@ -50,18 +50,33 @@ void ReadFile::read_Models(const QString& path)
         m->NUM_LEFT_BOXES = strList[7].toDouble();
         m->NUM_ITEMS_PER_BOX = strList[8].toInt();
         QString containerID = strList[9];
+
+        // check if container exists
         if(containerID.startsWith("-1")){
-            m->container = nullptr;
+            m->container = nullptr; // do nothing if this model does not have
         }
         else{
-            this->container_idx_of_models[m] = containerID.toInt();
+            /* this model has a container, we need to check if this container has been created already
+             * we create a new container instance if it has not been created. */
+            ContainerPtr container (nullptr);
+            if(inventory.contains_container(containerID)){
+                // this container already exists, we get reference from inventory
+                container = inventory.get_container(containerID);
+            }
+            else{
+                // this container does not exist, we need to create a new one and add it to inventory
+                container = ContainerPtr (new Container(containerID));
+                inventory.add(container);
+            }
+            container->add_model(m); // add this model to the container
         }
 
         inventory.add(m);
     }
 
     file.close();
-    qDebug() << "Reading" << path << "done, it has" << inventory.models_size() << "Models";
+    qDebug() << "Reading" << path << "done, it has" << inventory.models_size() << "Models, "
+             << inventory.containers_size() << "Containers";
 }
 
 

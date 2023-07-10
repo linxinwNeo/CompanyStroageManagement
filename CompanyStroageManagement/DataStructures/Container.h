@@ -19,6 +19,7 @@ public:
     QVector<QSharedPointer<Model>> models;
 
     Container();
+    Container(const QString& ID);
     ~Container();
 
     void add_model(QSharedPointer<Model>& m);

@@ -7,6 +7,12 @@ Container::Container()
     this->models.reserve(100);
 }
 
+Container::Container(const QString& id)
+{
+    this->ID = id;
+    this->models.reserve(100);
+}
+
 
 Container::~Container()
 {

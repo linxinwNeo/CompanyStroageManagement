@@ -6,6 +6,11 @@ WriteFile::WriteFile()
 
 }
 
+WriteFile::~WriteFile()
+{
+
+}
+
 
 /* write models to a models.txt file
  * for each model, we need to output its properties, more specifically, output the container's ID */
