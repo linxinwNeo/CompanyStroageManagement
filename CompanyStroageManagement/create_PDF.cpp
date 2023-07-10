@@ -7,23 +7,23 @@
 #include <QFile>
 
 #include "GlobalVars.h"
-#include "mainwindow.h"
+#include "CreateList.h"
 #include "DataStructures/client_info.h"
 #include "DataStructures/entrylist.h"
 
-QString MainWindow::currDate() const
+QString CreateList::currDate() const
 {
     QDate date = QDate::currentDate();
     return date.toString("dd MMM yyyy");
 }
 
-QString MainWindow::currTime() const
+QString CreateList::currTime() const
 {
     QTime time = QTime::currentTime();
     return time.toString("hh:mm:ss");
 }
 
-void MainWindow::create_pdf(QString filename) {
+void CreateList::create_pdf(QString filename) {
     // setting up the pdf format
     QPdfWriter pdf_file(filename);
     pdf_file.setPageSize(QPageSize::A4);
@@ -125,7 +125,7 @@ void MainWindow::create_pdf(QString filename) {
     painter.drawText(QRect(0, height * 0.907, width * 0.93, height * 0.907), QString::number(this->get_total(), 'f', 2), option);
 
     // bottom left num
-    painter.drawText(QPointF(width * 0.07, height * 0.91), client_info.bottom_left_num);
+    painter.drawText(QPointF(width * 0.07, height * 0.91), QString::number(client_info.bottom_left_num));
 
     painter.end();
 }
