@@ -3,7 +3,8 @@
 
 #include <QString>
 #include <QHash>
-#include <DataStructures/model.h>
+#include <DataStructures/Model.h>
+#include <DataStructures/Container.h>
 
 /* models can have the same MODEL_CODE (because they are from different container)
  */
@@ -16,7 +17,6 @@ public:
     QHash<QString, ContainerPtr> container_map;
     QVector<ContainerPtr> container_vec;
 
-
     Inventory();
     ~Inventory();
 
@@ -25,7 +25,6 @@ public:
 
     // model stuff
     void add( ModelPtr& m );
-    ModelPtr get_Model(const UI& idx);
     ModelPtr get_Model(const QString& MODEL_CODE);
     bool contains_model(const ModelPtr& m) const;
     bool contains_model(const QString& MODEL_CODE) const;

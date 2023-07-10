@@ -28,5 +28,7 @@ extern const QString EXCEL_FILTER;
 extern const QString EXCEL_DEFAULT_DIR;
 extern const QString EXCEL_SELECT_A_VALID_XLSX_FILE;
 
-
+extern const QString PDF_MESSAGE_1;
+extern const QString PDF_MESSAGE_2;
+extern const QString GET_DESTINATION_MESSAGE;
 #endif // GLOBALVARS_H

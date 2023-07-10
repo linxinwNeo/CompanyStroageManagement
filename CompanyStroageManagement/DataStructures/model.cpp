@@ -22,10 +22,12 @@ Model::Model( const QString& MODEL_CODE, const QString& DESCRIPTION_SPAN, const 
     this->container = nullptr;
 }
 
+
 Model::~Model()
 {
-
+    this->reset();
 }
+
 
 void Model::reset()
 {
@@ -42,9 +44,9 @@ void Model::reset()
     this->container = nullptr;
 }
 
+
 // return the prize of the corresponding items
 double Model::TOTAL_PRIZE(UI num_items) const {
-    //    double num_boxes_to_deduct = num_items / (double)this->NUM_ITEMS_PER_BOX;
     return this->PRIZE * (double)num_items;
 }
 
@@ -58,6 +60,7 @@ void Model::deduct_items(UI num_items)
     this->NUM_LEFT_BOXES -= num_boxes_to_deduct;
     this->NUM_LEFT_ITEMS -= num_items;
 }
+
 
 // deduct this many boxes
 void Model::deduct_boxes(double num_boxes_to_deduct)
@@ -83,24 +86,4 @@ void Model::addBack_boxes(double num_boxes_to_addBack)
     this->NUM_SOLD_BOXES -= num_boxes_to_addBack;
     this->NUM_LEFT_BOXES += num_boxes_to_addBack;
     this->NUM_LEFT_ITEMS += (num_boxes_to_addBack * this->NUM_ITEMS_PER_BOX);
-}
-
-
-
-double Container::total_num_init_boxes() const
-{
-    double sum = 0;
-    for(const auto& m : this->models){
-        sum += m->NUM_INIT_BOXES;
-    }
-    return sum;
-}
-
-double Container::total_num_left_boxes() const
-{
-    double sum = 0;
-    for(const auto& m : this->models){
-        sum += m->NUM_LEFT_BOXES;
-    }
-    return sum;
 }

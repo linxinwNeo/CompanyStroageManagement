@@ -1,7 +1,7 @@
 #ifndef READFILE_H
 #define READFILE_H
 
-#include "DataStructures/model.h"
+#include "DataStructures/Model.h"
 #include <QString>
 #include <QFile>
 #include <QSharedPointer>

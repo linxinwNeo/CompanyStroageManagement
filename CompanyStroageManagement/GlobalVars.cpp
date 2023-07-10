@@ -17,3 +17,6 @@ const QString EXCEL_CAPTION = "选择库存文件";
 const QString EXCEL_FILTER = "Microsoft Excel Open XML Spreadsheet (*.xlsx)";
 const QString EXCEL_DEFAULT_DIR = "stroage.xlsx";
 const QString EXCEL_SELECT_A_VALID_XLSX_FILE = "你必须选择一个有效的XLSX文件，软件现在将退出。";
+
+const QString PDF_MESSAGE_1 = "是否确定生产pdf文件";
+const QString PDF_MESSAGE_2 = "确定生成pdf文件？";

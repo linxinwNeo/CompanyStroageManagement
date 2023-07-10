@@ -15,11 +15,12 @@ QXLSX_SOURCEPATH=./QXlsx/source/    # current QXlsx source path is ./source/
 include(./QXlsx/QXlsx.pri)
 
 SOURCES += \
+    DataStructures/Container.cpp \
     DataStructures/Inventory.cpp \
+    DataStructures/Model.cpp \
     DataStructures/client_info.cpp \
     DataStructures/entry.cpp \
     DataStructures/entrylist.cpp \
-    DataStructures/model.cpp \
     FileLoader/ReadFile.cpp \
     FileLoader/WriteFile.cpp \
     GlobalVars.cpp \
@@ -31,11 +32,12 @@ SOURCES += \
     submitEntry.cpp
 
 HEADERS += \
+    DataStructures/Container.h \
     DataStructures/Inventory.h \
+    DataStructures/Model.h \
     DataStructures/client_info.h \
     DataStructures/entry.h \
     DataStructures/entrylist.h \
-    DataStructures/model.h \
     FileLoader/ReadFile.h \
     FileLoader/WriteFile.h \
     GlobalVars.h \

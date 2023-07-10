@@ -10,31 +10,17 @@
 
 #define ModelPtr QSharedPointer<Model>
 
-class Model;
-
-class Container {
-public:
-    QString ID;
-    QVector<ModelPtr> models;
-
-    double total_num_init_boxes() const;
-    double total_num_left_boxes() const;
-};
-
-
-#define ContainerPtr QSharedPointer<Container>
+class Container;
 
 class Model
 {
 public:
-    UI IDX;
+    QSharedPointer<Model> container;
 
-    ContainerPtr container;
-
-    QString MODEL_CODE; // multiple models may have the same model_code but they do not have the same idx
+    QString MODEL_CODE; // multiple models may have the same model_code but they do not have the same container
     QString DESCRIPTION_SPAN;
     QString DESCRIPTION_CN;
-    double PRIZE;
+    double PRIZE; // the prize per item
     double NUM_INIT_BOXES;
     double NUM_SOLD_BOXES;
     double NUM_LEFT_BOXES;

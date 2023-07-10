@@ -40,7 +40,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_generatePDF_btn_clicked()
 {
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, "是否确定生产pdf文件", "确定生成pdf文件？",
+    reply = QMessageBox::question(this, PDF_MESSAGE_1, PDF_MESSAGE_2,
                                 QMessageBox::Yes|QMessageBox::No);
     if (reply == QMessageBox::No) {
         return;
@@ -60,7 +60,7 @@ void MainWindow::on_generatePDF_btn_clicked()
 
     // ask for the path to store the file
     QString filter = tr("PDF (*.pdf)");
-    QString filename= QFileDialog::getSaveFileName(this, "where do you want to place", "list", filter);
+    QString filename= QFileDialog::getSaveFileName(this, GET_DESTINATION_MESSAGE, "list", filter);
     if(filename.isEmpty())
         return;
 
