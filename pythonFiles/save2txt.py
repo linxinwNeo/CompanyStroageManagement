@@ -18,5 +18,6 @@ def write2txt(models, path) :
             file.write(str(value.NUM_LEFT_BOXES) + split_item)
             file.write(str(value.NUM_ITEMS_PER_BOX) + split_item)
             file.write( '-1' ) # default container is none
+            file.write( ' \n' ) # default container is none
         file.close()
     return

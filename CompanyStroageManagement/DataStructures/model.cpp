@@ -93,3 +93,22 @@ void Model::addBack_boxes(double num_boxes_to_addBack)
     this->NUM_LEFT_BOXES += num_boxes_to_addBack;
     this->NUM_LEFT_ITEMS += (num_boxes_to_addBack * this->NUM_ITEMS_PER_BOX);
 }
+
+
+/* return items that are used to put in the search result table */
+void Model::searchResult(QVector<QString> &items) const
+{
+    items.clear();
+    items.reserve(10);
+
+    items.push_back(this->MODEL_CODE);
+    items.push_back(this->DESCRIPTION_CN);
+    items.push_back(this->DESCRIPTION_SPAN);
+    items.push_back(QString::number(this->NUM_INIT_BOXES)); // 初始箱数
+    items.push_back(QString::number(this->NUM_ITEMS_PER_BOX)); // 每箱几件
+    items.push_back(QString::number(this->PRIZE)); // 单价
+    items.push_back(QString::number(this->NUM_SOLD_BOXES)); // 卖出箱数
+    items.push_back(QString::number(this->NUM_SOLD_BOXES * this->NUM_ITEMS_PER_BOX)); // 卖出件数
+    items.push_back(QString::number(this->NUM_LEFT_BOXES)); // 剩余箱数
+    items.push_back(QString::number(this->NUM_LEFT_BOXES * this->NUM_ITEMS_PER_BOX)); // 剩余件数
+}

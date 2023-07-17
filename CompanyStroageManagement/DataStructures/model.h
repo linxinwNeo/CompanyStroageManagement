@@ -42,6 +42,8 @@ public:
     void deduct_boxes(double num_boxes);
     void addBack_items(UI num_items);
     void addBack_boxes(double num_boxes);
+
+    void searchResult(QVector<QString>& items) const;
 };
 
 #endif // MODEL_H

@@ -31,4 +31,5 @@ extern const QString EXCEL_SELECT_A_VALID_XLSX_FILE;
 extern const QString PDF_MESSAGE_1;
 extern const QString PDF_MESSAGE_2;
 extern const QString GET_DESTINATION_MESSAGE;
+extern const QString table_stylesheet;
 #endif // GLOBALVARS_H

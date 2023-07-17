@@ -75,7 +75,7 @@ bool Inventory::contains_model(const QString &MODEL_CODE) const
 
 UI Inventory::models_size() const
 {
-    return this->container_vec.size();
+    return this->model_vec.size();
 }
 
 
@@ -119,10 +119,30 @@ UI Inventory::containers_size() const
 }
 
 
-/* search the inventory for the modelCodes that is starting with <str>, add to  <models>*/
+UI Inventory::num_models() const
+{
+    return this->model_vec.size();
+}
+
+
+UI Inventory::num_containers() const
+{
+    return this->container_vec.size();
+}
+
+
+/* search the inventory for the Model.modelcode that is starting with <str>, add to  <models>*/
 void Inventory::searchModel_starts_with(const QString str, QVector<ModelPtr>& models)
 {
+    models.reserve(this->num_models());
 
+    for(const ModelPtr m : this->model_vec){
+        if(m->MODEL_CODE.startsWith(str)){
+            models.push_back(m);
+        }
+    }
+
+    return;
 }
 
 

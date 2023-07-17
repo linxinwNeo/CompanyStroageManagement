@@ -39,6 +39,9 @@ public:
 
     UI containers_size() const;
 
+    UI num_models() const;
+    UI num_containers() const;
+
     void searchModel_starts_with(const QString str,  QVector<ModelPtr>& models);
 };
 

@@ -21,7 +21,7 @@ void ReadFile::read_Models(const QString& path)
 {
     QFile file(path);
     QTextStream in(&file);
-    qDebug() << "reading" << path;
+    qDebug() << "Start Reading" << path;
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)){
         qDebug() << "couldn't open the file" << path;
@@ -70,7 +70,6 @@ void ReadFile::read_Models(const QString& path)
             }
             container->add_model(m); // add this model to the container
         }
-
         inventory.add(m);
     }
 

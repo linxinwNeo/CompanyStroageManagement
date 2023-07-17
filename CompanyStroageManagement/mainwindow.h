@@ -18,6 +18,8 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    void init();
+
 private slots:
     void closeEvent (QCloseEvent *event);
     void on_search_MODELCODE_LE_textChanged(QString new_str);

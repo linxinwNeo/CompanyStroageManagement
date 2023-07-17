@@ -13,21 +13,31 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    // setting up the table
-    auto table = ui->searchResult_Table;
-    table->setRowCount(0);
-    table->setColumnCount(8);
-    table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-
-    // read inventory.txt file
-    ReadFile tet;
-    tet.read_Models(DB_FNAME); // build the inventory
+    this->init();
 }
 
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::init()
+{
+    // setting up tables
+    auto container_table = ui->search_container_result_Table;
+    container_table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    container_table->setStyleSheet(table_stylesheet);
+
+    auto model_table = ui->search_model_result_Table;
+    model_table->setStyleSheet(table_stylesheet);
+
+    auto selected_container_table = ui->selected_container_Table;
+    selected_container_table->setStyleSheet(table_stylesheet);
+
+    // read inventory.txt file
+    ReadFile read_file;
+    read_file.read_Models(DB_FNAME); // build the inventory
 }
 
 
@@ -56,10 +66,38 @@ void MainWindow::on_search_MODELCODE_LE_textChanged(QString new_str)
 {
     this->setEnabled(false);
 
-    this->ui->searchResult_Table->clearContents();
+    auto table = this->ui->search_model_result_Table;
 
+    table->clearContents(); // clear the table contents but columns are reserved
+    table->setRowCount(0);
+    if(new_str.isEmpty()){
+        // if input is empty, empty the table
+        this->setEnabled(true);
+        this->ui->search_MODELCODE_LE->setFocus();
+        return;
+    }
+
+    QVector<ModelPtr> models; // will hold the models that has MODELCODE starts with new_str
+    inventory.searchModel_starts_with(new_str, models);
+
+    // for each model, make a row for it
+    for(UI row = 0; row < models.size(); row++){
+        const ModelPtr model = models[row];
+
+        table->insertRow(table->rowCount());
+
+        QVector<QString> items;
+        model->searchResult(items);
+
+        for( UI col = 0; col < items.size(); col++ ){
+            QTableWidgetItem *tableWidgetItem = new QTableWidgetItem();
+            tableWidgetItem->setText( items[col] );
+            table->setItem(row, col, tableWidgetItem);
+        }
+    }
 
     this->setEnabled(true);
+    this->ui->search_MODELCODE_LE->setFocus();
     return;
 }
 
