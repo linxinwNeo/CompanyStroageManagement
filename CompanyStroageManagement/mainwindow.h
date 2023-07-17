@@ -20,7 +20,7 @@ public:
 
 private slots:
     void closeEvent (QCloseEvent *event);
-    void on_search_MODELCODE_LE_textChanged(QString s);
+    void on_search_MODELCODE_LE_textChanged(QString new_str);
 
 private:
     Ui::MainWindow *ui;

@@ -1,16 +1,27 @@
 #include "mainwindow.h"
-#include "ui_MainWindow.h"
+#include "FileLoader/ReadFile.h"
+#include "ui_mainwindow.h"
 
 #include <QCloseEvent>
 #include <QMessageBox>
 #include <QFileDialog>
-
+#include "GlobalVars.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    // setting up the table
+    auto table = ui->searchResult_Table;
+    table->setRowCount(0);
+    table->setColumnCount(8);
+    table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+
+    // read inventory.txt file
+    ReadFile tet;
+    tet.read_Models(DB_FNAME); // build the inventory
 }
 
 
@@ -39,9 +50,16 @@ void MainWindow::closeEvent (QCloseEvent *event)
 }
 
 
-// the user is typing in MODELCODE for search
-void MainWindow::on_search_MODELCODE_LE_textChanged(QString s)
+/* the user is typing in MODELCODE, we need to search the models starting with the same string and display them in
+ *  the searchResult table */
+void MainWindow::on_search_MODELCODE_LE_textChanged(QString new_str)
 {
+    this->setEnabled(false);
 
+    this->ui->searchResult_Table->clearContents();
+
+
+    this->setEnabled(true);
+    return;
 }
 

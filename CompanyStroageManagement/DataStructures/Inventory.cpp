@@ -119,5 +119,12 @@ UI Inventory::containers_size() const
 }
 
 
+/* search the inventory for the modelCodes that is starting with <str>, add to  <models>*/
+void Inventory::searchModel_starts_with(const QString str, QVector<ModelPtr>& models)
+{
+
+}
+
+
 
 

@@ -21,10 +21,6 @@ CreateList::CreateList(QWidget *parent) :
     table->setRowCount(0);
     table->setColumnCount(7);
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-
-    // read inventory.txt file
-    ReadFile tet;
-    tet.read_Models(DB_FNAME);
 }
 
 CreateList::~CreateList()
@@ -95,3 +91,4 @@ void CreateList::closeEvent (QCloseEvent *event)
         event->accept();
     }
 }
+

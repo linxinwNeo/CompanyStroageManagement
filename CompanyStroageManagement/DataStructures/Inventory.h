@@ -38,6 +38,8 @@ public:
     bool contains_container(const ContainerPtr& container) const;
 
     UI containers_size() const;
+
+    void searchModel_starts_with(const QString str,  QVector<ModelPtr>& models);
 };
 
 
