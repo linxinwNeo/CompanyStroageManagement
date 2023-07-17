@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include "DataStructures/client_info.h"
-#include <qtablewidget.h>
+#include <QTableWidget>
 #include <QMainWindow>
 #include <QVector2D>
 
@@ -23,6 +23,8 @@ public:
 private slots:
     void closeEvent (QCloseEvent *event);
     void on_search_MODELCODE_LE_textChanged(QString new_str);
+
+    void on_search_model_result_Table_cellDoubleClicked(int row, int column);
 
 private:
     Ui::MainWindow *ui;

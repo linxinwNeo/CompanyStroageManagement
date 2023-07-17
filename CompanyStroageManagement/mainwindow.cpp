@@ -101,3 +101,10 @@ void MainWindow::on_search_MODELCODE_LE_textChanged(QString new_str)
     return;
 }
 
+
+/* when the user double clicked a row, we want to investiage the corresponding model */
+void MainWindow::on_search_model_result_Table_cellDoubleClicked(int row, int column)
+{
+    qDebug() << row << column;
+}
+

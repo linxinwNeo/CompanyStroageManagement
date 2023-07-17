@@ -145,6 +145,19 @@ void Inventory::searchModel_starts_with(const QString str, QVector<ModelPtr>& mo
     return;
 }
 
+void Inventory::searchContainer_starts_with(const QString str, QVector<QSharedPointer<Container> > &containers)
+{
+    containers.reserve(this->num_containers());
+
+    for(const ContainerPtr c : this->container_vec){
+        if(c->ID.startsWith(str)){
+            containers.push_back(c);
+        }
+    }
+
+    return;
+}
+
 
 
 

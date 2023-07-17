@@ -43,6 +43,7 @@ public:
     UI num_containers() const;
 
     void searchModel_starts_with(const QString str,  QVector<ModelPtr>& models);
+    void searchContainer_starts_with(const QString str,  QVector<ContainerPtr>& containers);
 };
 
 
