@@ -1,0 +1,11 @@
+ENTRADAS 总进货箱数
+SALIDAS 总出货箱数
+EXISTENCIA 剩余总件数 CAJA * EMPAQUE
+CAJA 剩余箱数 ENTRADAS - SALIDAS
+EMPAQUE 每箱件数
+
+1. using Python convert two files into one .txt file
+2. using qt to read the .txt file
+3. allow for searching keywords by MODEL
+4. save lists in another history_transaction.txt file
+5. read lists from the history_transaction.txt

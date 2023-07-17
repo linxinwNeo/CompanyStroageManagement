@@ -15,37 +15,46 @@ QXLSX_SOURCEPATH=./QXlsx/source/    # current QXlsx source path is ./source/
 include(./QXlsx/QXlsx.pri)
 
 SOURCES += \
+    CreateList.cpp \
+    DataStructures/Container.cpp \
+    DataStructures/Inventory.cpp \
+    DataStructures/Model.cpp \
     DataStructures/client_info.cpp \
     DataStructures/entry.cpp \
     DataStructures/entrylist.cpp \
-    DataStructures/model.cpp \
-    DataStructures/stroage.cpp \
+    FileLoader/ReadFile.cpp \
+    FileLoader/WriteFile.cpp \
     GlobalVars.cpp \
     QXlsx/Excel.cpp \
-    addbackwindow.cpp \
     create_PDF.cpp \
     flags.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    submitEntry.cpp
 
 HEADERS += \
+    CreateList.h \
+    DataStructures/Container.h \
+    DataStructures/Inventory.h \
+    DataStructures/Model.h \
     DataStructures/client_info.h \
     DataStructures/entry.h \
     DataStructures/entrylist.h \
-    DataStructures/model.h \
-    DataStructures/stroage.h \
+    FileLoader/ReadFile.h \
+    FileLoader/WriteFile.h \
     GlobalVars.h \
     Predefined.h \
     QXlsx/Excel.h \
     QXlsx/QXlsxHeaders.h \
-    addbackwindow.h \
     flags.h \
     helper_functions.h \
-    mainwindow.h
+    mainwindow.h \
+    submitEntry.h
 
 FORMS += \
-    addbackwindow.ui \
-    mainwindow.ui
+    CreateList.ui \
+    mainwindow.ui \
+    submitEntry.ui
 
 win32 {
     RC_FILE = exe_icon.rc
@@ -62,7 +71,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 
-DISTFILES += \
+DISTFILES +=
 
 RESOURCES += \
     resources.qrc
