@@ -66,16 +66,16 @@ void ReadFile::read_Models(const QString& path)
             else{
                 // this container does not exist, we need to create a new one and add it to inventory
                 container = ContainerPtr (new Container(containerID));
-                inventory.add(container);
+                inventory.add_container(container);
             }
             container->add_model(m); // add this model to the container
         }
-        inventory.add(m);
+        inventory.add_model(m);
     }
 
     file.close();
-    qDebug() << "Reading" << path << "done, it has" << inventory.models_size() << "Models, "
-             << inventory.containers_size() << "Containers";
+    qDebug() << "Reading" << path << "done, it has" << inventory.num_models() << "Models, "
+             << inventory.num_containers() << "Containers";
 }
 
 

@@ -16,13 +16,11 @@ Inventory::~Inventory()
 // clear memory used by model_list
 void Inventory::reset()
 {
-    this->container_map.clear();
-    this->container_vec.clear();
+    this->model_map.clear();
     this->model_set.clear();
-    this->model_vec.clear();
 
-    this->container_vec.reserve(100);
-    this->model_vec.reserve(50000);
+    this->container_map.clear();
+    this->container_set.clear();
 }
 
 
@@ -32,61 +30,60 @@ void Inventory::clear()
 }
 
 
-void Inventory::add(QSharedPointer<Model> &m)
+void Inventory::add_model(ModelPtr &m)
 {
-    if(this->contains_model(m)){
-        return;
-    }
+    if(this->contains_model(m)) return;
 
+    // put this model to the set
     this->model_set.insert(m);
-    this->model_vec.push_back(m);
-}
 
-
-// slow O(n) search
-QSharedPointer<Model> Inventory::get_Model(const QString &MODEL_CODE)
-{
-    for(const auto& m : this->model_vec){
-        if(m->MODEL_CODE == MODEL_CODE){
-            return m;
-        }
+    // put this model to the map, but map may or may not have the entry defined, we need to check
+    if(this->model_map.contains(m->MODEL_CODE)){
+        this->model_map[m->MODEL_CODE].insert(m);
+    }
+    else{ // make a set for the entry
+        QSet<ModelPtr> set = {m};
+        this->model_map[m->MODEL_CODE] = set;
     }
 
-    return nullptr;
+    return;
 }
 
 
+// fast O(1) search
+QSet<ModelPtr> Inventory::get_Model(const QString &MODEL_CODE)
+{
+    // if the model_map has the corresponding entry defined, we just return what's in that entry
+    if(this->model_map.contains(MODEL_CODE)) return this->model_map[MODEL_CODE];
+
+    // if not, we return empty set
+    QSet<ModelPtr> emptySet;
+    return emptySet;
+}
+
+
+// fast, O(1)
 bool Inventory::contains_model(const QSharedPointer<Model> &m) const
 {
     return this->model_set.contains(m);
 }
 
 
+// fast, O(1)
 bool Inventory::contains_model(const QString &MODEL_CODE) const
 {
-    for(const auto& m : this->model_vec){
-        if(m->MODEL_CODE == MODEL_CODE){
-            return true;
-        }
-    }
-
-    return false;
-}
-
-UI Inventory::models_size() const
-{
-    return this->model_vec.size();
+    return this->model_map.contains(MODEL_CODE);
 }
 
 
-void Inventory::add(QSharedPointer<Container> &container)
+
+// add a container to the inventory, it is possible that the container is a duplicate
+void Inventory::add_container(QSharedPointer<Container> &container)
 {
-    if(this->contains_container(container)){
-        return;
-    }
+    if(this->contains_container(container)) return;
 
     this->container_map[container->ID] = container;
-    this->container_vec.push_back(container);
+    this->container_set.insert(container);
 }
 
 
@@ -96,38 +93,27 @@ QSharedPointer<Container> Inventory::get_container(const QString &ID)
 }
 
 
-bool Inventory::contains_container(const QString &ID) const
+bool Inventory::contains_container(const QString &containerID) const
 {
-    return this->container_map.contains(ID);
+    return this->container_map.contains(containerID);
 }
 
 
 bool Inventory::contains_container(const QSharedPointer<Container> &container) const
 {
-    for(const auto& c : this->container_vec){
-        if(c == container){
-            return true;
-        }
-    }
-
-    return false;
-}
-
-UI Inventory::containers_size() const
-{
-    return this->container_vec.size();
+    return this->container_set.contains(container);
 }
 
 
 UI Inventory::num_models() const
 {
-    return this->model_vec.size();
+    return this->model_set.size();
 }
 
 
 UI Inventory::num_containers() const
 {
-    return this->container_vec.size();
+    return this->container_set.size();
 }
 
 
@@ -136,7 +122,7 @@ void Inventory::searchModel_starts_with(const QString str, QVector<ModelPtr>& mo
 {
     models.reserve(this->num_models());
 
-    for(const ModelPtr m : this->model_vec){
+    for(const ModelPtr m : this->model_set){
         if(m->MODEL_CODE.startsWith(str)){
             models.push_back(m);
         }
@@ -145,11 +131,12 @@ void Inventory::searchModel_starts_with(const QString str, QVector<ModelPtr>& mo
     return;
 }
 
-void Inventory::searchContainer_starts_with(const QString str, QVector<QSharedPointer<Container> > &containers)
+
+void Inventory::searchContainer_starts_with(const QString str, QVector< ContainerPtr > &containers)
 {
     containers.reserve(this->num_containers());
 
-    for(const ContainerPtr c : this->container_vec){
+    for(const ContainerPtr c : this->container_set){
         if(c->ID.startsWith(str)){
             containers.push_back(c);
         }
@@ -157,7 +144,4 @@ void Inventory::searchContainer_starts_with(const QString str, QVector<QSharedPo
 
     return;
 }
-
-
-
 

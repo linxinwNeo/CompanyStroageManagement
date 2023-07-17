@@ -24,7 +24,7 @@ void WriteFile::models2txt(const QString &path)
 
     QTextStream out(&file);
     const QString split_item = "&&";
-    for(const auto& m : inventory.model_vec){
+    for(const auto& m : inventory.model_set){
         out << m->MODEL_CODE + split_item;
         out << m->DESCRIPTION_SPAN + split_item;
         out << m->DESCRIPTION_CN + split_item;

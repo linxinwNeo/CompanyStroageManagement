@@ -11,11 +11,11 @@
 class Inventory
 {
 public:
-    QSet<ModelPtr> model_set;
-    QVector<ModelPtr> model_vec;
+    QHash< QString, QSet<ModelPtr> > model_map; // a key may give multiple models froms different containers
+    QSet<ModelPtr> model_set; // holds all models
 
-    QHash<QString, ContainerPtr> container_map;
-    QVector<ContainerPtr> container_vec;
+    QHash< QString, ContainerPtr > container_map; // key is the container ID
+    QSet<ContainerPtr> container_set; // holds all models
 
     Inventory();
     ~Inventory();
@@ -24,20 +24,16 @@ public:
     void clear();
 
     // model stuff
-    void add( ModelPtr& m );
-    ModelPtr get_Model(const QString& MODEL_CODE);
+    void add_model( ModelPtr& m );
+    QSet<ModelPtr> get_Model(const QString& MODEL_CODE);
     bool contains_model(const ModelPtr& m) const;
     bool contains_model(const QString& MODEL_CODE) const;
 
-    UI models_size() const;
-
     // container stuff
-    void add( ContainerPtr& container );
+    void add_container( ContainerPtr& container );
     ContainerPtr get_container(const QString& ID);
     bool contains_container(const QString& ID) const;
     bool contains_container(const ContainerPtr& container) const;
-
-    UI containers_size() const;
 
     UI num_models() const;
     UI num_containers() const;

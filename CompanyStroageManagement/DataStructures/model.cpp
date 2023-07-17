@@ -1,4 +1,5 @@
 #include "model.h"
+#include "DataStructures/Container.h"
 
 Model::Model()
 {
@@ -99,11 +100,11 @@ void Model::addBack_boxes(double num_boxes_to_addBack)
 void Model::searchResult(QVector<QString> &items) const
 {
     items.clear();
-    items.reserve(10);
+    items.reserve(11);
 
-    items.push_back(this->MODEL_CODE);
-    items.push_back(this->DESCRIPTION_CN);
-    items.push_back(this->DESCRIPTION_SPAN);
+    items.push_back(this->MODEL_CODE); // 货号
+    items.push_back(this->DESCRIPTION_CN); // 品名中文
+    items.push_back(this->DESCRIPTION_SPAN); // 品名西语
     items.push_back(QString::number(this->NUM_INIT_BOXES)); // 初始箱数
     items.push_back(QString::number(this->NUM_ITEMS_PER_BOX)); // 每箱几件
     items.push_back(QString::number(this->PRIZE)); // 单价
@@ -111,4 +112,11 @@ void Model::searchResult(QVector<QString> &items) const
     items.push_back(QString::number(this->NUM_SOLD_BOXES * this->NUM_ITEMS_PER_BOX)); // 卖出件数
     items.push_back(QString::number(this->NUM_LEFT_BOXES)); // 剩余箱数
     items.push_back(QString::number(this->NUM_LEFT_BOXES * this->NUM_ITEMS_PER_BOX)); // 剩余件数
+
+    if(this->container.isNull()){
+        items.push_back("无"); // 集装箱号
+    }
+    else{
+        items.push_back(this->container->ID); // 集装箱号
+    }
 }
