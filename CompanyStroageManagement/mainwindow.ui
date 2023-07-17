@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1406</width>
-    <height>875</height>
+    <width>1773</width>
+    <height>892</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,78 +20,129 @@
       <property name="currentIndex">
        <number>0</number>
       </property>
-      <widget class="QWidget" name="tab">
+      <widget class="QWidget" name="search_inventory_tab">
        <attribute name="title">
         <string>查询库存</string>
        </attribute>
-       <widget class="QWidget" name="widget_2" native="true">
-        <property name="geometry">
-         <rect>
-          <x>210</x>
-          <y>50</y>
-          <width>961</width>
-          <height>511</height>
-         </rect>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_5">
-         <item>
-          <widget class="QWidget" name="widget_3" native="true">
-           <layout class="QHBoxLayout" name="horizontalLayout">
-            <item>
-             <widget class="QLabel" name="label">
-              <property name="text">
-               <string>货号</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="lineEdit"/>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QGroupBox" name="groupBox">
-           <property name="title">
-            <string>查询结果</string>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_4">
-            <item>
-             <widget class="QTableWidget" name="tableWidget">
-              <column>
-               <property name="text">
-                <string>货号</string>
-               </property>
-              </column>
-              <column>
-               <property name="text">
-                <string>品名（中文）</string>
-               </property>
-              </column>
-              <column>
-               <property name="text">
-                <string>品名（西班牙语）</string>
-               </property>
-              </column>
-              <column>
-               <property name="text">
-                <string>初始箱数</string>
-               </property>
-              </column>
-              <column>
-               <property name="text">
-                <string>已售箱数</string>
-               </property>
-              </column>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-        </layout>
-       </widget>
+       <layout class="QVBoxLayout" name="verticalLayout_6">
+        <item>
+         <widget class="QWidget" name="widget_2" native="true">
+          <layout class="QVBoxLayout" name="verticalLayout_5">
+           <item>
+            <widget class="QWidget" name="widget_3" native="true">
+             <layout class="QHBoxLayout" name="horizontalLayout">
+              <item>
+               <widget class="QLabel" name="label">
+                <property name="text">
+                 <string>货号</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="search_MODELCODE_LE">
+                <property name="placeholderText">
+                 <string>在此输入需要查询的货号</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupBox">
+             <property name="title">
+              <string>查询结果</string>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_4">
+              <item>
+               <widget class="QTableWidget" name="searchResult_Table">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <column>
+                 <property name="text">
+                  <string>货号</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>品名（中文）</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>品名（西班牙语）</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>初始箱数</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>每箱件数</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>单件价格</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>已售箱数</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>已售件数</string>
+                 </property>
+                </column>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
       </widget>
-      <widget class="QWidget" name="tab_2">
+      <widget class="QWidget" name="add_model_tab">
+       <attribute name="title">
+        <string>添加库存</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_8">
+        <item>
+         <widget class="QWidget" name="widget_4" native="true">
+          <layout class="QVBoxLayout" name="verticalLayout_7">
+           <item>
+            <widget class="QPushButton" name="start_add_model_btn">
+             <property name="text">
+              <string>开始添加库存</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="list_tab">
        <attribute name="title">
         <string>清单</string>
        </attribute>
@@ -100,14 +151,14 @@
          <widget class="QWidget" name="widget" native="true">
           <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
-            <widget class="QPushButton" name="pushButton_3">
+            <widget class="QPushButton" name="search_past_list_btn">
              <property name="text">
               <string>查询清单</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton">
+            <widget class="QPushButton" name="new_list_btn">
              <property name="text">
               <string>新清单</string>
              </property>
@@ -115,6 +166,52 @@
            </item>
           </layout>
          </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="save_file_tab">
+       <attribute name="title">
+        <string>保存文件</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_10">
+        <item>
+         <widget class="QWidget" name="widget_5" native="true">
+          <layout class="QVBoxLayout" name="verticalLayout_9">
+           <item>
+            <widget class="QPushButton" name="save2_btn">
+             <property name="text">
+              <string>保存至</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>683</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </widget>
@@ -127,7 +224,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1406</width>
+     <width>1773</width>
      <height>25</height>
     </rect>
    </property>

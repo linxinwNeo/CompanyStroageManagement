@@ -115,14 +115,14 @@ void CreateList::create_pdf(QString filename) {
     painter.drawText(QRect(0, height * 0.815, width * 0.93, height * 0.815), QString::number(EL_deduct.subtotal(), 'f', 2), option);
 
     // DESCUENTO
-    painter.drawText(QRect(0, height * 0.84, width * 0.93, height * 0.84), QString::number(this->get_discount_value(), 'f', 2), option);
+//    painter.drawText(QRect(0, height * 0.84, width * 0.93, height * 0.84), QString::number(this->get_discount_value(), 'f', 2), option);
     painter.drawText(QRect(0, height * 0.84, width * 1, height * 0.84), "(" + QString::number(client_info.DISCOUNT) + "%)", option);
 
     // IVA
     painter.drawText(QRect(0, height * 0.875, width * 0.93, height * 0.875), "0.00", option);
 
     // TOTAL
-    painter.drawText(QRect(0, height * 0.907, width * 0.93, height * 0.907), QString::number(this->get_total(), 'f', 2), option);
+//    painter.drawText(QRect(0, height * 0.907, width * 0.93, height * 0.907), QString::number(this->get_total(), 'f', 2), option);
 
     // bottom left num
     painter.drawText(QPointF(width * 0.07, height * 0.91), QString::number(client_info.bottom_left_num));

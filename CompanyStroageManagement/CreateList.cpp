@@ -63,7 +63,7 @@ void CreateList::on_generatePDF_btn_clicked()
     QMessageBox Msgbox(this);
     if(!is_preview_list){
         // deduct items in the stroage
-        inventory.deduct();
+//        inventory.deduct();
     }
 
 
