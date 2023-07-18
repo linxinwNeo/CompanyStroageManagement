@@ -22,6 +22,8 @@ public:
 
     void reset();
     void clear();
+    void reserve_model_space(UI size);
+    void reserve_container_space(UI size);
 
     // model stuff
     void add_model( ModelPtr& m );

@@ -30,6 +30,26 @@ void Inventory::clear()
 }
 
 
+void Inventory::reserve_model_space(unsigned int size)
+{
+    // return if model containers are not empty
+    if(this->model_map.size() != 0 || this->model_set.size() != 0) return;
+
+    this->model_map.reserve(size);
+    this->model_set.reserve(size);
+}
+
+
+void Inventory::reserve_container_space(unsigned int size)
+{
+    // return if container containers are not empty
+    if(this->container_map.size() != 0 || this->container_set.size() != 0) return;
+
+    this->container_map.reserve(size);
+    this->container_set.reserve(size);
+}
+
+
 void Inventory::add_model(ModelPtr &m)
 {
     if(this->contains_model(m)) return;

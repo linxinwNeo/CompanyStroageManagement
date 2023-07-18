@@ -17,11 +17,13 @@ ReadFile::~ReadFile()
 }
 
 /* read models file, while reading models, we also build container instances */
-void ReadFile::read_Models(const QString& path)
+void ReadFile::read_InventoryFile(const QString& path)
 {
     QFile file(path);
     QTextStream in(&file);
     qDebug() << "Start Reading" << path;
+
+    const QString split_item = "&&";
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)){
         qDebug() << "couldn't open the file" << path;
@@ -29,12 +31,21 @@ void ReadFile::read_Models(const QString& path)
     }
 
     QString line;
-    line = in.readLine(); // read the second line
+    { // read first two lines
+        line = in.readLine(); // read the first line, which contains the number of models and the number of containers
+        QStringList strList = line.split(split_item);
+        unsigned int num_models = strList[0].toUInt() + 1;
+        unsigned int num_containers = strList[1].toUInt() + 1;
+        inventory.reserve_model_space(num_models * 1.5);
+        inventory.reserve_container_space(num_containers * 1.3);
+
+        line = in.readLine(); // read the second line, which contains the tags
+    }
 
     while (!in.atEnd()) {
         line = in.readLine();
 
-        QStringList strList = line.split("&&");
+        QStringList strList = line.split(split_item);
         QSharedPointer<Model> m(new Model());
         m->MODEL_CODE = strList[0];
         if(m->MODEL_CODE.isEmpty()) {

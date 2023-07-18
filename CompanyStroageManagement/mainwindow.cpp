@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     this->init();
+
 }
 
 
@@ -30,16 +31,16 @@ void MainWindow::init()
     container_table->setStyleSheet(table_stylesheet);
 
     auto model_table = ui->search_model_result_Table;
-    model_table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+//    model_table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     model_table->setStyleSheet(table_stylesheet);
 
     auto selected_container_table = ui->selected_container_Table;
-    model_table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+//    selected_container_table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     selected_container_table->setStyleSheet(table_stylesheet);
 
     // read inventory.txt file
     ReadFile read_file;
-    read_file.read_Models(DB_FNAME); // build the inventory
+    read_file.read_InventoryFile(DB_FNAME); // build the inventory
 }
 
 
