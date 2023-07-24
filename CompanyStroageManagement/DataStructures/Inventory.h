@@ -28,6 +28,8 @@ public:
     // model stuff
     void add_model( ModelPtr& m );
     QSet<ModelPtr> get_Model(const QString& MODEL_CODE);
+    ModelPtr get_Model(const QString& MODEL_CODE, const QString& Container_ID);
+
     bool contains_model(const ModelPtr& m) const;
     bool contains_model(const QString& MODEL_CODE) const;
 

@@ -24,3 +24,5 @@ const QString PDF_MESSAGE_2 = "确定生成pdf文件？";
 const QString GET_DESTINATION_MESSAGE = "想将文件保存在哪里？";
 
 const QString table_stylesheet = "QHeaderView::section { background-color:#F0F0F0; }";
+const QString none_CN = "无";
+const QString none_SPAN = "nulo";

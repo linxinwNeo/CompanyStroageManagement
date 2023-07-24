@@ -3,7 +3,7 @@
 
 #include "Predefined.h"
 #include <QString>
-#include <QVector>
+#include <QSet>
 #include <QSharedPointer>
 
 #define ContainerPtr QSharedPointer<Container>
@@ -16,13 +16,16 @@ class Model;
 class Container {
 public:
     QString ID; // the combination of characters and numbers
-    QVector<QSharedPointer<Model>> models;
+    QSet< QSharedPointer<Model> > models;
 
     Container();
     Container(const QString& ID);
     ~Container();
 
     void add_model(QSharedPointer<Model>& m);
+    void remove_model(QSharedPointer<Model>& m);
+
+    bool has_model(QSharedPointer<Model>& m) const;
 
     UI num_models() const;
 

@@ -44,6 +44,8 @@ public:
     void addBack_boxes(double num_boxes);
 
     void searchResult(QVector<QString>& items) const;
+
+    QString describe_this_model() const;
 };
 
 #endif // MODEL_H

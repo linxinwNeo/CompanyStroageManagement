@@ -82,6 +82,24 @@ QSet<ModelPtr> Inventory::get_Model(const QString &MODEL_CODE)
 }
 
 
+// get the model with the container
+// if the mode does not have a container, <Container_ID> is supposed to be an empty string
+QSharedPointer<Model> Inventory::get_Model(const QString &MODEL_CODE, const QString &Container_ID)
+{
+    QSet<ModelPtr> candidates = this->get_Model(MODEL_CODE);
+    for(ModelPtr m : candidates){
+        if(m->container.isNull() && Container_ID.isEmpty()){
+            return m;
+        }
+        else if(!m->container.isNull() && m->container->ID == Container_ID){
+            return m;
+        }
+    }
+
+    return nullptr;
+}
+
+
 // fast, O(1)
 bool Inventory::contains_model(const QSharedPointer<Model> &m) const
 {

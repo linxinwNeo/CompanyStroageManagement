@@ -1,11 +1,13 @@
 #include "Container.h"
 #include "DataStructures/Model.h"
+#include "qdebug.h"
 
 Container::Container()
 {
     this->ID = "";
     this->models.reserve(100);
 }
+
 
 Container::Container(const QString& id)
 {
@@ -21,9 +23,24 @@ Container::~Container()
 }
 
 
-void Container::add_model(QSharedPointer<Model> &m)
+// since models is a set, we will not have duplicates
+void Container::add_model(ModelPtr &m)
 {
-    this->models.push_back(m);
+    this->models.insert(m);
+}
+
+
+void Container::remove_model(ModelPtr &m)
+{
+    if(!this->models.remove(m)){
+        qDebug() << "Container::remove_model: remove model failed";
+    }
+}
+
+
+bool Container::has_model(ModelPtr &m) const
+{
+    return this->models.contains(m);
 }
 
 

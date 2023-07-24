@@ -20,15 +20,18 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    this->selected_model = nullptr;
     delete ui;
 }
 
 void MainWindow::init()
 {
+    this->selected_model = nullptr;
+
     // setting up tables
     auto container_table = ui->search_container_result_Table;
     container_table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    container_table->setStyleSheet(table_stylesheet);
+
 
     auto model_table = ui->search_model_result_Table;
 //    model_table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
@@ -41,6 +44,44 @@ void MainWindow::init()
     // read inventory.txt file
     ReadFile read_file;
     read_file.read_InventoryFile(DB_FNAME); // build the inventory
+}
+
+
+// show the selected model in the selected model group box
+void MainWindow::show_selected_model()
+{
+    if(this->selected_model.isNull()) return;
+
+    ui->selected_model_MODELCODE_LE->setText(this->selected_model->MODEL_CODE);
+    ui->selected_model_DESCRIPTION_CN_LE->setText(this->selected_model->DESCRIPTION_CN);
+    ui->selected_model_DESCRIPTION_SPAN_LE->setText(this->selected_model->DESCRIPTION_SPAN);
+    ui->selected_model_NUM_INIT_BOXES_SB->setValue(this->selected_model->NUM_INIT_BOXES);
+    ui->selected_model_NUM_SOLD_BOXES_SB->setValue(this->selected_model->NUM_SOLD_BOXES);
+    ui->selected_model_NUM_ITEMS_PER_BOX_SB->setValue(this->selected_model->NUM_ITEMS_PER_BOX);
+    ui->selected_model_PRIZE_SB->setValue(this->selected_model->NUM_SOLD_BOXES);
+
+    if(this->selected_model->container.isNull()) ui->selected_model_CONTAINER_LE->setText(none_CN);
+    else ui->selected_model_CONTAINER_LE->setText(this->selected_model->container->ID);
+}
+
+
+// reset this selected_model_GB, deselect model
+void MainWindow::clear_selected_model()
+{
+    this->selected_model = nullptr;
+
+    const QString empty;
+    const double zero = 0;
+    ui->selected_model_MODELCODE_LE->setText(empty);
+    ui->selected_model_DESCRIPTION_CN_LE->setText(empty);
+    ui->selected_model_DESCRIPTION_SPAN_LE->setText(empty);
+    ui->selected_model_NUM_INIT_BOXES_SB->setValue(zero);
+    ui->selected_model_NUM_SOLD_BOXES_SB->setValue(zero);
+    ui->selected_model_NUM_ITEMS_PER_BOX_SB->setValue(zero);
+    ui->selected_model_PRIZE_SB->setValue(zero);
+
+    if(this->selected_model->container.isNull()) ui->selected_model_CONTAINER_LE->setText(empty);
+    else ui->selected_model_CONTAINER_LE->setText(empty);
 }
 
 
@@ -95,6 +136,9 @@ void MainWindow::on_search_MODELCODE_LE_textChanged(QString new_str)
         for( UI col = 0; col < items.size(); col++ ){
             QTableWidgetItem *tableWidgetItem = new QTableWidgetItem();
             tableWidgetItem->setText( items[col] );
+
+            tableWidgetItem->setTextAlignment(Qt::AlignVCenter);
+
             table->setItem(row, col, tableWidgetItem);
         }
     }
@@ -105,9 +149,91 @@ void MainWindow::on_search_MODELCODE_LE_textChanged(QString new_str)
 }
 
 
-/* when the user double clicked a row, we want to investiage the corresponding model */
-void MainWindow::on_search_model_result_Table_cellDoubleClicked(int row, int column)
+/* update the model with the info entered */
+void MainWindow::on_update_selected_model_btn_clicked()
 {
-    qDebug() << row << column;
+    // make sure user is indeed wanting to update the values
+    QMessageBox msg(this);
+    msg.setText(tr("你确定更改吗?\n"));
+    msg.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
+    msg.setDefaultButton(QMessageBox::No);
+    msg.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    msg.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
+
+    int resBtn = msg.exec();
+    if (resBtn == QMessageBox::No) {
+        return;
+    }
+
+    selected_model->DESCRIPTION_CN = ui->selected_model_DESCRIPTION_CN_LE->text();
+    selected_model->DESCRIPTION_SPAN = ui->selected_model_DESCRIPTION_SPAN_LE->text();
+    selected_model->NUM_INIT_BOXES = ui->selected_model_NUM_INIT_BOXES_SB->value();
+    selected_model->NUM_SOLD_BOXES = ui->selected_model_NUM_SOLD_BOXES_SB->value();
+    selected_model->PRIZE = ui->selected_model_PRIZE_SB->value();
+    selected_model->NUM_ITEMS_PER_BOX = ui->selected_model_NUM_ITEMS_PER_BOX_SB->value();
+
+    selected_model->NUM_LEFT_BOXES = selected_model->NUM_INIT_BOXES - selected_model->NUM_SOLD_BOXES;
+    selected_model->NUM_LEFT_ITEMS = selected_model->NUM_INIT_BOXES * selected_model->NUM_ITEMS_PER_BOX;
+
+    const QString container_ID = ui->selected_model_CONTAINER_LE->text();
+
+    if(container_ID == none_CN || container_ID == none_SPAN) // the container is none
+    {
+        // check if the model has container previsously
+        if(selected_model->container.isNull()) goto LL;
+        else{ // the selected_model has container previously, we need to remove this model from its container
+            this->selected_model->container->remove_model(this->selected_model);
+            this->selected_model->container = nullptr;
+        }
+    }
+    else{ // the container exists
+        // check if this container exists, if not, create one
+        ContainerPtr orig_container = selected_model->container;
+        ContainerPtr cur_container = inventory.get_container(container_ID);
+        if(cur_container.isNull()){ // if no such container exists, create one
+            cur_container = ContainerPtr (new Container(container_ID));
+            cur_container->add_model(this->selected_model); // add the selected model to the container
+            selected_model->container = cur_container;
+        }
+
+        // check if the container ID the same as before
+        if(container_ID == orig_container->ID){
+            goto LL;
+        }
+        else{
+            // the container for the model has been modified
+
+            // remove selected_model from the original container
+            orig_container->remove_model(selected_model);
+            selected_model->container = cur_container;
+        }
+    }
+
+    LL:
+        QMessageBox Msgbox(this);
+        Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
+        Msgbox.setText("保存成功！");
+        Msgbox.exec();
+
+    return;
+}
+
+
+/* set the selected item */
+void MainWindow::on_search_model_result_Table_cellClicked(int row, int column)
+{
+    const auto& table = this->ui->search_model_result_Table;
+    table->selectRow(row);
+    QList items = table->selectedItems();
+    if(items.length() != this->num_search_model_result_table_columns) return;
+
+    QString MODEL_CODE = items[0]->text(); // index 0 is the MODEL_CODE
+    QString Container_ID = items[items.length()-1]->text();
+    // set ID to empty if this model does not have a container
+    if(Container_ID == none_CN || Container_ID == none_SPAN) Container_ID.clear();
+
+    this->selected_model = inventory.get_Model(MODEL_CODE, Container_ID);
+
+    this->show_selected_model();
 }
 

@@ -32,4 +32,6 @@ extern const QString PDF_MESSAGE_1;
 extern const QString PDF_MESSAGE_2;
 extern const QString GET_DESTINATION_MESSAGE;
 extern const QString table_stylesheet;
+extern const QString none_CN;
+extern const QString none_SPAN;
 #endif // GLOBALVARS_H
