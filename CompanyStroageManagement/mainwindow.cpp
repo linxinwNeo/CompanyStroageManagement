@@ -27,6 +27,7 @@ MainWindow::~MainWindow()
 void MainWindow::init()
 {
     this->selected_model = nullptr;
+    this->selected_container = nullptr;
 
     // setting up tables
     auto container_table = ui->search_container_result_Table;
@@ -43,7 +44,18 @@ void MainWindow::init()
 
     // read inventory.txt file
     ReadFile read_file;
-    read_file.read_InventoryFile(DB_FNAME); // build the inventory
+    read_file.read_Inventory_txt_File(DB_FNAME); // build the inventory
+}
+
+
+void MainWindow::clear_search_container_result_table()
+{
+    auto table = this->ui->search_container_result_Table;
+    table->clearContents(); // clear the table contents but columns are reserved
+    table->setRowCount(0);
+
+    this->clear_selected_container_table();
+    this->selected_container = nullptr;
 }
 
 
@@ -71,7 +83,7 @@ void MainWindow::clear_selected_model()
     this->selected_model = nullptr;
 
     const QString empty;
-    const double zero = 0;
+    const double zero = 0.;
     ui->selected_model_MODELCODE_LE->setText(empty);
     ui->selected_model_DESCRIPTION_CN_LE->setText(empty);
     ui->selected_model_DESCRIPTION_SPAN_LE->setText(empty);
@@ -82,6 +94,55 @@ void MainWindow::clear_selected_model()
 
     if(this->selected_model->container.isNull()) ui->selected_model_CONTAINER_LE->setText(empty);
     else ui->selected_model_CONTAINER_LE->setText(empty);
+}
+
+void MainWindow::clear_search_model_result_table()
+{
+    auto table = this->ui->search_model_result_Table;
+    table->clearContents(); // clear the table contents but columns are reserved
+    table->setRowCount(0);
+}
+
+
+/* for each model in the <selected_container>, make a row for it and add the row to the <selected_container_table> */
+void MainWindow::show_selected_container()
+{
+    if(this->selected_container.isNull()) return;
+
+    this->clear_selected_container_table();
+
+    auto table = this->ui->selected_container_Table;
+    QVector<ModelPtr> models;
+    this->selected_container->models_Set2Vec(models, true); // sorted models
+
+    // for each model, make a row for it
+    UI row = 0;
+    for(const ModelPtr& model : models){
+        table->insertRow(table->rowCount());
+
+        QVector<QString> items;
+        model->searchResult(items);
+
+        for( UI col = 0; col < items.size(); col++ ){
+            QTableWidgetItem *tableWidgetItem = new QTableWidgetItem();
+            tableWidgetItem->setText( items[col] );
+
+            tableWidgetItem->setTextAlignment(Qt::AlignVCenter);
+
+            table->setItem(row, col, tableWidgetItem);
+        }
+
+        row++;
+    }
+}
+
+
+/* deselect the container, clear the selected_container_table */
+void MainWindow::clear_selected_container_table()
+{
+    auto table = this->ui->selected_container_Table;
+    table->clearContents(); // clear the table contents but columns are reserved
+    table->setRowCount(0);
 }
 
 
@@ -106,7 +167,7 @@ void MainWindow::closeEvent (QCloseEvent *event)
 
 /* the user is typing in MODELCODE, we need to search the models starting with the same string and display them in
  *  the searchResult table */
-void MainWindow::on_search_MODELCODE_LE_textChanged(QString new_str)
+void MainWindow::on_search_MODELCODE_LE_textChanged(const QString& new_str)
 {
     this->setEnabled(false);
 
@@ -115,7 +176,7 @@ void MainWindow::on_search_MODELCODE_LE_textChanged(QString new_str)
     table->clearContents(); // clear the table contents but columns are reserved
     table->setRowCount(0);
     if(new_str.isEmpty()){
-        // if input is empty, empty the table
+        // if input is empty, empty the table and return
         this->setEnabled(true);
         this->ui->search_MODELCODE_LE->setFocus();
         return;
@@ -222,8 +283,11 @@ void MainWindow::on_update_selected_model_btn_clicked()
 /* set the selected item */
 void MainWindow::on_search_model_result_Table_cellClicked(int row, int column)
 {
+    Q_UNUSED(column);
+
     const auto& table = this->ui->search_model_result_Table;
     table->selectRow(row);
+
     QList items = table->selectedItems();
     if(items.length() != this->num_search_model_result_table_columns) return;
 
@@ -235,5 +299,71 @@ void MainWindow::on_search_model_result_Table_cellClicked(int row, int column)
     this->selected_model = inventory.get_Model(MODEL_CODE, Container_ID);
 
     this->show_selected_model();
+}
+
+
+/* the user is entering characters in the search Container LineEdit
+   we want to search the container with the corresponding words.
+*/
+void MainWindow::on_search_CONTAINER_ID_LE_textChanged(const QString &new_str)
+{
+    this->setEnabled(false);
+
+    auto table = this->ui->search_container_result_Table;
+    table->clearContents(); // clear the table contents but columns are reserved
+    table->setRowCount(0);
+    if(new_str.isEmpty()){
+        // if input is empty, empty the table and return
+        this->setEnabled(true);
+        this->ui->search_CONTAINER_ID_LE->setFocus();
+        return;
+    }
+
+    QVector<ContainerPtr> containers; // will hold the containers that their ID starts with <new_str>
+    inventory.searchContainer_starts_with(new_str, containers);
+
+    // for each model, make a row for it
+    for(UI row = 0; row < containers.size(); row++){
+        const ContainerPtr container = containers[row];
+
+        table->insertRow(table->rowCount());
+
+        QVector<QString> items;
+        container->searchResult(items);
+
+        for( UI col = 0; col < items.size(); col++ ){
+            QTableWidgetItem *tableWidgetItem = new QTableWidgetItem();
+            tableWidgetItem->setText( items[col] );
+
+            tableWidgetItem->setTextAlignment(Qt::AlignVCenter);
+
+            table->setItem(row, col, tableWidgetItem);
+        }
+    }
+
+
+    this->setEnabled(true);
+    this->ui->search_CONTAINER_ID_LE->setFocus();
+    return;
+}
+
+
+/* when the user click one cell, save the selected container and present its models in selected_container_table */
+void MainWindow::on_search_container_result_Table_cellClicked(int row, int column)
+{
+    Q_UNUSED(column);
+
+    const auto& table = this->ui->search_container_result_Table;
+
+    QList items = table->selectedItems();
+    if(items.length() != this->num_search_container_result_table_columns) return;
+
+    QString Container_ID = items[0]->text();
+    // set ID to empty if this model does not have a container
+    if(Container_ID == none_CN || Container_ID == none_SPAN) Container_ID.clear();
+
+    this->selected_container = inventory.get_container(Container_ID);
+
+    this->show_selected_container();
 }
 

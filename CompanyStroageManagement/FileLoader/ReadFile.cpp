@@ -17,7 +17,7 @@ ReadFile::~ReadFile()
 }
 
 /* read models file, while reading models, we also build container instances */
-void ReadFile::read_InventoryFile(const QString& path)
+void ReadFile::read_Inventory_txt_File(const QString& path)
 {
     QFile file(path);
     QTextStream in(&file);
@@ -80,6 +80,7 @@ void ReadFile::read_InventoryFile(const QString& path)
                 inventory.add_container(container);
             }
             container->add_model(m); // add this model to the container
+            m->container = container;// add container to this model
         }
         inventory.add_model(m);
     }

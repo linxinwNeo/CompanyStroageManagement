@@ -1,4 +1,5 @@
 #include "Inventory.h"
+#include "Algorithm/QuickSort.h"
 #include "GlobalVars.h"
 
 Inventory::Inventory()
@@ -155,7 +156,9 @@ UI Inventory::num_containers() const
 }
 
 
-/* search the inventory for the Model.modelcode that is starting with <str>, add to  <models>*/
+/* search the inventory for the Model.modelcode that is starting with <str>, add to  <models>
+   then we need to sort the <models> by MODELCODEs in alphabetical order
+*/
 void Inventory::searchModel_starts_with(const QString str, QVector<ModelPtr>& models)
 {
     models.reserve(this->num_models());
@@ -166,6 +169,7 @@ void Inventory::searchModel_starts_with(const QString str, QVector<ModelPtr>& mo
         }
     }
 
+    QuickSort(models);
     return;
 }
 
@@ -180,6 +184,7 @@ void Inventory::searchContainer_starts_with(const QString str, QVector< Containe
         }
     }
 
+    QuickSort(containers);
     return;
 }
 

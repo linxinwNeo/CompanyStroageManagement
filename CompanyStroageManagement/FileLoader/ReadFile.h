@@ -15,7 +15,7 @@ public:
     ReadFile();
     ~ReadFile();
 
-    void read_InventoryFile(const QString& path);
+    void read_Inventory_txt_File(const QString& path);
 };
 
 #endif //READFILE_H

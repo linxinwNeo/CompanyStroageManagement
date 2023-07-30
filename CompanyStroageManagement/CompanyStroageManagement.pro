@@ -15,6 +15,7 @@ QXLSX_SOURCEPATH=./QXlsx/source/    # current QXlsx source path is ./source/
 include(./QXlsx/QXlsx.pri)
 
 SOURCES += \
+    Algorithm/QuickSort.cpp \
     CreateList.cpp \
     DataStructures/Container.cpp \
     DataStructures/Inventory.cpp \
@@ -33,6 +34,7 @@ SOURCES += \
     submitEntry.cpp
 
 HEADERS += \
+    Algorithm/QuickSort.h \
     CreateList.h \
     DataStructures/Container.h \
     DataStructures/Inventory.h \

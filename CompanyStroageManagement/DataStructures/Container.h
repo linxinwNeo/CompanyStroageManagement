@@ -16,7 +16,7 @@ class Model;
 class Container {
 public:
     QString ID; // the combination of characters and numbers
-    QSet< QSharedPointer<Model> > models;
+    QSet< QSharedPointer<Model> > models_set;
 
     Container();
     Container(const QString& ID);
@@ -31,6 +31,13 @@ public:
 
     double total_num_init_boxes() const;
     double total_num_left_boxes() const;
+
+    double total_num_init_items() const;
+    double total_num_left_items() const;
+
+    void searchResult(QVector<QString>& items) const;
+
+    void models_Set2Vec(QVector<QSharedPointer<Model> >& output, const bool sort);
 };
 
 #endif // CONTAINER_H

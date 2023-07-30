@@ -568,7 +568,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="search_CONTAINER_LE">
+            <widget class="QLineEdit" name="search_CONTAINER_ID_LE">
              <property name="placeholderText">
               <string>在此输入需要查询的集装箱号</string>
              </property>
@@ -602,7 +602,32 @@
              </property>
              <column>
               <property name="text">
-               <string>集装箱</string>
+               <string>集装箱号</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>货物种类数量</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>货物初始数量（箱）</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>货物剩余数量（箱）</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>货物初始数量（件）</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>货物剩余数量（件）</string>
               </property>
              </column>
             </widget>
@@ -613,7 +638,7 @@
         <item>
          <widget class="QGroupBox" name="groupBox_4">
           <property name="title">
-           <string>选中的集装箱的货物</string>
+           <string>该集装箱的货物</string>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_13">
            <item>
