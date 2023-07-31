@@ -1,4 +1,4 @@
-#include "CreateList.h"
+#include "CreateListWin.h"
 #include "ui_CreateList.h"
 
 #include "helper_functions.h"
@@ -10,7 +10,7 @@
 #include <QFileDialog>
 #include "FileLoader/ReadFile.h"
 
-CreateList::CreateList(QWidget *parent) :
+CreateListWin::CreateListWin(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::CreateList)
 {
@@ -23,13 +23,13 @@ CreateList::CreateList(QWidget *parent) :
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
 
-CreateList::~CreateList()
+CreateListWin::~CreateListWin()
 {
     delete ui;
 }
 
 
-void CreateList::on_generatePDF_btn_clicked()
+void CreateListWin::on_generatePDF_btn_clicked()
 {
     QMessageBox::StandardButton reply;
     reply = QMessageBox::question(this, PDF_MESSAGE_1, PDF_MESSAGE_2,
@@ -74,7 +74,7 @@ void CreateList::on_generatePDF_btn_clicked()
 }
 
 
-void CreateList::closeEvent (QCloseEvent *event)
+void CreateListWin::closeEvent (QCloseEvent *event)
 {
     QMessageBox msg(this);
     msg.setText(tr("你确定要退出吗?\n"));

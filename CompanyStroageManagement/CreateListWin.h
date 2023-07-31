@@ -1,5 +1,5 @@
-#ifndef CREATELIST_H
-#define CREATELIST_H
+#ifndef CREATELISTWIN_H
+#define CREATELISTWIN_H
 
 #include "DataStructures/client_info.h"
 #include <qtablewidget.h>
@@ -12,13 +12,15 @@ namespace Ui {
 }
 QT_END_NAMESPACE
 
-class CreateList : public QMainWindow
+class CreateListWin : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    CreateList(QWidget *parent = nullptr);
-    ~CreateList();
+    QWidget* parentPtr = nullptr;
+
+    CreateListWin(QWidget *parent = nullptr);
+    ~CreateListWin();
 
 //    double get_discount_value() const;
 //    double get_total() const;
@@ -37,4 +39,4 @@ private:
     QTableWidget* table;
 };
 
-#endif // CREATELIST_H
+#endif // CREATELISTWIN_H

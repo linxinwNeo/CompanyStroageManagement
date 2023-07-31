@@ -77,12 +77,12 @@ void ReadFile::read_Inventory_txt_File(const QString& path)
             else{
                 // this container does not exist, we need to create a new one and add it to inventory
                 container = ContainerPtr (new Container(containerID));
-                inventory.add_container(container);
+                inventory.add_Container(container);
             }
             container->add_model(m); // add this model to the container
             m->container = container;// add container to this model
         }
-        inventory.add_model(m);
+        inventory.add_Model(m);
     }
 
     file.close();

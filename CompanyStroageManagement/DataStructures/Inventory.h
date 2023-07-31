@@ -26,7 +26,7 @@ public:
     void reserve_container_space(UI size);
 
     // model stuff
-    void add_model( ModelPtr& m );
+    void add_Model( ModelPtr& m );
     QSet<ModelPtr> get_Model(const QString& MODEL_CODE);
     ModelPtr get_Model(const QString& MODEL_CODE, const QString& Container_ID);
 
@@ -34,7 +34,7 @@ public:
     bool contains_model(const QString& MODEL_CODE) const;
 
     // container stuff
-    void add_container( ContainerPtr& container );
+    void add_Container( ContainerPtr& container );
     ContainerPtr get_container(const QString& ID);
     bool contains_container(const QString& ID) const;
     bool contains_container(const ContainerPtr& container) const;

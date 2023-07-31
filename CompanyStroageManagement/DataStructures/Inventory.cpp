@@ -51,7 +51,7 @@ void Inventory::reserve_container_space(unsigned int size)
 }
 
 
-void Inventory::add_model(ModelPtr &m)
+void Inventory::add_Model(ModelPtr &m)
 {
     if(this->contains_model(m)) return;
 
@@ -117,7 +117,7 @@ bool Inventory::contains_model(const QString &MODEL_CODE) const
 
 
 // add a container to the inventory, it is possible that the container is a duplicate
-void Inventory::add_container(QSharedPointer<Container> &container)
+void Inventory::add_Container(QSharedPointer<Container> &container)
 {
     if(this->contains_container(container)) return;
 
@@ -128,7 +128,11 @@ void Inventory::add_container(QSharedPointer<Container> &container)
 
 QSharedPointer<Container> Inventory::get_container(const QString &ID)
 {
-    return this->container_map[ID];
+    if(this->contains_container(ID)){
+        return this->container_map[ID];
+    }
+
+    return nullptr;
 }
 
 

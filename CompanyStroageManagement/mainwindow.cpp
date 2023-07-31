@@ -14,20 +14,27 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     this->init();
-
 }
 
 
 MainWindow::~MainWindow()
 {
+    this->AddNewModelWinPtr = nullptr;
+    this->CreateListWinPtr = nullptr;
     this->selected_model = nullptr;
+    this->selected_container = nullptr;
     delete ui;
 }
 
 void MainWindow::init()
 {
+    this->AddNewModelWinPtr = nullptr;
+    this->CreateListWinPtr = nullptr;
     this->selected_model = nullptr;
     this->selected_container = nullptr;
+
+    // select the first tab initially
+    this->ui->tabWidget->setCurrentIndex(0);
 
     // setting up tables
     auto container_table = ui->search_container_result_Table;
@@ -80,8 +87,6 @@ void MainWindow::show_selected_model()
 // reset this selected_model_GB, deselect model
 void MainWindow::clear_selected_model()
 {
-    this->selected_model = nullptr;
-
     const QString empty;
     const double zero = 0.;
     ui->selected_model_MODELCODE_LE->setText(empty);
@@ -91,9 +96,9 @@ void MainWindow::clear_selected_model()
     ui->selected_model_NUM_SOLD_BOXES_SB->setValue(zero);
     ui->selected_model_NUM_ITEMS_PER_BOX_SB->setValue(zero);
     ui->selected_model_PRIZE_SB->setValue(zero);
+    ui->selected_model_CONTAINER_LE->setText(empty);
 
-    if(this->selected_model->container.isNull()) ui->selected_model_CONTAINER_LE->setText(empty);
-    else ui->selected_model_CONTAINER_LE->setText(empty);
+    this->selected_model = nullptr;
 }
 
 void MainWindow::clear_search_model_result_table()
@@ -213,6 +218,8 @@ void MainWindow::on_search_MODELCODE_LE_textChanged(const QString& new_str)
 /* update the model with the info entered */
 void MainWindow::on_update_selected_model_btn_clicked()
 {
+    this->setEnabled(false);
+
     // make sure user is indeed wanting to update the values
     QMessageBox msg(this);
     msg.setText(tr("你确定更改吗?\n"));
@@ -223,6 +230,7 @@ void MainWindow::on_update_selected_model_btn_clicked()
 
     int resBtn = msg.exec();
     if (resBtn == QMessageBox::No) {
+        this->setEnabled(true);
         return;
     }
 
@@ -275,6 +283,11 @@ void MainWindow::on_update_selected_model_btn_clicked()
         Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
         Msgbox.setText("保存成功！");
         Msgbox.exec();
+
+        this->clear_selected_model();
+        this->on_search_MODELCODE_LE_textChanged(this->ui->search_MODELCODE_LE->text());
+
+        this->setEnabled(true);
 
     return;
 }
@@ -354,6 +367,7 @@ void MainWindow::on_search_container_result_Table_cellClicked(int row, int colum
     Q_UNUSED(column);
 
     const auto& table = this->ui->search_container_result_Table;
+    table->selectRow(row);
 
     QList items = table->selectedItems();
     if(items.length() != this->num_search_container_result_table_columns) return;
@@ -365,5 +379,35 @@ void MainWindow::on_search_container_result_Table_cellClicked(int row, int colum
     this->selected_container = inventory.get_container(Container_ID);
 
     this->show_selected_container();
+}
+
+
+/* open the AddNewModelWindow for user to enter the information about the new model */
+void MainWindow::on_start_add_model_btn_clicked()
+{
+    // init AddNewModelWindow
+    QSharedPointer<AddNewModelWindow> w (new AddNewModelWindow(nullptr));
+    this->AddNewModelWinPtr = w;
+    // setting up the window
+    w->setWindowTitle(AddNewModel_WinTitle);
+    w->show();
+    w->parentPtr = this;
+
+    this->hide();
+}
+
+
+// 打开创建新清单的页面
+void MainWindow::on_new_list_btn_clicked()
+{
+    // init CreateListWin
+    QSharedPointer<CreateListWin> w (new CreateListWin(nullptr));
+    this->CreateListWinPtr = w;
+    // setting up the window
+    w->setWindowTitle(CreateList_WinTitle);
+    w->show();
+    w->parentPtr = this;
+
+    this->hide();
 }
 

@@ -7,23 +7,23 @@
 #include <QFile>
 
 #include "GlobalVars.h"
-#include "CreateList.h"
+#include "CreateListWin.h"
 #include "DataStructures/client_info.h"
 #include "DataStructures/entrylist.h"
 
-QString CreateList::currDate() const
+QString CreateListWin::currDate() const
 {
     QDate date = QDate::currentDate();
     return date.toString("dd MMM yyyy");
 }
 
-QString CreateList::currTime() const
+QString CreateListWin::currTime() const
 {
     QTime time = QTime::currentTime();
     return time.toString("hh:mm:ss");
 }
 
-void CreateList::create_pdf(QString filename) {
+void CreateListWin::create_pdf(QString filename) {
     // setting up the pdf format
     QPdfWriter pdf_file(filename);
     pdf_file.setPageSize(QPageSize::A4);

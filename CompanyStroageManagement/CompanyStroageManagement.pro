@@ -15,8 +15,9 @@ QXLSX_SOURCEPATH=./QXlsx/source/    # current QXlsx source path is ./source/
 include(./QXlsx/QXlsx.pri)
 
 SOURCES += \
+    AddNewModelWindow.cpp \
     Algorithm/QuickSort.cpp \
-    CreateList.cpp \
+    CreateListWin.cpp \
     DataStructures/Container.cpp \
     DataStructures/Inventory.cpp \
     DataStructures/Model.cpp \
@@ -34,8 +35,9 @@ SOURCES += \
     submitEntry.cpp
 
 HEADERS += \
+    AddNewModelWindow.h \
     Algorithm/QuickSort.h \
-    CreateList.h \
+    CreateListWin.h \
     DataStructures/Container.h \
     DataStructures/Inventory.h \
     DataStructures/Model.h \
@@ -54,7 +56,8 @@ HEADERS += \
     submitEntry.h
 
 FORMS += \
-    CreateList.ui \
+    AddNewModelWindow.ui \
+    CreateListWin.ui \
     mainwindow.ui \
     submitEntry.ui
 

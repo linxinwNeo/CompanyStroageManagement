@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "AddNewModelWindow.h"
+#include "CreateListWin.h"
 #include "DataStructures/Model.h"
 #include "DataStructures/Container.h"
 #include "DataStructures/client_info.h"
@@ -42,11 +44,17 @@ private slots:
 
     void on_search_container_result_Table_cellClicked(int row, int column);
 
+    void on_start_add_model_btn_clicked();
+
+    void on_new_list_btn_clicked();
+
 private:
     ModelPtr selected_model;
     ContainerPtr selected_container;
     unsigned int num_search_model_result_table_columns = 11;
     unsigned int num_search_container_result_table_columns = 6;
     Ui::MainWindow *ui;
+    QSharedPointer<AddNewModelWindow> AddNewModelWinPtr;
+    QSharedPointer<CreateListWin> CreateListWinPtr;
 };
 #endif // MAINWINDOW_H

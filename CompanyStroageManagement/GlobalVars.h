@@ -20,6 +20,8 @@ extern QString stroagefilePath;
 extern const QString APP_NAME;
 extern QSharedPointer<Excel> excel;
 extern Inventory inventory;
+extern const QString AddNewModel_WinTitle;
+extern const QString CreateList_WinTitle;
 
 extern const QString APP_NAME;
 extern const QString FATAL_ERROR_MESSAGE;
@@ -34,4 +36,9 @@ extern const QString GET_DESTINATION_MESSAGE;
 extern const QString table_stylesheet;
 extern const QString none_CN;
 extern const QString none_SPAN;
+
+extern const QString empty_MODELCODE_ERROR_MSG;
+extern const QString duplicate_Model_ERROR_MSG;
+extern const QString SOLD_MORETHAN_INIT_BOXES_ERROR_MSG;
+extern const QString NEW_MODEL_ADD_SUCCESS_MSG;
 #endif // GLOBALVARS_H
