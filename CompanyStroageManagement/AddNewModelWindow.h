@@ -19,6 +19,7 @@ public:
     explicit AddNewModelWindow(QWidget *parent = nullptr);
     ~AddNewModelWindow();
 
+    void clear_content();
 private:
     Ui::AddNewModelWindow *ui;
 

@@ -176,11 +176,14 @@ void MainWindow::on_search_MODELCODE_LE_textChanged(const QString& new_str)
 {
     this->setEnabled(false);
 
+    QString userInput = new_str.trimmed(); // remove useless empty spaces
+
     auto table = this->ui->search_model_result_Table;
+    this->clear_search_model_result_table();
 
     table->clearContents(); // clear the table contents but columns are reserved
     table->setRowCount(0);
-    if(new_str.isEmpty()){
+    if(userInput.isEmpty()){
         // if input is empty, empty the table and return
         this->setEnabled(true);
         this->ui->search_MODELCODE_LE->setFocus();
@@ -188,7 +191,7 @@ void MainWindow::on_search_MODELCODE_LE_textChanged(const QString& new_str)
     }
 
     QVector<ModelPtr> models; // will hold the models that has MODELCODE starts with new_str
-    inventory.searchModel_starts_with(new_str, models);
+    inventory.searchModel_starts_with(userInput, models);
 
     // for each model, make a row for it
     for(UI row = 0; row < models.size(); row++){
@@ -211,7 +214,6 @@ void MainWindow::on_search_MODELCODE_LE_textChanged(const QString& new_str)
 
     this->setEnabled(true);
     this->ui->search_MODELCODE_LE->setFocus();
-    return;
 }
 
 

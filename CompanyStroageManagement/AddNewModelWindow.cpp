@@ -20,6 +20,20 @@ AddNewModelWindow::~AddNewModelWindow()
 }
 
 
+// clear the contents of user inputs
+void AddNewModelWindow::clear_content()
+{
+    this->ui->MODELCODE_LE->clear();
+    this->ui->DESCRIPTION_CN_LE->clear();
+    this->ui->DESCRIPTION_SPAN_LE->clear();
+    this->ui->PRIZE_SB->setValue(0.);
+    this->ui->NUM_INIT_BOXES_SB->setValue(0.);
+    this->ui->NUM_SOLD_BOXES_SB->setValue(0.);
+    this->ui->NUM_ITEMS_PER_BOX_SB->setValue(0.);
+    this->ui->DESCRIPTION_SPAN_LE->clear();
+}
+
+
 QSharedPointer<QMessageBox> AddNewModelWindow::create_MessageBox(const QString &msg)
 {
     QSharedPointer<QMessageBox> Msgbox(new QMessageBox(this));
@@ -123,5 +137,8 @@ void AddNewModelWindow::on_add_new_model_btn_clicked()
 
     auto msgBox = this->create_MessageBox(NEW_MODEL_ADD_SUCCESS_MSG);
     msgBox->exec();
+
+    // clear the contents when the model is successfully added
+    this->clear_content();
 }
 
