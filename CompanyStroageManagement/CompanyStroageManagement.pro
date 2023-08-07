@@ -20,6 +20,7 @@ SOURCES += \
     CreateListWin.cpp \
     DataStructures/Container.cpp \
     DataStructures/Inventory.cpp \
+    DataStructures/List.cpp \
     DataStructures/Model.cpp \
     DataStructures/client_info.cpp \
     DataStructures/entry.cpp \
@@ -40,6 +41,7 @@ HEADERS += \
     CreateListWin.h \
     DataStructures/Container.h \
     DataStructures/Inventory.h \
+    DataStructures/List.h \
     DataStructures/Model.h \
     DataStructures/client_info.h \
     DataStructures/entry.h \

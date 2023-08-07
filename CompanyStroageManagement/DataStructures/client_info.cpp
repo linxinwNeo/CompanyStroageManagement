@@ -2,7 +2,7 @@
 
 Client_info::Client_info(QString CLIENTE, QString DOMICILIO, QString CIUDAD,
                          QString RFC, QString AGENTE,
-                         QString CONDICIONES, double bottom_left_num, double DISCOUNT)
+                         QString CONDICIONES, double TOTAL_NUM_BOXES, double DISCOUNT)
 {
     this->CLIENTE = CLIENTE;
     this->DOMICILIO = DOMICILIO;
@@ -11,5 +11,5 @@ Client_info::Client_info(QString CLIENTE, QString DOMICILIO, QString CIUDAD,
     this->AGENTE = AGENTE;
     this->CONDICIONES = CONDICIONES;
     this->DISCOUNT = DISCOUNT;
-    this->bottom_left_num = bottom_left_num;
+    this->TOTAL_NUM_BOXES = TOTAL_NUM_BOXES;
 }

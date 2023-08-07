@@ -20,7 +20,7 @@
       <item>
        <widget class="QGroupBox" name="groupBox">
         <property name="title">
-         <string>需要添加货物的信息</string>
+         <string>需要添加的新货物的信息</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout">
          <item>

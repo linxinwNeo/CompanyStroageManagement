@@ -15,13 +15,13 @@ public:
     QString RFC;
     QString AGENTE;
     QString CONDICIONES;
-    double bottom_left_num;
+    double TOTAL_NUM_BOXES;
     double DISCOUNT;
 
     // functions
     Client_info(QString CLIENTE = "", QString DOMICILIO = "", QString CIUDAD = "",
                 QString RFC = "", QString AGENTE = "",
-                QString CONDICIONES = "", double bottom_left_num = 0., double DISCOUNT = 0.);
+                QString CONDICIONES = "", double TOTAL_NUM_BOXES = 0., double DISCOUNT = 0.);
 };
 
 #endif // CLIENT_INFO_H

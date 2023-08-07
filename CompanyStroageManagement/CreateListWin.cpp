@@ -32,15 +32,31 @@ void CreateListWin::on_generatePDF_btn_clicked()
                                   QMessageBox::Yes|QMessageBox::No);
     if (reply == QMessageBox::No) return; // return if the user says no
 
-    // save client info first
-    client_info.CLIENTE = this->ui->CLIENTE_LE->text();
-    client_info.DOMICILIO = this->ui->DOMICILIO_LE->text();
-    client_info.CIUDAD = this->ui->CIUDAD_LE->text();
-    client_info.RFC = this->ui->RFC_LE->text();
-    client_info.AGENTE = this->ui->AGENTE_LE->text();
-    client_info.CONDICIONES = this->ui->CONDICIONES_LE->text();
-    client_info.DISCOUNT = this->ui->discount_SB->value();
-    client_info.bottom_left_num = this->ui->btm_left_num_SB->value();
+    this->list = ListPtr(new List());
+
+    // save things in the <added_models_table> to the <this->list> first
+    for(int i = 0; i < this->added_models_table->rowCount(); i++){
+        const double NUM_BOXES = this->added_models_table->item(i, 0)->text().toDouble();
+        const unsigned long TOTAL_NUM_ITEMS = this->added_models_table->item(i, 1)->text().toLong();
+        const unsigned long NUM_ITEMS_PER_BOX = this->added_models_table->item(i, 2)->text().toLong();
+        const QString MODEL_CODE = this->added_models_table->item(i, 3)->text();
+        const QString DESCRIPTION_SPAN = this->added_models_table->item(i, 4)->text();
+        const double PRIZE = this->added_models_table->item(i, 5)->text().toDouble();
+        const double TOTAL_PRIZE = this->added_models_table->item(i, 6)->text().toDouble();
+        EntryPtr new_entry(new Entry(NUM_BOXES, TOTAL_NUM_ITEMS, NUM_ITEMS_PER_BOX, MODEL_CODE,
+                                     DESCRIPTION_SPAN, PRIZE, TOTAL_PRIZE));
+        this->list->add_item(new_entry);
+    }
+
+    // save client info
+    this->list->client_info.CLIENTE = this->ui->CLIENTE_LE->text();
+    this->list->client_info.DOMICILIO = this->ui->DOMICILIO_LE->text();
+    this->list->client_info.CIUDAD = this->ui->CIUDAD_LE->text();
+    this->list->client_info.RFC = this->ui->RFC_LE->text();
+    this->list->client_info.AGENTE = this->ui->AGENTE_LE->text();
+    this->list->client_info.CONDICIONES = this->ui->CONDICIONES_LE->text();
+    this->list->client_info.DISCOUNT = this->ui->discount_SB->value();
+    this->list->client_info.TOTAL_NUM_BOXES = this->list->total_num_boxes();
 
     // ask for the path to store the file
     QString filter = tr("PDF (*.pdf)");
@@ -49,15 +65,9 @@ void CreateListWin::on_generatePDF_btn_clicked()
         return;
 
     QMessageBox Msgbox(this);
-    if(!is_preview_list){
-        // deduct items in the stroage
-//        inventory.deduct();
-    }
-
 
     // create PDF file
     this->create_pdf(filename);
-
 
     // display creation success file
     Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
@@ -135,8 +145,9 @@ void CreateListWin::init()
     //初始化变量
     this->searched_models_table = this->ui->searched_models_table;
     this->added_models_table = this->ui->added_models_table;
-    this->model_in_added_table = nullptr;
-    this->model_in_search_table = nullptr;
+    this->selected_model_in_added_table = nullptr;
+    this->selected_model_in_search_table = nullptr;
+    this->list = nullptr;
 
     //设置表格 style
     searched_models_table->setStyleSheet(table_stylesheet);
@@ -179,7 +190,7 @@ void CreateListWin::on_searched_models_table_cellClicked(int row, int column)
     // set ID to empty if this model does not have a container
     if(Container_ID == none_CN || Container_ID == none_SPAN) Container_ID.clear();
 
-    this->model_in_search_table = inventory.get_Model(MODEL_CODE, Container_ID);
+    this->selected_model_in_search_table = inventory.get_Model(MODEL_CODE, Container_ID);
 
     // check if this model is in <added_models_table> already
     //TODO

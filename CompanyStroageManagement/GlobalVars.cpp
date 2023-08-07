@@ -1,8 +1,5 @@
 #include "GlobalVars.h"
 
-EntryList EL_deduct;
-EntryList EL_add;
-Client_info client_info;
 QString stroagefilePath;
 QSharedPointer<Excel> excel (nullptr);
 

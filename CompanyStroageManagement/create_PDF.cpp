@@ -29,6 +29,9 @@ void CreateListWin::create_pdf(QString filename) {
     pdf_file.setPageSize(QPageSize::A4);
     pdf_file.setPageMargins(QMargins(300, 300, 300, 300));
 
+    const auto& client_info = this->list->client_info;
+    const auto& items = this->list->itemList;
+
     // setting up the painter
     QPainter painter(&pdf_file);
     // get the dimension of the viewport
@@ -76,8 +79,8 @@ void CreateListWin::create_pdf(QString filename) {
     painter.drawText(QPointF(width * 0.78, height * 0.25), client_info.CONDICIONES);
 
     double y = height * 0.31;
-    qDebug() << EL_deduct.size();
-    for(auto entry : EL_deduct.entries){
+
+    for(auto entry : items.entries){
         double x = width * 0.06; // reset x for each entry
 
         // CAJA
@@ -111,21 +114,25 @@ void CreateListWin::create_pdf(QString filename) {
         y += height * 0.02;
     }
 
+    // compute totals
+    double subtotal, total;
+    this->list->total(subtotal, total);
+
     // SUBTOTAL
-    painter.drawText(QRect(0, height * 0.815, width * 0.93, height * 0.815), QString::number(EL_deduct.subtotal(), 'f', 2), option);
+    painter.drawText(QRect(0, height * 0.815, width * 0.93, height * 0.815), QString::number(subtotal, 'f', 2), option);
 
     // DESCUENTO
-//    painter.drawText(QRect(0, height * 0.84, width * 0.93, height * 0.84), QString::number(this->get_discount_value(), 'f', 2), option);
+    painter.drawText(QRect(0, height * 0.84, width * 0.93, height * 0.84), QString::number(subtotal-total, 'f', 2), option);
     painter.drawText(QRect(0, height * 0.84, width * 1, height * 0.84), "(" + QString::number(client_info.DISCOUNT) + "%)", option);
 
     // IVA
     painter.drawText(QRect(0, height * 0.875, width * 0.93, height * 0.875), "0.00", option);
 
     // TOTAL
-//    painter.drawText(QRect(0, height * 0.907, width * 0.93, height * 0.907), QString::number(this->get_total(), 'f', 2), option);
+    painter.drawText(QRect(0, height * 0.907, width * 0.93, height * 0.907), QString::number(total, 'f', 2), option);
 
-    // bottom left num
-    painter.drawText(QPointF(width * 0.07, height * 0.91), QString::number(client_info.bottom_left_num));
+    // the total number of boxes
+    painter.drawText(QPointF(width * 0.07, height * 0.91), QString::number(client_info.TOTAL_NUM_BOXES));
 
     painter.end();
 }

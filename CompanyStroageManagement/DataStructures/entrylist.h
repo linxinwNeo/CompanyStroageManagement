@@ -25,9 +25,7 @@ public:
     inline UL num_entries() const;
     QSharedPointer<Entry> get_entry(const UL);
 
-    UI size() const {return this->entries.size();};
-
-    double subtotal() const;
+    double total_num_boxes() const;
 };
 
 

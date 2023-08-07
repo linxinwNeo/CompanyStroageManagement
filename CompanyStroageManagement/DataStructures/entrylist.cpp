@@ -5,12 +5,14 @@ void EntryList::clear_memory()
     this->entries.clear();
 }
 
+
 void EntryList::add_entry(QSharedPointer<Entry>& entry_to_be_added)
 {
     if(!entry_to_be_added.isNull()){
         this->entries.push_back(entry_to_be_added);
     }
 }
+
 
 // remove the last entry
 void EntryList::remove_entry()
@@ -19,6 +21,7 @@ void EntryList::remove_entry()
         this->entries.pop_back();
     }
 }
+
 
 // remove an arbitrary entry if exists
 void EntryList::remove_entry(const UL idx)
@@ -57,12 +60,12 @@ QSharedPointer<Entry> EntryList::get_entry(const UL idx)
     return this->entries[idx];
 }
 
-// calculate the subtotal
-double EntryList::subtotal() const
+
+double EntryList::total_num_boxes() const
 {
-    double subtotal = 0;
+    double sum = 0;
     for(auto entry : this->entries){
-        subtotal += entry->IMPORTE;
+        sum += entry->CAJA;
     }
-    return subtotal;
+    return sum;
 }

@@ -7,15 +7,10 @@
 #include "Predefined.h"
 #include "DataStructures/Inventory.h"
 #include "DataStructures/client_info.h"
-#include "DataStructures/entrylist.h"
 #include "QXlsx/Excel.h"
-
-extern EntryList EL_add;
-extern EntryList EL_deduct;
 
 extern QString DB_FNAME;
 
-extern Client_info client_info;
 extern QString stroagefilePath;
 extern const QString APP_NAME;
 extern QSharedPointer<Excel> excel;

@@ -1,8 +1,10 @@
 #ifndef CREATELISTWIN_H
 #define CREATELISTWIN_H
 
+#include "DataStructures/List.h"
 #include "DataStructures/Model.h"
 #include "DataStructures/client_info.h"
+#include "DataStructures/entrylist.h"
 #include <qtablewidget.h>
 #include <QMainWindow>
 #include <QVector2D>
@@ -18,6 +20,8 @@ class CreateListWin : public QMainWindow
     Q_OBJECT
 
 public:
+    ListPtr list;
+
     const unsigned int NUM_SEARCHED_MODELS_TABLE_COLS = 11;
     const unsigned int NUM_ADDED_MODELS_TABLE_COLS = 7;
 
@@ -45,8 +49,8 @@ private:
     Ui::CreateListWin *ui;
     QTableWidget* searched_models_table;
     QTableWidget* added_models_table;
-    ModelPtr model_in_search_table;
-    ModelPtr model_in_added_table;
+    ModelPtr selected_model_in_search_table;
+    ModelPtr selected_model_in_added_table;
 
     void clear_searched_models_table();
     void clear_added_models_table();
