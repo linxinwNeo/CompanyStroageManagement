@@ -126,7 +126,7 @@ void MainWindow::show_selected_container()
         table->insertRow(table->rowCount());
 
         QVector<QString> items;
-        model->searchResult(items);
+        model->searchResult_Regular(items);
 
         for( UI col = 0; col < items.size(); col++ ){
             QTableWidgetItem *tableWidgetItem = new QTableWidgetItem();
@@ -200,7 +200,7 @@ void MainWindow::on_search_MODELCODE_LE_textChanged(const QString& new_str)
         table->insertRow(table->rowCount());
 
         QVector<QString> items;
-        model->searchResult(items);
+        model->searchResult_Regular(items);
 
         for( UI col = 0; col < items.size(); col++ ){
             QTableWidgetItem *tableWidgetItem = new QTableWidgetItem();

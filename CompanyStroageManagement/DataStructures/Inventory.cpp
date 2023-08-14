@@ -89,7 +89,7 @@ QSharedPointer<Model> Inventory::get_Model(const QString &MODEL_CODE, const QStr
 {
     QSet<ModelPtr> candidates = this->get_Model(MODEL_CODE);
     for(ModelPtr m : candidates){
-        if(m->container.isNull() && Container_ID.isEmpty()){
+        if(m->container.isNull() && (Container_ID.isEmpty() || Container_ID == none_CN || Container_ID == none_SPAN)){
             return m;
         }
         else if(!m->container.isNull() && m->container->ID == Container_ID){

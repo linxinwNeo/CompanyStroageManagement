@@ -99,7 +99,7 @@ void Model::addBack_boxes(double num_boxes_to_addBack)
 
 
 /* return items that are used to put in the search result table */
-void Model::searchResult(QVector<QString> &items) const
+void Model::searchResult_Regular(QVector<QString> &items) const
 {
     items.clear();
     items.reserve(11);
@@ -114,6 +114,30 @@ void Model::searchResult(QVector<QString> &items) const
     items.push_back(QString::number(this->NUM_SOLD_BOXES * this->NUM_ITEMS_PER_BOX)); // 卖出件数
     items.push_back(QString::number(this->NUM_LEFT_BOXES, 'f', 2)); // 剩余箱数
     items.push_back(QString::number(this->NUM_LEFT_ITEMS)); // 剩余件数
+
+    if(this->container.isNull()){
+        items.push_back(none_CN); // 集装箱号
+    }
+    else{
+        items.push_back(this->container->ID); // 集装箱号
+    }
+}
+
+
+
+/* return items that are used to put in the added_models_table */
+void Model::searchResult_List(QVector<QString> &items) const
+{
+    items.clear();
+    items.reserve(8);
+
+    items.push_back(QString::number(this->NUM_LEFT_BOXES, 'f', 2)); // 剩余箱数
+    items.push_back(QString::number(this->NUM_LEFT_ITEMS)); // 剩余件数
+    items.push_back(QString::number(this->NUM_ITEMS_PER_BOX)); // 每箱几件
+    items.push_back(this->MODEL_CODE); // 货号
+    items.push_back(this->DESCRIPTION_SPAN); // 品名西语
+    items.push_back(QString::number(this->PRIZE, 'f', 2)); // 单价
+    items.push_back(QString::number(this->PRIZE*this->NUM_LEFT_BOXES*this->NUM_ITEMS_PER_BOX, 'f', 2)); // 总价
 
     if(this->container.isNull()){
         items.push_back(none_CN); // 集装箱号

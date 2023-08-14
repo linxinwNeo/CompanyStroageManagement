@@ -16,6 +16,7 @@ include(./QXlsx/QXlsx.pri)
 
 SOURCES += \
     AddNewModelWindow.cpp \
+    Adjust_List_Item_Win.cpp \
     Algorithm/QuickSort.cpp \
     CreateListWin.cpp \
     DataStructures/Container.cpp \
@@ -37,6 +38,7 @@ SOURCES += \
 
 HEADERS += \
     AddNewModelWindow.h \
+    Adjust_List_Item_Win.h \
     Algorithm/QuickSort.h \
     CreateListWin.h \
     DataStructures/Container.h \
@@ -59,6 +61,7 @@ HEADERS += \
 
 FORMS += \
     AddNewModelWindow.ui \
+    Adjust_List_Item_Win.ui \
     CreateListWin.ui \
     mainwindow.ui \
     submitEntry.ui

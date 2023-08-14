@@ -42,8 +42,9 @@ public:
     void deduct_boxes(double num_boxes);
     void addBack_items(UI num_items);
     void addBack_boxes(double num_boxes);
-
-    void searchResult(QVector<QString>& items) const;
+    
+    void searchResult_Regular(QVector<QString>& items) const;
+    void searchResult_List(QVector<QString> &items) const;
 
     QString describe_this_model() const;
 };

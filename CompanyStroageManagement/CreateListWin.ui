@@ -649,7 +649,7 @@
              <bool>true</bool>
             </property>
             <property name="editTriggers">
-             <set>QAbstractItemView::DoubleClicked</set>
+             <set>QAbstractItemView::NoEditTriggers</set>
             </property>
             <property name="selectionMode">
              <enum>QAbstractItemView::SingleSelection</enum>
@@ -693,6 +693,11 @@
             <column>
              <property name="text">
               <string>IMPORTE/总价</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>集装箱号</string>
              </property>
             </column>
            </widget>
@@ -770,7 +775,7 @@
                 <cursorShape>PointingHandCursor</cursorShape>
                </property>
                <property name="text">
-                <string>重置表格</string>
+                <string>删除所有已添加的货物</string>
                </property>
               </widget>
              </item>

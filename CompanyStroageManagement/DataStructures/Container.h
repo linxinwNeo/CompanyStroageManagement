@@ -34,7 +34,7 @@ public:
 
     double total_num_init_items() const;
     double total_num_left_items() const;
-
+    
     void searchResult(QVector<QString>& items) const;
 
     void models_Set2Vec(QVector<QSharedPointer<Model> >& output, const bool sort);

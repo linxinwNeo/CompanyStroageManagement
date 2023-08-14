@@ -100,6 +100,8 @@ void CreateListWin::on_model_code_for_search_LE_textChanged(const QString &new_s
 {
     this->setEnabled(false);
 
+    this->selected_model_in_search_table = nullptr;
+
     QString userInput = new_str.trimmed(); // remove useless empty spaces
 
     auto table = this->searched_models_table;
@@ -122,7 +124,7 @@ void CreateListWin::on_model_code_for_search_LE_textChanged(const QString &new_s
         table->insertRow(table->rowCount());
 
         QVector<QString> items;
-        model->searchResult(items);
+        model->searchResult_Regular(items);
 
         for( UI col = 0; col < items.size(); col++ ){
             QTableWidgetItem *tableWidgetItem = new QTableWidgetItem();
@@ -150,7 +152,10 @@ void CreateListWin::init()
     this->list = nullptr;
 
     //设置表格 style
+    searched_models_table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     searched_models_table->setStyleSheet(table_stylesheet);
+
+    added_models_table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     added_models_table->setStyleSheet(table_stylesheet);
 }
 
@@ -173,8 +178,7 @@ void CreateListWin::clear_added_models_table()
 }
 
 
-/* 用户点击了一个cell，我们要选中整行，然后通过modelCODE寻找reference， 然后加入这个到added_models_table
- * 要注意的是，如果要加入的这个model已经在<added_models_table>了，我们可以什么都不做。 */
+/* 用户点击了一个cell，我们要选中整行, 查找被选中的货 */
 void CreateListWin::on_searched_models_table_cellClicked(int row, int column)
 {
     Q_UNUSED(column);
@@ -185,14 +189,120 @@ void CreateListWin::on_searched_models_table_cellClicked(int row, int column)
     QList items = table->selectedItems();
     if(items.length() != this->NUM_SEARCHED_MODELS_TABLE_COLS) return;
 
-    QString MODEL_CODE = items[0]->text(); // index 0 is the MODEL_CODE
-    QString Container_ID = items[items.length()-1]->text();
+    QString MODELCODE = items[0]->text(); // index 0 is the MODEL_CODE
+    QString ContainerID = items[items.length()-1]->text();
     // set ID to empty if this model does not have a container
-    if(Container_ID == none_CN || Container_ID == none_SPAN) Container_ID.clear();
+    if(ContainerID == none_CN || ContainerID == none_SPAN) ContainerID.clear();
 
-    this->selected_model_in_search_table = inventory.get_Model(MODEL_CODE, Container_ID);
+    this->selected_model_in_search_table = inventory.get_Model(MODELCODE, ContainerID);
+}
 
-    // check if this model is in <added_models_table> already
-    //TODO
+
+/* try to add selected model in to the added_table, but we need to check if it has been added already */
+void CreateListWin::on_add_selected_model_btn_clicked()
+{
+    if(this->selected_model_in_search_table.isNull()) return;
+
+    QString MODELCODE_2be_Added = this->selected_model_in_search_table->MODEL_CODE;
+    QString ContainerID_2be_Added;
+    if(this->selected_model_in_search_table->container.isNull()) ContainerID_2be_Added.clear();
+    else ContainerID_2be_Added = this->selected_model_in_search_table->container->ID;
+
+    // check if this model is in <added_models_table> already (we need to check both modelCODE and container)
+    for(int row = 0; row < this->added_models_table->rowCount(); row ++){
+        QString cur_modelCODE = this->added_models_table->item(row, 3)->text(); // get the modelCODE for this row
+        QString cur_containerID = this->added_models_table->item(row, 7)->text(); // get the containerID
+        if(cur_containerID == none_CN || cur_containerID == none_SPAN) cur_containerID.clear();
+        // if both matches, then the model already exists, we dont put it in
+        if(cur_modelCODE == MODELCODE_2be_Added && cur_containerID == ContainerID_2be_Added){
+            return;
+        }
+    }
+
+    // we need to put this model into the <added_models_table>
+    const ModelPtr model_2be_added = this->selected_model_in_search_table;
+
+    added_models_table->insertRow(added_models_table->rowCount());
+
+    QVector<QString> items;
+    model_2be_added->searchResult_List(items);
+
+    for( UI col = 0; col < items.size(); col++ ){
+        QTableWidgetItem *tableWidgetItem = new QTableWidgetItem();
+        tableWidgetItem->setText( items[col] );
+
+        tableWidgetItem->setTextAlignment(Qt::AlignVCenter);
+
+        added_models_table->setItem(added_models_table->rowCount()-1, col, tableWidgetItem);
+    }
+}
+
+
+/* 用户点击了一个cell，我们要选中整行, 查找被选中的货 */
+void CreateListWin::on_added_models_table_cellClicked(int row, int column)
+{
+    Q_UNUSED(column);
+
+    const auto& table = this->added_models_table;
+    table->selectRow(row);
+
+    QList items = table->selectedItems();
+    if(items.length() != this->NUM_ADDED_MODELS_TABLE_COLS) return;
+
+    QString MODELCODE = items[3]->text(); // index 3 is the MODEL_CODE in added model table
+    QString ContainerID = items[items.length()-1]->text();
+
+    this->selected_model_in_added_table = inventory.get_Model(MODELCODE, ContainerID);
+}
+
+
+// delete the selected model in added table
+// we remove at most one row at a time, but a table should have only one entry for the model
+void CreateListWin::on_remove_selected_model_btn_clicked()
+{
+    auto selected_model = this->selected_model_in_added_table; // this model is what we are interested in in this function
+
+    if(selected_model.isNull()) return;
+
+    auto table = this->added_models_table; // this table is what we are interested in in this function
+
+    QString MODELCODE = selected_model->MODEL_CODE;
+    QString ContainerID;
+    if(selected_model->container.isNull()) ContainerID.clear();
+    else ContainerID = selected_model->container->ID;
+
+    // look for the correspodning row of this model
+    for(int row = 0; row < table->rowCount(); row ++){
+        QString cur_modelCODE = table->item(row, 3)->text(); // get the modelCODE for this row
+        QString cur_containerID = table->item(row, 7)->text(); // get the containerID
+
+        if(cur_containerID == none_CN || cur_containerID == none_SPAN) cur_containerID.clear();
+        // if both matches, then we remove this model
+        if(cur_modelCODE == MODELCODE && cur_containerID == ContainerID){
+            table->removeRow(row);
+            this->selected_model_in_added_table = nullptr;
+            return;
+        }
+    }
+
+    // if we don't find any model that matches, we shall return
+    return;
+}
+
+
+// remove all table contents
+void CreateListWin::on_reset_added_models_table_btn_clicked()
+{
+    this->selected_model_in_added_table = nullptr;
+    this->added_models_table->clearContents();
+    this->added_models_table->setRowCount(0);
+}
+
+
+// the user want to adjust an item in the <added_models_table>, we init a new window for this operation
+// TODO
+void CreateListWin::on_added_models_table_cellDoubleClicked(int row, int column)
+{
+
 }
 
