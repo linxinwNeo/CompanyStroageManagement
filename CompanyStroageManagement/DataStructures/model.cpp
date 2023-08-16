@@ -129,13 +129,14 @@ void Model::searchResult_Regular(QVector<QString> &items) const
 void Model::searchResult_List(QVector<QString> &items) const
 {
     items.clear();
-    items.reserve(8);
+    items.reserve(9);
 
     items.push_back(QString::number(this->NUM_LEFT_BOXES, 'f', 2)); // 剩余箱数
     items.push_back(QString::number(this->NUM_LEFT_ITEMS)); // 剩余件数
     items.push_back(QString::number(this->NUM_ITEMS_PER_BOX)); // 每箱几件
     items.push_back(this->MODEL_CODE); // 货号
     items.push_back(this->DESCRIPTION_SPAN); // 品名西语
+    items.push_back(this->DESCRIPTION_CN); // 品名中文
     items.push_back(QString::number(this->PRIZE, 'f', 2)); // 单价
     items.push_back(QString::number(this->PRIZE*this->NUM_LEFT_BOXES*this->NUM_ITEMS_PER_BOX, 'f', 2)); // 总价
 

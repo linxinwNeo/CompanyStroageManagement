@@ -150,12 +150,13 @@ void CreateListWin::init()
     this->selected_model_in_added_table = nullptr;
     this->selected_model_in_search_table = nullptr;
     this->list = nullptr;
+    this->adjust_list_item_win = nullptr;
 
     //设置表格 style
-    searched_models_table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    searched_models_table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     searched_models_table->setStyleSheet(table_stylesheet);
 
-    added_models_table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    added_models_table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     added_models_table->setStyleSheet(table_stylesheet);
 }
 
@@ -300,9 +301,31 @@ void CreateListWin::on_reset_added_models_table_btn_clicked()
 
 
 // the user want to adjust an item in the <added_models_table>, we init a new window for this operation
-// TODO
 void CreateListWin::on_added_models_table_cellDoubleClicked(int row, int column)
 {
+    Q_UNUSED(column);
 
+    adjust_list_item_win = QSharedPointer<Adjust_List_Item_Win> (new Adjust_List_Item_Win);
+
+    // get the selected row
+    added_models_table->selectRow(row);
+    QList<QTableWidgetItem*> selected_items = this->added_models_table->selectedItems();
+
+    if(selected_items.size() != this->NUM_ADDED_MODELS_TABLE_COLS) return; // make sure the whole row is selected
+
+    QString MODELCODE = selected_items[3]->text();
+    QString CONTAINER_ID = selected_items[this->NUM_ADDED_MODELS_TABLE_COLS - 1]->text();
+    ModelPtr model = inventory.get_Model(MODELCODE, CONTAINER_ID);
+    if(model.isNull()){
+        qDebug() << "CreateListWin::on_added_models_table_cellDoubleClicked: model is empty!";
+        return;
+    }
+
+    adjust_list_item_win->set_parentWin(this);
+    adjust_list_item_win->set_init_UI_values(model);
+    adjust_list_item_win->selected_items = selected_items;
+
+    this->setEnabled(false); // disable this win when adjust win is shown
+    adjust_list_item_win->show();
 }
 

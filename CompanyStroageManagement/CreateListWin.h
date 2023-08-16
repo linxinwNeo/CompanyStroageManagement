@@ -1,6 +1,7 @@
 #ifndef CREATELISTWIN_H
 #define CREATELISTWIN_H
 
+#include "Adjust_List_Item_Win.h"
 #include "DataStructures/List.h"
 #include "DataStructures/Model.h"
 #include "DataStructures/client_info.h"
@@ -23,7 +24,7 @@ public:
     ListPtr list;
 
     const unsigned int NUM_SEARCHED_MODELS_TABLE_COLS = 11;
-    const unsigned int NUM_ADDED_MODELS_TABLE_COLS = 8;
+    const unsigned int NUM_ADDED_MODELS_TABLE_COLS = 9;
 
     QWidget* parentPtr = nullptr;
 
@@ -61,6 +62,8 @@ private:
     QTableWidget* added_models_table;
     ModelPtr selected_model_in_search_table;
     ModelPtr selected_model_in_added_table;
+
+    QSharedPointer<Adjust_List_Item_Win> adjust_list_item_win;
 
     void clear_searched_models_table();
     void clear_added_models_table();

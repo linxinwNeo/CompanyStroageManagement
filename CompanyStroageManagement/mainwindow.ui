@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="search_model_tab">
        <attribute name="title">
@@ -192,7 +192,10 @@
                     <item>
                      <widget class="QLineEdit" name="selected_model_MODELCODE_LE">
                       <property name="enabled">
-                       <bool>false</bool>
+                       <bool>true</bool>
+                      </property>
+                      <property name="readOnly">
+                       <bool>true</bool>
                       </property>
                       <property name="placeholderText">
                        <string>暂无</string>

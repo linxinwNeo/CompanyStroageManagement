@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>533</width>
-    <height>456</height>
+    <width>538</width>
+    <height>552</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -42,7 +42,7 @@
           <widget class="QLabel" name="label">
            <property name="minimumSize">
             <size>
-             <width>150</width>
+             <width>200</width>
              <height>0</height>
             </size>
            </property>
@@ -58,6 +58,9 @@
              <width>100</width>
              <height>0</height>
             </size>
+           </property>
+           <property name="maximum">
+            <double>100000000000000.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -93,7 +96,7 @@
           <widget class="QLabel" name="label_2">
            <property name="minimumSize">
             <size>
-             <width>150</width>
+             <width>200</width>
              <height>0</height>
             </size>
            </property>
@@ -109,6 +112,9 @@
              <width>100</width>
              <height>0</height>
             </size>
+           </property>
+           <property name="maximum">
+            <number>100000</number>
            </property>
           </widget>
          </item>
@@ -144,7 +150,7 @@
           <widget class="QLabel" name="label_4">
            <property name="minimumSize">
             <size>
-             <width>150</width>
+             <width>200</width>
              <height>0</height>
             </size>
            </property>
@@ -157,6 +163,9 @@
           <widget class="QLineEdit" name="NUM_ITEMS_PER_BOX_LE">
            <property name="enabled">
             <bool>false</bool>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -185,7 +194,7 @@
           <widget class="QLabel" name="label_3">
            <property name="minimumSize">
             <size>
-             <width>150</width>
+             <width>200</width>
              <height>0</height>
             </size>
            </property>
@@ -198,6 +207,9 @@
           <widget class="QLineEdit" name="MODELCODE_LE">
            <property name="enabled">
             <bool>false</bool>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -226,19 +238,69 @@
           <widget class="QLabel" name="label_5">
            <property name="minimumSize">
             <size>
-             <width>150</width>
+             <width>200</width>
              <height>0</height>
             </size>
            </property>
            <property name="text">
-            <string>DESCRIPTION/品名</string>
+            <string>DESCRIPTION/品名(西语)</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="DESCRIPTION_LE">
+          <widget class="QTextEdit" name="DESCRIPTION_SPAN_TE">
            <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="autoFillBackground">
             <bool>false</bool>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QWidget" name="widget_9" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout_9">
+         <property name="spacing">
+          <number>3</number>
+         </property>
+         <property name="leftMargin">
+          <number>3</number>
+         </property>
+         <property name="topMargin">
+          <number>3</number>
+         </property>
+         <property name="rightMargin">
+          <number>3</number>
+         </property>
+         <property name="bottomMargin">
+          <number>3</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="label_8">
+           <property name="minimumSize">
+            <size>
+             <width>200</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>DESCRIPTION/品名(中文)</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QTextEdit" name="DESCRIPTION_CN_TE">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -267,7 +329,7 @@
           <widget class="QLabel" name="label_6">
            <property name="minimumSize">
             <size>
-             <width>150</width>
+             <width>200</width>
              <height>0</height>
             </size>
            </property>
@@ -280,6 +342,9 @@
           <widget class="QLineEdit" name="PREZE_LE">
            <property name="enabled">
             <bool>false</bool>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -308,7 +373,7 @@
           <widget class="QLabel" name="label_7">
            <property name="minimumSize">
             <size>
-             <width>150</width>
+             <width>200</width>
              <height>0</height>
             </size>
            </property>
@@ -321,6 +386,9 @@
           <widget class="QLineEdit" name="TOTAL_LE">
            <property name="enabled">
             <bool>false</bool>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
            </property>
           </widget>
          </item>

@@ -33,8 +33,7 @@ SOURCES += \
     create_PDF.cpp \
     flags.cpp \
     main.cpp \
-    mainwindow.cpp \
-    submitEntry.cpp
+    mainwindow.cpp
 
 HEADERS += \
     AddNewModelWindow.h \
@@ -56,15 +55,13 @@ HEADERS += \
     QXlsx/QXlsxHeaders.h \
     flags.h \
     helper_functions.h \
-    mainwindow.h \
-    submitEntry.h
+    mainwindow.h
 
 FORMS += \
     AddNewModelWindow.ui \
     Adjust_List_Item_Win.ui \
     CreateListWin.ui \
-    mainwindow.ui \
-    submitEntry.ui
+    mainwindow.ui
 
 win32 {
     RC_FILE = exe_icon.rc

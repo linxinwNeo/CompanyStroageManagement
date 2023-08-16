@@ -682,7 +682,12 @@
             </column>
             <column>
              <property name="text">
-              <string>DESCRIPTION/品名</string>
+              <string>DESCRIPTION/品名(西语)</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>DESCRIPTION/品名（中文）</string>
              </property>
             </column>
             <column>
@@ -697,7 +702,7 @@
             </column>
             <column>
              <property name="text">
-              <string>集装箱号</string>
+              <string>CONTAINER/集装箱号</string>
              </property>
             </column>
            </widget>
