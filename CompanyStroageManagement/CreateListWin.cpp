@@ -25,6 +25,8 @@ CreateListWin::~CreateListWin()
 }
 
 
+// create the pdf and deduc all listed items from the stroage
+// also clear the <added_models_table>
 void CreateListWin::on_generatePDF_btn_clicked()
 {
     QMessageBox::StandardButton reply;
@@ -41,8 +43,8 @@ void CreateListWin::on_generatePDF_btn_clicked()
         const unsigned long NUM_ITEMS_PER_BOX = this->added_models_table->item(i, 2)->text().toLong();
         const QString MODEL_CODE = this->added_models_table->item(i, 3)->text();
         const QString DESCRIPTION_SPAN = this->added_models_table->item(i, 4)->text();
-        const double PRIZE = this->added_models_table->item(i, 5)->text().toDouble();
-        const double TOTAL_PRIZE = this->added_models_table->item(i, 6)->text().toDouble();
+        const double PRIZE = this->added_models_table->item(i, 6)->text().toDouble();
+        const double TOTAL_PRIZE = this->added_models_table->item(i, 7)->text().toDouble();
         EntryPtr new_entry(new Entry(NUM_BOXES, TOTAL_NUM_ITEMS, NUM_ITEMS_PER_BOX, MODEL_CODE,
                                      DESCRIPTION_SPAN, PRIZE, TOTAL_PRIZE));
         this->list->add_item(new_entry);
@@ -55,7 +57,7 @@ void CreateListWin::on_generatePDF_btn_clicked()
     this->list->client_info.RFC = this->ui->RFC_LE->text();
     this->list->client_info.AGENTE = this->ui->AGENTE_LE->text();
     this->list->client_info.CONDICIONES = this->ui->CONDICIONES_LE->text();
-    this->list->client_info.DISCOUNT = this->ui->discount_SB->value();
+    this->list->client_info.DISCOUNT = this->ui->discount_SB->value() / 100.; // the value the user is entering is between 0-100
     this->list->client_info.TOTAL_NUM_BOXES = this->list->total_num_boxes();
 
     // ask for the path to store the file
@@ -73,6 +75,9 @@ void CreateListWin::on_generatePDF_btn_clicked()
     Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
     Msgbox.setText(".pdf 文件创建成功");
     Msgbox.exec();
+
+    // now deduct the items from stroage and save the list
+    //TODO
 }
 
 
@@ -297,5 +302,57 @@ void CreateListWin::on_added_models_table_cellDoubleClicked(int row, int column)
 
     this->setEnabled(false); // disable this win when adjust win is shown
     adjust_list_item_win->show();
+}
+
+
+// create a pdf but do not deduct items from the stroage
+void CreateListWin::on_previewList_btn_clicked()
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, PDF_MESSAGE_1, PDF_MESSAGE_2,
+                                  QMessageBox::Yes|QMessageBox::No);
+    if (reply == QMessageBox::No) return; // return if the user says no
+
+    this->list = ListPtr(new List());
+
+    // save things in the <added_models_table> to the <this->list> first
+    for(int i = 0; i < this->added_models_table->rowCount(); i++){
+        const double NUM_BOXES = this->added_models_table->item(i, 0)->text().toDouble();
+        const unsigned long TOTAL_NUM_ITEMS = this->added_models_table->item(i, 1)->text().toLong();
+        const unsigned long NUM_ITEMS_PER_BOX = this->added_models_table->item(i, 2)->text().toLong();
+        const QString MODEL_CODE = this->added_models_table->item(i, 3)->text();
+        const QString DESCRIPTION_SPAN = this->added_models_table->item(i, 4)->text();
+        const double PRIZE = this->added_models_table->item(i, 6)->text().toDouble();
+        const double TOTAL_PRIZE = this->added_models_table->item(i, 7)->text().toDouble();
+        EntryPtr new_entry(new Entry(NUM_BOXES, TOTAL_NUM_ITEMS, NUM_ITEMS_PER_BOX, MODEL_CODE,
+                                     DESCRIPTION_SPAN, PRIZE, TOTAL_PRIZE));
+        this->list->add_item(new_entry);
+    }
+
+    // save client info
+    this->list->client_info.CLIENTE = this->ui->CLIENTE_LE->text();
+    this->list->client_info.DOMICILIO = this->ui->DOMICILIO_LE->text();
+    this->list->client_info.CIUDAD = this->ui->CIUDAD_LE->text();
+    this->list->client_info.RFC = this->ui->RFC_LE->text();
+    this->list->client_info.AGENTE = this->ui->AGENTE_LE->text();
+    this->list->client_info.CONDICIONES = this->ui->CONDICIONES_LE->text();
+    this->list->client_info.DISCOUNT = this->ui->discount_SB->value() / 100.; // the value the user is entering is between 0-100
+    this->list->client_info.TOTAL_NUM_BOXES = this->list->total_num_boxes();
+
+    // ask for the path to store the file
+    QString filter = tr("PDF (*.pdf)");
+    QString filename = QFileDialog::getSaveFileName(this, GET_DESTINATION_MESSAGE, "list", filter);
+    if(filename.isEmpty())
+        return;
+
+    QMessageBox Msgbox(this);
+
+    // create PDF file
+    this->create_pdf(filename);
+
+    // display creation success file
+    Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
+    Msgbox.setText(".pdf 文件创建成功");
+    Msgbox.exec();
 }
 

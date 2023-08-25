@@ -56,6 +56,8 @@ private slots:
 
     void on_added_models_table_cellDoubleClicked(int row, int column);
 
+    void on_previewList_btn_clicked();
+
 private:
     void init();
 

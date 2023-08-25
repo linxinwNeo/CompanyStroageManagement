@@ -23,7 +23,10 @@ QString CreateListWin::currTime() const
     return time.toString("hh:mm:ss");
 }
 
-void CreateListWin::create_pdf(QString filename) {
+
+// make the pdf given the information saved in private variable <this->list>
+void CreateListWin::create_pdf(QString filename)
+{
     // setting up the pdf format
     QPdfWriter pdf_file(filename);
     pdf_file.setPageSize(QPageSize::A4);
@@ -50,12 +53,13 @@ void CreateListWin::create_pdf(QString filename) {
     QTextOption  option;
     option.setTextDirection(Qt::RightToLeft);
 
+    QFont non_bold("Verdana", 8);
+
     painter.setFont(bold);
     painter.setPen(pen);
 
     // CLIENTE
     painter.drawText(QPointF(width * 0.13, height * 0.172), client_info.CLIENTE);
-    qDebug() << "CLIENTE" << client_info.CLIENTE;
 
     // AGENTE
     painter.drawText(QPointF(width * 0.78, height * 0.168), client_info.AGENTE);
@@ -123,7 +127,6 @@ void CreateListWin::create_pdf(QString filename) {
 
     // DESCUENTO
     painter.drawText(QRect(0, height * 0.84, width * 0.93, height * 0.84), QString::number(subtotal-total, 'f', 2), option);
-    painter.drawText(QRect(0, height * 0.84, width * 1, height * 0.84), "(" + QString::number(client_info.DISCOUNT) + "%)", option);
 
     // IVA
     painter.drawText(QRect(0, height * 0.875, width * 0.93, height * 0.875), "0.00", option);
@@ -133,6 +136,10 @@ void CreateListWin::create_pdf(QString filename) {
 
     // the total number of boxes
     painter.drawText(QPointF(width * 0.07, height * 0.91), QString::number(client_info.TOTAL_NUM_BOXES));
+
+    painter.setFont(non_bold);
+    // the discount percent
+    painter.drawText(QRect(0, height * 0.84, width * 1.01, height * 0.84), "(" + QString::number(client_info.DISCOUNT) + "%)", option);
 
     painter.end();
 }

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1986</width>
-    <height>942</height>
+    <width>1667</width>
+    <height>757</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -417,7 +417,7 @@
               <widget class="QPushButton" name="reset_list_info_btn">
                <property name="maximumSize">
                 <size>
-                 <width>300</width>
+                 <width>200</width>
                  <height>16777215</height>
                 </size>
                </property>
@@ -431,6 +431,19 @@
              </item>
             </layout>
            </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
           </item>
          </layout>
         </widget>
@@ -868,8 +881,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1986</width>
-     <height>25</height>
+     <width>1667</width>
+     <height>21</height>
     </rect>
    </property>
   </widget>
