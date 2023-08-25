@@ -1,14 +1,11 @@
-#include "CreateListWin.h"
-#include "ui_CreateListWin.h"
-
-#include "helper_functions.h"
-#include "GlobalVars.h"
-#include "flags.h"
-#include "QXlsx/Excel.h"
 #include <QCloseEvent>
 #include <QMessageBox>
 #include <QFileDialog>
-#include "FileLoader/ReadFile.h"
+
+#include "CreateListWin.h"
+#include "create_PDF.h"
+#include "ui_CreateListWin.h"
+#include "GlobalVars.h"
 
 CreateListWin::CreateListWin(QWidget *parent) :
     QMainWindow(parent),
@@ -69,7 +66,7 @@ void CreateListWin::on_generatePDF_btn_clicked()
     QMessageBox Msgbox(this);
 
     // create PDF file
-    this->create_pdf(filename);
+    create_pdf(filename, this->list);
 
     // display creation success file
     Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
@@ -203,33 +200,35 @@ void CreateListWin::on_searched_models_table_cellClicked(int row, int column)
 }
 
 
-/* try to add selected model in to the added_table, but we need to check if it has been added already */
+/* try to add selected model in to the <added_models_table>, but we need to check if it has been added already */
 void CreateListWin::on_add_selected_model_btn_clicked()
 {
-    if(this->selected_model_in_search_table.isNull()) return;
-
-    QString MODELCODE_2be_Added = this->selected_model_in_search_table->MODEL_CODE;
+    ModelPtr model_2be_added;
+    QString MODELCODE_2be_Added;
     QString ContainerID_2be_Added;
+    QVector<QString> items;
+
+    this->setEnabled(false);
+    if(this->selected_model_in_search_table.isNull()) goto FINISH;
+
+    model_2be_added = this->selected_model_in_search_table;
+    MODELCODE_2be_Added = model_2be_added->MODEL_CODE;
+
     if(this->selected_model_in_search_table->container.isNull()) ContainerID_2be_Added.clear();
-    else ContainerID_2be_Added = this->selected_model_in_search_table->container->ID;
+    else ContainerID_2be_Added = model_2be_added->container->ID;
 
     // check if this model is in <added_models_table> already (we need to check both modelCODE and container)
     for(int row = 0; row < this->added_models_table->rowCount(); row ++){
         QString cur_modelCODE = this->added_models_table->item(row, 3)->text(); // get the modelCODE for this row
-        QString cur_containerID = this->added_models_table->item(row, 7)->text(); // get the containerID
+        QString cur_containerID = this->added_models_table->item(row, 8)->text(); // get the containerID
         if(cur_containerID == none_CN || cur_containerID == none_SPAN) cur_containerID.clear();
+
         // if both matches, then the model already exists, we dont put it in
-        if(cur_modelCODE == MODELCODE_2be_Added && cur_containerID == ContainerID_2be_Added){
-            return;
-        }
+        if(cur_modelCODE == MODELCODE_2be_Added && cur_containerID == ContainerID_2be_Added) goto FINISH;
     }
-
-    // we need to put this model into the <added_models_table>
-    const ModelPtr model_2be_added = this->selected_model_in_search_table;
-
+    // we need to put the selected model into the <added_models_table>
     added_models_table->insertRow(added_models_table->rowCount());
 
-    QVector<QString> items;
     model_2be_added->searchResult_List(items);
 
     for( UI col = 0; col < items.size(); col++ ){
@@ -240,6 +239,10 @@ void CreateListWin::on_add_selected_model_btn_clicked()
 
         added_models_table->setItem(added_models_table->rowCount()-1, col, tableWidgetItem);
     }
+
+
+    FINISH:
+        this->setEnabled(true);
 }
 
 
@@ -256,6 +259,8 @@ void CreateListWin::on_added_models_table_cellClicked(int row, int column)
 // delete the selected row in the <added_models_table>
 void CreateListWin::on_remove_selected_model_btn_clicked()
 {
+    this->setEnabled(false);
+
     auto table = this->added_models_table; // this table is what we are interested in in this function
 
     QList<QTableWidgetItem *> selected_items = table->selectedItems();
@@ -264,6 +269,8 @@ void CreateListWin::on_remove_selected_model_btn_clicked()
 
     int row_idx = selected_items[0]->row();
     table->removeRow(row_idx);
+
+    this->setEnabled(true);
 }
 
 
@@ -348,11 +355,11 @@ void CreateListWin::on_previewList_btn_clicked()
     QMessageBox Msgbox(this);
 
     // create PDF file
-    this->create_pdf(filename);
+    create_pdf(filename, this->list);
 
     // display creation success file
     Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
-    Msgbox.setText(".pdf 文件创建成功");
+    Msgbox.setText("清单创建成功");
     Msgbox.exec();
 }
 

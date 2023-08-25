@@ -33,14 +33,11 @@ public:
     CreateListWin(QWidget *parent = nullptr);
     ~CreateListWin();
 
-    QString currDate() const;
-    QString currTime() const;
-    void create_pdf(QString filename);
-
 private slots:
     void closeEvent (QCloseEvent *event);
 
     void on_generatePDF_btn_clicked();
+    void on_previewList_btn_clicked();
 
     void on_model_code_for_search_LE_textChanged(const QString &arg1);
 
@@ -56,8 +53,6 @@ private slots:
 
     void on_added_models_table_cellDoubleClicked(int row, int column);
 
-    void on_previewList_btn_clicked();
-
 private:
     void init();
 
@@ -70,6 +65,31 @@ private:
 
     void clear_searched_models_table();
     void clear_added_models_table();
+
+public:
+    // indices for searched_models_table
+    const unsigned int searched_models_table_MODELCODE_idx = 0;
+    const unsigned int searched_models_table_DESCRIPTION_CN_idx = 1;
+    const unsigned int searched_models_table_DESCRIPTION_SPAN_idx = 2;
+    const unsigned int searched_models_table_NUM_INIT_BOXES_idx = 3;
+    const unsigned int searched_models_table_NUM_ITEMS_PER_BOX_idx = 4;
+    const unsigned int searched_models_table_PRIZE_idx = 5;
+    const unsigned int searched_models_table_NUM_SOLD_BOXES_idx = 6;
+    const unsigned int searched_models_table_NUM_SOLD_ITEMS_idx = 7;
+    const unsigned int searched_models_table_NUM_LEFT_BOXES_idx = 8;
+    const unsigned int searched_models_table_NUM_LEFT_ITEMS_idx = 9;
+    const unsigned int searched_models_table_ContainerID_idx = 10;
+
+    // indices for added_models_table
+    const unsigned int added_models_table_NUM_BOXES_idx = 0;
+    const unsigned int added_models_table_NUM_ITEMS_idx = 1;
+    const unsigned int added_models_table_NUM_ITEMS_PER_BOX_idx = 2;
+    const unsigned int added_models_table_MODELCODE_idx = 3;
+    const unsigned int added_models_table_DESCRIPTION_SPAN_idx = 4;
+    const unsigned int added_models_table_DESCRIPTION_CN_idx = 5;
+    const unsigned int added_models_table_PRIZE_idx = 6;
+    const unsigned int added_models_table_TOTAL_idx = 7;
+    const unsigned int added_models_table_ContainerID_idx = 8;
 };
 
 #endif // CREATELISTWIN_H

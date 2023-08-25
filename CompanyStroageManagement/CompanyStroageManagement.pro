@@ -53,6 +53,7 @@ HEADERS += \
     Predefined.h \
     QXlsx/Excel.h \
     QXlsx/QXlsxHeaders.h \
+    create_PDF.h \
     flags.h \
     helper_functions.h \
     mainwindow.h

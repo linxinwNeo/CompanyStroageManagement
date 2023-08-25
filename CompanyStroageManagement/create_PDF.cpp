@@ -1,23 +1,14 @@
-#include <QMessageBox>
-#include <QFileDialog>
-#include <QPdfWriter>
-#include <QPainter>
-#include <QDate>
-#include <QTime>
-#include <QFile>
 
-#include "GlobalVars.h"
-#include "CreateListWin.h"
-#include "DataStructures/client_info.h"
-#include "DataStructures/entrylist.h"
+#include <create_PDF.h>
 
-QString CreateListWin::currDate() const
+
+QString currDate()
 {
     QDate date = QDate::currentDate();
     return date.toString("dd MMM yyyy");
 }
 
-QString CreateListWin::currTime() const
+QString currTime()
 {
     QTime time = QTime::currentTime();
     return time.toString("hh:mm:ss");
@@ -25,15 +16,15 @@ QString CreateListWin::currTime() const
 
 
 // make the pdf given the information saved in private variable <this->list>
-void CreateListWin::create_pdf(QString filename)
+void create_pdf(QString filename, ListPtr list)
 {
     // setting up the pdf format
     QPdfWriter pdf_file(filename);
     pdf_file.setPageSize(QPageSize::A4);
     pdf_file.setPageMargins(QMargins(300, 300, 300, 300));
 
-    const auto& client_info = this->list->client_info;
-    const auto& items = this->list->itemList;
+    const auto& client_info = list->client_info;
+    const auto& items = list->itemList;
 
     // setting up the painter
     QPainter painter(&pdf_file);
@@ -65,7 +56,7 @@ void CreateListWin::create_pdf(QString filename)
     painter.drawText(QPointF(width * 0.78, height * 0.168), client_info.AGENTE);
 
     // FECHA
-    painter.drawText(QPointF(width * 0.78, height * 0.19), this->currDate());
+    painter.drawText(QPointF(width * 0.78, height * 0.19), currDate());
 
     // DOMICILIO
     painter.drawText(QPointF(width * 0.13, height * 0.212), client_info.DOMICILIO);
@@ -74,7 +65,7 @@ void CreateListWin::create_pdf(QString filename)
     painter.drawText(QPointF(width * 0.13, height * 0.23), client_info.CIUDAD);
 
     // Hora
-    painter.drawText(QPointF(width * 0.78, height * 0.229), this->currTime());
+    painter.drawText(QPointF(width * 0.78, height * 0.229), currTime());
 
     // RFC
     painter.drawText(QPointF(width * 0.13, height * 0.2475), client_info.RFC);
@@ -120,26 +111,40 @@ void CreateListWin::create_pdf(QString filename)
 
     // compute totals
     double subtotal, total;
-    this->list->total(subtotal, total);
+    list->total(subtotal, total);
 
     // SUBTOTAL
-    painter.drawText(QRect(0, height * 0.815, width * 0.93, height * 0.815), QString::number(subtotal, 'f', 2), option);
+    painter.drawText(QRect(0, height * 0.815, width * 0.95, height * 0.815), QString::number(subtotal, 'f', 2), option);
 
     // DESCUENTO
-    painter.drawText(QRect(0, height * 0.84, width * 0.93, height * 0.84), QString::number(subtotal-total, 'f', 2), option);
+    painter.drawText(QRect(0, height * 0.84, width * 0.95, height * 0.84), QString::number(subtotal-total, 'f', 2), option);
 
     // IVA
-    painter.drawText(QRect(0, height * 0.875, width * 0.93, height * 0.875), "0.00", option);
+    painter.drawText(QRect(0, height * 0.875, width * 0.95, height * 0.875), "0.00", option);
 
     // TOTAL
-    painter.drawText(QRect(0, height * 0.907, width * 0.93, height * 0.907), QString::number(total, 'f', 2), option);
+    painter.drawText(QRect(0, height * 0.907, width * 0.95, height * 0.907), QString::number(total, 'f', 2), option);
 
     // the total number of boxes
     painter.drawText(QPointF(width * 0.07, height * 0.91), QString::number(client_info.TOTAL_NUM_BOXES));
 
+    // the discount percent using thinner font
     painter.setFont(non_bold);
-    // the discount percent
     painter.drawText(QRect(0, height * 0.84, width * 1.01, height * 0.84), "(" + QString::number(client_info.DISCOUNT) + "%)", option);
+
+    // cover the old id with white rect
+    painter.setBrush(Qt::SolidPattern);
+    painter.fillRect(QRect(width * 0.18, height * 0.92,
+                           width * 0.19, height * 0.93), QBrush(Qt::white));
+
+    // draw thick red id
+    pen.setWidth(15);
+    pen.setColor(Qt::red);
+    QFont thick_bold("Verdana", 15);
+    thick_bold.setBold(true);
+    painter.setFont(thick_bold);
+    painter.setPen(pen);
+    painter.drawText(QPointF(width * 0.18, height * 0.947), QString::number(1000000));
 
     painter.end();
 }
