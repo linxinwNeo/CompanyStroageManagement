@@ -10,6 +10,8 @@
 #include <QMainWindow>
 #include <QVector2D>
 
+class MainWindow;
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
  class CreateListWin;
@@ -26,7 +28,7 @@ public:
     const unsigned int NUM_SEARCHED_MODELS_TABLE_COLS = 11;
     const unsigned int NUM_ADDED_MODELS_TABLE_COLS = 9;
 
-    QWidget* parentPtr = nullptr;
+    MainWindow* parentPtr = nullptr;
 
     CreateListWin(QWidget *parent = nullptr);
     ~CreateListWin();
@@ -61,7 +63,6 @@ private:
     QTableWidget* searched_models_table;
     QTableWidget* added_models_table;
     ModelPtr selected_model_in_search_table;
-    ModelPtr selected_model_in_added_table;
 
     QSharedPointer<Adjust_List_Item_Win> adjust_list_item_win;
 

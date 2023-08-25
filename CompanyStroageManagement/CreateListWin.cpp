@@ -147,7 +147,6 @@ void CreateListWin::init()
     //初始化变量
     this->searched_models_table = this->ui->searched_models_table;
     this->added_models_table = this->ui->added_models_table;
-    this->selected_model_in_added_table = nullptr;
     this->selected_model_in_search_table = nullptr;
     this->list = nullptr;
     this->adjust_list_item_win = nullptr;
@@ -246,55 +245,26 @@ void CreateListWin::on_added_models_table_cellClicked(int row, int column)
 
     const auto& table = this->added_models_table;
     table->selectRow(row);
-
-    QList items = table->selectedItems();
-    if(items.length() != this->NUM_ADDED_MODELS_TABLE_COLS) return;
-
-    QString MODELCODE = items[3]->text(); // index 3 is the MODEL_CODE in added model table
-    QString ContainerID = items[items.length()-1]->text();
-
-    this->selected_model_in_added_table = inventory.get_Model(MODELCODE, ContainerID);
 }
 
 
-// delete the selected model in added table
-// we remove at most one row at a time, but a table should have only one entry for the model
+// delete the selected row in the <added_models_table>
 void CreateListWin::on_remove_selected_model_btn_clicked()
 {
-    auto selected_model = this->selected_model_in_added_table; // this model is what we are interested in in this function
-
-    if(selected_model.isNull()) return;
-
     auto table = this->added_models_table; // this table is what we are interested in in this function
 
-    QString MODELCODE = selected_model->MODEL_CODE;
-    QString ContainerID;
-    if(selected_model->container.isNull()) ContainerID.clear();
-    else ContainerID = selected_model->container->ID;
+    QList<QTableWidgetItem *> selected_items = table->selectedItems();
 
-    // look for the correspodning row of this model
-    for(int row = 0; row < table->rowCount(); row ++){
-        QString cur_modelCODE = table->item(row, 3)->text(); // get the modelCODE for this row
-        QString cur_containerID = table->item(row, 7)->text(); // get the containerID
+    if(selected_items.size() == 0) return; // nothing is selected
 
-        if(cur_containerID == none_CN || cur_containerID == none_SPAN) cur_containerID.clear();
-        // if both matches, then we remove this model
-        if(cur_modelCODE == MODELCODE && cur_containerID == ContainerID){
-            table->removeRow(row);
-            this->selected_model_in_added_table = nullptr;
-            return;
-        }
-    }
-
-    // if we don't find any model that matches, we shall return
-    return;
+    int row_idx = selected_items[0]->row();
+    table->removeRow(row_idx);
 }
 
 
-// remove all table contents
+// remove all table contents in <added_models_table>
 void CreateListWin::on_reset_added_models_table_btn_clicked()
 {
-    this->selected_model_in_added_table = nullptr;
     this->added_models_table->clearContents();
     this->added_models_table->setRowCount(0);
 }
@@ -320,10 +290,10 @@ void CreateListWin::on_added_models_table_cellDoubleClicked(int row, int column)
         qDebug() << "CreateListWin::on_added_models_table_cellDoubleClicked: model is empty!";
         return;
     }
-
-    adjust_list_item_win->set_parentWin(this);
+    
+    adjust_list_item_win->parent_win = this;
+    adjust_list_item_win->added_models_table = this->added_models_table;
     adjust_list_item_win->set_init_UI_values(model);
-    adjust_list_item_win->selected_items = selected_items;
 
     this->setEnabled(false); // disable this win when adjust win is shown
     adjust_list_item_win->show();

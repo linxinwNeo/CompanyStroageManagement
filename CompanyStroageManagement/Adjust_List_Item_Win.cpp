@@ -17,6 +17,7 @@ Adjust_List_Item_Win::~Adjust_List_Item_Win()
     delete ui;
 }
 
+
 void Adjust_List_Item_Win::set_init_UI_values(ModelPtr model)
 {
     this->model_2be_adjusted = model;
@@ -44,12 +45,6 @@ void Adjust_List_Item_Win::set_init_UI_values(ModelPtr model)
 }
 
 
-void Adjust_List_Item_Win::set_parentWin(QWidget *parentWin)
-{
-    this->parent_win = parentWin;
-}
-
-
 void Adjust_List_Item_Win::closeEvent(QCloseEvent *event)
 {
     if(this->parent_win != nullptr) this->parent_win->setEnabled(true);
@@ -61,10 +56,21 @@ void Adjust_List_Item_Win::closeEvent(QCloseEvent *event)
 // update the corresponding row in <added_models_table>
 void Adjust_List_Item_Win::on_finish_btn_clicked()
 {
+    if(!this->added_models_table) this->close();
+
+    QList<QTableWidgetItem*> selected_items = this->added_models_table->selectedItems();
+
+    // if the item number is 0, we remove the target row in the parentWin's <added_models_table>
+    if(this->ui->NUM_BOXES_SB->value() == 0 || this->ui->NUM_ITEMS_SB->value() == 0){
+        unsigned int row_idx = selected_items[0]->row();
+        this->added_models_table->removeRow(row_idx);
+    }
+
     // we only need to update three information: num of boxes, num of items, total
-    this->selected_items[0]->setText(QString::number(this->ui->NUM_BOXES_SB->value(), 'f', 2));
-    this->selected_items[1]->setText(QString::number(this->ui->NUM_ITEMS_SB->value()));
-    this->selected_items[7]->setText(this->ui->TOTAL_LE->text());
+    selected_items[0]->setText(QString::number(this->ui->NUM_BOXES_SB->value(), 'f', 2));
+    selected_items[1]->setText(QString::number(this->ui->NUM_ITEMS_SB->value()));
+    selected_items[7]->setText(this->ui->TOTAL_LE->text());
+
     this->close();
 }
 

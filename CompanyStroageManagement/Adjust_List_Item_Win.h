@@ -18,9 +18,9 @@ public:
     ~Adjust_List_Item_Win();
 
     void set_init_UI_values(ModelPtr model);
-    void set_parentWin(QWidget* parentWin);
 
-    QList<QTableWidgetItem*> selected_items;
+    QTableWidget* added_models_table = nullptr;
+    QWidget* parent_win = nullptr;
 
 private slots:
     void closeEvent (QCloseEvent *event);
@@ -31,7 +31,6 @@ private slots:
     void on_NUM_ITEMS_SB_valueChanged(int arg1);
 
 private:
-    QWidget* parent_win = nullptr;
     Ui::Adjust_List_Item_Win *ui;
 
     ModelPtr model_2be_adjusted = nullptr;
