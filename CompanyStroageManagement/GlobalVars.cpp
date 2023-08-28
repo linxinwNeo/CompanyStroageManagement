@@ -5,7 +5,8 @@ QSharedPointer<Excel> excel (nullptr);
 
 QString DB_FNAME = "C:/Users/linxi/OneDrive/Desktop/inventory.txt";
 
-class Inventory inventory;
+class Inventory inventory; // holds all models, containers
+class Lists lists; // holds all past list
 
 const QString APP_NAME = "Yi Hong Ding 库存管理软件";
 const QString FATAL_ERROR_MESSAGE = "出现无法解决的错误，请联系制作者。";

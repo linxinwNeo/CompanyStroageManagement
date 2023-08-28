@@ -144,7 +144,7 @@ void create_pdf(QString filename, ListPtr list)
     thick_bold.setBold(true);
     painter.setFont(thick_bold);
     painter.setPen(pen);
-    painter.drawText(QPointF(width * 0.18, height * 0.947), QString::number(1000000));
+    painter.drawText(QPointF(width * 0.18, height * 0.948), QString::number(list->id));
 
     painter.end();
 }

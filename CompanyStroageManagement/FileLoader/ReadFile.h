@@ -15,7 +15,10 @@ public:
     ReadFile();
     ~ReadFile();
 
-    void read_Inventory_txt_File(const QString& path);
+    void read_Inventory_txt_File(const QString& path) const;
+    void read_Inventory_xlsx_File(const QString& path) const;
+
+    void read_Lists_txt_File(const QString& path) const;
 };
 
 #endif //READFILE_H

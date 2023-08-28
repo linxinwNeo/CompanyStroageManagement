@@ -17,7 +17,7 @@ ReadFile::~ReadFile()
 }
 
 /* read models file, while reading models, we also build container instances */
-void ReadFile::read_Inventory_txt_File(const QString& path)
+void ReadFile::read_Inventory_txt_File(const QString& path) const
 {
     QFile file(path);
     QTextStream in(&file);
@@ -91,6 +91,20 @@ void ReadFile::read_Inventory_txt_File(const QString& path)
 }
 
 
+// read inventory.xlsx file
+void ReadFile::read_Inventory_xlsx_File(const QString &path) const
+{
+    //TODO
+}
+
+// read past lists from txt file
+void ReadFile::read_Lists_txt_File(const QString &path) const
+{
+    //TODO
+}
+
+
+// get file path from the user
 QString ReadFile::get_file_path()
 {
     QString filter = "Vector Field File (*.3dvf);; Polygonal File Format (*.ply)";

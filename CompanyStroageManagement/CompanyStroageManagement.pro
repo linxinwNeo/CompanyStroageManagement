@@ -33,7 +33,8 @@ SOURCES += \
     create_PDF.cpp \
     flags.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    output_error_file.cpp
 
 HEADERS += \
     AddNewModelWindow.h \

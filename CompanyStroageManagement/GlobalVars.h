@@ -15,6 +15,7 @@ extern QString stroagefilePath;
 extern const QString APP_NAME;
 extern QSharedPointer<Excel> excel;
 extern Inventory inventory;
+extern Lists lists;
 extern const QString AddNewModel_WinTitle;
 extern const QString CreateList_WinTitle;
 

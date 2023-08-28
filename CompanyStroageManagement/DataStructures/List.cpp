@@ -1,6 +1,8 @@
 #include "List.h"
+#include "FileLoader/WriteFile.h"
+#include "output_error_file.cpp"
 
-unsigned int List::num_items() const
+unsigned long int List::num_items() const
 {
     return this->itemList.num_entries();
 }
@@ -12,10 +14,13 @@ void List::add_item(QSharedPointer<Entry> & new_entry)
 }
 
 
-unsigned int List::total_num_boxes() const
+double List::total_num_boxes() const
 {
     return this->itemList.total_num_boxes();
 }
+
+
+
 
 
 // compute the total prize
@@ -33,7 +38,21 @@ void List::total(double &p1, double &p2) const
 }
 
 
-// add the list, assign id
+// return a unique id that is not used by any list so far
+unsigned long int Lists::get_unique_id() const
+{
+    // we test integers from 0 to ULONG_MAX
+    for(unsigned long int i = 0; i < ULONG_LONG_MAX; i++){
+        if(lists.contains(i)) continue;
+        return i;
+    }
+
+
+    write_error_file("Lists::get_unique_id() couldn't get a valid id");
+    exit(-1);
+}
+
+
 void Lists::add_list(ListPtr list_2be_added)
 {
     if(list_2be_added.isNull()){
@@ -70,4 +89,13 @@ QSharedPointer<List> Lists::get_list(unsigned long id)
 {
     if(!this->lists.contains(id)) return nullptr;
     return this->lists[id];
+}
+
+
+// write the list information in a file
+void Lists::save_2_file() const
+{
+    WriteFile wf;
+
+    wf.Lists2txt("lists.txt");
 }

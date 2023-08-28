@@ -1,5 +1,6 @@
 #include "WriteFile.h"
 #include "GlobalVars.h"
+#include "output_error_file.cpp"
 
 WriteFile::WriteFile()
 {
@@ -14,11 +15,11 @@ WriteFile::~WriteFile()
 
 /* write models to a models.txt file
  * for each model, we need to output its properties, more specifically, output the container's ID */
-void WriteFile::models2txt(const QString &path)
+void WriteFile::Models2txt(const QString &path) const
 {
     QFile file(path);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)){
-        qDebug() << "WriteFile::WriteToFile: couldn't create the file: " << path;
+        write_error_file("WriteFile::Models2txt: couldn't create the file: " + path);
         return;
     }
 
@@ -45,8 +46,31 @@ void WriteFile::models2txt(const QString &path)
     return;
 }
 
-/* write the models to a xlsx file */
-void WriteFile::models2xlsx(const QString &path)
-{
 
+/* write the models to a xlsx file */
+void WriteFile::Models2xlsx(const QString &path) const
+{
+    //TODO
+}
+
+
+/* write lists to a txt file */
+void WriteFile::Lists2txt(const QString &path) const
+{
+    QFile file(path);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)){
+        write_error_file("WriteFile::Lists2txt: couldn't create the file: " + path);
+        return;
+    }
+
+    QTextStream out(&file);
+    const QString split_item = "&&";
+
+    // output total number of lists
+    out << "% num of lists" << QString::number(lists.num_lists()) << "\n";
+    out <<
+
+    for(const ListPtr& list : lists.lists){
+        out << QString::number(list->id)
+    }
 }

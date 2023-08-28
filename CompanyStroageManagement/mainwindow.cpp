@@ -7,6 +7,7 @@
 #include <QFileDialog>
 #include "GlobalVars.h"
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -25,6 +26,7 @@ MainWindow::~MainWindow()
     this->selected_container = nullptr;
     delete ui;
 }
+
 
 void MainWindow::init()
 {
