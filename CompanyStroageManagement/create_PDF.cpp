@@ -95,7 +95,7 @@ void create_pdf(QString filename, ListPtr list)
         x += width * 0.122;
 
         // DESCRIPTION
-        painter.drawText(QPointF(x, y), entry->Description);
+        painter.drawText(QPointF(x, y), entry->Description_SPAN);
         x += width * 0.273;
 
         // PRECIO U.

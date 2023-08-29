@@ -11,19 +11,19 @@ class EntryList
 {
 public:
     // variables
-    QVector< QSharedPointer<Entry> > entries;
+    QVector< EntryPtr > entries;
 
     // functions
     inline EntryList();
     inline ~EntryList();
     void clear_memory();
 
-    void add_entry(QSharedPointer<Entry>& entry);
+    void add_entry(EntryPtr& entry);
     void remove_entry();
     void remove_entry(const UL);
-    void update_entry(const UL, QSharedPointer<Entry>& entry);
+    void update_entry(const UL, EntryPtr& entry);
     inline UL num_entries() const;
-    QSharedPointer<Entry> get_entry(const UL);
+    EntryPtr get_entry(const UL);
 
     double total_num_boxes() const;
 };

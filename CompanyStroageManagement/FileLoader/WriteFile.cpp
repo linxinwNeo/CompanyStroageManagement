@@ -67,10 +67,41 @@ void WriteFile::Lists2txt(const QString &path) const
     const QString split_item = "&&";
 
     // output total number of lists
-    out << "% num of lists" << QString::number(lists.num_lists()) << "\n";
-    out <<
+    out << "% num of lists" << QString::number(lists.num_lists()) << "\n\n";
 
     for(const ListPtr& list : lists.lists){
-        out << QString::number(list->id)
+        // output list id first
+        out << list->id << split_item; // 0
+        // output list create data and time
+        out << list->date_created.toString("dd MMM yyyy") << split_item // 1
+            << list->time_created.toString("hh:mm:ss") << split_item; // 2
+
+        // output client_info
+        out << list->client_info.CLIENTE << split_item // 3
+            << list->client_info.DOMICILIO << split_item // 4
+            << list->client_info.CIUDAD << split_item // 5
+            << list->client_info.RFC << split_item // 6
+            << list->client_info.AGENTE << split_item // 7
+            << list->client_info.CONDICIONES << split_item // 8
+            << list->client_info.TOTAL_NUM_BOXES << split_item // 9
+            << list->client_info.DISCOUNT << split_item; // 10
+
+        // output num of models in the list
+        out << list->num_items() << "\n"; // 11
+
+        for(EntryPtr entry : list->itemList.entries){
+            out << entry->CLAVE << split_item // 0 modelCODE
+                << entry->ContainerID << split_item // 1 container ID
+                << entry->CAJA << split_item // 2 NUM_BOXES
+                << entry->CANTIDAD << split_item // 3 TOTAL_NUM_ITEMS
+                << entry->CANT_POR_CAJA << split_item // 4 NUM_ITEMS_PER_BOX
+                << entry->Description_SPAN << split_item // 5 品名（西语）
+                << entry->Description_CN << split_item // 6 品名（中文）
+                << entry->PRECIO << split_item // 7 单价
+                << entry->IMPORTE // 8 总价
+                << "\n"; // 换行
+        }
     }
+
+    file.close();
 }
