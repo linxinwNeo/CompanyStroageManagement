@@ -1,6 +1,7 @@
 #include "Inventory.h"
 #include "Algorithm/QuickSort.h"
 #include "GlobalVars.h"
+#include "Others/handle_containerID.h"
 
 Inventory::Inventory()
 {
@@ -87,12 +88,15 @@ QSet<ModelPtr> Inventory::get_Model(const QString &MODEL_CODE)
 // if the mode does not have a container, <Container_ID> is supposed to be an empty string
 QSharedPointer<Model> Inventory::get_Model(const QString &MODEL_CODE, const QString &Container_ID)
 {
+    QString containerID = Container_ID;
+    handle_ContainerID(containerID);
+
     QSet<ModelPtr> candidates = this->get_Model(MODEL_CODE);
     for(ModelPtr m : candidates){
-        if(m->container.isNull() && (Container_ID.isEmpty() || Container_ID == none_CN || Container_ID == none_SPAN)){
+        if(m->container.isNull() && containerID.isEmpty()){
             return m;
         }
-        else if(!m->container.isNull() && m->container->ID == Container_ID){
+        else if(!m->container.isNull() && m->container->ID == containerID){
             return m;
         }
     }

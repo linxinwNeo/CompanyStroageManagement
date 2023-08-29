@@ -88,7 +88,7 @@ public:
     const unsigned int added_models_table_DESCRIPTION_SPAN_idx = 4;
     const unsigned int added_models_table_DESCRIPTION_CN_idx = 5;
     const unsigned int added_models_table_PRIZE_idx = 6;
-    const unsigned int added_models_table_TOTAL_idx = 7;
+    const unsigned int added_models_table_TOTAL_idx = 7; // total prize
     const unsigned int added_models_table_ContainerID_idx = 8;
 };
 

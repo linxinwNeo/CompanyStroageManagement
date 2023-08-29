@@ -3,6 +3,7 @@
 #include <QFileDialog>
 
 #include "CreateListWin.h"
+#include "Others/handle_containerID.h"
 #include "create_PDF.h"
 #include "ui_CreateListWin.h"
 #include "GlobalVars.h"
@@ -35,15 +36,19 @@ void CreateListWin::on_generatePDF_btn_clicked()
 
     // save things in the <added_models_table> to the <this->list> first
     for(int i = 0; i < this->added_models_table->rowCount(); i++){
-        const double NUM_BOXES = this->added_models_table->item(i, 0)->text().toDouble();
-        const unsigned long TOTAL_NUM_ITEMS = this->added_models_table->item(i, 1)->text().toLong();
-        const unsigned long NUM_ITEMS_PER_BOX = this->added_models_table->item(i, 2)->text().toLong();
-        const QString MODEL_CODE = this->added_models_table->item(i, 3)->text();
-        const QString DESCRIPTION_SPAN = this->added_models_table->item(i, 4)->text();
-        const double PRIZE = this->added_models_table->item(i, 6)->text().toDouble();
-        const double TOTAL_PRIZE = this->added_models_table->item(i, 7)->text().toDouble();
-        EntryPtr new_entry(new Entry(NUM_BOXES, TOTAL_NUM_ITEMS, NUM_ITEMS_PER_BOX, MODEL_CODE,
-                                     DESCRIPTION_SPAN, PRIZE, TOTAL_PRIZE));
+        const double NUM_BOXES = this->added_models_table->item(i, added_models_table_NUM_BOXES_idx)->text().toDouble();
+        const unsigned long TOTAL_NUM_ITEMS = this->added_models_table->item(i, added_models_table_NUM_ITEMS_idx)->text().toLong();
+        const unsigned long NUM_ITEMS_PER_BOX = this->added_models_table->item(i, added_models_table_NUM_ITEMS_PER_BOX_idx)->text().toLong();
+        const QString MODEL_CODE = this->added_models_table->item(i, added_models_table_MODELCODE_idx)->text();
+        const QString DESCRIPTION_SPAN = this->added_models_table->item(i, added_models_table_DESCRIPTION_SPAN_idx)->text();
+        const QString DESCRIPTION_CN = this->added_models_table->item(i, added_models_table_DESCRIPTION_CN_idx)->text();
+        const double PRIZE = this->added_models_table->item(i, added_models_table_PRIZE_idx)->text().toDouble();
+        const double TOTAL_PRIZE = this->added_models_table->item(i, added_models_table_TOTAL_idx)->text().toDouble();
+        const QString ContainerID = this->added_models_table->item(i, added_models_table_ContainerID_idx)->text();
+        EntryPtr new_entry(new Entry(NUM_BOXES, TOTAL_NUM_ITEMS, NUM_ITEMS_PER_BOX,
+                                     MODEL_CODE, ContainerID,
+                                     DESCRIPTION_SPAN, DESCRIPTION_CN,
+                                     PRIZE, TOTAL_PRIZE));
         this->list->add_item(new_entry);
     }
 
@@ -191,10 +196,10 @@ void CreateListWin::on_searched_models_table_cellClicked(int row, int column)
     QList items = table->selectedItems();
     if(items.length() != this->NUM_SEARCHED_MODELS_TABLE_COLS) return;
 
-    QString MODELCODE = items[0]->text(); // index 0 is the MODEL_CODE
-    QString ContainerID = items[items.length()-1]->text();
+    QString MODELCODE = items[searched_models_table_MODELCODE_idx]->text(); // index 0 is the MODEL_CODE
+    QString ContainerID = items[searched_models_table_ContainerID_idx]->text();
     // set ID to empty if this model does not have a container
-    if(ContainerID == none_CN || ContainerID == none_SPAN) ContainerID.clear();
+    handle_ContainerID(ContainerID);
 
     this->selected_model_in_search_table = inventory.get_Model(MODELCODE, ContainerID);
 }
@@ -219,9 +224,9 @@ void CreateListWin::on_add_selected_model_btn_clicked()
 
     // check if this model is in <added_models_table> already (we need to check both modelCODE and container)
     for(int row = 0; row < this->added_models_table->rowCount(); row ++){
-        QString cur_modelCODE = this->added_models_table->item(row, 3)->text(); // get the modelCODE for this row
-        QString cur_containerID = this->added_models_table->item(row, 8)->text(); // get the containerID
-        if(cur_containerID == none_CN || cur_containerID == none_SPAN) cur_containerID.clear();
+        QString cur_modelCODE = this->added_models_table->item(row, added_models_table_MODELCODE_idx)->text(); // get the modelCODE for this row
+        QString cur_containerID = this->added_models_table->item(row, added_models_table_ContainerID_idx)->text(); // get the containerID
+        handle_ContainerID(cur_containerID);
 
         // if both matches, then the model already exists, we dont put it in
         if(cur_modelCODE == MODELCODE_2be_Added && cur_containerID == ContainerID_2be_Added) goto FINISH;
@@ -324,15 +329,19 @@ void CreateListWin::on_previewList_btn_clicked()
 
     // save things in the <added_models_table> to the <this->list> first
     for(int i = 0; i < this->added_models_table->rowCount(); i++){
-        const double NUM_BOXES = this->added_models_table->item(i, 0)->text().toDouble();
-        const unsigned long TOTAL_NUM_ITEMS = this->added_models_table->item(i, 1)->text().toLong();
-        const unsigned long NUM_ITEMS_PER_BOX = this->added_models_table->item(i, 2)->text().toLong();
-        const QString MODEL_CODE = this->added_models_table->item(i, 3)->text();
-        const QString DESCRIPTION_SPAN = this->added_models_table->item(i, 4)->text();
-        const double PRIZE = this->added_models_table->item(i, 6)->text().toDouble();
-        const double TOTAL_PRIZE = this->added_models_table->item(i, 7)->text().toDouble();
-        EntryPtr new_entry(new Entry(NUM_BOXES, TOTAL_NUM_ITEMS, NUM_ITEMS_PER_BOX, MODEL_CODE,
-                                     DESCRIPTION_SPAN, PRIZE, TOTAL_PRIZE));
+        const double NUM_BOXES = this->added_models_table->item(i, added_models_table_NUM_BOXES_idx)->text().toDouble();
+        const unsigned long TOTAL_NUM_ITEMS = this->added_models_table->item(i, added_models_table_NUM_ITEMS_idx)->text().toLong();
+        const unsigned long NUM_ITEMS_PER_BOX = this->added_models_table->item(i, added_models_table_NUM_ITEMS_PER_BOX_idx)->text().toLong();
+        const QString MODEL_CODE = this->added_models_table->item(i, added_models_table_MODELCODE_idx)->text();
+        const QString DESCRIPTION_SPAN = this->added_models_table->item(i, added_models_table_DESCRIPTION_SPAN_idx)->text();
+        const QString DESCRIPTION_CN = this->added_models_table->item(i, added_models_table_DESCRIPTION_CN_idx)->text();
+        const double PRIZE = this->added_models_table->item(i, added_models_table_PRIZE_idx)->text().toDouble();
+        const double TOTAL_PRIZE = this->added_models_table->item(i, added_models_table_TOTAL_idx)->text().toDouble();
+        const QString ContainerID = this->added_models_table->item(i, added_models_table_ContainerID_idx)->text();
+        EntryPtr new_entry(new Entry(NUM_BOXES, TOTAL_NUM_ITEMS, NUM_ITEMS_PER_BOX,
+                                     MODEL_CODE, ContainerID,
+                                     DESCRIPTION_SPAN, DESCRIPTION_CN,
+                                     PRIZE, TOTAL_PRIZE));
         this->list->add_item(new_entry);
     }
 

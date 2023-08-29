@@ -1,4 +1,5 @@
 #include "DataStructures/entry.h"
+#include "Others/handle_containerID.h"
 
 Entry::Entry(double CAJA, UL CANTIDAD, UL CANT_POR_CAJA ,
              QString CLAVE, QString ContainerID,
@@ -6,7 +7,6 @@ Entry::Entry(double CAJA, UL CANTIDAD, UL CANT_POR_CAJA ,
              double PRECIO, double IMPORTE)
 {
     this->CLAVE = CLAVE;
-    this->ContainerID = ContainerID;
     this->CAJA = CAJA;
     this->CANTIDAD = CANTIDAD;
     this->CANT_POR_CAJA = CANT_POR_CAJA;
@@ -14,4 +14,8 @@ Entry::Entry(double CAJA, UL CANTIDAD, UL CANT_POR_CAJA ,
     this->Description_CN = Description_CN;
     this->PRECIO = PRECIO;
     this->IMPORTE = IMPORTE;
+
+    // we do special treatment to the ContainerID
+    this->ContainerID = ContainerID;
+    handle_ContainerID(this->ContainerID);
 }

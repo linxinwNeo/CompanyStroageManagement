@@ -1,12 +1,12 @@
-#ifndef HELPER_FUNCTIONS_H
-#define HELPER_FUNCTIONS_H
+#ifndef IS_INT_FLOAT_H
+#define IS_INT_FLOAT_H
 
 #include <QString>
 
 inline bool is_float(const QString text);
 inline bool is_int(const QString text);
 
-bool is_int(const QString text){
+inline bool is_int(const QString text){
     for (QChar ch : text) {
         int v = ch.toLatin1(); // ASCII Val converted
         if (!(v >= 48 && v <= 57)) {
@@ -16,7 +16,7 @@ bool is_int(const QString text){
     return true;
 }
 
-bool is_float(const QString text){
+inline bool is_float(const QString text){
     for (QChar ch : text) {
         int v = ch.toLatin1(); // ASCII Val converted
         if (!(v >= 48 && v <= 57) && v != 46) {
@@ -26,4 +26,4 @@ bool is_float(const QString text){
     return true;
 }
 
-#endif // HELPER_FUNCTIONS_H
+#endif // IS_INT_FLOAT_H

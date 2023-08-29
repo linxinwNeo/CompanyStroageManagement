@@ -33,8 +33,7 @@ SOURCES += \
     create_PDF.cpp \
     flags.cpp \
     main.cpp \
-    mainwindow.cpp \
-    output_error_file.cpp
+    mainwindow.cpp
 
 HEADERS += \
     AddNewModelWindow.h \
@@ -51,6 +50,9 @@ HEADERS += \
     FileLoader/ReadFile.h \
     FileLoader/WriteFile.h \
     GlobalVars.h \
+    Others/handle_containerID.h \
+    Others/is_int_float.h \
+    Others/output_error_file.h \
     Predefined.h \
     QXlsx/Excel.h \
     QXlsx/QXlsxHeaders.h \

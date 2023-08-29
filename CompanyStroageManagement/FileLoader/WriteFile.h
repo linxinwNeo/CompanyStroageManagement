@@ -6,8 +6,8 @@
 class WriteFile
 {
 public:
-    WriteFile();
-    ~WriteFile();
+    WriteFile() {};
+    ~WriteFile() {};
 
     void Models2txt(const QString& path) const;
     void Models2xlsx(const QString& path) const;
