@@ -115,14 +115,10 @@ void Model::searchResult_Regular(QVector<QString> &items) const
     items.push_back(QString::number(this->NUM_LEFT_BOXES, 'f', 2)); // 剩余箱数
     items.push_back(QString::number(this->NUM_LEFT_ITEMS)); // 剩余件数
 
-    if(this->container.isNull()){
-        items.push_back(none_CN); // 集装箱号
-    }
-    else{
-        items.push_back(this->container->ID); // 集装箱号
-    }
-}
+    if(this->container.isNull()) items.push_back(none_CN); // 集装箱号
+    else items.push_back(this->container->ID); // 集装箱号
 
+}
 
 
 /* return items that are used to put in the added_models_table */
@@ -140,12 +136,9 @@ void Model::searchResult_List(QVector<QString> &items) const
     items.push_back(QString::number(this->PRIZE, 'f', 2)); // 单价
     items.push_back(QString::number(this->PRIZE*this->NUM_LEFT_BOXES*this->NUM_ITEMS_PER_BOX, 'f', 2)); // 总价
 
-    if(this->container.isNull()){
-        items.push_back(none_CN); // 集装箱号
-    }
-    else{
-        items.push_back(this->container->ID); // 集装箱号
-    }
+    if(this->container.isNull()) items.push_back(none_CN); // 集装箱号
+    else items.push_back(this->container->ID); // 集装箱号
+
 }
 
 

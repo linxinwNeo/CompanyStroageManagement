@@ -56,5 +56,11 @@ private:
     Ui::MainWindow *ui;
     QSharedPointer<AddNewModelWindow> AddNewModelWinPtr;
     QSharedPointer<CreateListWin> CreateListWinPtr;
+
+public:
+    const unsigned int search_model_result_table_MODELCODE_idx = 0;
+    const unsigned int search_model_result_table_ContainerID_idx = 10;
+
+    const unsigned int search_container_result_table_ContainerID_idx = 0;
 };
 #endif // MAINWINDOW_H

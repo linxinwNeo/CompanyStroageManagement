@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "FileLoader/ReadFile.h"
+#include "Others/handle_containerID.h"
 #include "ui_mainwindow.h"
 
 #include <QCloseEvent>
@@ -302,20 +303,23 @@ void MainWindow::on_search_model_result_Table_cellClicked(int row, int column)
 {
     Q_UNUSED(column);
 
+    this->setEnabled(false);
+
     const auto& table = this->ui->search_model_result_Table;
     table->selectRow(row);
 
     QList items = table->selectedItems();
-    if(items.length() != this->num_search_model_result_table_columns) return;
 
-    QString MODEL_CODE = items[0]->text(); // index 0 is the MODEL_CODE
-    QString Container_ID = items[items.length()-1]->text();
+    QString MODEL_CODE = items[search_model_result_table_MODELCODE_idx]->text(); // index 0 is the MODEL_CODE
+    QString Container_ID = items[search_model_result_table_ContainerID_idx]->text();
     // set ID to empty if this model does not have a container
-    if(Container_ID == none_CN || Container_ID == none_SPAN) Container_ID.clear();
+    handle_ContainerID(Container_ID);
 
     this->selected_model = inventory.get_Model(MODEL_CODE, Container_ID);
 
     this->show_selected_model();
+
+    this->setEnabled(true);
 }
 
 
@@ -374,11 +378,10 @@ void MainWindow::on_search_container_result_Table_cellClicked(int row, int colum
     table->selectRow(row);
 
     QList items = table->selectedItems();
-    if(items.length() != this->num_search_container_result_table_columns) return;
 
-    QString Container_ID = items[0]->text();
+    QString Container_ID = items[ search_container_result_table_ContainerID_idx ]->text();
     // set ID to empty if this model does not have a container
-    if(Container_ID == none_CN || Container_ID == none_SPAN) Container_ID.clear();
+    handle_ContainerID(Container_ID);
 
     this->selected_container = inventory.get_container(Container_ID);
 

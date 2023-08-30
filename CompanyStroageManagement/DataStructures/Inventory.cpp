@@ -132,6 +132,8 @@ void Inventory::add_Container(QSharedPointer<Container> &container)
 
 QSharedPointer<Container> Inventory::get_container(const QString &ID)
 {
+    if(ID.isEmpty()) return nullptr;
+
     if(this->contains_container(ID)){
         return this->container_map[ID];
     }
