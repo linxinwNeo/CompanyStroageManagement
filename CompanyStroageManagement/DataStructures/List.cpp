@@ -1,6 +1,6 @@
 #include "List.h"
 #include "FileLoader/WriteFile.h"
-#include "output_error_file.cpp"
+#include "Others/output_error_file.h"
 
 unsigned long int List::num_items() const
 {
@@ -42,7 +42,7 @@ void List::total(double &p1, double &p2) const
 unsigned long int Lists::get_unique_id() const
 {
     // we test integers from 0 to ULONG_MAX
-    for(unsigned long int i = 0; i < ULONG_LONG_MAX; i++){
+    for(long long i = 0; i < ULONG_LONG_MAX; i++){
         if(lists.contains(i)) continue;
         return i;
     }

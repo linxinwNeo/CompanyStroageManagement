@@ -17,6 +17,7 @@ CreateListWin::CreateListWin(QWidget *parent) :
     this->init();
 }
 
+
 CreateListWin::~CreateListWin()
 {
     delete ui;
@@ -61,6 +62,8 @@ void CreateListWin::on_generatePDF_btn_clicked()
     this->list->client_info.CONDICIONES = this->ui->CONDICIONES_LE->text();
     this->list->client_info.DISCOUNT = this->ui->discount_SB->value() / 100.; // the value the user is entering is between 0-100
     this->list->client_info.TOTAL_NUM_BOXES = this->list->total_num_boxes();
+    const long int id = lists.get_unique_id();
+    this->list->id = id;
 
     // ask for the path to store the file
     QString filter = tr("PDF (*.pdf)");
@@ -80,6 +83,10 @@ void CreateListWin::on_generatePDF_btn_clicked()
 
     // now deduct the items from stroage and save the list
     //TODO
+
+    // save the list to a txt file
+    lists.add_list(this->list);
+    lists.save_2_file();
 }
 
 

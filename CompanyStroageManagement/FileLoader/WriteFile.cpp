@@ -1,6 +1,6 @@
 #include "WriteFile.h"
 #include "GlobalVars.h"
-#include "/Others/output_error_file.h"
+#include "Others/output_error_file.h"
 
 /* write models to a models.txt file
  * for each model, we need to output its properties, more specifically, output the container's ID */
