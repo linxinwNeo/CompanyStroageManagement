@@ -99,3 +99,10 @@ void Lists::save_2_file() const
 
     wf.Lists2txt("lists.txt");
 }
+
+
+void Lists::clear()
+{
+    this->lists.clear();
+
+}

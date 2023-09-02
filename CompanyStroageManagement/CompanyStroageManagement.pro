@@ -29,8 +29,9 @@ SOURCES += \
     FileLoader/ReadFile.cpp \
     FileLoader/WriteFile.cpp \
     GlobalVars.cpp \
+    Others/create_pdf.cpp \
     QXlsx/Excel.cpp \
-    create_PDF.cpp \
+    Search_List_Win.cpp \
     flags.cpp \
     main.cpp \
     mainwindow.cpp
@@ -50,13 +51,15 @@ HEADERS += \
     FileLoader/ReadFile.h \
     FileLoader/WriteFile.h \
     GlobalVars.h \
+    Others/create_pdf.h \
+    Others/get_save_filePath.h \
     Others/handle_containerID.h \
     Others/is_int_float.h \
     Others/output_error_file.h \
     Predefined.h \
     QXlsx/Excel.h \
     QXlsx/QXlsxHeaders.h \
-    create_PDF.h \
+    Search_List_Win.h \
     flags.h \
     helper_functions.h \
     mainwindow.h
@@ -65,6 +68,7 @@ FORMS += \
     AddNewModelWindow.ui \
     Adjust_List_Item_Win.ui \
     CreateListWin.ui \
+    Search_List_Win.ui \
     mainwindow.ui
 
 win32 {

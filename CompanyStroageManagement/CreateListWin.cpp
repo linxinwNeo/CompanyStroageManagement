@@ -1,10 +1,12 @@
 #include <QCloseEvent>
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QStandardPaths>
 
 #include "CreateListWin.h"
+#include "Others/get_save_filePath.h"
 #include "Others/handle_containerID.h"
-#include "create_PDF.h"
+#include "Others/create_PDF.h"
 #include "ui_CreateListWin.h"
 #include "GlobalVars.h"
 
@@ -65,20 +67,22 @@ void CreateListWin::on_generatePDF_btn_clicked()
     const long int id = lists.get_unique_id();
     this->list->id = id;
 
+    list->date_created = QDate::currentDate();
+    list->time_created = QTime::currentTime();
+
     // ask for the path to store the file
     QString filter = tr("PDF (*.pdf)");
-    QString filename = QFileDialog::getSaveFileName(this, GET_DESTINATION_MESSAGE, "list", filter);
-    if(filename.isEmpty())
-        return;
+    QString filePath = get_save_filePath("list", WHERE_TO_SAVE_FILE_MESSAGE, filter);
 
-    QMessageBox Msgbox(this);
+    if(filePath.isEmpty()) return;
 
     // create PDF file
-    create_pdf(filename, this->list);
+    create_pdf(filePath, this->list);
 
-    // display creation success file
+    // display creation success
+    QMessageBox Msgbox(this);
     Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
-    Msgbox.setText(".pdf 文件创建成功");
+    Msgbox.setText("清单创建成功");
     Msgbox.exec();
 
     // now deduct the items from stroage and save the list
@@ -87,6 +91,63 @@ void CreateListWin::on_generatePDF_btn_clicked()
     // save the list to a txt file
     lists.add_list(this->list);
     lists.save_2_file();
+}
+
+
+// create a pdf but do not deduct items from the stroage
+void CreateListWin::on_previewList_btn_clicked()
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, PDF_MESSAGE_1, PDF_MESSAGE_2,
+                                  QMessageBox::Yes|QMessageBox::No);
+    if (reply == QMessageBox::No) return; // return if the user says no
+
+    this->list = ListPtr(new List());
+
+    // save things in the <added_models_table> to the <this->list> first
+    for(int i = 0; i < this->added_models_table->rowCount(); i++){
+        const double NUM_BOXES = this->added_models_table->item(i, added_models_table_NUM_BOXES_idx)->text().toDouble();
+        const unsigned long TOTAL_NUM_ITEMS = this->added_models_table->item(i, added_models_table_NUM_ITEMS_idx)->text().toLong();
+        const unsigned long NUM_ITEMS_PER_BOX = this->added_models_table->item(i, added_models_table_NUM_ITEMS_PER_BOX_idx)->text().toLong();
+        const QString MODEL_CODE = this->added_models_table->item(i, added_models_table_MODELCODE_idx)->text();
+        const QString DESCRIPTION_SPAN = this->added_models_table->item(i, added_models_table_DESCRIPTION_SPAN_idx)->text();
+        const QString DESCRIPTION_CN = this->added_models_table->item(i, added_models_table_DESCRIPTION_CN_idx)->text();
+        const double PRIZE = this->added_models_table->item(i, added_models_table_PRIZE_idx)->text().toDouble();
+        const double TOTAL_PRIZE = this->added_models_table->item(i, added_models_table_TOTAL_idx)->text().toDouble();
+        const QString ContainerID = this->added_models_table->item(i, added_models_table_ContainerID_idx)->text();
+        EntryPtr new_entry(new Entry(NUM_BOXES, TOTAL_NUM_ITEMS, NUM_ITEMS_PER_BOX,
+                                     MODEL_CODE, ContainerID,
+                                     DESCRIPTION_SPAN, DESCRIPTION_CN,
+                                     PRIZE, TOTAL_PRIZE));
+        this->list->add_item(new_entry);
+    }
+
+    // save client info
+    this->list->client_info.CLIENTE = this->ui->CLIENTE_LE->text();
+    this->list->client_info.DOMICILIO = this->ui->DOMICILIO_LE->text();
+    this->list->client_info.CIUDAD = this->ui->CIUDAD_LE->text();
+    this->list->client_info.RFC = this->ui->RFC_LE->text();
+    this->list->client_info.AGENTE = this->ui->AGENTE_LE->text();
+    this->list->client_info.CONDICIONES = this->ui->CONDICIONES_LE->text();
+    this->list->client_info.DISCOUNT = this->ui->discount_SB->value() / 100.; // the value the user is entering is between 0-100
+    this->list->client_info.TOTAL_NUM_BOXES = this->list->total_num_boxes();
+    this->list->date_created = QDate::currentDate();
+    this->list->time_created = QTime::currentTime();
+
+    // ask for the path to store the file
+    QString filter = tr("PDF (*.pdf)");
+    QString filePath = get_save_filePath("list", WHERE_TO_SAVE_FILE_MESSAGE, filter);
+
+    if(filePath.isEmpty()) return;
+
+    // create PDF file
+    create_pdf(filePath, this->list);
+
+    // display creation success
+    QMessageBox Msgbox(this);
+    Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
+    Msgbox.setText("清单创建成功");
+    Msgbox.exec();
 }
 
 
@@ -323,59 +384,4 @@ void CreateListWin::on_added_models_table_cellDoubleClicked(int row, int column)
     adjust_list_item_win->show();
 }
 
-
-// create a pdf but do not deduct items from the stroage
-void CreateListWin::on_previewList_btn_clicked()
-{
-    QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, PDF_MESSAGE_1, PDF_MESSAGE_2,
-                                  QMessageBox::Yes|QMessageBox::No);
-    if (reply == QMessageBox::No) return; // return if the user says no
-
-    this->list = ListPtr(new List());
-
-    // save things in the <added_models_table> to the <this->list> first
-    for(int i = 0; i < this->added_models_table->rowCount(); i++){
-        const double NUM_BOXES = this->added_models_table->item(i, added_models_table_NUM_BOXES_idx)->text().toDouble();
-        const unsigned long TOTAL_NUM_ITEMS = this->added_models_table->item(i, added_models_table_NUM_ITEMS_idx)->text().toLong();
-        const unsigned long NUM_ITEMS_PER_BOX = this->added_models_table->item(i, added_models_table_NUM_ITEMS_PER_BOX_idx)->text().toLong();
-        const QString MODEL_CODE = this->added_models_table->item(i, added_models_table_MODELCODE_idx)->text();
-        const QString DESCRIPTION_SPAN = this->added_models_table->item(i, added_models_table_DESCRIPTION_SPAN_idx)->text();
-        const QString DESCRIPTION_CN = this->added_models_table->item(i, added_models_table_DESCRIPTION_CN_idx)->text();
-        const double PRIZE = this->added_models_table->item(i, added_models_table_PRIZE_idx)->text().toDouble();
-        const double TOTAL_PRIZE = this->added_models_table->item(i, added_models_table_TOTAL_idx)->text().toDouble();
-        const QString ContainerID = this->added_models_table->item(i, added_models_table_ContainerID_idx)->text();
-        EntryPtr new_entry(new Entry(NUM_BOXES, TOTAL_NUM_ITEMS, NUM_ITEMS_PER_BOX,
-                                     MODEL_CODE, ContainerID,
-                                     DESCRIPTION_SPAN, DESCRIPTION_CN,
-                                     PRIZE, TOTAL_PRIZE));
-        this->list->add_item(new_entry);
-    }
-
-    // save client info
-    this->list->client_info.CLIENTE = this->ui->CLIENTE_LE->text();
-    this->list->client_info.DOMICILIO = this->ui->DOMICILIO_LE->text();
-    this->list->client_info.CIUDAD = this->ui->CIUDAD_LE->text();
-    this->list->client_info.RFC = this->ui->RFC_LE->text();
-    this->list->client_info.AGENTE = this->ui->AGENTE_LE->text();
-    this->list->client_info.CONDICIONES = this->ui->CONDICIONES_LE->text();
-    this->list->client_info.DISCOUNT = this->ui->discount_SB->value() / 100.; // the value the user is entering is between 0-100
-    this->list->client_info.TOTAL_NUM_BOXES = this->list->total_num_boxes();
-
-    // ask for the path to store the file
-    QString filter = tr("PDF (*.pdf)");
-    QString filename = QFileDialog::getSaveFileName(this, GET_DESTINATION_MESSAGE, "list", filter);
-    if(filename.isEmpty())
-        return;
-
-    QMessageBox Msgbox(this);
-
-    // create PDF file
-    create_pdf(filename, this->list);
-
-    // display creation success file
-    Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
-    Msgbox.setText("清单创建成功");
-    Msgbox.exec();
-}
 

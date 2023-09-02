@@ -3,6 +3,8 @@
 
 #include <QString>
 
+const QString split_item = "&&";
+
 class WriteFile
 {
 public:

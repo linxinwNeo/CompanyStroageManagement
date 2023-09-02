@@ -54,7 +54,11 @@ void MainWindow::init()
 
     // read inventory.txt file
     ReadFile read_file;
-    read_file.read_Inventory_txt_File(DB_FNAME); // build the inventory
+    // read inventory.txt file
+    read_file.read_Inventory_txt_File(Inventory_FNAME); // build the inventory
+    // read lists.txt file
+    read_file.read_Lists_txt_File(Lists_FNAME); // build the inventory
+
 }
 
 
@@ -416,5 +420,10 @@ void MainWindow::on_new_list_btn_clicked()
     w->parentPtr = this;
 
     this->hide();
+}
+
+void MainWindow::on_search_past_list_btn_clicked()
+{
+
 }
 

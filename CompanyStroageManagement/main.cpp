@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
     MainWindow w;
     // setting up the window
     w.setWindowTitle(APP_NAME);
-    w.show();
+    w.showMaximized();
 
     return a.exec();
 }

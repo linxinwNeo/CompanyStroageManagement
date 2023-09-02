@@ -46,6 +46,8 @@ public:
     ListPtr get_list(unsigned long int id);
 
     void save_2_file() const;
+
+    void clear();
 };
 
 #endif // LIST_H

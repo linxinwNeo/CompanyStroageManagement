@@ -15,8 +15,8 @@
 #include "DataStructures/entrylist.h"
 
 
-QString currDate();
-QString currTime();
+QString currDate(const QDate date);
+QString currTime(const QTime time);
 void create_pdf(QString filename, ListPtr list);
 
 #endif // CREATE_PDF_H

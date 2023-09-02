@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1851</width>
-    <height>943</height>
+    <width>1425</width>
+    <height>710</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="search_model_tab">
        <attribute name="title">
@@ -885,19 +885,6 @@
            <property name="bottomMargin">
             <number>3</number>
            </property>
-           <item>
-            <widget class="QPushButton" name="list_history_btn">
-             <property name="maximumSize">
-              <size>
-               <width>400</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>历史清单</string>
-             </property>
-            </widget>
-           </item>
           </layout>
          </widget>
         </item>
@@ -992,8 +979,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1851</width>
-     <height>25</height>
+     <width>1425</width>
+     <height>21</height>
     </rect>
    </property>
   </widget>

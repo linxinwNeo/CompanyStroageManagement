@@ -6,11 +6,11 @@
 #include <QFile>
 #include <QSharedPointer>
 
+const QString split_item = "&&";
+
 class ReadFile {
 
 public:
-    static QString get_file_path();
-
     // member functions
     ReadFile();
     ~ReadFile();

@@ -13,7 +13,6 @@ void WriteFile::Models2txt(const QString &path) const
     }
 
     QTextStream out(&file);
-    const QString split_item = "&&";
     for(const auto& m : inventory.model_set){
         out << m->MODEL_CODE + split_item;
         out << m->DESCRIPTION_SPAN + split_item;
@@ -53,10 +52,9 @@ void WriteFile::Lists2txt(const QString &path) const
     }
 
     QTextStream out(&file);
-    const QString split_item = "&&";
 
     // output total number of lists
-    out << "% num of lists" << QString::number(lists.num_lists()) << "\n\n";
+    out << QString::number(lists.num_lists()) << "\n\n";
 
     for(const ListPtr& list : lists.lists){
         // output list id first

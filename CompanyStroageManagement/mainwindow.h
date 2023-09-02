@@ -48,6 +48,8 @@ private slots:
 
     void on_new_list_btn_clicked();
 
+    void on_search_past_list_btn_clicked();
+
 private:
     ModelPtr selected_model;
     ContainerPtr selected_container;

@@ -9,7 +9,8 @@
 #include "DataStructures/client_info.h"
 #include "QXlsx/Excel.h"
 
-extern QString DB_FNAME;
+extern QString Inventory_FNAME;
+extern QString Lists_FNAME;
 
 extern QString stroagefilePath;
 extern const QString APP_NAME;
@@ -28,7 +29,7 @@ extern const QString EXCEL_SELECT_A_VALID_XLSX_FILE;
 
 extern const QString PDF_MESSAGE_1;
 extern const QString PDF_MESSAGE_2;
-extern const QString GET_DESTINATION_MESSAGE;
+extern const QString WHERE_TO_SAVE_FILE_MESSAGE;
 extern const QString table_stylesheet;
 extern const QString none_CN;
 extern const QString none_SPAN;

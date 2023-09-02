@@ -1,16 +1,14 @@
 
-#include <create_PDF.h>
+#include "create_pdf.h"
 
 
-QString currDate()
+QString currDate(const QDate date)
 {
-    QDate date = QDate::currentDate();
     return date.toString("dd MMM yyyy");
 }
 
-QString currTime()
+QString currTime(const QTime time)
 {
-    QTime time = QTime::currentTime();
     return time.toString("hh:mm:ss");
 }
 
@@ -20,6 +18,7 @@ void create_pdf(QString filename, ListPtr list)
 {
     // setting up the pdf format
     QPdfWriter pdf_file(filename);
+
     pdf_file.setPageSize(QPageSize::A4);
     pdf_file.setPageMargins(QMargins(300, 300, 300, 300));
 
@@ -56,7 +55,7 @@ void create_pdf(QString filename, ListPtr list)
     painter.drawText(QPointF(width * 0.78, height * 0.168), client_info.AGENTE);
 
     // FECHA
-    painter.drawText(QPointF(width * 0.78, height * 0.19), currDate());
+    painter.drawText(QPointF(width * 0.78, height * 0.19), currDate(list->date_created));
 
     // DOMICILIO
     painter.drawText(QPointF(width * 0.13, height * 0.212), client_info.DOMICILIO);
@@ -65,7 +64,7 @@ void create_pdf(QString filename, ListPtr list)
     painter.drawText(QPointF(width * 0.13, height * 0.23), client_info.CIUDAD);
 
     // Hora
-    painter.drawText(QPointF(width * 0.78, height * 0.229), currTime());
+    painter.drawText(QPointF(width * 0.78, height * 0.229), currTime(list->time_created));
 
     // RFC
     painter.drawText(QPointF(width * 0.13, height * 0.2475), client_info.RFC);

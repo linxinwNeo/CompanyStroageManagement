@@ -23,8 +23,6 @@ void ReadFile::read_Inventory_txt_File(const QString& path) const
     QTextStream in(&file);
     qDebug() << "Start Reading" << path;
 
-    const QString split_item = "&&";
-
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)){
         qDebug() << "couldn't open the file" << path;
         return;
@@ -97,24 +95,78 @@ void ReadFile::read_Inventory_xlsx_File(const QString &path) const
     //TODO
 }
 
+
 // read past lists from txt file
 void ReadFile::read_Lists_txt_File(const QString &path) const
 {
-    //TODO
-}
+    lists.clear();
 
+    QFile file(path);
+    QTextStream in(&file);
+    qDebug() << "Start Reading" << path;
 
-// get file path from the user
-QString ReadFile::get_file_path()
-{
-    QString filter = "Vector Field File (*.3dvf);; Polygonal File Format (*.ply)";
-    QString filename = QFileDialog::getOpenFileName(nullptr, "Save File",
-                                                    QStandardPaths::writableLocation(QStandardPaths::DownloadLocation) +
-                                                        "/untitled.3dvf",
-                                                    filter);
-    if(filename.isEmpty()){
-        qDebug() << "failed to get filename, quit.";
-        exit(1);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)){
+        qDebug() << "couldn't open the file" << path;
+        return;
     }
-    return filename;
+
+    QString line;
+    { // read first two lines
+        line = in.readLine(); // read the first line, which contains the number of lists
+        QStringList strList = line.split(split_item);
+        unsigned int num_lists = strList[0].toUInt() + 1;
+        if(num_lists == 0) return;
+        lists.lists.reserve(num_lists);
+
+        line = in.readLine(); // read the second line, which contains nothing
+    }
+
+
+    while (!in.atEnd()) {
+        line = in.readLine();
+        QStringList strList = line.split(split_item);
+
+        ListPtr new_list (new List());
+
+        // read id
+        new_list->id = strList[0].toUInt();
+
+        // read date and time for the list
+        new_list->date_created = QDate::fromString(strList[1], "dd MMM yyyy");
+        new_list->time_created = QTime::fromString(strList[2], "hh:mm:ss");
+
+        // read client_info
+        new_list->client_info.CLIENTE = strList[3];
+        new_list->client_info.DOMICILIO = strList[4];
+        new_list->client_info.CIUDAD = strList[5];
+        new_list->client_info.RFC = strList[6];
+        new_list->client_info.AGENTE = strList[7];
+        new_list->client_info.CONDICIONES = strList[8];
+        new_list->client_info.TOTAL_NUM_BOXES = strList[9].toDouble();
+        new_list->client_info.DISCOUNT = strList[10].toDouble();
+
+
+        // reading entries
+        unsigned long num_items = strList[11].toUInt();
+        for(unsigned int i = 0; i < num_items; i++){
+            line = in.readLine();
+            QStringList entryRawData = line.split(split_item);
+
+            EntryPtr newEntry(new Entry());
+
+            newEntry->CLAVE = entryRawData[0];
+            newEntry->ContainerID = entryRawData[1];
+            newEntry->CAJA = entryRawData[2].toDouble();
+            newEntry->CANTIDAD = entryRawData[3].toDouble();
+            newEntry->CANT_POR_CAJA = entryRawData[4].toUInt();
+            newEntry->Description_SPAN = entryRawData[5];
+            newEntry->Description_CN = entryRawData[6];
+            newEntry->PRECIO = entryRawData[7].toDouble();
+            newEntry->IMPORTE = entryRawData[8].toDouble();
+
+            new_list->add_item(newEntry);
+        }
+
+        lists.add_list(new_list);
+    }
 }

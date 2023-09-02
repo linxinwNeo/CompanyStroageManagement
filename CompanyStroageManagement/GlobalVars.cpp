@@ -3,7 +3,8 @@
 QString stroagefilePath;
 QSharedPointer<Excel> excel (nullptr);
 
-QString DB_FNAME = "C:/Users/linxi/OneDrive/Desktop/inventory.txt";
+QString Inventory_FNAME = "C:/Users/linxi/OneDrive/Desktop/inventory.txt";
+QString Lists_FNAME = "lists.txt";
 
 class Inventory inventory; // holds all models, containers
 class Lists lists; // holds all past list
@@ -21,7 +22,7 @@ const QString EXCEL_SELECT_A_VALID_XLSX_FILE = "你必须选择一个有效的XL
 const QString PDF_MESSAGE_1 = "是否确定生产pdf文件";
 const QString PDF_MESSAGE_2 = "确定生成pdf文件？";
 
-const QString GET_DESTINATION_MESSAGE = "想将文件保存在哪里？";
+const QString WHERE_TO_SAVE_FILE_MESSAGE = "想将文件保存在哪里？";
 
 const QString table_stylesheet = "QHeaderView::section { background-color:#F0F0F0; }";
 const QString none_CN = "无";
