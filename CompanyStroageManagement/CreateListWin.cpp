@@ -367,17 +367,19 @@ void CreateListWin::on_added_models_table_cellDoubleClicked(int row, int column)
     added_models_table->selectRow(row);
     QList<QTableWidgetItem*> selected_items = this->added_models_table->selectedItems();
 
-    QString MODELCODE = selected_items[3]->text();
-    QString CONTAINER_ID = selected_items[this->NUM_ADDED_MODELS_TABLE_COLS - 1]->text();
+    QString MODELCODE = selected_items[added_models_table_MODELCODE_idx]->text();
+    QString CONTAINER_ID = selected_items[added_models_table_ContainerID_idx]->text();
     ModelPtr model = inventory.get_Model(MODELCODE, CONTAINER_ID);
     if(model.isNull()){
         qDebug() << "CreateListWin::on_added_models_table_cellDoubleClicked: model is empty!";
         return;
     }
+
+    const unsigned long NUM_ITEMS = selected_items[added_models_table_NUM_ITEMS_idx]->text().toULong();
     
     adjust_list_item_win->parent_win = this;
     adjust_list_item_win->added_models_table = this->added_models_table;
-    adjust_list_item_win->set_init_UI_values(model);
+    adjust_list_item_win->set_init_UI_values(model, NUM_ITEMS);
 
     this->setEnabled(false); // disable this win when adjust win is shown
     adjust_list_item_win->show();
