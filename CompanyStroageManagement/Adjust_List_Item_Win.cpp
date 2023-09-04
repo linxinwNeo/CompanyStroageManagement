@@ -22,10 +22,7 @@ void Adjust_List_Item_Win::set_init_UI_values(ModelPtr model)
 {
     this->model_2be_adjusted = model;
 
-    this->ui->NUM_BOXES_SB->setMaximum(model->NUM_LEFT_BOXES);
     this->ui->NUM_BOXES_LE->setText(QString::number(model->NUM_LEFT_BOXES, 'f', 2));
-    this->ui->NUM_BOXES_SB->setValue(model->NUM_LEFT_BOXES);
-
 
     this->ui->NUM_ITEMS_SB->setMaximum(model->NUM_LEFT_ITEMS);
     this->ui->NUM_ITEMS_LE->setText(QString::number(model->NUM_LEFT_ITEMS));
@@ -61,33 +58,17 @@ void Adjust_List_Item_Win::on_finish_btn_clicked()
     QList<QTableWidgetItem*> selected_items = this->added_models_table->selectedItems();
 
     // if the item number is 0, we remove the target row in the parentWin's <added_models_table>
-    if(this->ui->NUM_BOXES_SB->value() == 0 || this->ui->NUM_ITEMS_SB->value() == 0){
+    if(this->ui->NUM_BOXES_LE->text().toDouble() == 0 || this->ui->NUM_ITEMS_SB->value() == 0){
         unsigned int row_idx = selected_items[0]->row();
         this->added_models_table->removeRow(row_idx);
     }
 
     // we only need to update three information: num of boxes, num of items, total
-    selected_items[0]->setText(QString::number(this->ui->NUM_BOXES_SB->value(), 'f', 2));
+    selected_items[0]->setText(this->ui->NUM_BOXES_LE->text());
     selected_items[1]->setText(QString::number(this->ui->NUM_ITEMS_SB->value()));
     selected_items[7]->setText(this->ui->TOTAL_LE->text());
 
     this->close();
-}
-
-
-// when NUM_BOXES changes, we also want to modify the value of others
-void Adjust_List_Item_Win::on_NUM_BOXES_SB_valueChanged(double cur_num_boxes)
-{
-    if(cur_num_boxes > this->model_2be_adjusted->NUM_LEFT_BOXES){
-        cur_num_boxes = this->model_2be_adjusted->NUM_LEFT_BOXES;
-        this->ui->NUM_BOXES_SB->setValue(cur_num_boxes);
-    }
-
-    const unsigned int num_items = cur_num_boxes * (double) this->model_2be_adjusted->NUM_ITEMS_PER_BOX;
-    this->ui->NUM_ITEMS_SB->setValue(num_items);
-
-    const double total = num_items * model_2be_adjusted->PRIZE;
-    this->ui->TOTAL_LE->setText(QString::number(total, 'f', 2));
 }
 
 
@@ -99,13 +80,8 @@ void Adjust_List_Item_Win::on_NUM_ITEMS_SB_valueChanged(int cur_num_items)
     }
 
     double num_boxes = cur_num_items / (double) this->model_2be_adjusted->NUM_ITEMS_PER_BOX;
-    if(num_boxes > this->model_2be_adjusted->NUM_LEFT_BOXES){
-        num_boxes = this->model_2be_adjusted->NUM_LEFT_BOXES;
-        cur_num_items = num_boxes * this->model_2be_adjusted->NUM_ITEMS_PER_BOX;
-        this->ui->NUM_ITEMS_SB->setValue(cur_num_items);
-    }
 
-    this->ui->NUM_BOXES_SB->setValue(num_boxes);
+    this->ui->NUM_BOXES_LE->setText(QString::number(num_boxes, 'f', 2));
 
     const double total = cur_num_items * model_2be_adjusted->PRIZE;
     this->ui->TOTAL_LE->setText(QString::number(total, 'f', 2));
