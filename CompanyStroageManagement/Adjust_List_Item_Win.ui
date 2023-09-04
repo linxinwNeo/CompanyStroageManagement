@@ -52,22 +52,15 @@
           </widget>
          </item>
          <item>
-          <widget class="QDoubleSpinBox" name="NUM_BOXES_SB">
-           <property name="minimumSize">
-            <size>
-             <width>100</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximum">
-            <double>100000000000000.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item>
           <widget class="QLineEdit" name="NUM_BOXES_LE">
            <property name="enabled">
             <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>0.0</string>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -209,7 +202,7 @@
             <bool>false</bool>
            </property>
            <property name="readOnly">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -250,7 +243,7 @@
          <item>
           <widget class="QTextEdit" name="DESCRIPTION_SPAN_TE">
            <property name="enabled">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
            <property name="autoFillBackground">
             <bool>false</bool>
@@ -297,7 +290,7 @@
          <item>
           <widget class="QTextEdit" name="DESCRIPTION_CN_TE">
            <property name="enabled">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -344,7 +337,7 @@
             <bool>false</bool>
            </property>
            <property name="readOnly">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
           </widget>
          </item>

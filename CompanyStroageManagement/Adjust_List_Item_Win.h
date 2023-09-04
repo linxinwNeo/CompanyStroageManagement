@@ -26,8 +26,6 @@ private slots:
     void closeEvent (QCloseEvent *event);
     void on_finish_btn_clicked();
 
-    void on_NUM_BOXES_SB_valueChanged(double arg1);
-
     void on_NUM_ITEMS_SB_valueChanged(int arg1);
 
 private:
