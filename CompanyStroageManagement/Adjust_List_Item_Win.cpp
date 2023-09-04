@@ -18,15 +18,17 @@ Adjust_List_Item_Win::~Adjust_List_Item_Win()
 }
 
 
-void Adjust_List_Item_Win::set_init_UI_values(ModelPtr model)
+void Adjust_List_Item_Win::set_init_UI_values(ModelPtr model, const unsigned long int NUM_ITEMS)
 {
     this->model_2be_adjusted = model;
 
-    this->ui->NUM_BOXES_LE->setText(QString::number(model->NUM_LEFT_BOXES, 'f', 2));
+    const double NUM_BOXES = ((double) NUM_ITEMS) / model->NUM_ITEMS_PER_BOX;
+
+    this->ui->NUM_BOXES_LE->setText(QString::number(NUM_BOXES, 'f', 2));
 
     this->ui->NUM_ITEMS_SB->setMaximum(model->NUM_LEFT_ITEMS);
-    this->ui->NUM_ITEMS_LE->setText(QString::number(model->NUM_LEFT_ITEMS));
-    this->ui->NUM_ITEMS_SB->setValue(model->NUM_LEFT_ITEMS);
+    this->ui->NUM_ITEMS_LE->setText(QString::number(model->NUM_LEFT_ITEMS, 'f', 2));
+    this->ui->NUM_ITEMS_SB->setValue(NUM_ITEMS);
 
 
     this->ui->NUM_ITEMS_PER_BOX_LE->setText(QString::number(model->NUM_ITEMS_PER_BOX));
@@ -38,7 +40,7 @@ void Adjust_List_Item_Win::set_init_UI_values(ModelPtr model)
 
     this->ui->PREZE_LE->setText(QString::number(model->PRIZE, 'f', 2));
 
-    this->ui->TOTAL_LE->setText(QString::number(model->TOTAL_PRIZE(model->NUM_LEFT_BOXES), 'f', 2));
+    this->ui->TOTAL_LE->setText(QString::number(model->PRIZE * NUM_ITEMS, 'f', 2));
 }
 
 

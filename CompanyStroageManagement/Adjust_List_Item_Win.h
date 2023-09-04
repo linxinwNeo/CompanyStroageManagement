@@ -17,7 +17,7 @@ public:
     explicit Adjust_List_Item_Win(QWidget *parent = nullptr);
     ~Adjust_List_Item_Win();
 
-    void set_init_UI_values(ModelPtr model);
+    void set_init_UI_values(ModelPtr model, const unsigned long int NUM_ITEMS);
 
     QTableWidget* added_models_table = nullptr;
     QWidget* parent_win = nullptr;
