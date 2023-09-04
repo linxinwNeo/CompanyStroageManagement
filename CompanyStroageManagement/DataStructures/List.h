@@ -19,11 +19,13 @@ public:
     List() {};
     ~List() {};
 
-    unsigned long int num_items() const;
+    unsigned long int num_model_types() const;
     void add_item(EntryPtr&);
     double total_num_boxes() const;
 
     void total(double& p1, double& p2) const;
+
+    QVector<QString> describe_this_list() const;
 };
 
 
@@ -45,9 +47,12 @@ public:
 
     ListPtr get_list(unsigned long int id);
 
+    void get_list(QString id_prefix, QVector<ListPtr >& candidates);
+
     void save_2_file() const;
 
     void clear();
+
 };
 
 #endif // LIST_H

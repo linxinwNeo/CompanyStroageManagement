@@ -64,7 +64,7 @@ void CreateListWin::on_generatePDF_btn_clicked()
     this->list->client_info.CONDICIONES = this->ui->CONDICIONES_LE->text();
     this->list->client_info.DISCOUNT = this->ui->discount_SB->value() / 100.; // the value the user is entering is between 0-100
     this->list->client_info.TOTAL_NUM_BOXES = this->list->total_num_boxes();
-    const long int id = lists.get_unique_id();
+    const unsigned long int id = lists.get_unique_id();
     this->list->id = id;
 
     list->date_created = QDate::currentDate();
@@ -72,7 +72,7 @@ void CreateListWin::on_generatePDF_btn_clicked()
 
     // ask for the path to store the file
     QString filter = tr("PDF (*.pdf)");
-    QString filePath = get_save_filePath("list", WHERE_TO_SAVE_FILE_MESSAGE, filter);
+    QString filePath = get_save_filePath("list.pdf", WHERE_TO_SAVE_FILE_MESSAGE, filter);
 
     if(filePath.isEmpty()) return;
 
@@ -165,6 +165,7 @@ void CreateListWin::closeEvent (QCloseEvent *event)
         event->ignore();
     }
     else {
+        this->parentPtr->show();
         event->accept();
     }
 }
@@ -365,8 +366,6 @@ void CreateListWin::on_added_models_table_cellDoubleClicked(int row, int column)
     // get the selected row
     added_models_table->selectRow(row);
     QList<QTableWidgetItem*> selected_items = this->added_models_table->selectedItems();
-
-    if(selected_items.size() != this->NUM_ADDED_MODELS_TABLE_COLS) return; // make sure the whole row is selected
 
     QString MODELCODE = selected_items[3]->text();
     QString CONTAINER_ID = selected_items[this->NUM_ADDED_MODELS_TABLE_COLS - 1]->text();

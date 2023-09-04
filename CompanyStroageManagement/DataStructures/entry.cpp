@@ -19,3 +19,22 @@ Entry::Entry(double CAJA, UL CANTIDAD, UL CANT_POR_CAJA ,
     this->ContainerID = ContainerID;
     handle_ContainerID(this->ContainerID);
 }
+
+
+QVector<QString> Entry::view_values() const
+{
+    QString containerID = this->ContainerID;
+    if(containerID.isEmpty()) containerID = none_CN;
+
+    return {
+        QString::number(CAJA),
+        QString::number(CANTIDAD),
+        QString::number(CANT_POR_CAJA),
+        CLAVE,
+        Description_SPAN,
+        Description_CN,
+        QString::number(PRECIO),
+        QString::number(IMPORTE),
+        containerID
+    };
+}

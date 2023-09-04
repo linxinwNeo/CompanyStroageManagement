@@ -90,13 +90,13 @@ void AddNewModelWindow::on_add_new_model_btn_clicked()
     }
 
     // 提取其他参数
-    const QString DESCRIPTION_CN = this->ui->DESCRIPTION_CN_LE->text();
-    const QString DESCRIPTION_SPAN = this->ui->DESCRIPTION_SPAN_LE->text();
+    const QString DESCRIPTION_CN = this->ui->DESCRIPTION_CN_LE->text().trimmed();
+    const QString DESCRIPTION_SPAN = this->ui->DESCRIPTION_SPAN_LE->text().trimmed();
     const double PRIZE = this->ui->PRIZE_SB->value();
     const double NUM_INIT_BOXES = this->ui->NUM_INIT_BOXES_SB->value();
     const double NUM_SOLD_BOXES = this->ui->NUM_SOLD_BOXES_SB->value();
     const unsigned long int NUM_ITEMS_PER_BOX = this->ui->NUM_ITEMS_PER_BOX_SB->value();
-    const double NUM_LEFT_BOXES = NUM_INIT_BOXES - NUM_LEFT_BOXES;
+    const double NUM_LEFT_BOXES = NUM_INIT_BOXES - NUM_SOLD_BOXES;
     const unsigned long int NUM_LEFT_ITEMS = NUM_LEFT_BOXES * NUM_ITEMS_PER_BOX;
 
     // 初始箱数不能少于已售箱数

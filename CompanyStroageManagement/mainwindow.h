@@ -6,6 +6,7 @@
 #include "DataStructures/Model.h"
 #include "DataStructures/Container.h"
 #include "DataStructures/client_info.h"
+#include "Search_List_Win.h"
 #include <QTableWidget>
 #include <QMainWindow>
 #include <QVector2D>
@@ -58,6 +59,7 @@ private:
     Ui::MainWindow *ui;
     QSharedPointer<AddNewModelWindow> AddNewModelWinPtr;
     QSharedPointer<CreateListWin> CreateListWinPtr;
+    QSharedPointer<Search_List_Win> SearchListWinPtr;
 
 public:
     const unsigned int search_model_result_table_MODELCODE_idx = 0;

@@ -31,7 +31,6 @@ void create_pdf(QString filename, ListPtr list)
     int width = painter.viewport().width();
     int height = painter.viewport().height();
 
-
     // set background as the template
     painter.drawImage(QRect(0, 0, width, height), QImage(":/resources/template.png"));
 

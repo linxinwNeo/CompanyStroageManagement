@@ -3,6 +3,7 @@
 
 #include <QString>
 #include "Predefined.h"
+#include <QVector>
 
 #define EntryPtr QSharedPointer<Entry>
 
@@ -25,6 +26,8 @@ public:
           QString CLAVE = "", QString ContainerID = "",
           QString Description_SPAN = "", QString Description_CN = "",
           double PRECIO = 0., double IMPORTE = 0.);
+
+    QVector<QString> view_values() const;
 };
 
 #endif // ENTRY_H

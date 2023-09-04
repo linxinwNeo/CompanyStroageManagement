@@ -43,7 +43,6 @@ void MainWindow::init()
     auto container_table = ui->search_container_result_Table;
     container_table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
-
     auto model_table = ui->search_model_result_Table;
 //    model_table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     model_table->setStyleSheet(table_stylesheet);
@@ -416,14 +415,24 @@ void MainWindow::on_new_list_btn_clicked()
     this->CreateListWinPtr = w;
     // setting up the window
     w->setWindowTitle(CreateList_WinTitle);
-    w->show();
     w->parentPtr = this;
+    w->show();
 
     this->hide();
 }
 
+
+// 打开<Search_List_Win>
 void MainWindow::on_search_past_list_btn_clicked()
 {
+    QSharedPointer<Search_List_Win> w (new Search_List_Win(nullptr));
+    this->SearchListWinPtr = w;
 
+    w->setWindowTitle(CreateList_WinTitle);
+    w->set_parentWin(this);
+
+    w->show();
+
+    this->hide();
 }
 

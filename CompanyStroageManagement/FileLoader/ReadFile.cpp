@@ -129,7 +129,7 @@ void ReadFile::read_Lists_txt_File(const QString &path) const
         ListPtr new_list (new List());
 
         // read id
-        new_list->id = strList[0].toUInt();
+        new_list->id = strList[0].toULong();
 
         // read date and time for the list
         new_list->date_created = QDate::fromString(strList[1], "dd MMM yyyy");
@@ -169,4 +169,7 @@ void ReadFile::read_Lists_txt_File(const QString &path) const
 
         lists.add_list(new_list);
     }
+
+    file.close();
+    qDebug() << "Reading" << path << "done, it has" << lists.num_lists() << "lists";
 }

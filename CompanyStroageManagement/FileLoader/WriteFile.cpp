@@ -74,7 +74,7 @@ void WriteFile::Lists2txt(const QString &path) const
             << list->client_info.DISCOUNT << split_item; // 10
 
         // output num of models in the list
-        out << list->num_items() << "\n"; // 11
+        out << list->num_model_types() << "\n"; // 11
 
         for(EntryPtr entry : list->itemList.entries){
             out << entry->CLAVE << split_item // 0 modelCODE
