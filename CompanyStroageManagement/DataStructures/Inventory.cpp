@@ -72,6 +72,23 @@ void Inventory::add_Model(ModelPtr &m)
 }
 
 
+// remove the model, including all containers that reference it
+void Inventory::remove_Model(QSharedPointer<Model> &m)
+{
+    // remove this model from inventory
+    this->model_set.remove(m);
+
+    QSet<ModelPtr>& set = this->model_map[m->MODEL_CODE];
+    set.remove(m);
+
+
+    // remove this model from the container it belongs to
+    ContainerPtr container = m->container;
+    if(container.isNull()) return;
+    container->remove_model(m);
+}
+
+
 // fast O(1) search
 QSet<ModelPtr> Inventory::get_Model(const QString &MODEL_CODE)
 {
