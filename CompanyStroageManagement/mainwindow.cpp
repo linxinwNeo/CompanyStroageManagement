@@ -183,6 +183,7 @@ void MainWindow::on_search_MODELCODE_LE_textChanged(const QString& new_str)
     this->setEnabled(false);
 
     QString userInput = new_str.trimmed(); // remove useless empty spaces
+    QVector<ModelPtr> models; // will hold the models that has MODELCODE starts with new_str
 
     auto table = this->ui->search_model_result_Table;
     this->clear_search_model_result_table();
@@ -191,12 +192,9 @@ void MainWindow::on_search_MODELCODE_LE_textChanged(const QString& new_str)
     table->setRowCount(0);
     if(userInput.isEmpty()){
         // if input is empty, empty the table and return
-        this->setEnabled(true);
-        this->ui->search_MODELCODE_LE->setFocus();
-        return;
+        goto ret;
     }
 
-    QVector<ModelPtr> models; // will hold the models that has MODELCODE starts with new_str
     inventory.searchModel_starts_with(userInput, models);
 
     // for each model, make a row for it
@@ -218,6 +216,7 @@ void MainWindow::on_search_MODELCODE_LE_textChanged(const QString& new_str)
         }
     }
 
+ret:
     this->setEnabled(true);
     this->ui->search_MODELCODE_LE->setFocus();
 }
@@ -434,5 +433,41 @@ void MainWindow::on_search_past_list_btn_clicked()
     w->show();
 
     this->hide();
+}
+
+
+void MainWindow::on_delete_model_btn_clicked()
+{
+    this->setEnabled(false);
+
+    int response = QMessageBox::No;
+    QMessageBox delete_confirmation_msg(this);
+    QMessageBox delete_success_msg(this);
+
+    if(this->selected_model.isNull()) goto ret;
+
+    // make sure user is indeed wanting to remove this model
+    delete_confirmation_msg.setText("你确定要删除货号为" + this->selected_model->MODEL_CODE + "的货物吗?\n");
+    delete_confirmation_msg.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
+    delete_confirmation_msg.setDefaultButton(QMessageBox::No);
+    delete_confirmation_msg.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    delete_confirmation_msg.setStyleSheet("QLabel{min-width: 400px; min-height: 50px;}");
+
+    response = delete_confirmation_msg.exec();
+    if (response == QMessageBox::No) goto ret;
+
+    // delete this model
+    inventory.remove_Model(this->selected_model);
+
+//a:
+    delete_success_msg.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
+    delete_success_msg.setText("删除成功！");
+    delete_success_msg.exec();
+
+    this->clear_selected_model();
+    this->on_search_MODELCODE_LE_textChanged(this->ui->search_MODELCODE_LE->text());
+
+ret:
+    this->setEnabled(true);
 }
 
