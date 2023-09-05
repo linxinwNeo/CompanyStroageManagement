@@ -427,7 +427,7 @@ void MainWindow::on_search_past_list_btn_clicked()
     QSharedPointer<Search_List_Win> w (new Search_List_Win(nullptr));
     this->SearchListWinPtr = w;
 
-    w->setWindowTitle(CreateList_WinTitle);
+    w->setWindowTitle(Search_List_WinTitle);
     w->set_parentWin(this);
 
     w->show();

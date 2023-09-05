@@ -205,7 +205,7 @@ void Inventory::searchContainer_starts_with(const QString str, QVector< Containe
 {
     containers.reserve(this->num_containers());
 
-    for(const ContainerPtr c : this->container_set){
+    for(ContainerPtr c : this->container_set){
         if(c->ID.startsWith(str)){
             containers.push_back(c);
         }
@@ -213,5 +213,21 @@ void Inventory::searchContainer_starts_with(const QString str, QVector< Containe
 
     QuickSort(containers);
     return;
+}
+
+
+void Inventory::deduct_models(const QVector<EntryPtr> & entries)
+{
+    for(EntryPtr entry : entries){
+        const QString& MODELCODE = entry->CLAVE;
+        const QString& ContainerID = entry->ContainerID;
+        ModelPtr model_needs_modify = this->get_Model(MODELCODE, ContainerID);
+        if(model_needs_modify.isNull()) {
+            qDebug() << "Could't find the model to deduct!";
+            continue;
+        }
+
+        model_needs_modify->sell_items(entry->CANTIDAD);
+    }
 }
 

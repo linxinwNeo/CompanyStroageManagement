@@ -19,6 +19,7 @@ extern Inventory inventory;
 extern Lists lists;
 extern const QString AddNewModel_WinTitle;
 extern const QString CreateList_WinTitle;
+extern const QString Search_List_WinTitle;
 
 extern const QString APP_NAME;
 extern const QString FATAL_ERROR_MESSAGE;

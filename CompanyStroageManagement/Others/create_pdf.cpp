@@ -128,7 +128,7 @@ void create_pdf(QString filename, ListPtr list)
 
     // the discount percent using thinner font
     painter.setFont(non_bold);
-    painter.drawText(QRect(0, height * 0.84, width * 1.01, height * 0.84), "(" + QString::number(client_info.DISCOUNT) + "%)", option);
+    painter.drawText(QRect(0, height * 0.84, width * 1.01, height * 0.84), "(" + QString::number(client_info.DISCOUNT * 100.) + "%)", option);
 
     // cover the old id with white rect
     painter.setBrush(Qt::SolidPattern);

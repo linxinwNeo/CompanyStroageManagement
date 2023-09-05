@@ -37,9 +37,8 @@ public:
 
     double TOTAL_PRIZE(UI num_items) const;
     double TOTAL_PRIZE(double num_boxes) const;
-
-    void deduct_items(UI num_items);
-    void deduct_boxes(double num_boxes);
+    
+    void sell_items(UI num_items);
     void addBack_items(UI num_items);
     void addBack_boxes(double num_boxes);
     

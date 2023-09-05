@@ -1,6 +1,7 @@
 #ifndef INVENTORY_H
 #define INVENTORY_H
 
+#include "DataStructures/entry.h"
 #include <QString>
 #include <QHash>
 #include <DataStructures/Model.h>
@@ -45,6 +46,8 @@ public:
 
     void searchModel_starts_with(const QString str,  QVector<ModelPtr>& models);
     void searchContainer_starts_with(const QString str,  QVector<ContainerPtr>& containers);
+
+    void deduct_models(const QVector<EntryPtr>&);
 };
 
 

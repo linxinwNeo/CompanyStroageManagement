@@ -13,6 +13,7 @@ const QString APP_NAME = "Yi Hong Ding 库存管理软件";
 const QString FATAL_ERROR_MESSAGE = "出现无法解决的错误，请联系制作者。";
 const QString AddNewModel_WinTitle = "新增一个新的货物";
 const QString CreateList_WinTitle = "创建一个新的清单";
+const QString Search_List_WinTitle = "搜索清单";
 
 const QString EXCEL_CAPTION = "选择库存文件";
 const QString EXCEL_FILTER = "Microsoft Excel Open XML Spreadsheet (*.xlsx)";
