@@ -86,6 +86,7 @@ void AddNewModelWindow::on_add_new_model_btn_clicked()
     if(!model.isNull()){
         auto msgBox = this->create_MessageBox(msg + duplicate_Model_ERROR_MSG);
         msgBox->exec();
+        qDebug() << "adding an existing model";
         return;
     }
 
@@ -106,7 +107,6 @@ void AddNewModelWindow::on_add_new_model_btn_clicked()
         return;
     }
 
-
     // 创建新的货物
     ModelPtr new_model (new Model(MODELCODE, DESCRIPTION_SPAN, DESCRIPTION_CN,
                                  PRIZE, NUM_INIT_BOXES, NUM_SOLD_BOXES, NUM_LEFT_BOXES,
@@ -117,7 +117,7 @@ void AddNewModelWindow::on_add_new_model_btn_clicked()
     // 检查集装箱是否存在， 如果存在就直接引用，不存在就创建新的
     ContainerPtr container(nullptr);
 
-    if(CONTAINER_ID.isNull()){ // 这个货没有集装箱信息
+    if(CONTAINER_ID.isEmpty()){ // 这个货没有集装箱信息
         container = nullptr;
     }
     else{ // 这个货有集装箱信息
