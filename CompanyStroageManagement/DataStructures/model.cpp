@@ -61,22 +61,12 @@ double Model::TOTAL_PRIZE(double num_boxes) const
 
 
 // deduct this many items
-// note: we need to check if one container no longer
-void Model::deduct_items(UI num_items)
+void Model::sell_items(UI num_items)
 {
-    double num_boxes_to_deduct = num_items / (double)this->NUM_ITEMS_PER_BOX;
+    double num_boxes_to_deduct = ((double)num_items) / (double)this->NUM_ITEMS_PER_BOX;
     this->NUM_SOLD_BOXES += num_boxes_to_deduct;
     this->NUM_LEFT_BOXES -= num_boxes_to_deduct;
     this->NUM_LEFT_ITEMS -= num_items;
-}
-
-
-// deduct this many boxes
-void Model::deduct_boxes(double num_boxes_to_deduct)
-{
-    this->NUM_SOLD_BOXES += num_boxes_to_deduct;
-    this->NUM_LEFT_BOXES -= num_boxes_to_deduct;
-    this->NUM_LEFT_ITEMS -= (num_boxes_to_deduct * this->NUM_ITEMS_PER_BOX);
 }
 
 

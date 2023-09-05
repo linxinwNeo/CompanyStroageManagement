@@ -85,8 +85,8 @@ void CreateListWin::on_generatePDF_btn_clicked()
     Msgbox.setText("清单创建成功");
     Msgbox.exec();
 
-    // now deduct the items from stroage and save the list
-    //TODO
+    // now deduct the items from stroage
+    inventory.deduct_models(this->list->itemList.entries);
 
     // save the list to a txt file
     lists.add_list(this->list);
@@ -136,7 +136,7 @@ void CreateListWin::on_previewList_btn_clicked()
 
     // ask for the path to store the file
     QString filter = tr("PDF (*.pdf)");
-    QString filePath = get_save_filePath("list", WHERE_TO_SAVE_FILE_MESSAGE, filter);
+    QString filePath = get_save_filePath("list.pdf", WHERE_TO_SAVE_FILE_MESSAGE, filter);
 
     if(filePath.isEmpty()) return;
 
