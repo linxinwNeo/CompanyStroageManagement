@@ -33,6 +33,8 @@ public:
     CreateListWin(QWidget *parent = nullptr);
     ~CreateListWin();
 
+    void update_added_models_table();
+
 private slots:
     void closeEvent (QCloseEvent *event);
 

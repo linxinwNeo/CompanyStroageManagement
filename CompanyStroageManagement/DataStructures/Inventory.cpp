@@ -196,7 +196,8 @@ void Inventory::searchModel_starts_with(const QString str, QVector<ModelPtr>& mo
         }
     }
 
-    QuickSort(models);
+    QuickSorts QS;
+    QS.QuickSort(models);
     return;
 }
 
@@ -211,7 +212,8 @@ void Inventory::searchContainer_starts_with(const QString str, QVector< Containe
         }
     }
 
-    QuickSort(containers);
+    QuickSorts QS;
+    QS.QuickSort(containers);
     return;
 }
 

@@ -120,6 +120,7 @@ void Container::models_Set2Vec(QVector<QSharedPointer<Model> >& output, const bo
         output.push_back(model);
     }
 
-    if(sort) QuickSort(output);
+    QuickSorts QS;
+    if(sort) QS.QuickSort(output);
 }
 

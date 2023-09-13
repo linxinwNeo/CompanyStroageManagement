@@ -10,6 +10,8 @@
 #include "ui_CreateListWin.h"
 #include "GlobalVars.h"
 
+EntryList cur_list_entries;
+
 CreateListWin::CreateListWin(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::CreateListWin)
@@ -26,34 +28,58 @@ CreateListWin::~CreateListWin()
 }
 
 
-// create the pdf and deduc all listed items from the stroage
+void CreateListWin::update_added_models_table()
+{
+    this->setDisabled(true);
+
+    this->added_models_table->clearContents();
+    this->added_models_table->setRowCount(0);
+
+    // for each entry, make a row for it
+    for(UI row = 0; row < cur_list_entries.num_entries(); row++){
+        const EntryPtr entry = cur_list_entries.get_entry(row);
+        if(entry.isNull()) continue;
+
+        added_models_table->insertRow(added_models_table->rowCount());
+
+        auto rowValues = entry->view_values();
+
+        for( UI col = 0; col < rowValues.size(); col++ ){
+            QTableWidgetItem *tableWidgetItem = new QTableWidgetItem();
+            tableWidgetItem->setText( rowValues[col] );
+
+            tableWidgetItem->setTextAlignment(Qt::AlignVCenter);
+
+            added_models_table->setItem(row, col, tableWidgetItem);
+        }
+    }
+
+Finish:
+    this->setEnabled(true);
+}
+
+
+// create the pdf and deduct all listed items from the stroage
 // also clear the <added_models_table>
 void CreateListWin::on_generatePDF_btn_clicked()
 {
-    QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, PDF_MESSAGE_1, PDF_MESSAGE_2,
+    this->setDisabled(true);
+
+    QString filter;
+    QString filePath;
+    QMessageBox Msgbox(this);
+    Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
+    Msgbox.setText("清单创建成功");
+    const unsigned long int unused_unique_id = lists.get_unique_id();
+
+    QMessageBox::StandardButton reply = QMessageBox::question(this, PDF_MESSAGE_1, PDF_MESSAGE_2,
                                   QMessageBox::Yes|QMessageBox::No);
-    if (reply == QMessageBox::No) return; // return if the user says no
+    if (reply == QMessageBox::No) goto Finish; // return if the user says no
 
     this->list = ListPtr(new List());
 
-    // save things in the <added_models_table> to the <this->list> first
-    for(int i = 0; i < this->added_models_table->rowCount(); i++){
-        const double NUM_BOXES = this->added_models_table->item(i, added_models_table_NUM_BOXES_idx)->text().toDouble();
-        const unsigned long TOTAL_NUM_ITEMS = this->added_models_table->item(i, added_models_table_NUM_ITEMS_idx)->text().toLong();
-        const unsigned long NUM_ITEMS_PER_BOX = this->added_models_table->item(i, added_models_table_NUM_ITEMS_PER_BOX_idx)->text().toLong();
-        const QString MODEL_CODE = this->added_models_table->item(i, added_models_table_MODELCODE_idx)->text();
-        const QString DESCRIPTION_SPAN = this->added_models_table->item(i, added_models_table_DESCRIPTION_SPAN_idx)->text();
-        const QString DESCRIPTION_CN = this->added_models_table->item(i, added_models_table_DESCRIPTION_CN_idx)->text();
-        const double PRIZE = this->added_models_table->item(i, added_models_table_PRIZE_idx)->text().toDouble();
-        const double TOTAL_PRIZE = this->added_models_table->item(i, added_models_table_TOTAL_idx)->text().toDouble();
-        const QString ContainerID = this->added_models_table->item(i, added_models_table_ContainerID_idx)->text();
-        EntryPtr new_entry(new Entry(NUM_BOXES, TOTAL_NUM_ITEMS, NUM_ITEMS_PER_BOX,
-                                     MODEL_CODE, ContainerID,
-                                     DESCRIPTION_SPAN, DESCRIPTION_CN,
-                                     PRIZE, TOTAL_PRIZE));
-        this->list->add_item(new_entry);
-    }
+
+    this->list->itemList = cur_list_entries;
 
     // save client info
     this->list->client_info.CLIENTE = this->ui->CLIENTE_LE->text();
@@ -64,25 +90,21 @@ void CreateListWin::on_generatePDF_btn_clicked()
     this->list->client_info.CONDICIONES = this->ui->CONDICIONES_LE->text();
     this->list->client_info.DISCOUNT = this->ui->discount_SB->value() / 100.; // the value the user is entering is between 0-100
     this->list->client_info.TOTAL_NUM_BOXES = this->list->total_num_boxes();
-    const unsigned long int id = lists.get_unique_id();
-    this->list->id = id;
+    this->list->id = unused_unique_id;
 
     list->date_created = QDate::currentDate();
     list->time_created = QTime::currentTime();
 
     // ask for the path to store the file
-    QString filter = tr("PDF (*.pdf)");
-    QString filePath = get_save_filePath("list.pdf", WHERE_TO_SAVE_FILE_MESSAGE, filter);
+    filter = tr("PDF (*.pdf)");
+    filePath = get_save_filePath("list.pdf", WHERE_TO_SAVE_FILE_MESSAGE, filter);
 
-    if(filePath.isEmpty()) return;
+    if(filePath.isEmpty()) goto Finish;
 
     // create PDF file
     create_pdf(filePath, this->list);
 
     // display creation success
-    QMessageBox Msgbox(this);
-    Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
-    Msgbox.setText("清单创建成功");
     Msgbox.exec();
 
     // now deduct the items from stroage
@@ -91,36 +113,35 @@ void CreateListWin::on_generatePDF_btn_clicked()
     // save the list to a txt file
     lists.add_list(this->list);
     lists.save_2_file();
+
+    cur_list_entries.clear_memory();
+    this->added_models_table->clearContents();
+    this->added_models_table->setRowCount(0);
+
+Finish:
+    this->setEnabled(true);
 }
 
 
 // create a pdf but do not deduct items from the stroage
 void CreateListWin::on_previewList_btn_clicked()
 {
-    QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, PDF_MESSAGE_1, PDF_MESSAGE_2,
-                                  QMessageBox::Yes|QMessageBox::No);
-    if (reply == QMessageBox::No) return; // return if the user says no
+    this->setDisabled(true);
+
+    QString filter;
+    QString filePath;
+    QMessageBox Msgbox(this);
+    Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
+    Msgbox.setText("清单创建成功");
+
+    QMessageBox::StandardButton reply = QMessageBox::question(this, PDF_MESSAGE_1, PDF_MESSAGE_2,
+                                                            QMessageBox::Yes|QMessageBox::No);
+
+    if (reply == QMessageBox::No) goto Finish;
 
     this->list = ListPtr(new List());
 
-    // save things in the <added_models_table> to the <this->list> first
-    for(int i = 0; i < this->added_models_table->rowCount(); i++){
-        const double NUM_BOXES = this->added_models_table->item(i, added_models_table_NUM_BOXES_idx)->text().toDouble();
-        const unsigned long TOTAL_NUM_ITEMS = this->added_models_table->item(i, added_models_table_NUM_ITEMS_idx)->text().toLong();
-        const unsigned long NUM_ITEMS_PER_BOX = this->added_models_table->item(i, added_models_table_NUM_ITEMS_PER_BOX_idx)->text().toLong();
-        const QString MODEL_CODE = this->added_models_table->item(i, added_models_table_MODELCODE_idx)->text();
-        const QString DESCRIPTION_SPAN = this->added_models_table->item(i, added_models_table_DESCRIPTION_SPAN_idx)->text();
-        const QString DESCRIPTION_CN = this->added_models_table->item(i, added_models_table_DESCRIPTION_CN_idx)->text();
-        const double PRIZE = this->added_models_table->item(i, added_models_table_PRIZE_idx)->text().toDouble();
-        const double TOTAL_PRIZE = this->added_models_table->item(i, added_models_table_TOTAL_idx)->text().toDouble();
-        const QString ContainerID = this->added_models_table->item(i, added_models_table_ContainerID_idx)->text();
-        EntryPtr new_entry(new Entry(NUM_BOXES, TOTAL_NUM_ITEMS, NUM_ITEMS_PER_BOX,
-                                     MODEL_CODE, ContainerID,
-                                     DESCRIPTION_SPAN, DESCRIPTION_CN,
-                                     PRIZE, TOTAL_PRIZE));
-        this->list->add_item(new_entry);
-    }
+    this->list->itemList = cur_list_entries;
 
     // save client info
     this->list->client_info.CLIENTE = this->ui->CLIENTE_LE->text();
@@ -135,19 +156,19 @@ void CreateListWin::on_previewList_btn_clicked()
     this->list->time_created = QTime::currentTime();
 
     // ask for the path to store the file
-    QString filter = tr("PDF (*.pdf)");
-    QString filePath = get_save_filePath("list.pdf", WHERE_TO_SAVE_FILE_MESSAGE, filter);
+    filter = tr("PDF (*.pdf)");
+    filePath = get_save_filePath("list.pdf", WHERE_TO_SAVE_FILE_MESSAGE, filter);
 
-    if(filePath.isEmpty()) return;
+    if(filePath.isEmpty()) goto Finish;
 
     // create PDF file
     create_pdf(filePath, this->list);
 
     // display creation success
-    QMessageBox Msgbox(this);
-    Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
-    Msgbox.setText("清单创建成功");
     Msgbox.exec();
+
+Finish:
+    this->setEnabled(true);
 }
 
 
@@ -228,10 +249,10 @@ void CreateListWin::init()
     this->adjust_list_item_win = nullptr;
 
     //设置表格 style
-    searched_models_table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+//    searched_models_table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     searched_models_table->setStyleSheet(table_stylesheet);
 
-    added_models_table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+//    added_models_table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     added_models_table->setStyleSheet(table_stylesheet);
 }
 
@@ -280,9 +301,20 @@ void CreateListWin::on_add_selected_model_btn_clicked()
     ModelPtr model_2be_added;
     QString MODELCODE_2be_Added;
     QString ContainerID_2be_Added;
-    QVector<QString> items;
 
-    this->setEnabled(false);
+    double NUM_BOXES;
+    unsigned long TOTAL_NUM_ITEMS;
+    unsigned long NUM_ITEMS_PER_BOX;
+    QString MODEL_CODE;
+    QString DESCRIPTION_SPAN;
+    QString DESCRIPTION_CN;
+    double PRIZE;
+    double TOTAL_PRIZE;
+    QString ContainerID;
+    EntryPtr new_entry;
+
+    this->setDisabled(true);
+
     if(this->selected_model_in_search_table.isNull()) goto FINISH;
 
     model_2be_added = this->selected_model_in_search_table;
@@ -291,32 +323,32 @@ void CreateListWin::on_add_selected_model_btn_clicked()
     if(this->selected_model_in_search_table->container.isNull()) ContainerID_2be_Added.clear();
     else ContainerID_2be_Added = model_2be_added->container->ID;
 
-    // check if this model is in <added_models_table> already (we need to check both modelCODE and container)
-    for(int row = 0; row < this->added_models_table->rowCount(); row ++){
-        QString cur_modelCODE = this->added_models_table->item(row, added_models_table_MODELCODE_idx)->text(); // get the modelCODE for this row
-        QString cur_containerID = this->added_models_table->item(row, added_models_table_ContainerID_idx)->text(); // get the containerID
-        handle_ContainerID(cur_containerID);
-
-        // if both matches, then the model already exists, we dont put it in
-        if(cur_modelCODE == MODELCODE_2be_Added && cur_containerID == ContainerID_2be_Added) goto FINISH;
-    }
-    // we need to put the selected model into the <added_models_table>
-    added_models_table->insertRow(added_models_table->rowCount());
-
-    model_2be_added->searchResult_List(items);
-
-    for( UI col = 0; col < items.size(); col++ ){
-        QTableWidgetItem *tableWidgetItem = new QTableWidgetItem();
-        tableWidgetItem->setText( items[col] );
-
-        tableWidgetItem->setTextAlignment(Qt::AlignVCenter);
-
-        added_models_table->setItem(added_models_table->rowCount()-1, col, tableWidgetItem);
+    // check if this model has been added to <added_models_table> already
+    if(cur_list_entries.has_Model(MODELCODE_2be_Added, ContainerID_2be_Added)){
+        goto FINISH;
     }
 
+    // create a new entry and add it to <cur_list_entries>
+    NUM_BOXES = model_2be_added->NUM_LEFT_BOXES;
+    TOTAL_NUM_ITEMS = model_2be_added->NUM_LEFT_ITEMS;
+    NUM_ITEMS_PER_BOX = model_2be_added->NUM_ITEMS_PER_BOX;
+    MODEL_CODE = model_2be_added->MODEL_CODE;
+    DESCRIPTION_SPAN = model_2be_added->DESCRIPTION_SPAN;
+    DESCRIPTION_CN = model_2be_added->DESCRIPTION_CN;
+    PRIZE = model_2be_added->PRIZE;
+    TOTAL_PRIZE = model_2be_added->TOTAL_PRIZE(model_2be_added->NUM_LEFT_BOXES);
+    ContainerID = ContainerID_2be_Added;
+    new_entry = EntryPtr (new Entry(NUM_BOXES, TOTAL_NUM_ITEMS, NUM_ITEMS_PER_BOX,
+                                 MODEL_CODE, ContainerID,
+                                 DESCRIPTION_SPAN, DESCRIPTION_CN,
+                                 PRIZE, TOTAL_PRIZE));
 
-    FINISH:
-        this->setEnabled(true);
+    cur_list_entries.add_entry(new_entry);
+
+    this->update_added_models_table();
+
+FINISH:
+    this->setEnabled(true);
 }
 
 
