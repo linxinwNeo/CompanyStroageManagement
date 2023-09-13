@@ -63,6 +63,8 @@ Finish:
 // also clear the <added_models_table>
 void CreateListWin::on_generatePDF_btn_clicked()
 {
+    if(cur_list_entries.num_entries() == 0) return;
+
     this->setDisabled(true);
 
     QString filter;
@@ -77,7 +79,6 @@ void CreateListWin::on_generatePDF_btn_clicked()
     if (reply == QMessageBox::No) goto Finish; // return if the user says no
 
     this->list = ListPtr(new List());
-
 
     this->list->itemList = cur_list_entries;
 
@@ -117,6 +118,8 @@ void CreateListWin::on_generatePDF_btn_clicked()
     cur_list_entries.clear_memory();
     this->added_models_table->clearContents();
     this->added_models_table->setRowCount(0);
+    this->on_model_code_for_search_LE_textChanged(this->ui->model_code_for_search_LE->text()); // 更新<search_models_table>
+    this->selected_model_in_search_table = nullptr; // reset selected model
 
 Finish:
     this->setEnabled(true);
@@ -126,13 +129,17 @@ Finish:
 // create a pdf but do not deduct items from the stroage
 void CreateListWin::on_previewList_btn_clicked()
 {
-    this->setDisabled(true);
-
     QString filter;
     QString filePath;
     QMessageBox Msgbox(this);
     Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
-    Msgbox.setText("清单创建成功");
+
+    if(cur_list_entries.num_entries() == 0) {
+        Msgbox.setText("清单是空的");
+        Msgbox.exec();
+    }
+
+    this->setDisabled(true);
 
     QMessageBox::StandardButton reply = QMessageBox::question(this, PDF_MESSAGE_1, PDF_MESSAGE_2,
                                                             QMessageBox::Yes|QMessageBox::No);
@@ -165,6 +172,7 @@ void CreateListWin::on_previewList_btn_clicked()
     create_pdf(filePath, this->list);
 
     // display creation success
+    Msgbox.setText("清单创建成功");
     Msgbox.exec();
 
 Finish:
@@ -195,7 +203,7 @@ void CreateListWin::closeEvent (QCloseEvent *event)
 // 用户输入了要搜索的货号前缀，搜索所有符合的货然后加入到表格里
 void CreateListWin::on_model_code_for_search_LE_textChanged(const QString &new_str)
 {
-    this->setEnabled(false);
+    this->setDisabled(true);
 
     this->selected_model_in_search_table = nullptr;
 
