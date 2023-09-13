@@ -47,7 +47,7 @@ public:
 
     ListPtr get_list(unsigned long int id);
 
-    void get_list(QString id_prefix, QVector<ListPtr >& candidates);
+    void get_list(QString id_prefix, QVector<ListPtr>& candidates, bool sorted);
 
     void save_2_file() const;
 

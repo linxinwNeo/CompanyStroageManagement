@@ -1,4 +1,5 @@
 #include "List.h"
+#include "Algorithm/QuickSort.h"
 #include "FileLoader/WriteFile.h"
 #include "Others/output_error_file.h"
 
@@ -43,11 +44,11 @@ QVector<QString> List::describe_this_list() const
     items[0] = QString::number(this->id);
     items[1] = this->date_created.toString("dd MMM yyyy");
     items[2] = this->time_created.toString("hh:mm:ss");
-    items[3] = QString::number(this->total_num_boxes());
+    items[3] = QString::number(this->total_num_boxes(), 'f', 2);
     double p1, p2;
     p1 = p2 = 0;
     this->total(p1, p2);
-    items[4] = QString::number(p2);
+    items[4] = QString::number(p2, 'f', 2);
     items[5] = this->client_info.CLIENTE;
 
     return items;
@@ -107,7 +108,7 @@ ListPtr Lists::get_list(unsigned long id)
 
 
 // get the lists with their id begin with id_prefix
-void Lists::get_list(QString id_prefix, QVector<ListPtr>& candidates)
+void Lists::get_list(QString id_prefix, QVector<ListPtr>& candidates, bool sorted)
 {
     candidates.clear();
     candidates.reserve(this->num_lists()/9 + 10);
@@ -121,6 +122,12 @@ void Lists::get_list(QString id_prefix, QVector<ListPtr>& candidates)
         if(cur_id.startsWith(id_prefix)){
             candidates.push_back(list);
         }
+    }
+
+    // sort the vector if needed
+    if(sorted){
+        QuickSorts QS;
+        QS.QuickSort(candidates);
     }
 
     return;

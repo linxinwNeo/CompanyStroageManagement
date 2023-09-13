@@ -27,14 +27,14 @@ QVector<QString> Entry::view_values() const
     if(containerID.isEmpty()) containerID = none_CN;
 
     return {
-        QString::number(CAJA),
+        QString::number(CAJA, 'f', 2),
         QString::number(CANTIDAD),
         QString::number(CANT_POR_CAJA),
         CLAVE,
         Description_SPAN,
         Description_CN,
-        QString::number(PRECIO),
-        QString::number(IMPORTE),
+        QString::number(PRECIO, 'f', 2),
+        QString::number(IMPORTE, 'f', 2),
         containerID
     };
 }

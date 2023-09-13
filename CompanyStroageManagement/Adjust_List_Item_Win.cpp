@@ -27,7 +27,7 @@ void Adjust_List_Item_Win::set_init_UI_values(ModelPtr model, const unsigned lon
     this->ui->NUM_BOXES_LE->setText(QString::number(NUM_BOXES, 'f', 2));
 
     this->ui->NUM_ITEMS_SB->setMaximum(model->NUM_LEFT_ITEMS);
-    this->ui->NUM_ITEMS_LE->setText(QString::number(model->NUM_LEFT_ITEMS, 'f', 2));
+    this->ui->NUM_ITEMS_LE->setText(QString::number(model->NUM_LEFT_ITEMS));
     this->ui->NUM_ITEMS_SB->setValue(NUM_ITEMS);
 
 

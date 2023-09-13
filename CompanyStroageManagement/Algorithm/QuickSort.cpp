@@ -178,3 +178,63 @@ void QuickSorts::QuickSort_(QVector<EntryPtr>& arr, long int start, long int end
     QuickSort_(arr, p + 1, end);
 }
 
+
+
+// sorts vector of entries by their MODELCODE/CLAVE
+void QuickSorts::QuickSort(QVector<ListPtr>& arr)
+{
+    QuickSort_(arr, 0, arr.size() - 1);
+}
+
+
+long int QuickSorts::partition(QVector<ListPtr>& arr, long int start, long int end){
+    ListPtr pivot_entry = arr[start];
+
+    long int count = 0;
+    for (long int i = start + 1; i <= end; i++) {
+        if (arr[i]->id <= pivot_entry->id)
+            count++;
+    }
+
+    // Giving pivot element its correct position
+    long int pivotIndex = start + count;
+    swap(arr[pivotIndex], arr[start]);
+
+    // Sorting left and right parts of the pivot element
+    long int i = start, j = end;
+
+    while (i < pivotIndex && j > pivotIndex) {
+
+        while (arr[i]->id <= pivot_entry->id) {
+            i++;
+        }
+
+        while (arr[j]->id > pivot_entry->id) {
+            j--;
+        }
+
+        if (i < pivotIndex && j > pivotIndex) {
+            swap(arr[i++], arr[j--]);
+        }
+    }
+
+    return pivotIndex;
+}
+
+
+void QuickSorts::QuickSort_(QVector<ListPtr>& arr, long int start, long int end)
+{
+    // base case
+    if (start >= end)
+        return;
+
+    // partitioning the array
+    long int p = partition(arr, start, end);
+
+    // Sorting the left part
+    QuickSort_(arr, start, p - 1);
+
+    // Sorting the right part
+    QuickSort_(arr, p + 1, end);
+}
+

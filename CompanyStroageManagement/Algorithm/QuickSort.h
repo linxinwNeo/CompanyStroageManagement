@@ -2,6 +2,7 @@
 #define QUICKSORT_H
 
 #include "DataStructures/Container.h"
+#include "DataStructures/List.h"
 #include "DataStructures/Model.h"
 #include "DataStructures/entry.h"
 #include <QString>
@@ -15,6 +16,7 @@ public:
     void QuickSort(QVector<ModelPtr>& arr);
     void QuickSort(QVector<ContainerPtr>& arr);
     void QuickSort(QVector<EntryPtr>& arr);
+    void QuickSort(QVector<ListPtr>& arr);
 
 private:
     long int partition(QVector<ModelPtr>& arr, long int start, long int end);
@@ -25,6 +27,9 @@ private:
 
     long int partition(QVector<EntryPtr>& arr, long int start, long int end);
     void QuickSort_(QVector<EntryPtr>& arr, long int start, long int end);
+
+    long int partition(QVector<ListPtr>& arr, long int start, long int end);
+    void QuickSort_(QVector<ListPtr>& arr, long int start, long int end);
 };
 
 #endif // QUICKSORT_H

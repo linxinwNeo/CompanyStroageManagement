@@ -12,11 +12,11 @@ Search_List_Win::Search_List_Win(QWidget *parent) :
     ui->setupUi(this);
 
     searched_lists_table = ui->searched_lists_table;
-    searched_lists_table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+//    searched_lists_table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     searched_lists_table->setStyleSheet(table_stylesheet);
 
     list_models_table = ui->list_models_table;
-    list_models_table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+//    list_models_table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     list_models_table->setStyleSheet(table_stylesheet);
 }
 
@@ -96,7 +96,7 @@ void Search_List_Win::on_list_id_2be_searched_LE_textChanged(const QString & lis
     searched_lists_table->setRowCount(0);
 
     QVector<ListPtr> candidates;
-    lists.get_list(userInput, candidates);
+    lists.get_list(userInput, candidates, true);
 
     // for each list, make a row for it
     for(UI row = 0; row < candidates.size(); row++){
@@ -139,8 +139,7 @@ void Search_List_Win::on_searched_lists_table_cellClicked(int row, int column)
 
     ListPtr list = lists.get_list(list_ID);
     if(list.isNull()){
-        this->setEnabled(true);
-        return;
+        goto Finish;
     }
 
     this->selected_list = list;
@@ -148,6 +147,7 @@ void Search_List_Win::on_searched_lists_table_cellClicked(int row, int column)
     // put the information of this list on UI
     this->view_selected_list();
 
+Finish:
     this->setEnabled(true);
 }
 
