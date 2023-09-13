@@ -19,11 +19,12 @@ public:
     void clear_memory();
 
     void add_entry(EntryPtr& entry);
-    void remove_entry();
+    void remove_last_entry();
     void remove_entry(const UL);
-    void update_entry(const UL, EntryPtr& entry);
     inline UL num_entries() const;
     EntryPtr get_entry(const UL);
+
+    bool has_Model(const QString &ModelCode, const QString &ContainerID) const;
 
     double total_num_boxes() const;
 };
