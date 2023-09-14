@@ -35,6 +35,8 @@ public:
 
     void update_added_models_table();
 
+    void remove_entry(const unsigned int idx);
+
 private slots:
     void closeEvent (QCloseEvent *event);
 

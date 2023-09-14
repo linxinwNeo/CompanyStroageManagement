@@ -1,4 +1,5 @@
 #include "DataStructures/entry.h"
+#include "GlobalVars.h"
 
 Entry::Entry(double CAJA, UL CANTIDAD, UL CANT_POR_CAJA ,
              QString CLAVE, QString ContainerID,
@@ -14,6 +15,17 @@ Entry::Entry(double CAJA, UL CANTIDAD, UL CANT_POR_CAJA ,
     this->PRECIO = PRECIO;
     this->IMPORTE = IMPORTE;
     this->ContainerID = ContainerID;
+}
+
+
+// search inventory, and return the model with matching info
+ModelPtr Entry::get_corresponding_model() const
+{
+    const QString& MODELCODE = this->CLAVE;
+    const QString& CONTAINER_ID = this->ContainerID;
+    ModelPtr model = inventory.get_Model(MODELCODE, CONTAINER_ID);
+
+    return model;
 }
 
 

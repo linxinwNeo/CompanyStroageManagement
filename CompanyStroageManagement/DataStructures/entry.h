@@ -2,6 +2,7 @@
 #define ENTRY_H
 
 #include <QString>
+#include "DataStructures/Model.h"
 #include "Predefined.h"
 #include <QVector>
 
@@ -27,6 +28,7 @@ public:
           QString Description_SPAN = "", QString Description_CN = "",
           double PRECIO = 0., double IMPORTE = 0.);
 
+    ModelPtr get_corresponding_model() const;
     QVector<QString> view_values() const;
 };
 

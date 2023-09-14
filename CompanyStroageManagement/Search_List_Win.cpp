@@ -20,6 +20,7 @@ Search_List_Win::Search_List_Win(QWidget *parent) :
 //    list_models_table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     list_models_table->setStyleSheet(table_stylesheet);
 
+    this->on_list_id_2be_searched_LE_textChanged(this->ui->list_id_2be_searched_LE->text());
 }
 
 

@@ -27,6 +27,7 @@ CreateListWin::~CreateListWin()
 }
 
 
+// update_added_models_table_according to the cur_list_entries
 void CreateListWin::update_added_models_table()
 {
     this->setDisabled(true);
@@ -55,6 +56,13 @@ void CreateListWin::update_added_models_table()
 
 Finish:
     this->setEnabled(true);
+}
+
+
+void CreateListWin::remove_entry(const unsigned int idx)
+{
+    cur_list_entries.remove_entry(idx);
+    this->update_added_models_table();
 }
 
 
@@ -432,27 +440,22 @@ void CreateListWin::on_added_models_table_cellDoubleClicked(int row, int column)
 {
     Q_UNUSED(column);
 
+    this->setDisabled(true); // disable this win when adjust win is shown
+
     adjust_list_item_win = QSharedPointer<Adjust_List_Item_Win> (new Adjust_List_Item_Win);
 
-    // get the selected row
-    added_models_table->selectRow(row);
-    QList<QTableWidgetItem*> selected_items = this->added_models_table->selectedItems();
-
-    QString MODELCODE = selected_items[added_models_table_MODELCODE_idx]->text();
-    QString CONTAINER_ID = selected_items[added_models_table_ContainerID_idx]->text();
-    ModelPtr model = inventory.get_Model(MODELCODE, CONTAINER_ID);
+    EntryPtr entry = cur_list_entries.entries[row];
+    ModelPtr model = entry->get_corresponding_model();
     if(model.isNull()){
         qDebug() << "CreateListWin::on_added_models_table_cellDoubleClicked: model is empty!";
+        this->setEnabled(true);
         return;
     }
 
-    const unsigned long NUM_ITEMS = selected_items[added_models_table_NUM_ITEMS_idx]->text().toULong();
-    
     adjust_list_item_win->parent_win = this;
-    adjust_list_item_win->added_models_table = this->added_models_table;
-    adjust_list_item_win->set_init_UI_values(model, NUM_ITEMS);
+    adjust_list_item_win->set_model_and_entry(model, entry, row);
+    adjust_list_item_win->set_GUI();
 
-    this->setEnabled(false); // disable this win when adjust win is shown
     adjust_list_item_win->show();
 }
 

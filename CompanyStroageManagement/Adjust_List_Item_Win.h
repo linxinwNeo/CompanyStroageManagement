@@ -2,9 +2,11 @@
 #define ADJUST_LIST_ITEM_WIN_H
 
 #include "DataStructures/Model.h"
+#include "DataStructures/entry.h"
 #include <QWidget>
 #include <QTableWidgetItem>
 
+class CreateListWin;
 namespace Ui {
 class Adjust_List_Item_Win;
 }
@@ -16,11 +18,12 @@ class Adjust_List_Item_Win : public QWidget
 public:
     explicit Adjust_List_Item_Win(QWidget *parent = nullptr);
     ~Adjust_List_Item_Win();
+    
+    void set_model_and_entry(ModelPtr model, EntryPtr entry, const unsigned int entry_idx);
 
-    void set_init_UI_values(ModelPtr model, const unsigned long int NUM_ITEMS);
+    void set_GUI();
 
-    QTableWidget* added_models_table = nullptr;
-    QWidget* parent_win = nullptr;
+    CreateListWin* parent_win = nullptr;
 
 private slots:
     void closeEvent (QCloseEvent *event);
@@ -32,6 +35,8 @@ private:
     Ui::Adjust_List_Item_Win *ui;
 
     ModelPtr model_2be_adjusted = nullptr;
+    EntryPtr entry_2be_adjusted = nullptr;
+    unsigned int entry_idx = -1;
 };
 
 #endif // ADJUST_LIST_ITEM_WIN_H
