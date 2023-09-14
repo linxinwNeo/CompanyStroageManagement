@@ -1,6 +1,5 @@
 #include "DataStructures/entrylist.h"
 #include "Algorithm/QuickSort.h"
-#include "Others/handle_containerID.h"
 
 void EntryList::clear_memory()
 {
@@ -58,14 +57,10 @@ QSharedPointer<Entry> EntryList::get_entry(const UL idx)
 // iterate all entries, check if the corresponding model exists
 bool EntryList::has_Model(const QString &ModelCode, const QString &ContainerID) const
 {
-    QString container_2Be_Compared = ContainerID;
-    handle_ContainerID(container_2Be_Compared);
-
+    QString trimmed_ID = ContainerID.trimmed();
     for(const EntryPtr& entry : this->entries){
         if(ModelCode == entry->CLAVE){
-            QString entryContainer = entry->ContainerID;
-            handle_ContainerID(entryContainer);
-            if(container_2Be_Compared == entryContainer) return true;
+            if(trimmed_ID == entry->ContainerID.trimmed()) return true;
         }
     }
 

@@ -23,6 +23,8 @@ public:
 
     void view_selected_list();
 
+    void reset_list_info();
+
 private:
     Ui::Search_List_Win *ui;
 

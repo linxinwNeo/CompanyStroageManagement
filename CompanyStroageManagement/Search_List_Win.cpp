@@ -63,6 +63,23 @@ void Search_List_Win::view_selected_list()
 }
 
 
+void Search_List_Win::reset_list_info()
+{
+    this->selected_list = nullptr;
+
+    list_models_table->clearContents();
+    list_models_table->setRowCount(0);
+
+    this->ui->CLIENTE_LE->clear();
+    this->ui->DOMICILIO_LE->clear();
+    this->ui->CIUDAD_LE->clear();
+    this->ui->RFC_LE->clear();
+    this->ui->AGENTE_LE->clear();
+    this->ui->CONDICIONES_LE->clear();
+    this->ui->DISCOUNT_LE->clear();
+}
+
+
 void Search_List_Win::closeEvent (QCloseEvent *event)
 {
     QMessageBox msg(this);
@@ -115,6 +132,9 @@ void Search_List_Win::on_list_id_2be_searched_LE_textChanged(const QString & lis
             searched_lists_table->setItem(row, col, tableWidgetItem);
         }
     }
+
+    // clear the selected list
+    this->reset_list_info();
 
     this->setEnabled(true);
     this->ui->list_id_2be_searched_LE->setFocus();

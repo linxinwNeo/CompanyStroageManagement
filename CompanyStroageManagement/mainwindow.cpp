@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "FileLoader/ReadFile.h"
-#include "Others/handle_containerID.h"
 #include "ui_mainwindow.h"
 
 #include <QCloseEvent>
@@ -85,7 +84,7 @@ void MainWindow::show_selected_model()
     ui->selected_model_NUM_ITEMS_PER_BOX_SB->setValue(this->selected_model->NUM_ITEMS_PER_BOX);
     ui->selected_model_PRIZE_SB->setValue(this->selected_model->NUM_SOLD_BOXES);
 
-    if(this->selected_model->container.isNull()) ui->selected_model_CONTAINER_LE->setText(none_CN);
+    if(this->selected_model->container.isNull()) ui->selected_model_CONTAINER_LE->setText("");
     else ui->selected_model_CONTAINER_LE->setText(this->selected_model->container->ID);
 }
 
@@ -241,8 +240,8 @@ void MainWindow::on_update_selected_model_btn_clicked()
         return;
     }
 
-    selected_model->DESCRIPTION_CN = ui->selected_model_DESCRIPTION_CN_LE->text();
-    selected_model->DESCRIPTION_SPAN = ui->selected_model_DESCRIPTION_SPAN_LE->text();
+    selected_model->DESCRIPTION_CN = ui->selected_model_DESCRIPTION_CN_LE->text().trimmed();
+    selected_model->DESCRIPTION_SPAN = ui->selected_model_DESCRIPTION_SPAN_LE->text().trimmed();
     selected_model->NUM_INIT_BOXES = ui->selected_model_NUM_INIT_BOXES_SB->value();
     selected_model->NUM_SOLD_BOXES = ui->selected_model_NUM_SOLD_BOXES_SB->value();
     selected_model->PRIZE = ui->selected_model_PRIZE_SB->value();
@@ -251,20 +250,20 @@ void MainWindow::on_update_selected_model_btn_clicked()
     selected_model->NUM_LEFT_BOXES = selected_model->NUM_INIT_BOXES - selected_model->NUM_SOLD_BOXES;
     selected_model->NUM_LEFT_ITEMS = selected_model->NUM_INIT_BOXES * selected_model->NUM_ITEMS_PER_BOX;
 
-    const QString container_ID = ui->selected_model_CONTAINER_LE->text();
+    const QString container_ID = ui->selected_model_CONTAINER_LE->text().trimmed();
 
-    if(container_ID == none_CN || container_ID == none_SPAN) // the container is none
+    if(container_ID.isEmpty()) // current container of selected model does not exist
     {
         // check if the model has container previsously
-        if(selected_model->container.isNull()) goto LL;
-        else{ // the selected_model has container previously, we need to remove this model from its container
+        if(selected_model->container.isNull()) goto Finish; // if no, then we don't need to do anything
+        else{ // the selected_model has container previously, we need to remove this model from its previous container
             this->selected_model->container->remove_model(this->selected_model);
             this->selected_model->container = nullptr;
         }
     }
     else{ // the container exists
-        // check if this container exists, if not, create one
-        ContainerPtr orig_container = selected_model->container;
+        // check if current container exists, if not, create one
+        ContainerPtr prev_container = selected_model->container;
         ContainerPtr cur_container = inventory.get_container(container_ID);
         if(cur_container.isNull()){ // if no such container exists, create one
             cur_container = ContainerPtr (new Container(container_ID));
@@ -272,29 +271,30 @@ void MainWindow::on_update_selected_model_btn_clicked()
             selected_model->container = cur_container;
         }
 
-        // check if the container ID the same as before
-        if(container_ID == orig_container->ID){
-            goto LL;
+        // check if the container ID is the same as before
+        if(container_ID == prev_container->ID){
+            goto Finish;
         }
         else{
             // the container for the model has been modified
 
-            // remove selected_model from the original container
-            orig_container->remove_model(selected_model);
+            // remove selected_model from the previous container
+            prev_container->remove_model(selected_model);
             selected_model->container = cur_container;
         }
     }
 
-    LL:
-        QMessageBox Msgbox(this);
-        Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
-        Msgbox.setText("保存成功！");
-        Msgbox.exec();
 
-        this->clear_selected_model();
-        this->on_search_MODELCODE_LE_textChanged(this->ui->search_MODELCODE_LE->text());
+Finish:
+    QMessageBox Msgbox(this);
+    Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
+    Msgbox.setText("保存成功！");
+    Msgbox.exec();
 
-        this->setEnabled(true);
+    this->clear_selected_model();
+    this->on_search_MODELCODE_LE_textChanged(this->ui->search_MODELCODE_LE->text());
+
+    this->setEnabled(true);
 
     return;
 }
@@ -312,10 +312,9 @@ void MainWindow::on_search_model_result_Table_cellClicked(int row, int column)
 
     QList items = table->selectedItems();
 
-    QString MODEL_CODE = items[search_model_result_table_MODELCODE_idx]->text(); // index 0 is the MODEL_CODE
-    QString Container_ID = items[search_model_result_table_ContainerID_idx]->text();
+    QString MODEL_CODE = items[search_model_result_table_MODELCODE_idx]->text().trimmed(); // index 0 is the MODEL_CODE
+    QString Container_ID = items[search_model_result_table_ContainerID_idx]->text().trimmed();
     // set ID to empty if this model does not have a container
-    handle_ContainerID(Container_ID);
 
     this->selected_model = inventory.get_Model(MODEL_CODE, Container_ID);
 
@@ -381,9 +380,7 @@ void MainWindow::on_search_container_result_Table_cellClicked(int row, int colum
 
     QList items = table->selectedItems();
 
-    QString Container_ID = items[ search_container_result_table_ContainerID_idx ]->text();
-    // set ID to empty if this model does not have a container
-    handle_ContainerID(Container_ID);
+    QString Container_ID = items[ search_container_result_table_ContainerID_idx ]->text().trimmed();
 
     this->selected_container = inventory.get_container(Container_ID);
 

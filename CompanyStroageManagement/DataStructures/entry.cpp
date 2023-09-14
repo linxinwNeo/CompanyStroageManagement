@@ -1,5 +1,4 @@
 #include "DataStructures/entry.h"
-#include "Others/handle_containerID.h"
 
 Entry::Entry(double CAJA, UL CANTIDAD, UL CANT_POR_CAJA ,
              QString CLAVE, QString ContainerID,
@@ -14,18 +13,12 @@ Entry::Entry(double CAJA, UL CANTIDAD, UL CANT_POR_CAJA ,
     this->Description_CN = Description_CN;
     this->PRECIO = PRECIO;
     this->IMPORTE = IMPORTE;
-
-    // we do special treatment to the ContainerID
     this->ContainerID = ContainerID;
-    handle_ContainerID(this->ContainerID);
 }
 
 
 QVector<QString> Entry::view_values() const
 {
-    QString containerID = this->ContainerID;
-    if(containerID.isEmpty()) containerID = none_CN;
-
     return {
         QString::number(CAJA, 'f', 2),
         QString::number(CANTIDAD),
@@ -35,6 +28,6 @@ QVector<QString> Entry::view_values() const
         Description_CN,
         QString::number(PRECIO, 'f', 2),
         QString::number(IMPORTE, 'f', 2),
-        containerID
+        ContainerID
     };
 }

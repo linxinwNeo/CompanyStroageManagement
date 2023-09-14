@@ -26,8 +26,6 @@ const QString PDF_MESSAGE_2 = "确定生成pdf文件？";
 const QString WHERE_TO_SAVE_FILE_MESSAGE = "想将文件保存在哪里？";
 
 const QString table_stylesheet = "QHeaderView::section { background-color:#F0F0F0; }";
-const QString none_CN = "无";
-const QString none_SPAN = "nulo";
 
 const QString empty_MODELCODE_ERROR_MSG = "货号不能为空！";
 const QString duplicate_Model_ERROR_MSG = "该货号已存在！";

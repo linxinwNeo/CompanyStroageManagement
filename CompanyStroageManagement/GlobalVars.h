@@ -32,8 +32,6 @@ extern const QString PDF_MESSAGE_1;
 extern const QString PDF_MESSAGE_2;
 extern const QString WHERE_TO_SAVE_FILE_MESSAGE;
 extern const QString table_stylesheet;
-extern const QString none_CN;
-extern const QString none_SPAN;
 
 extern const QString empty_MODELCODE_ERROR_MSG;
 extern const QString duplicate_Model_ERROR_MSG;

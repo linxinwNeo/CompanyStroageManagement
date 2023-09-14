@@ -1,7 +1,6 @@
 #include "Inventory.h"
 #include "Algorithm/QuickSort.h"
 #include "GlobalVars.h"
-#include "Others/handle_containerID.h"
 
 Inventory::Inventory()
 {
@@ -105,15 +104,12 @@ QSet<ModelPtr> Inventory::get_Model(const QString &MODEL_CODE)
 // if the mode does not have a container, <Container_ID> is supposed to be an empty string
 QSharedPointer<Model> Inventory::get_Model(const QString &MODEL_CODE, const QString &Container_ID)
 {
-    QString containerID = Container_ID;
-    handle_ContainerID(containerID);
-
     QSet<ModelPtr> candidates = this->get_Model(MODEL_CODE);
     for(ModelPtr m : candidates){
-        if(m->container.isNull() && containerID.isEmpty()){
+        if(m->container.isNull() && Container_ID.isEmpty()){
             return m;
         }
-        else if(!m->container.isNull() && m->container->ID == containerID){
+        else if(!m->container.isNull() && m->container->ID == Container_ID){
             return m;
         }
     }
@@ -149,7 +145,7 @@ void Inventory::add_Container(QSharedPointer<Container> &container)
 
 QSharedPointer<Container> Inventory::get_container(const QString &ID)
 {
-    if(ID.isEmpty()) return nullptr;
+    if(ID.trimmed().isEmpty()) return nullptr;
 
     if(this->contains_container(ID)){
         return this->container_map[ID];
@@ -190,7 +186,7 @@ void Inventory::searchModel_starts_with(const QString str, QVector<ModelPtr>& mo
 {
     models.reserve(this->num_models());
 
-    for(const ModelPtr m : this->model_set){
+    for(const ModelPtr& m : this->model_set){
         if(m->MODEL_CODE.startsWith(str)){
             models.push_back(m);
         }
@@ -206,7 +202,7 @@ void Inventory::searchContainer_starts_with(const QString str, QVector< Containe
 {
     containers.reserve(this->num_containers());
 
-    for(ContainerPtr c : this->container_set){
+    for(const ContainerPtr& c : this->container_set){
         if(c->ID.startsWith(str)){
             containers.push_back(c);
         }
@@ -220,7 +216,7 @@ void Inventory::searchContainer_starts_with(const QString str, QVector< Containe
 
 void Inventory::deduct_models(const QVector<EntryPtr> & entries)
 {
-    for(EntryPtr entry : entries){
+    for(const EntryPtr& entry : entries){
         const QString& MODELCODE = entry->CLAVE;
         const QString& ContainerID = entry->ContainerID;
         ModelPtr model_needs_modify = this->get_Model(MODELCODE, ContainerID);

@@ -5,7 +5,6 @@
 
 #include "CreateListWin.h"
 #include "Others/get_save_filePath.h"
-#include "Others/handle_containerID.h"
 #include "Others/create_PDF.h"
 #include "ui_CreateListWin.h"
 #include "GlobalVars.h"
@@ -311,8 +310,6 @@ void CreateListWin::on_searched_models_table_cellClicked(int row, int column)
 
     MODELCODE = items[searched_models_table_MODELCODE_idx]->text(); // index 0 is the MODEL_CODE
     ContainerID = items[searched_models_table_ContainerID_idx]->text();
-    // set ID to empty if this model does not have a container
-    handle_ContainerID(ContainerID);
 
     this->selected_model_in_search_table = inventory.get_Model(MODELCODE, ContainerID);
 
