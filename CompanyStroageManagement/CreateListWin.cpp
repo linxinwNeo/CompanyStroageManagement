@@ -63,19 +63,23 @@ Finish:
 // also clear the <added_models_table>
 void CreateListWin::on_generatePDF_btn_clicked()
 {
-    if(cur_list_entries.num_entries() == 0) return;
+    QString filter;
+    QString filePath;
+    QMessageBox Msgbox;
+    Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
+
+    if(cur_list_entries.num_entries() == 0) {
+        Msgbox.setText("清单是空的");
+        Msgbox.exec();
+        return;
+    }
 
     this->setDisabled(true);
 
-    QString filter;
-    QString filePath;
-    QMessageBox Msgbox(this);
-    Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
-    Msgbox.setText("清单创建成功");
     const unsigned long int unused_unique_id = lists.get_unique_id();
 
     QMessageBox::StandardButton reply = QMessageBox::question(this, PDF_MESSAGE_1, PDF_MESSAGE_2,
-                                  QMessageBox::Yes|QMessageBox::No);
+                                                              QMessageBox::Yes|QMessageBox::No);
     if (reply == QMessageBox::No) goto Finish; // return if the user says no
 
     this->list = ListPtr(new List());
@@ -106,6 +110,7 @@ void CreateListWin::on_generatePDF_btn_clicked()
     create_pdf(filePath, this->list);
 
     // display creation success
+    Msgbox.setText("清单创建成功");
     Msgbox.exec();
 
     // now deduct the items from stroage
@@ -131,12 +136,13 @@ void CreateListWin::on_previewList_btn_clicked()
 {
     QString filter;
     QString filePath;
-    QMessageBox Msgbox(this);
+    QMessageBox Msgbox;
     Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
 
     if(cur_list_entries.num_entries() == 0) {
         Msgbox.setText("清单是空的");
         Msgbox.exec();
+        return;
     }
 
     this->setDisabled(true);
@@ -182,7 +188,9 @@ Finish:
 
 void CreateListWin::closeEvent (QCloseEvent *event)
 {
-    QMessageBox msg(this);
+    this->setDisabled(true);
+
+    QMessageBox msg;
     msg.setText(tr("你确定要退出吗?\n"));
     msg.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
     msg.setDefaultButton(QMessageBox::Yes);
@@ -197,6 +205,9 @@ void CreateListWin::closeEvent (QCloseEvent *event)
         this->parentPtr->show();
         event->accept();
     }
+
+
+    this->setEnabled(true);
 }
 
 
@@ -287,25 +298,42 @@ void CreateListWin::clear_added_models_table()
 void CreateListWin::on_searched_models_table_cellClicked(int row, int column)
 {
     Q_UNUSED(column);
+    this->setDisabled(true);
 
     const auto& table = this->searched_models_table;
     table->selectRow(row);
 
-    QList items = table->selectedItems();
-    if(items.length() != this->NUM_SEARCHED_MODELS_TABLE_COLS) return;
+    QString MODELCODE;
+    QString ContainerID;
 
-    QString MODELCODE = items[searched_models_table_MODELCODE_idx]->text(); // index 0 is the MODEL_CODE
-    QString ContainerID = items[searched_models_table_ContainerID_idx]->text();
+    QList items = table->selectedItems();
+    if(items.length() != this->NUM_SEARCHED_MODELS_TABLE_COLS) goto Finish;
+
+    MODELCODE = items[searched_models_table_MODELCODE_idx]->text(); // index 0 is the MODEL_CODE
+    ContainerID = items[searched_models_table_ContainerID_idx]->text();
     // set ID to empty if this model does not have a container
     handle_ContainerID(ContainerID);
 
     this->selected_model_in_search_table = inventory.get_Model(MODELCODE, ContainerID);
+
+Finish:
+    this->setEnabled(true);
 }
 
 
 /* try to add selected model in to the <added_models_table>, but we need to check if it has been added already */
 void CreateListWin::on_add_selected_model_btn_clicked()
 {
+    if(this->selected_model_in_search_table.isNull()) return;
+    // we dont have this selected model anymore
+    QMessageBox Msgbox;
+    Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
+    if(this->selected_model_in_search_table->NUM_LEFT_ITEMS == 0){
+        Msgbox.setText("该货没有库存了");
+        Msgbox.exec();
+        return;
+    }
+
     ModelPtr model_2be_added;
     QString MODELCODE_2be_Added;
     QString ContainerID_2be_Added;
@@ -323,8 +351,6 @@ void CreateListWin::on_add_selected_model_btn_clicked()
 
     this->setDisabled(true);
 
-    if(this->selected_model_in_search_table.isNull()) goto FINISH;
-
     model_2be_added = this->selected_model_in_search_table;
     MODELCODE_2be_Added = model_2be_added->MODEL_CODE;
 
@@ -333,6 +359,8 @@ void CreateListWin::on_add_selected_model_btn_clicked()
 
     // check if this model has been added to <added_models_table> already
     if(cur_list_entries.has_Model(MODELCODE_2be_Added, ContainerID_2be_Added)){
+        Msgbox.setText("该货已经在清单中了");
+        Msgbox.exec();
         goto FINISH;
     }
 
@@ -346,10 +374,10 @@ void CreateListWin::on_add_selected_model_btn_clicked()
     PRIZE = model_2be_added->PRIZE;
     TOTAL_PRIZE = model_2be_added->TOTAL_PRIZE(model_2be_added->NUM_LEFT_BOXES);
     ContainerID = ContainerID_2be_Added;
-    new_entry = EntryPtr (new Entry(NUM_BOXES, TOTAL_NUM_ITEMS, NUM_ITEMS_PER_BOX,
-                                 MODEL_CODE, ContainerID,
-                                 DESCRIPTION_SPAN, DESCRIPTION_CN,
-                                 PRIZE, TOTAL_PRIZE));
+    new_entry = EntryPtr (new Entry( NUM_BOXES, TOTAL_NUM_ITEMS, NUM_ITEMS_PER_BOX,
+                                     MODEL_CODE, ContainerID,
+                                     DESCRIPTION_SPAN, DESCRIPTION_CN,
+                                     PRIZE, TOTAL_PRIZE));
 
     cur_list_entries.add_entry(new_entry);
 
@@ -373,17 +401,21 @@ void CreateListWin::on_added_models_table_cellClicked(int row, int column)
 // delete the selected row in the <added_models_table>
 void CreateListWin::on_remove_selected_model_btn_clicked()
 {
-    this->setEnabled(false);
+    this->setDisabled(true);
+
+    int row_idx;
 
     auto table = this->added_models_table; // this table is what we are interested in in this function
 
     QList<QTableWidgetItem *> selected_items = table->selectedItems();
 
-    if(selected_items.size() == 0) return; // nothing is selected
+    if(selected_items.size() == 0) goto Finish; // nothing is selected
 
-    int row_idx = selected_items[0]->row();
+    row_idx = selected_items[0]->row();
     table->removeRow(row_idx);
+    cur_list_entries.remove_entry(row_idx);
 
+Finish:
     this->setEnabled(true);
 }
 
@@ -393,6 +425,8 @@ void CreateListWin::on_reset_added_models_table_btn_clicked()
 {
     this->added_models_table->clearContents();
     this->added_models_table->setRowCount(0);
+
+    cur_list_entries.clear_memory();
 }
 
 

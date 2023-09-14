@@ -638,7 +638,7 @@
        <item>
         <widget class="QGroupBox" name="groupBox_2">
          <property name="title">
-          <string>已添加的货物</string>
+          <string>已添加的货物（双击货物修改数量）</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <property name="spacing">
