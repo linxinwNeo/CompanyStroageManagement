@@ -79,12 +79,18 @@ void Model::sell_items(UI num_items)
 void Model::addBack_items(UI num_items)
 {
     double num_boxes_to_addBack = num_items / (double)this->NUM_ITEMS_PER_BOX;
-    this->NUM_SOLD_BOXES -= num_boxes_to_addBack;
+    if(NUM_SOLD_BOXES < num_boxes_to_addBack){
+        NUM_SOLD_BOXES = 0;
+    }
+    else{
+        this->NUM_SOLD_BOXES -= num_boxes_to_addBack;
+    }
+
     this->NUM_LEFT_BOXES += num_boxes_to_addBack;
     this->NUM_LEFT_ITEMS += num_items;
 
     // make sure after adding back items, the number of initial boxes still makes sense
-    if(NUM_INIT_BOXES < NUM_LEFT_BOXES + NUM_SOLD_BOXES){
+    if(NUM_INIT_BOXES != NUM_LEFT_BOXES + NUM_SOLD_BOXES){
         NUM_INIT_BOXES = NUM_LEFT_BOXES + NUM_SOLD_BOXES;
     }
 }
@@ -93,9 +99,19 @@ void Model::addBack_items(UI num_items)
 // add back this many boxes, you don't need to call addBack_items anymore.
 void Model::addBack_boxes(double num_boxes_to_addBack)
 {
-    this->NUM_SOLD_BOXES -= num_boxes_to_addBack;
-    this->NUM_LEFT_BOXES += num_boxes_to_addBack;
-    this->NUM_LEFT_ITEMS += (num_boxes_to_addBack * this->NUM_ITEMS_PER_BOX);
+    if(NUM_SOLD_BOXES < num_boxes_to_addBack){
+        NUM_SOLD_BOXES = 0;
+    }
+    else{
+        NUM_SOLD_BOXES -= num_boxes_to_addBack;
+    }
+    NUM_LEFT_BOXES += num_boxes_to_addBack;
+    NUM_LEFT_ITEMS += (num_boxes_to_addBack * this->NUM_ITEMS_PER_BOX);
+
+    // make sure after adding back items, the number of initial boxes still makes sense
+    if(NUM_INIT_BOXES != NUM_LEFT_BOXES + NUM_SOLD_BOXES){
+        NUM_INIT_BOXES = NUM_LEFT_BOXES + NUM_SOLD_BOXES;
+    }
 }
 
 
