@@ -75,8 +75,8 @@ void WriteFile::Lists2txt(const QString &path) const
 
         // output num of models in the list
         out << list->num_model_types() << "\n"; // 11
-
-        for(EntryPtr entry : list->itemList.entries){
+        
+        for(EntryPtr entry : list->entryList.entries){
             out << entry->CLAVE << split_item // 0 modelCODE
                 << entry->ContainerID << split_item // 1 container ID
                 << entry->CAJA << split_item // 2 NUM_BOXES

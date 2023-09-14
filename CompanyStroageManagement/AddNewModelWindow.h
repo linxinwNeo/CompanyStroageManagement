@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <QMessageBox>
 
+class MainWindow;
+
 namespace Ui {
 class AddNewModelWindow;
 }
@@ -13,7 +15,7 @@ class AddNewModelWindow : public QWidget
     Q_OBJECT
 
 public:
-    QWidget* parentPtr = nullptr;
+    MainWindow* parentPtr = nullptr;
 
     QSharedPointer<QMessageBox> create_MessageBox(const QString& msg);
     explicit AddNewModelWindow(QWidget *parent = nullptr);

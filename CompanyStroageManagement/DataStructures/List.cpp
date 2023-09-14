@@ -1,23 +1,24 @@
 #include "List.h"
 #include "Algorithm/QuickSort.h"
 #include "FileLoader/WriteFile.h"
+#include "GlobalVars.h"
 #include "Others/output_error_file.h"
 
 unsigned long int List::num_model_types() const
 {
-    return this->itemList.num_entries();
+    return this->entryList.num_entries();
 }
 
 
 void List::add_item(QSharedPointer<Entry> & new_entry)
 {
-    this->itemList.add_entry(new_entry);
+    this->entryList.add_entry(new_entry);
 }
 
 
 double List::total_num_boxes() const
 {
-    return this->itemList.total_num_boxes();
+    return this->entryList.total_num_boxes();
 }
 
 
@@ -28,11 +29,45 @@ void List::total(double &p1, double &p2) const
 {
     p1 = 0;
 
-    for(auto& entry : this->itemList.entries){
+    for(auto& entry : this->entryList.entries){
         p1 += (entry->IMPORTE);
     }
 
     p2 = (p1 * (1. - this->client_info.DISCOUNT) );
+}
+
+
+// 将该清单内的所有货物加回库存
+void List::return_models() const
+{
+    for(const EntryPtr& entry : this->entryList.entries){
+        // 找到对应货号的库存
+        ModelPtr model = inventory.get_Model(entry->CLAVE, entry->ContainerID);
+        ContainerPtr container = inventory.get_container(entry->ContainerID);
+        if(model.isNull()){
+            /* the model doesn't exist in inventory, this is usually because the model is deleted
+             * after this list has been created, we need to create this model */
+            model = ModelPtr (new Model(entry->CLAVE, entry->Description_SPAN, entry->Description_CN,
+                                       entry->PRECIO, entry->CAJA, 0, entry->CAJA,
+                                       entry->CANTIDAD, entry->CANT_POR_CAJA));
+            inventory.add_Model(model);
+
+            /* if the container of this model also doesn't exist, we need to create one */
+            if(container.isNull() && !entry->ContainerID.isEmpty()){
+                /* the container for this model does not exist, we need to create a new container */
+                container = ContainerPtr (new Container(entry->ContainerID));
+                container->add_model(model);
+                inventory.add_Container(container);
+                model->container = container;
+            }
+
+            continue;
+        }
+
+        // the model is not null, so we can add the model back directly
+        // the addBack function will handle the case that after adding back the num of boxes exceed the max
+        model->addBack_items(entry->CANTIDAD);
+    }
 }
 
 
@@ -108,19 +143,25 @@ ListPtr Lists::get_list(unsigned long id)
 
 
 // get the lists with their id begin with id_prefix
+// if prefix is empty, we return all lists
 void Lists::get_list(QString id_prefix, QVector<ListPtr>& candidates, bool sorted)
 {
     candidates.clear();
     candidates.reserve(this->num_lists()/9 + 10);
 
     // return if id_prefix is empty
-    if(id_prefix.isEmpty()) return;
-
-    // for each list in the database, we convert it to a string and testing
-    for(ListPtr list : this->lists){
-        QString cur_id = QString::number(list->id);
-        if(cur_id.startsWith(id_prefix)){
+    if(id_prefix.isEmpty()){
+        for(ListPtr list : this->lists){
             candidates.push_back(list);
+        }
+    }
+    else{
+        // for each list in the database, we convert it to a string and testing
+        for(ListPtr list : this->lists){
+            QString cur_id = QString::number(list->id);
+            if(cur_id.startsWith(id_prefix)){
+                candidates.push_back(list);
+            }
         }
     }
 

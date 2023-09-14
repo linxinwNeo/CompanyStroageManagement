@@ -23,7 +23,7 @@ void create_pdf(QString filename, ListPtr list)
     pdf_file.setPageMargins(QMargins(300, 300, 300, 300));
 
     const auto& client_info = list->client_info;
-    const auto& items = list->itemList;
+    const auto& items = list->entryList;
 
     // setting up the painter
     QPainter painter(&pdf_file);

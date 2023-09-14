@@ -16,7 +16,10 @@ AddNewModelWindow::~AddNewModelWindow()
 {
     delete ui;
 
-    if(this->parentPtr != nullptr) this->parentPtr->show();
+    if(this->parentPtr != nullptr) {
+        this->parentPtr->update_GUI();
+        this->parentPtr->show();
+    }
 }
 
 
@@ -53,7 +56,7 @@ void AddNewModelWindow::closeEvent(QCloseEvent *event)
     msg.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
 
     int resBtn = msg.exec();
-    if (resBtn != QMessageBox::Yes) {
+    if (resBtn == QMessageBox::No) {
         event->ignore();
     }
     else {

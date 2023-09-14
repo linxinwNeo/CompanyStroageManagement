@@ -55,7 +55,7 @@ void MainWindow::init()
     // read inventory.txt file
     read_file.read_Inventory_txt_File(Inventory_FNAME); // build the inventory
     // read lists.txt file
-    read_file.read_Lists_txt_File(Lists_FNAME); // build the inventory
+    read_file.read_Lists_txt_File(Lists_FNAME); // build the lists
 
 }
 
@@ -68,6 +68,14 @@ void MainWindow::clear_search_container_result_table()
 
     this->clear_selected_container_table();
     this->selected_container = nullptr;
+}
+
+
+// update the GUI
+void MainWindow::update_GUI()
+{
+    this->on_search_MODELCODE_LE_textChanged(this->ui->search_MODELCODE_LE->text());
+    this->on_search_CONTAINER_ID_LE_textChanged(this->ui->search_CONTAINER_ID_LE->text());
 }
 
 
@@ -179,7 +187,9 @@ void MainWindow::closeEvent (QCloseEvent *event)
  *  the searchResult table */
 void MainWindow::on_search_MODELCODE_LE_textChanged(const QString& new_str)
 {
-    this->setEnabled(false);
+    this->setDisabled(true);
+
+    this->clear_selected_model();
 
     QString userInput = new_str.trimmed(); // remove useless empty spaces
     QVector<ModelPtr> models; // will hold the models that has MODELCODE starts with new_str
@@ -191,7 +201,7 @@ void MainWindow::on_search_MODELCODE_LE_textChanged(const QString& new_str)
     table->setRowCount(0);
     if(userInput.isEmpty()){
         // if input is empty, empty the table and return
-        goto ret;
+        goto Ret;
     }
 
     inventory.searchModel_starts_with(userInput, models);
@@ -215,7 +225,7 @@ void MainWindow::on_search_MODELCODE_LE_textChanged(const QString& new_str)
         }
     }
 
-ret:
+Ret:
     this->setEnabled(true);
     this->ui->search_MODELCODE_LE->setFocus();
 }
@@ -291,12 +301,9 @@ Finish:
     Msgbox.setText("保存成功！");
     Msgbox.exec();
 
-    this->clear_selected_model();
-    this->on_search_MODELCODE_LE_textChanged(this->ui->search_MODELCODE_LE->text());
+    this->update_GUI();
 
     this->setEnabled(true);
-
-    return;
 }
 
 
@@ -330,6 +337,8 @@ void MainWindow::on_search_model_result_Table_cellClicked(int row, int column)
 void MainWindow::on_search_CONTAINER_ID_LE_textChanged(const QString &new_str)
 {
     this->setEnabled(false);
+
+    this->clear_selected_container_table();
 
     auto table = this->ui->search_container_result_Table;
     table->clearContents(); // clear the table contents but columns are reserved
@@ -453,16 +462,14 @@ void MainWindow::on_delete_model_btn_clicked()
     response = delete_confirmation_msg.exec();
     if (response == QMessageBox::No) goto ret;
 
-    // delete this model
+    // delete this model from inventory
     inventory.remove_Model(this->selected_model);
 
 //a:
-    delete_success_msg.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
     delete_success_msg.setText("删除成功！");
     delete_success_msg.exec();
 
-    this->clear_selected_model();
-    this->on_search_MODELCODE_LE_textChanged(this->ui->search_MODELCODE_LE->text());
+    this->update_GUI();
 
 ret:
     this->setEnabled(true);

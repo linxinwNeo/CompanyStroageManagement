@@ -33,6 +33,8 @@ public:
     void clear_selected_container_table();
     void clear_search_container_result_table();
 
+    void update_GUI();
+
 private slots:
     void closeEvent (QCloseEvent *event);
     void on_search_MODELCODE_LE_textChanged(const QString& new_str);

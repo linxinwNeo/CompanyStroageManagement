@@ -67,6 +67,11 @@ void Model::sell_items(UI num_items)
     this->NUM_SOLD_BOXES += num_boxes_to_deduct;
     this->NUM_LEFT_BOXES -= num_boxes_to_deduct;
     this->NUM_LEFT_ITEMS -= num_items;
+
+    // make sure after adding back items, the number of initial boxes still makes sense
+    if(NUM_INIT_BOXES < NUM_LEFT_BOXES + NUM_SOLD_BOXES){
+        NUM_INIT_BOXES = NUM_LEFT_BOXES + NUM_SOLD_BOXES;
+    }
 }
 
 
@@ -77,9 +82,15 @@ void Model::addBack_items(UI num_items)
     this->NUM_SOLD_BOXES -= num_boxes_to_addBack;
     this->NUM_LEFT_BOXES += num_boxes_to_addBack;
     this->NUM_LEFT_ITEMS += num_items;
+
+    // make sure after adding back items, the number of initial boxes still makes sense
+    if(NUM_INIT_BOXES < NUM_LEFT_BOXES + NUM_SOLD_BOXES){
+        NUM_INIT_BOXES = NUM_LEFT_BOXES + NUM_SOLD_BOXES;
+    }
 }
 
 
+// add back this many boxes, you don't need to call addBack_items anymore.
 void Model::addBack_boxes(double num_boxes_to_addBack)
 {
     this->NUM_SOLD_BOXES -= num_boxes_to_addBack;

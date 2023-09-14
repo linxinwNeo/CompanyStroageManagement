@@ -4,6 +4,7 @@
 
 #include <QMessageBox>
 #include <QCloseEvent>
+#include "mainwindow.h"
 
 Search_List_Win::Search_List_Win(QWidget *parent) :
     QWidget(parent),
@@ -18,6 +19,7 @@ Search_List_Win::Search_List_Win(QWidget *parent) :
     list_models_table = ui->list_models_table;
 //    list_models_table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     list_models_table->setStyleSheet(table_stylesheet);
+
 }
 
 
@@ -27,7 +29,7 @@ Search_List_Win::~Search_List_Win()
 }
 
 
-void Search_List_Win::set_parentWin(QWidget *win)
+void Search_List_Win::set_parentWin(MainWindow* win)
 {
     this->parentWin = win;
 }
@@ -47,7 +49,7 @@ void Search_List_Win::view_selected_list()
     this->ui->DISCOUNT_LE->setText(QString::number(selected_list->client_info.DISCOUNT));
 
     // show the models of this entry
-    for(EntryPtr e : selected_list->itemList.entries){
+    for(EntryPtr e : selected_list->entryList.entries){
         list_models_table->insertRow(list_models_table->rowCount());
 
         QVector<QString> items = e->view_values();
@@ -90,11 +92,15 @@ void Search_List_Win::closeEvent (QCloseEvent *event)
     msg.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
 
     int resBtn = msg.exec();
-    if (resBtn != QMessageBox::Yes) {
+    if (resBtn == QMessageBox::No) {
         event->ignore();
     }
     else {
-        if(this->parentWin != nullptr) this->parentWin->show();
+        if(this->parentWin != nullptr) {
+            // since models can be modified, we need to update the parentWindow GUI as well
+            this->parentWin->update_GUI();
+            this->parentWin->show();
+        }
         event->accept();
     }
 }
@@ -168,6 +174,81 @@ void Search_List_Win::on_searched_lists_table_cellClicked(int row, int column)
     this->view_selected_list();
 
 Finish:
+    this->setEnabled(true);
+}
+
+
+// delete the selected list
+void Search_List_Win::on_delete_list_btn_clicked()
+{
+    this->setDisabled(true);
+
+    QMessageBox msg;
+    msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+    msg.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
+    // display message if nothing is selected
+    if(this->selected_list.isNull()){
+        msg.setText("没有选中任何清单！");
+        msg.exec();
+        goto Finish;
+    }
+
+    msg.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
+    msg.setDefaultButton(QMessageBox::Yes);
+    msg.setText("确定要删除单号为" + QString::number(this->selected_list->id) + "的清单吗？");
+
+    if (msg.exec() == QMessageBox::Yes) {
+        // 删除该清单
+        lists.remove_list(this->selected_list->id);
+        // 更新GUI
+        this->on_list_id_2be_searched_LE_textChanged(this->ui->list_id_2be_searched_LE->text());
+
+        //更新 lists存储文件
+        lists.save_2_file();
+
+        goto Finish;
+    }
+Finish:
+    this->selected_list = nullptr;
+    this->setEnabled(true);
+}
+
+
+// put back the list, put back all its items
+void Search_List_Win::on_put_back_list_btn_clicked()
+{
+    this->setDisabled(true);
+
+    QMessageBox msg;
+    msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+    msg.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
+    // display message if nothing is selected
+    if(this->selected_list.isNull()){
+        msg.setText("没有选中任何清单！");
+        msg.exec();
+        goto Finish;
+    }
+
+    msg.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
+    msg.setDefaultButton(QMessageBox::Yes);
+    msg.setText("确定要退单号为" + QString::number(this->selected_list->id) + "的清单吗？");
+
+    if (msg.exec() == QMessageBox::Yes) {
+        // 将清单内的货物加回库存
+        this->selected_list->return_models();
+
+        // 删除该清单
+        lists.remove_list(this->selected_list->id);
+        // 更新GUI
+        this->on_list_id_2be_searched_LE_textChanged(this->ui->list_id_2be_searched_LE->text());
+
+        //更新 lists存储文件
+        lists.save_2_file();
+
+        goto Finish;
+    }
+Finish:
+    this->selected_list = nullptr;
     this->setEnabled(true);
 }
 

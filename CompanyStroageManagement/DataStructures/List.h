@@ -11,7 +11,7 @@ class List
 {
 public:
     Client_info client_info;
-    EntryList itemList;
+    EntryList entryList;
     QDate date_created;
     QTime time_created;
     unsigned long int id;
@@ -24,6 +24,8 @@ public:
     double total_num_boxes() const;
 
     void total(double& p1, double& p2) const;
+
+    void return_models() const;
 
     QVector<QString> describe_this_list() const;
 };

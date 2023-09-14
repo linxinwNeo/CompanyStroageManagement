@@ -82,8 +82,8 @@ void CreateListWin::on_generatePDF_btn_clicked()
     if (reply == QMessageBox::No) goto Finish; // return if the user says no
 
     this->list = ListPtr(new List());
-
-    this->list->itemList = cur_list_entries;
+    
+    this->list->entryList = cur_list_entries;
 
     // save client info
     this->list->client_info.CLIENTE = this->ui->CLIENTE_LE->text();
@@ -113,7 +113,7 @@ void CreateListWin::on_generatePDF_btn_clicked()
     Msgbox.exec();
 
     // now deduct the items from stroage
-    inventory.deduct_models(this->list->itemList.entries);
+    inventory.deduct_models(this->list->entryList.entries);
 
     // save the list to a txt file
     lists.add_list(this->list);
@@ -152,8 +152,8 @@ void CreateListWin::on_previewList_btn_clicked()
     if (reply == QMessageBox::No) goto Finish;
 
     this->list = ListPtr(new List());
-
-    this->list->itemList = cur_list_entries;
+    
+    this->list->entryList = cur_list_entries;
 
     // save client info
     this->list->client_info.CLIENTE = this->ui->CLIENTE_LE->text();

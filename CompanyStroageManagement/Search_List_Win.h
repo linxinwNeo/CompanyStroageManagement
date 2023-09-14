@@ -9,6 +9,8 @@ namespace Ui {
 class Search_List_Win;
 }
 
+class MainWindow;
+
 class Search_List_Win : public QWidget
 {
     Q_OBJECT
@@ -17,7 +19,7 @@ public:
     explicit Search_List_Win(QWidget *parent = nullptr);
     ~Search_List_Win();
 
-    void set_parentWin(QWidget* win);
+    void set_parentWin(MainWindow* win);
 
     unsigned int searched_lists_table_list_id_idx = 0;
 
@@ -28,7 +30,7 @@ public:
 private:
     Ui::Search_List_Win *ui;
 
-    QWidget* parentWin = nullptr;
+    MainWindow* parentWin = nullptr;
 
     QTableWidget* searched_lists_table = nullptr;
     QTableWidget* list_models_table = nullptr;
@@ -40,6 +42,8 @@ private slots:
 
     void on_list_id_2be_searched_LE_textChanged(const QString &arg1);
     void on_searched_lists_table_cellClicked(int row, int column);
+    void on_delete_list_btn_clicked();
+    void on_put_back_list_btn_clicked();
 };
 
 #endif // SEARCH_LIST_WIN_H

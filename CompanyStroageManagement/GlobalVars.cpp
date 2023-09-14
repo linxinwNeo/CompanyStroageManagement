@@ -3,7 +3,7 @@
 QString stroagefilePath;
 QSharedPointer<Excel> excel (nullptr);
 
-QString Inventory_FNAME = "C:/Users/linxi/OneDrive/Desktop/inventory.txt";
+QString Inventory_FNAME = "C:/Users/linxi/OneDrive/Documents/GitHub/CompanyStroageManagement/inventory.txt";
 QString Lists_FNAME = "lists.txt";
 
 class Inventory inventory; // holds all models, containers
