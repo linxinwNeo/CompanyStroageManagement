@@ -229,3 +229,20 @@ void Inventory::deduct_models(const QVector<EntryPtr> & entries)
     }
 }
 
+
+// transfer set to vector and sort it
+void Inventory::modelSet_2_Vector(QVector<QSharedPointer<Model> >& output)
+{
+    output.clear();
+    output.reserve(this->num_models());
+
+    for(const ModelPtr& model : this->model_set){
+        output.push_back(model);
+    }
+
+    // sort the vector
+    QuickSorts QS;
+    QS.QuickSort(output);
+
+}
+

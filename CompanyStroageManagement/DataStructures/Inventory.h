@@ -48,6 +48,8 @@ public:
     void searchContainer_starts_with(const QString str,  QVector<ContainerPtr>& containers);
 
     void deduct_models(const QVector<EntryPtr>&);
+
+    void modelSet_2_Vector(QVector<ModelPtr>&);
 };
 
 

@@ -94,7 +94,7 @@ QVector<QString> List::describe_this_list() const
 unsigned long int Lists::get_unique_id() const
 {
     // we test integers from 1 to ULONG_MAX, 0 is intentionally left blank
-    for(long long i = 1; i < ULONG_LONG_MAX; i++){
+    for(unsigned long long i = 1; i < ULONG_LONG_MAX; i++){
         if(lists.contains(i)) continue;
         return i;
     }

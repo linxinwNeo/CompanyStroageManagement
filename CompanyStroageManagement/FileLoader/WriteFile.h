@@ -2,19 +2,23 @@
 #define WRITEFILE_H
 
 #include <QString>
-
-const QString split_item = "&&";
+#include "QXlsx/QXlsxHeaders.h"
 
 class WriteFile
 {
 public:
+    const QString split_item = "&&";
+
     WriteFile() {};
     ~WriteFile() {};
 
-    void Models2txt(const QString& path) const;
-    void Models2xlsx(const QString& path) const;
+    void Inventory2Txt(const QString& path) const;
+    void Inventory2Xlsx(const QString& path) const;
 
     void Lists2txt(const QString& path) const;
+
+    void update_BackUpDate() const;
+    void save_BackUp_files() const;
 };
 
 #endif // WRITEFILE_H

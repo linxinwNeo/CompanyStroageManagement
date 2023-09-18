@@ -55,6 +55,10 @@ private slots:
 
     void on_delete_model_btn_clicked();
 
+    void on_save2_new_file_btn_clicked();
+
+    void on_read_from_new_file_btn_clicked();
+
 private:
     ModelPtr selected_model;
     ContainerPtr selected_container;
@@ -64,6 +68,8 @@ private:
     QSharedPointer<AddNewModelWindow> AddNewModelWinPtr;
     QSharedPointer<CreateListWin> CreateListWinPtr;
     QSharedPointer<Search_List_Win> SearchListWinPtr;
+
+    bool is_time_for_backup() const;
 
 public:
     const unsigned int search_model_result_table_MODELCODE_idx = 0;

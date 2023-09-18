@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 #include "FileLoader/ReadFile.h"
+#include "FileLoader/WriteFile.h"
+#include "qstandardpaths.h"
 #include "ui_mainwindow.h"
 
 #include <QCloseEvent>
@@ -52,11 +54,18 @@ void MainWindow::init()
 
     // read inventory.txt file
     ReadFile read_file;
-    // read inventory.txt file
-    read_file.read_Inventory_txt_File(Inventory_FNAME); // build the inventory
+//    // read inventory.txt file
+//    read_file.read_Inventory_txt_File(Inventory_FNAME); // build the inventory
+
+    read_file.read_Inventory_xlsx_File("models.xlsx");
     // read lists.txt file
     read_file.read_Lists_txt_File(Lists_FNAME); // build the lists
 
+    if(this->is_time_for_backup()){
+        WriteFile wf;
+        wf.save_BackUp_files();
+        wf.update_BackUpDate();
+    }
 }
 
 
@@ -473,5 +482,93 @@ void MainWindow::on_delete_model_btn_clicked()
 
 ret:
     this->setEnabled(true);
+}
+
+
+// save inventory to a new file
+void MainWindow::on_save2_new_file_btn_clicked()
+{
+    // prompt the user to select folder and enter file name
+    QFileDialog dialog;
+    dialog.setFileMode(QFileDialog::AnyFile);
+    dialog.setAcceptMode(QFileDialog::AcceptSave);
+    dialog.setNameFilter("Excel Files (*.xlsx)");
+    dialog.setDefaultSuffix("xlsx");
+    dialog.selectFile(Inventory_FNAME_xlsx);
+    QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
+    dialog.setDirectory(desktopPath);
+
+    // Show the dialog and wait for the user's selection
+    if (dialog.exec()) {
+        QString filePath = dialog.selectedFiles().first();
+
+        if(filePath.trimmed().isNull()) return;
+
+        WriteFile WF;
+        WF.Inventory2Xlsx(filePath);
+    }
+}
+
+
+
+// read inventory from a new file
+void MainWindow::on_read_from_new_file_btn_clicked()
+{
+    QFileDialog fileDialog;
+    fileDialog.setNameFilter("Excel Files (*.xlsx)");
+    fileDialog.setDefaultSuffix("xlsx");
+    fileDialog.setAcceptMode(QFileDialog::AcceptSave);
+    QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
+    fileDialog.setDirectory(desktopPath);
+    fileDialog.setFileMode(QFileDialog::ExistingFile);
+    fileDialog.selectFile(Inventory_FNAME_xlsx);
+
+    if (fileDialog.exec())
+    {
+        // Get the selected file
+        QString fileName = fileDialog.selectedFiles().first();
+
+        if(fileName.trimmed().isNull()) return;
+
+        // clear the memory of inventory
+        inventory.clear();
+
+        // read the file
+        ReadFile RF;
+        RF.read_Inventory_xlsx_File(fileName);
+    }
+}
+
+
+// check if it has been a week since last back up
+bool MainWindow::is_time_for_backup() const
+{
+    // read datetime for last backup
+    QFile file(BackUP_FileName);
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QTextStream stream(&file);
+
+        // Read and display the file contents line by line
+        while (!stream.atEnd()) {
+            QString line = stream.readLine();
+            const QString format = "yyyy-MM-dd HH:mm:ss";
+            QDateTime prev_DateTime = QDateTime::fromString(line, format);
+            if(prev_DateTime.isValid()){
+                QDateTime curDateTime = QDateTime::currentDateTime();
+                int days = prev_DateTime.daysTo(curDateTime);
+                if(days > 3){
+                    return true;
+                }
+            }
+        }
+
+        // Close the file when done
+        file.close();
+    }
+    else{ // no backup history, save
+        return true;
+    }
+
+    return false;
 }
 

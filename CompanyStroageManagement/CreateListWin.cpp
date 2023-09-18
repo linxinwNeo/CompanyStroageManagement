@@ -6,6 +6,7 @@
 #include "CreateListWin.h"
 #include "Others/get_save_filePath.h"
 #include "Others/create_PDF.h"
+#include "mainwindow.h"
 #include "ui_CreateListWin.h"
 #include "GlobalVars.h"
 

@@ -1,19 +1,26 @@
 #include "GlobalVars.h"
 
 QString stroagefilePath;
-QSharedPointer<Excel> excel (nullptr);
 
-QString Inventory_FNAME = "C:/Users/linxi/OneDrive/Documents/GitHub/CompanyStroageManagement/inventory.txt";
+QString Inventory_FNAME_xlsx = "inventory.xlsx";
 QString Lists_FNAME = "lists.txt";
+
+const QString BackUP_DirName = "./backUps";
+const QString BackUP_FileName = "BackUpDate.txt";
 
 class Inventory inventory; // holds all models, containers
 class Lists lists; // holds all past list
 
 const QString APP_NAME = "Yi Hong Ding 库存管理软件";
-const QString FATAL_ERROR_MESSAGE = "出现无法解决的错误，请联系制作者。";
+const QString FATAL_ERROR_MSG = "出现无法解决的错误，请联系制作者。";
 const QString AddNewModel_WinTitle = "新增一个新的货物";
 const QString CreateList_WinTitle = "创建一个新的清单";
 const QString Search_List_WinTitle = "搜索清单";
+
+const QString UNABLE_TO_SAVE_BACKUP_DATE_MSG = "保存备份文件失败！";
+
+const QString SAVE_ERROR_MSG = "保存失败, 关闭已经打开的文件并且再次保存可能解决该问题";
+const QString UNABLE_OPEN_FILE_MSG = "无法打开文件";
 
 const QString EXCEL_CAPTION = "选择库存文件";
 const QString EXCEL_FILTER = "Microsoft Excel Open XML Spreadsheet (*.xlsx)";

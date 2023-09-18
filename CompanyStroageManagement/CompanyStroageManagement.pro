@@ -30,7 +30,6 @@ SOURCES += \
     FileLoader/WriteFile.cpp \
     GlobalVars.cpp \
     Others/create_pdf.cpp \
-    QXlsx/Excel.cpp \
     Search_List_Win.cpp \
     flags.cpp \
     main.cpp \
@@ -56,7 +55,6 @@ HEADERS += \
     Others/is_int_float.h \
     Others/output_error_file.h \
     Predefined.h \
-    QXlsx/Excel.h \
     QXlsx/QXlsxHeaders.h \
     Search_List_Win.h \
     flags.h \

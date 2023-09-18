@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="search_model_tab">
        <attribute name="title">
@@ -918,7 +918,7 @@
       </widget>
       <widget class="QWidget" name="save_file_tab">
        <attribute name="title">
-        <string>保存文件</string>
+        <string>保存或者读取文件</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
@@ -953,7 +953,7 @@
             <number>3</number>
            </property>
            <item>
-            <widget class="QPushButton" name="save2_btn">
+            <widget class="QPushButton" name="save2_new_file_btn">
              <property name="maximumSize">
               <size>
                <width>400</width>
@@ -961,7 +961,41 @@
               </size>
              </property>
              <property name="text">
-              <string>保存至</string>
+              <string>将库存保存至另一个文件</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QWidget" name="widget_22" native="true">
+          <layout class="QHBoxLayout" name="horizontalLayout_19">
+           <property name="spacing">
+            <number>3</number>
+           </property>
+           <property name="leftMargin">
+            <number>3</number>
+           </property>
+           <property name="topMargin">
+            <number>3</number>
+           </property>
+           <property name="rightMargin">
+            <number>3</number>
+           </property>
+           <property name="bottomMargin">
+            <number>3</number>
+           </property>
+           <item>
+            <widget class="QPushButton" name="read_from_new_file_btn">
+             <property name="maximumSize">
+              <size>
+               <width>400</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>从另一个文件中读取库存</string>
              </property>
             </widget>
            </item>

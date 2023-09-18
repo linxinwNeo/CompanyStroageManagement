@@ -1,5 +1,6 @@
 #include "AddNewModelWindow.h"
 #include <QCloseEvent>
+#include "mainwindow.h"
 #include "ui_AddNewModelWindow.h"
 #include "GlobalVars.h"
 
