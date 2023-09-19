@@ -57,14 +57,13 @@ void MainWindow::init()
 //    // read inventory.txt file
 //    read_file.read_Inventory_txt_File(Inventory_FNAME); // build the inventory
 
-    read_file.read_Inventory_xlsx_File("models.xlsx");
+    read_file.read_Inventory_xlsx_File(Inventory_FNAME_xlsx);
     // read lists.txt file
     read_file.read_Lists_txt_File(Lists_FNAME); // build the lists
 
     if(this->is_time_for_backup()){
         WriteFile wf;
-        wf.save_BackUp_files();
-        wf.update_BackUpDate();
+        if(wf.save_BackUp_files()) wf.update_BackUpDate();
     }
 }
 

@@ -3,15 +3,16 @@
 #include "Others/output_error_file.h"
 #include "qdir.h"
 #include "qmessagebox.h"
+#include "header/xlsxdocument.h"
 
 /* write models to a models.txt file
  * for each model, we need to output its properties, more specifically, output the container's ID */
-void WriteFile::Inventory2Txt(const QString &path) const
+bool WriteFile::Inventory2Txt(const QString &path) const
 {
     QFile file(path);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)){
         write_error_file("WriteFile::Models2txt: couldn't create the file: " + path);
-        return;
+        return false;
     }
 
     QTextStream out(&file);
@@ -33,12 +34,12 @@ void WriteFile::Inventory2Txt(const QString &path) const
         }
     }
     file.close();
-    return;
+    return true;
 }
 
 
 /* write the models to a xlsx file */
-void WriteFile::Inventory2Xlsx(const QString &path) const
+bool WriteFile::Inventory2Xlsx(const QString &path) const
 {
     using namespace QXlsx;
 
@@ -88,17 +89,20 @@ void WriteFile::Inventory2Xlsx(const QString &path) const
         Msgbox.setText(SAVE_ERROR_MSG);
         Msgbox.setStyleSheet("QLabel{min-width: 300px; min-height: 50px;}");
         Msgbox.exec();
+        return false;
     }
+
+    return true;
 }
 
 
 /* write lists to a txt file */
-void WriteFile::Lists2txt(const QString &path) const
+bool WriteFile::Lists2txt(const QString &path) const
 {
     QFile file(path);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)){
         write_error_file("WriteFile::Lists2txt: couldn't create the file: " + path);
-        return;
+        return false;
     }
 
     QTextStream out(&file);
@@ -141,6 +145,8 @@ void WriteFile::Lists2txt(const QString &path) const
     }
 
     file.close();
+
+    return true;
 }
 
 
@@ -166,7 +172,7 @@ void WriteFile::update_BackUpDate() const
 
 
 // save the back up files in a folder
-void WriteFile::save_BackUp_files() const
+bool WriteFile::save_BackUp_files() const
 {
     QDateTime currentDateTime = QDateTime::currentDateTime();
     QString folderName = currentDateTime.toString("yyyy-MM-dd-HH-mm-ss");
@@ -177,7 +183,9 @@ void WriteFile::save_BackUp_files() const
     }
 
     QString path_to_list_file = BackUP_DirName + "/" + folderName + "/lists.txt";
-    this->Lists2txt(path_to_list_file);
-    QString path_to_inventory_file = BackUP_DirName + "/" + folderName + "/inventory.txt";
-    this->Inventory2Xlsx(path_to_inventory_file);
+    if(!this->Lists2txt(path_to_list_file)) return false;
+    QString path_to_inventory_file = BackUP_DirName + "/" + folderName + "/inventory.xlsx";
+    if(!this->Inventory2Xlsx(path_to_inventory_file)) return false;
+
+    return true;
 }

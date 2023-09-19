@@ -1,10 +1,19 @@
 # QXlsx.pro
 
-TARGET = QXlsx
+#TARGET = QXlsx
 TEMPLATE = lib
 CONFIG += staticlib
 QT += core
 QT += gui-private
+
+contains(QT_ARCH, i386){
+DESTDIR = $$PWD/bin
+}else{
+message("64bit")
+DESTDIR = $$PWD/bin64
+}
+win32:CONFIG(release, debug|release):TARGET = QXlsx
+else:win32:CONFIG(debug, debug|release):TARGET = QXlsxd
 
 #####################################################################
 # set debug/release build environment

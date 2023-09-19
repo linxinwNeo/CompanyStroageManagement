@@ -8,11 +8,6 @@ CONFIG += c++17
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-# QXlsx code for Application Qt project
-QXLSX_PARENTPATH=./QXlsx                # current QXlsx path is . (. means curret directory)
-QXLSX_HEADERPATH=./QXlsx/header/    # current QXlsx header path is ./header/
-QXLSX_SOURCEPATH=./QXlsx/source/    # current QXlsx source path is ./source/
-include(./QXlsx/QXlsx.pri)
 
 SOURCES += \
     AddNewModelWindow.cpp \
@@ -55,7 +50,6 @@ HEADERS += \
     Others/is_int_float.h \
     Others/output_error_file.h \
     Predefined.h \
-    QXlsx/QXlsxHeaders.h \
     Search_List_Win.h \
     flags.h \
     helper_functions.h \
@@ -72,10 +66,6 @@ win32 {
     RC_FILE = exe_icon.rc
 }
 
-macx: {
-    ICON = ./resources/icon.icns
-}
-
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -88,3 +78,12 @@ DISTFILES +=
 RESOURCES += \
     resources.qrc
 
+INCLUDEPATH += $$PWD/QXlsx
+DEPENDPATH += $$PWD/QXlsx
+
+win32: LIBS += -L$$PWD/QXlsx/bin64/ -lQXlsx
+
+win32: PRE_TARGETDEPS += $$PWD/QXlsx/bin64/libQXlsx.a
+
+INCLUDEPATH += $$PWD/QXlsx/include
+DEPENDPATH += $$PWD/QXlsx/include

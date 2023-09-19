@@ -6,6 +6,7 @@
 #include "ReadFile.h"
 #include <QStandardPaths>
 #include "GlobalVars.h"
+#include "header/xlsxdocument.h"
 
 ReadFile::ReadFile()
 {

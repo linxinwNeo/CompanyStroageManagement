@@ -6,7 +6,6 @@
 #include "Predefined.h"
 #include "DataStructures/Inventory.h"
 #include "DataStructures/client_info.h"
-#include "QXlsx/QXlsxHeaders.h"
 #include "DataStructures/List.h"
 
 extern QString Inventory_FNAME_xlsx;
@@ -15,7 +14,6 @@ extern QString Lists_FNAME;
 extern const QString BackUP_DirName;
 extern const QString BackUP_FileName;
 
-extern QString stroagefilePath;
 extern const QString APP_NAME;
 extern Inventory inventory;
 extern Lists lists;
