@@ -13,6 +13,7 @@ SOURCES += \
     AddNewModelWindow.cpp \
     Adjust_List_Item_Win.cpp \
     Algorithm/QuickSort.cpp \
+    CN_Strings.cpp \
     CreateListWin.cpp \
     DataStructures/Container.cpp \
     DataStructures/Inventory.cpp \
@@ -26,6 +27,7 @@ SOURCES += \
     GlobalVars.cpp \
     Others/create_pdf.cpp \
     Search_List_Win.cpp \
+    SpanStrings.cpp \
     flags.cpp \
     main.cpp \
     mainwindow.cpp
@@ -34,6 +36,7 @@ HEADERS += \
     AddNewModelWindow.h \
     Adjust_List_Item_Win.h \
     Algorithm/QuickSort.h \
+    CN_Strings.h \
     CreateListWin.h \
     DataStructures/Container.h \
     DataStructures/Inventory.h \
@@ -51,6 +54,7 @@ HEADERS += \
     Others/output_error_file.h \
     Predefined.h \
     Search_List_Win.h \
+    SpanStrings.h \
     flags.h \
     helper_functions.h \
     mainwindow.h

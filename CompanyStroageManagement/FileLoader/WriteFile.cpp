@@ -1,6 +1,8 @@
 #include "WriteFile.h"
+#include "CN_Strings.h"
 #include "GlobalVars.h"
 #include "Others/output_error_file.h"
+#include "SpanStrings.h"
 #include "qdir.h"
 #include "qmessagebox.h"
 #include "header/xlsxdocument.h"
@@ -86,7 +88,8 @@ bool WriteFile::Inventory2Xlsx(const QString &path) const
     const bool success = xlsx.saveAs(path);
     if(!success){
         QMessageBox Msgbox(nullptr);
-        Msgbox.setText(SAVE_ERROR_MSG);
+        if(language_option == 0) Msgbox.setText(SAVE_ERROR_MSG_CN);
+        else if(language_option == 1) Msgbox.setText(SAVE_ERROR_MSG_SPAN);
         Msgbox.setStyleSheet("QLabel{min-width: 300px; min-height: 50px;}");
         Msgbox.exec();
         return false;

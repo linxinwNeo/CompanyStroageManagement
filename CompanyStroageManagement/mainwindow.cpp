@@ -1,6 +1,8 @@
 #include "mainwindow.h"
+#include "CN_Strings.h"
 #include "FileLoader/ReadFile.h"
 #include "FileLoader/WriteFile.h"
+#include "SpanStrings.h"
 #include "qstandardpaths.h"
 #include "ui_mainwindow.h"
 
@@ -412,7 +414,12 @@ void MainWindow::on_start_add_model_btn_clicked()
     QSharedPointer<AddNewModelWindow> w (new AddNewModelWindow(nullptr));
     this->AddNewModelWinPtr = w;
     // setting up the window
-    w->setWindowTitle(AddNewModel_WinTitle);
+    QString title;
+    if(language_option == 0) title = AddNewModel_WinTitle_CN;
+    else if(language_option == 1) title = AddNewModel_WinTitle_SPAN;
+    else title = AddNewModel_WinTitle_CN;
+
+    w->setWindowTitle(title);
     w->show();
     w->parentPtr = this;
 
@@ -427,7 +434,12 @@ void MainWindow::on_new_list_btn_clicked()
     QSharedPointer<CreateListWin> w (new CreateListWin(nullptr));
     this->CreateListWinPtr = w;
     // setting up the window
-    w->setWindowTitle(CreateList_WinTitle);
+    QString title;
+    if(language_option == 0) title = CreateList_WinTitle_CN;
+    else if(language_option == 1) title = CreateList_WinTitle_SPAN;
+    else title = CreateList_WinTitle_CN;
+
+    w->setWindowTitle(title);
     w->parentPtr = this;
     w->show();
 
@@ -441,7 +453,12 @@ void MainWindow::on_search_past_list_btn_clicked()
     QSharedPointer<Search_List_Win> w (new Search_List_Win(nullptr));
     this->SearchListWinPtr = w;
 
-    w->setWindowTitle(Search_List_WinTitle);
+    QString title;
+    if(language_option == 0) title = Search_List_WinTitle_CN;
+    else if(language_option == 1) title = Search_List_WinTitle_SPAN;
+    else title = Search_List_WinTitle_CN;
+
+    w->setWindowTitle(title);
     w->set_parentWin(this);
 
     w->show();
@@ -454,6 +471,9 @@ void MainWindow::on_delete_model_btn_clicked()
 {
     this->setEnabled(false);
 
+    QString prefix, suffix;
+    QString msg;
+
     int response = QMessageBox::No;
     QMessageBox delete_confirmation_msg(this);
     QMessageBox delete_success_msg(this);
@@ -461,8 +481,22 @@ void MainWindow::on_delete_model_btn_clicked()
     if(this->selected_model.isNull()) goto ret;
 
     // make sure user is indeed wanting to remove this model
-    delete_confirmation_msg.setText("你确定要删除货号为" + this->selected_model->MODEL_CODE + "的货物吗?\n");
-    delete_confirmation_msg.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
+
+    if(language_option == 0){
+        prefix = DELETE_MODEL_COMFIRMATION_MSG_PREFIX_CN;
+        suffix = DELETE_MODEL_COMFIRMATION_MSG_SUFFIX_CN;
+    }
+    else if(language_option == 1){
+        prefix = DELETE_MODEL_COMFIRMATION_MSG_SPAN;
+        suffix = "?";
+    }
+    else{
+        prefix = DELETE_MODEL_COMFIRMATION_MSG_PREFIX_CN;
+        suffix = DELETE_MODEL_COMFIRMATION_MSG_SUFFIX_CN;
+    }
+
+    delete_confirmation_msg.setText(prefix + this->selected_model->MODEL_CODE + suffix);
+    delete_confirmation_msg.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     delete_confirmation_msg.setDefaultButton(QMessageBox::No);
     delete_confirmation_msg.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     delete_confirmation_msg.setStyleSheet("QLabel{min-width: 400px; min-height: 50px;}");
@@ -473,8 +507,11 @@ void MainWindow::on_delete_model_btn_clicked()
     // delete this model from inventory
     inventory.remove_Model(this->selected_model);
 
-//a:
-    delete_success_msg.setText("删除成功！");
+    if(language_option == 0) msg = DELETE_SUCCESS_MSG_CN;
+    else if(language_option == 1) msg = DELETE_SUCCESS_MSG_SPAN;
+    else msg = DELETE_SUCCESS_MSG_CN;
+
+    delete_success_msg.setText(DELETE_SUCCESS_MSG_CN);
     delete_success_msg.exec();
 
     this->update_GUI();

@@ -1,5 +1,7 @@
 #include "AddNewModelWindow.h"
 #include <QCloseEvent>
+#include "CN_Strings.h"
+#include "SpanStrings.h"
 #include "mainwindow.h"
 #include "ui_AddNewModelWindow.h"
 #include "GlobalVars.h"
@@ -71,13 +73,17 @@ void AddNewModelWindow::closeEvent(QCloseEvent *event)
  * 可能还有一个新的集装箱 */
 void AddNewModelWindow::on_add_new_model_btn_clicked()
 {
-    const QString msg = "添加失败！";
 
     // 检查货号是否是空
     const QString MODELCODE = this->ui->MODELCODE_LE->text().trimmed();
 
     if(MODELCODE.isEmpty()) {
-        auto msgBox = this->create_MessageBox(msg + empty_MODELCODE_ERROR_MSG);
+        QString msg;
+        if(language_option == 0) msg = ADD_NEW_MODEL_FAIL_MSG_CN + MODELCODE_EMPTY_ERROR_CN;
+        else if(language_option == 1) msg = ADD_NEW_MODEL_FAIL_MSG_SPAN + MODELCODE_EMPTY_ERROR_SPAN;
+        else msg = ADD_NEW_MODEL_FAIL_MSG_CN + MODELCODE_EMPTY_ERROR_CN;
+
+        QSharedPointer<QMessageBox> msgBox = this->create_MessageBox(msg);
         msgBox->exec();
         return;
     }
@@ -88,7 +94,12 @@ void AddNewModelWindow::on_add_new_model_btn_clicked()
     // 检查货号和对应的集装箱组合是否已经存在
     const ModelPtr model = inventory.get_Model(MODELCODE, CONTAINER_ID);
     if(!model.isNull()){
-        auto msgBox = this->create_MessageBox(msg + duplicate_Model_ERROR_MSG);
+        QString msg;
+        if(language_option == 0) msg = ADD_NEW_MODEL_FAIL_MSG_CN + duplicate_Model_ERROR_MSG_CN;
+        else if(language_option == 1) msg = ADD_NEW_MODEL_FAIL_MSG_SPAN + duplicate_Model_ERROR_MSG_SPAN;
+        else msg = ADD_NEW_MODEL_FAIL_MSG_CN + duplicate_Model_ERROR_MSG_CN;
+
+        QSharedPointer<QMessageBox> msgBox = this->create_MessageBox(msg);
         msgBox->exec();
         qDebug() << "adding an existing model";
         return;
@@ -106,7 +117,12 @@ void AddNewModelWindow::on_add_new_model_btn_clicked()
 
     // 初始箱数不能少于已售箱数
     if(NUM_SOLD_BOXES > NUM_INIT_BOXES){
-        auto msgBox = this->create_MessageBox(msg + SOLD_MORETHAN_INIT_BOXES_ERROR_MSG);
+        QString msg;
+        if(language_option == 0) msg = ADD_NEW_MODEL_FAIL_MSG_CN + SOLD_MORETHAN_INIT_BOXES_ERROR_MSG_CN;
+        else if(language_option == 1) msg = ADD_NEW_MODEL_FAIL_MSG_SPAN + SOLD_MORETHAN_INIT_BOXES_ERROR_MSG_SPAN;
+        else msg = ADD_NEW_MODEL_FAIL_MSG_CN + SOLD_MORETHAN_INIT_BOXES_ERROR_MSG_CN;
+
+        QSharedPointer<QMessageBox> msgBox = this->create_MessageBox(msg);
         msgBox->exec();
         return;
     }
@@ -127,7 +143,7 @@ void AddNewModelWindow::on_add_new_model_btn_clicked()
     else{ // 这个货有集装箱信息
         container = inventory.get_container(CONTAINER_ID);
         if(container.isNull()){ // 这个集装箱是新的，我们要创建一个
-            container = QSharedPointer<Container> (new Container(CONTAINER_ID));
+            container = ContainerPtr (new Container(CONTAINER_ID));
             container->add_model(new_model);
             inventory.add_Container(container);
         }
@@ -139,7 +155,13 @@ void AddNewModelWindow::on_add_new_model_btn_clicked()
     new_model->container = container;
     inventory.add_Model(new_model);
 
-    auto msgBox = this->create_MessageBox(NEW_MODEL_ADD_SUCCESS_MSG);
+
+    QString msg;
+    if(language_option == 0) msg = NEW_MODEL_ADD_SUCCESS_MSG_CN;
+    else if(language_option == 1) msg = NEW_MODEL_ADD_SUCCESS_MSG_SPAN;
+    else msg = NEW_MODEL_ADD_SUCCESS_MSG_CN;
+
+    QSharedPointer<QMessageBox> msgBox = this->create_MessageBox(msg);
     msgBox->exec();
 
     // clear the contents when the model is successfully added

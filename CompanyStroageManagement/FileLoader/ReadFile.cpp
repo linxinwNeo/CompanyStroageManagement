@@ -3,9 +3,11 @@
 #include <QTime>
 #include <QDateTime>
 #include <QFileDialog>
+#include "CN_Strings.h"
 #include "ReadFile.h"
 #include <QStandardPaths>
 #include "GlobalVars.h"
+#include "SpanStrings.h"
 #include "header/xlsxdocument.h"
 
 ReadFile::ReadFile()
@@ -110,7 +112,9 @@ void ReadFile::read_Inventory_xlsx_File(const QString &path) const
     }
     else {
         QMessageBox Msgbox(nullptr);
-        Msgbox.setText(UNABLE_OPEN_FILE_MSG);
+        if(language_option == 0) Msgbox.setText(UNABLE_OPEN_FILE_MSG_CN);
+        else Msgbox.setText(UNABLE_OPEN_FILE_MSG_SPAN);
+
         Msgbox.setStyleSheet("QLabel{min-width: 300px; min-height: 50px;}");
         Msgbox.exec();
     }
