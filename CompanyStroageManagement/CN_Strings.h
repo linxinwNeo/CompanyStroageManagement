@@ -20,6 +20,7 @@ extern const QString EXCEL_CAPTION_CN;
 extern const QString EXCEL_SELECT_A_VALID_XLSX_FILE_CN;
 extern const QString PDF_MESSAGE_1_CN;
 extern const QString PDF_MESSAGE_2_CN;
+extern const QString LIST_CREATED_MSG_CN;
 extern const QString WHERE_TO_SAVE_FILE_MESSAGE_CN;
 extern const QString MODELCODE_EMPTY_ERROR_CN;
 extern const QString duplicate_Model_ERROR_MSG_CN;
@@ -28,5 +29,9 @@ extern const QString NEW_MODEL_ADD_SUCCESS_MSG_CN;
 extern const QString DELETE_MODEL_COMFIRMATION_MSG_PREFIX_CN;
 extern const QString DELETE_MODEL_COMFIRMATION_MSG_SUFFIX_CN;
 extern const QString DELETE_SUCCESS_MSG_CN;
-
+extern const QString READ_SUCCESS_MSG_CN;
+extern const QString READ_FAIL_MSG_CN;
+extern const QString Are_You_Sure_to_Exit_CN;
+extern const QString Are_You_Sure_to_Update_CN;
+extern const QString SAVE_SUCCESS_MSG_CN;
 #endif // CN_STRINGS_H

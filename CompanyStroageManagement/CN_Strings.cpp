@@ -16,6 +16,7 @@ const QString EXCEL_CAPTION_CN = "选择库存文件";
 const QString EXCEL_SELECT_A_VALID_XLSX_FILE_CN = "你必须选择一个有效的XLSX文件，软件现在将退出。";
 const QString PDF_MESSAGE_1_CN = "是否确定生成清单";
 const QString PDF_MESSAGE_2_CN = "确定生成清单？";
+const QString LIST_CREATED_MSG_CN = "清单创建成功!";
 const QString WHERE_TO_SAVE_FILE_MESSAGE_CN = "想将文件保存在哪里？";
 const QString MODELCODE_EMPTY_ERROR_CN = "货号不能为空！";
 const QString duplicate_Model_ERROR_MSG_CN = "该货号已存在！";
@@ -25,3 +26,8 @@ const QString DELETE_MODEL_COMFIRMATION_MSG_PREFIX_CN = "你确定要删除货�
 const QString DELETE_MODEL_COMFIRMATION_MSG_SUFFIX_CN = "的货物吗?\n";
 
 const QString DELETE_SUCCESS_MSG_CN = "删除成功！";
+const QString READ_SUCCESS_MSG_CN = "读取成功！";
+const QString READ_FAIL_MSG_CN = "读取失败！";
+const QString Are_You_Sure_to_Exit_CN = "你确定要退出吗?\n";
+const QString Are_You_Sure_to_Update_CN = "你确定要更改吗\n";
+const QString SAVE_SUCCESS_MSG_CN = "保存成功！";

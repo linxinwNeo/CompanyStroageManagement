@@ -88,8 +88,8 @@ bool WriteFile::Inventory2Xlsx(const QString &path) const
     const bool success = xlsx.saveAs(path);
     if(!success){
         QMessageBox Msgbox(nullptr);
-        if(language_option == 0) Msgbox.setText(SAVE_ERROR_MSG_CN);
-        else if(language_option == 1) Msgbox.setText(SAVE_ERROR_MSG_SPAN);
+        Msgbox.setText(lan(SAVE_ERROR_MSG_CN, SAVE_ERROR_MSG_SPAN));
+
         Msgbox.setStyleSheet("QLabel{min-width: 300px; min-height: 50px;}");
         Msgbox.exec();
         return false;
@@ -162,14 +162,15 @@ void WriteFile::update_BackUpDate() const
 
         QDateTime currentDateTime = QDateTime::currentDateTime();
 
-        stream << currentDateTime.toString("yyyy-MM-dd HH:mm:ss");
+        stream << currentDateTime.toString(DateTimeFormat);
 
         // Close the file when done
         file.close();
     }
     else{
         // Display an error message box
-        QMessageBox::critical(nullptr, "Error", UNABLE_TO_SAVE_BACKUP_DATE_MSG);
+        QMessageBox::critical(nullptr, "Error",
+                              lan(UNABLE_TO_SAVE_BACKUP_DATA_MSG_CN, UNABLE_TO_SAVE_BACKUP_DATA_MSG_SPAN));
     }
 }
 
@@ -178,7 +179,7 @@ void WriteFile::update_BackUpDate() const
 bool WriteFile::save_BackUp_files() const
 {
     QDateTime currentDateTime = QDateTime::currentDateTime();
-    QString folderName = currentDateTime.toString("yyyy-MM-dd-HH-mm-ss");
+    QString folderName = currentDateTime.toString(DateTimeFormat);
     QDir timeDir(BackUP_DirName + "/" + folderName);
     // Create the subfolder named by datetime
     if (!timeDir.exists()) {

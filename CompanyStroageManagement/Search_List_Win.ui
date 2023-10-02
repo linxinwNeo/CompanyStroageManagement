@@ -39,7 +39,7 @@
        <number>3</number>
       </property>
       <item>
-       <widget class="QLabel" name="label_11">
+       <widget class="QLabel" name="list_id_2be_searched_label">
         <property name="text">
          <string>清单号</string>
         </property>
@@ -56,7 +56,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_3">
+    <widget class="QGroupBox" name="search_list_result_GB">
      <property name="title">
       <string>清单查询结果</string>
      </property>
@@ -129,7 +129,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_4">
+    <widget class="QGroupBox" name="selected_list_GB">
      <property name="title">
       <string>选中清单的详细信息</string>
      </property>
@@ -153,7 +153,7 @@
           <number>3</number>
          </property>
          <item>
-          <widget class="QGroupBox" name="groupBox">
+          <widget class="QGroupBox" name="selected_list_info_GB">
            <property name="maximumSize">
             <size>
              <width>300</width>
@@ -198,7 +198,7 @@
                 <number>0</number>
                </property>
                <item>
-                <widget class="QLabel" name="label_15">
+                <widget class="QLabel" name="CLIENTE_LE_label">
                  <property name="minimumSize">
                   <size>
                    <width>10</width>
@@ -254,7 +254,7 @@
                 <number>0</number>
                </property>
                <item>
-                <widget class="QLabel" name="label_14">
+                <widget class="QLabel" name="DOMICILIO_label">
                  <property name="minimumSize">
                   <size>
                    <width>10</width>
@@ -310,7 +310,7 @@
                 <number>0</number>
                </property>
                <item>
-                <widget class="QLabel" name="label_13">
+                <widget class="QLabel" name="CIUDAD_label">
                  <property name="minimumSize">
                   <size>
                    <width>10</width>
@@ -366,7 +366,7 @@
                 <number>0</number>
                </property>
                <item>
-                <widget class="QLabel" name="label_12">
+                <widget class="QLabel" name="RFC_label">
                  <property name="minimumSize">
                   <size>
                    <width>10</width>
@@ -422,7 +422,7 @@
                 <number>0</number>
                </property>
                <item>
-                <widget class="QLabel" name="label_10">
+                <widget class="QLabel" name="AGENTE_label">
                  <property name="minimumSize">
                   <size>
                    <width>10</width>
@@ -478,7 +478,7 @@
                 <number>0</number>
                </property>
                <item>
-                <widget class="QLabel" name="label_16">
+                <widget class="QLabel" name="CONDICIONES_label">
                  <property name="minimumSize">
                   <size>
                    <width>10</width>
@@ -534,7 +534,7 @@
                 <number>0</number>
                </property>
                <item>
-                <widget class="QLabel" name="label_9">
+                <widget class="QLabel" name="DISCOUNT_label">
                  <property name="minimumSize">
                   <size>
                    <width>10</width>
@@ -572,7 +572,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QGroupBox" name="groupBox_2">
+          <widget class="QGroupBox" name="list_items_GB">
            <property name="title">
             <string>清单货物</string>
            </property>

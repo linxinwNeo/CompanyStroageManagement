@@ -112,8 +112,7 @@ void ReadFile::read_Inventory_xlsx_File(const QString &path) const
     }
     else {
         QMessageBox Msgbox(nullptr);
-        if(language_option == 0) Msgbox.setText(UNABLE_OPEN_FILE_MSG_CN);
-        else Msgbox.setText(UNABLE_OPEN_FILE_MSG_SPAN);
+        Msgbox.setText(lan(UNABLE_OPEN_FILE_MSG_CN, UNABLE_OPEN_FILE_MSG_SPAN));
 
         Msgbox.setStyleSheet("QLabel{min-width: 300px; min-height: 50px;}");
         Msgbox.exec();
@@ -128,7 +127,6 @@ void ReadFile::read_Inventory_xlsx_File(const QString &path) const
         QSharedPointer<Model> m(new Model());
         m->MODEL_CODE = modelCode;
         if(m->MODEL_CODE.isEmpty()) {
-            qDebug() << "encounter an empty model";
             continue;
         }
 

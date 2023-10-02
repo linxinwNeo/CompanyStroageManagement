@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    this->setLanguage();
     this->init();
 }
 
@@ -86,6 +87,21 @@ void MainWindow::update_GUI()
 {
     this->on_search_MODELCODE_LE_textChanged(this->ui->search_MODELCODE_LE->text());
     this->on_search_CONTAINER_ID_LE_textChanged(this->ui->search_CONTAINER_ID_LE->text());
+}
+
+
+// replace the language of mainWindow
+void MainWindow::setLanguage()
+{
+    // change tab names
+    this->ui->tabWidget->setTabText(0, lan("查询库存", "Consulta de inventario"));
+    this->ui->tabWidget->setTabText(1, lan("查询集装箱", "Solicitud de información sobre contenedores"));
+    this->ui->tabWidget->setTabText(2, lan("添加新货物", "Añadir nuevos productos"));
+    this->ui->tabWidget->setTabText(3, lan("清单", "lista de artículos"));
+    this->ui->tabWidget->setTabText(4, lan("保存或读取文件", "Guardar o leer archivos"));
+
+    // change the first tab
+
 }
 
 
@@ -177,7 +193,7 @@ void MainWindow::clear_selected_container_table()
 void MainWindow::closeEvent (QCloseEvent *event)
 {
     QMessageBox msg(this);
-    msg.setText(tr("你确定要退出吗?\n"));
+    msg.setText(lan(Are_You_Sure_to_Exit_CN, Are_You_Sure_to_Exit_SPAN));
     msg.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
     msg.setDefaultButton(QMessageBox::Yes);
     msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
@@ -248,7 +264,7 @@ void MainWindow::on_update_selected_model_btn_clicked()
 
     // make sure user is indeed wanting to update the values
     QMessageBox msg(this);
-    msg.setText(tr("你确定更改吗?\n"));
+    msg.setText(lan(Are_You_Sure_to_Update_CN, Are_You_Sure_to_Update_SPAN));
     msg.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
     msg.setDefaultButton(QMessageBox::No);
     msg.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -308,7 +324,7 @@ void MainWindow::on_update_selected_model_btn_clicked()
 Finish:
     QMessageBox Msgbox(this);
     Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
-    Msgbox.setText("保存成功！");
+    Msgbox.setText(lan(SAVE_SUCCESS_MSG_CN, SAVE_SUCCESS_MSG_SPAN));
     Msgbox.exec();
 
     this->update_GUI();
@@ -414,10 +430,7 @@ void MainWindow::on_start_add_model_btn_clicked()
     QSharedPointer<AddNewModelWindow> w (new AddNewModelWindow(nullptr));
     this->AddNewModelWinPtr = w;
     // setting up the window
-    QString title;
-    if(language_option == 0) title = AddNewModel_WinTitle_CN;
-    else if(language_option == 1) title = AddNewModel_WinTitle_SPAN;
-    else title = AddNewModel_WinTitle_CN;
+    QString title = lan(AddNewModel_WinTitle_CN, AddNewModel_WinTitle_SPAN);
 
     w->setWindowTitle(title);
     w->show();
@@ -434,10 +447,7 @@ void MainWindow::on_new_list_btn_clicked()
     QSharedPointer<CreateListWin> w (new CreateListWin(nullptr));
     this->CreateListWinPtr = w;
     // setting up the window
-    QString title;
-    if(language_option == 0) title = CreateList_WinTitle_CN;
-    else if(language_option == 1) title = CreateList_WinTitle_SPAN;
-    else title = CreateList_WinTitle_CN;
+    QString title = lan(CreateList_WinTitle_CN, CreateList_WinTitle_SPAN);
 
     w->setWindowTitle(title);
     w->parentPtr = this;
@@ -453,10 +463,7 @@ void MainWindow::on_search_past_list_btn_clicked()
     QSharedPointer<Search_List_Win> w (new Search_List_Win(nullptr));
     this->SearchListWinPtr = w;
 
-    QString title;
-    if(language_option == 0) title = Search_List_WinTitle_CN;
-    else if(language_option == 1) title = Search_List_WinTitle_SPAN;
-    else title = Search_List_WinTitle_CN;
+    QString title = lan(Search_List_WinTitle_CN, Search_List_WinTitle_SPAN);
 
     w->setWindowTitle(title);
     w->set_parentWin(this);
@@ -471,8 +478,9 @@ void MainWindow::on_delete_model_btn_clicked()
 {
     this->setEnabled(false);
 
-    QString prefix, suffix;
-    QString msg;
+    QString prefix = lan(DELETE_MODEL_COMFIRMATION_MSG_PREFIX_CN, DELETE_MODEL_COMFIRMATION_MSG_SPAN);
+    QString suffix = lan(DELETE_MODEL_COMFIRMATION_MSG_SUFFIX_CN, "?");
+    QString msg = lan(DELETE_SUCCESS_MSG_CN, DELETE_SUCCESS_MSG_SPAN);
 
     int response = QMessageBox::No;
     QMessageBox delete_confirmation_msg(this);
@@ -481,20 +489,6 @@ void MainWindow::on_delete_model_btn_clicked()
     if(this->selected_model.isNull()) goto ret;
 
     // make sure user is indeed wanting to remove this model
-
-    if(language_option == 0){
-        prefix = DELETE_MODEL_COMFIRMATION_MSG_PREFIX_CN;
-        suffix = DELETE_MODEL_COMFIRMATION_MSG_SUFFIX_CN;
-    }
-    else if(language_option == 1){
-        prefix = DELETE_MODEL_COMFIRMATION_MSG_SPAN;
-        suffix = "?";
-    }
-    else{
-        prefix = DELETE_MODEL_COMFIRMATION_MSG_PREFIX_CN;
-        suffix = DELETE_MODEL_COMFIRMATION_MSG_SUFFIX_CN;
-    }
-
     delete_confirmation_msg.setText(prefix + this->selected_model->MODEL_CODE + suffix);
     delete_confirmation_msg.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     delete_confirmation_msg.setDefaultButton(QMessageBox::No);
@@ -506,10 +500,6 @@ void MainWindow::on_delete_model_btn_clicked()
 
     // delete this model from inventory
     inventory.remove_Model(this->selected_model);
-
-    if(language_option == 0) msg = DELETE_SUCCESS_MSG_CN;
-    else if(language_option == 1) msg = DELETE_SUCCESS_MSG_SPAN;
-    else msg = DELETE_SUCCESS_MSG_CN;
 
     delete_success_msg.setText(DELETE_SUCCESS_MSG_CN);
     delete_success_msg.exec();
@@ -564,7 +554,13 @@ void MainWindow::on_read_from_new_file_btn_clicked()
         // Get the selected file
         QString fileName = fileDialog.selectedFiles().first();
 
-        if(fileName.trimmed().isNull()) return;
+        if(fileName.trimmed().isNull()){
+            QMessageBox msg(this);
+            msg.setText(lan(READ_FAIL_MSG_CN, READ_FAIL_MSG_CN));
+            msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+            msg.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
+            return;
+        }
 
         // clear the memory of inventory
         inventory.clear();
@@ -572,6 +568,11 @@ void MainWindow::on_read_from_new_file_btn_clicked()
         // read the file
         ReadFile RF;
         RF.read_Inventory_xlsx_File(fileName);
+
+        QMessageBox msg(this);
+        msg.setText(lan(READ_SUCCESS_MSG_CN, READ_SUCCESS_MSG_SPAN));
+        msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+        msg.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
     }
 }
 
@@ -587,8 +588,8 @@ bool MainWindow::is_time_for_backup() const
         // Read and display the file contents line by line
         while (!stream.atEnd()) {
             QString line = stream.readLine();
-            const QString format = "yyyy-MM-dd HH:mm:ss";
-            QDateTime prev_DateTime = QDateTime::fromString(line, format);
+
+            QDateTime prev_DateTime = QDateTime::fromString(line, DateTimeFormat);
             if(prev_DateTime.isValid()){
                 QDateTime curDateTime = QDateTime::currentDateTime();
                 int days = prev_DateTime.daysTo(curDateTime);

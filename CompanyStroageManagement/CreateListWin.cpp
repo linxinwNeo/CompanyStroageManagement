@@ -3,9 +3,11 @@
 #include <QFileDialog>
 #include <QStandardPaths>
 
+#include "CN_Strings.h"
 #include "CreateListWin.h"
 #include "Others/get_save_filePath.h"
 #include "Others/create_PDF.h"
+#include "SpanStrings.h"
 #include "mainwindow.h"
 #include "ui_CreateListWin.h"
 #include "GlobalVars.h"
@@ -86,7 +88,10 @@ void CreateListWin::on_generatePDF_btn_clicked()
 
     const unsigned long int unused_unique_id = lists.get_unique_id();
 
-    QMessageBox::StandardButton reply = QMessageBox::question(this, PDF_MESSAGE_1, PDF_MESSAGE_2,
+    QString PDF_MSG_1 = lan(PDF_MESSAGE_1_CN, PDF_MESSAGE_1_SPAN);
+    QString PDF_MSG_2 = lan(PDF_MESSAGE_2_CN, PDF_MESSAGE_2_SPAN);
+
+    QMessageBox::StandardButton reply = QMessageBox::question(this, PDF_MSG_1, PDF_MSG_2,
                                                               QMessageBox::Yes|QMessageBox::No);
     if (reply == QMessageBox::No) goto Finish; // return if the user says no
 
@@ -109,8 +114,11 @@ void CreateListWin::on_generatePDF_btn_clicked()
     list->time_created = QTime::currentTime();
 
     // ask for the path to store the file
-    filter = tr("PDF (*.pdf)");
-    filePath = get_save_filePath("list.pdf", WHERE_TO_SAVE_FILE_MESSAGE, filter);
+    filter = "PDF (*.pdf)";
+
+    filePath = get_save_filePath("list.pdf",
+                                 lan(WHERE_TO_SAVE_FILE_MESSAGE_CN, WHERE_TO_SAVE_FILE_MESSAGE_SPAN),
+                                 filter);
 
     if(filePath.isEmpty()) goto Finish;
 
@@ -118,7 +126,7 @@ void CreateListWin::on_generatePDF_btn_clicked()
     create_pdf(filePath, this->list);
 
     // display creation success
-    Msgbox.setText("清单创建成功");
+    Msgbox.setText(lan(LIST_CREATED_MSG_CN, LIST_CREATED_MSG_SPAN));
     Msgbox.exec();
 
     // now deduct the items from stroage
@@ -155,7 +163,9 @@ void CreateListWin::on_previewList_btn_clicked()
 
     this->setDisabled(true);
 
-    QMessageBox::StandardButton reply = QMessageBox::question(this, PDF_MESSAGE_1, PDF_MESSAGE_2,
+    QString PDF_MSG_1 = lan(PDF_MESSAGE_1_CN, PDF_MESSAGE_1_SPAN);
+    QString PDF_MSG_2 = lan(PDF_MESSAGE_2_CN, PDF_MESSAGE_2_SPAN);
+    QMessageBox::StandardButton reply = QMessageBox::question(this, PDF_MSG_1, PDF_MSG_2,
                                                             QMessageBox::Yes|QMessageBox::No);
 
     if (reply == QMessageBox::No) goto Finish;
@@ -177,8 +187,10 @@ void CreateListWin::on_previewList_btn_clicked()
     this->list->time_created = QTime::currentTime();
 
     // ask for the path to store the file
-    filter = tr("PDF (*.pdf)");
-    filePath = get_save_filePath("list.pdf", WHERE_TO_SAVE_FILE_MESSAGE, filter);
+    filter = "PDF (*.pdf)";
+    filePath = get_save_filePath("list.pdf",
+                                 lan(WHERE_TO_SAVE_FILE_MESSAGE_CN, WHERE_TO_SAVE_FILE_MESSAGE_SPAN),
+                                 filter);
 
     if(filePath.isEmpty()) goto Finish;
 
@@ -186,7 +198,7 @@ void CreateListWin::on_previewList_btn_clicked()
     create_pdf(filePath, this->list);
 
     // display creation success
-    Msgbox.setText("清单创建成功");
+    Msgbox.setText(lan(LIST_CREATED_MSG_CN, LIST_CREATED_MSG_SPAN));
     Msgbox.exec();
 
 Finish:

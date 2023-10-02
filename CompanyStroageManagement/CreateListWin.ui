@@ -67,7 +67,7 @@
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QLabel" name="label_15">
+                 <widget class="QLabel" name="CLIENTE_label">
                   <property name="minimumSize">
                    <size>
                     <width>100</width>
@@ -114,7 +114,7 @@
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QLabel" name="label_14">
+                 <widget class="QLabel" name="DOMICILIO_label">
                   <property name="minimumSize">
                    <size>
                     <width>100</width>
@@ -161,7 +161,7 @@
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QLabel" name="label_13">
+                 <widget class="QLabel" name="CIUDAD_label">
                   <property name="minimumSize">
                    <size>
                     <width>100</width>
@@ -208,7 +208,7 @@
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QLabel" name="label_12">
+                 <widget class="QLabel" name="RFC_label">
                   <property name="minimumSize">
                    <size>
                     <width>100</width>
@@ -255,7 +255,7 @@
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QLabel" name="label_10">
+                 <widget class="QLabel" name="AGENTE_label">
                   <property name="minimumSize">
                    <size>
                     <width>100</width>
@@ -302,7 +302,7 @@
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QLabel" name="label_11">
+                 <widget class="QLabel" name="CONDICIONES_label">
                   <property name="minimumSize">
                    <size>
                     <width>200</width>
@@ -355,7 +355,7 @@
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QLabel" name="label_9">
+                 <widget class="QLabel" name="discount_label">
                   <property name="minimumSize">
                    <size>
                     <width>200</width>
@@ -477,7 +477,7 @@
                <number>3</number>
               </property>
               <item>
-               <widget class="QLabel" name="label_16">
+               <widget class="QLabel" name="model_code_for_search_label">
                 <property name="minimumSize">
                  <size>
                   <width>100</width>

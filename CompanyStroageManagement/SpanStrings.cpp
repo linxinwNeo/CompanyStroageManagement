@@ -16,6 +16,7 @@ const QString EXCEL_CAPTION_SPAN = "Seleccionar archivo de inventario";
 const QString EXCEL_SELECT_A_VALID_XLSX_FILE_SPAN = "Debe seleccionar un archivo XLSX válido y el software saldrá.";
 const QString PDF_MESSAGE_1_SPAN = "Determinación de si se genera un inventario";
 const QString PDF_MESSAGE_2_SPAN = "¿Está seguro de generar listas?";
+const QString LIST_CREATED_MSG_SPAN = "¡La lista se ha creado con éxito!";
 const QString WHERE_TO_SAVE_FILE_MESSAGE_SPAN = "¿Dónde quieres guardar el archivo?";
 
 const QString MODELCODE_EMPTY_ERROR_SPAN = "El número de artículo no puede estar vacío.";
@@ -26,3 +27,9 @@ const QString NEW_MODEL_ADD_SUCCESS_MSG_SPAN = "Los nuevos productos se han aña
 const QString DELETE_MODEL_COMFIRMATION_MSG_SPAN = "¿Está seguro de que desea eliminar el envío númeror";
 
 const QString DELETE_SUCCESS_MSG_SPAN = "¡Borrado con éxito!";
+const QString READ_SUCCESS_MSG_SPAN = "¡Lea con éxito!";
+const QString READ_FAIL_MSG_SPAN = "¡Lea falló!";
+
+const QString Are_You_Sure_to_Exit_SPAN = "¿Seguro que quieres dejarlo?\n";
+const QString Are_You_Sure_to_Update_SPAN = "¿Estás seguro del cambio?\n";
+const QString SAVE_SUCCESS_MSG_SPAN = "¡Guardado con éxito!";

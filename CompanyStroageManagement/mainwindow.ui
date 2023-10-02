@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>4</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="search_model_tab">
        <attribute name="title">
@@ -32,7 +32,7 @@
             <widget class="QWidget" name="widget_3" native="true">
              <layout class="QHBoxLayout" name="horizontalLayout">
               <item>
-               <widget class="QLabel" name="label">
+               <widget class="QLabel" name="search_MODELCODE_label">
                 <property name="text">
                  <string>货号</string>
                 </property>
@@ -183,7 +183,7 @@
                      <number>3</number>
                     </property>
                     <item>
-                     <widget class="QLabel" name="label_2">
+                     <widget class="QLabel" name="selected_model_MODELCODE_label">
                       <property name="text">
                        <string>货号</string>
                       </property>
@@ -245,7 +245,7 @@
                      <number>3</number>
                     </property>
                     <item>
-                     <widget class="QLabel" name="label_3">
+                     <widget class="QLabel" name="selected_model_DESCRIPTION_CN_label">
                       <property name="text">
                        <string>品名(中文)</string>
                       </property>
@@ -280,7 +280,7 @@
                      <number>3</number>
                     </property>
                     <item>
-                     <widget class="QLabel" name="label_4">
+                     <widget class="QLabel" name="selected_model_DESCRIPTION_SPAN_label">
                       <property name="text">
                        <string>品名(西语)</string>
                       </property>
@@ -336,7 +336,7 @@
                      <number>3</number>
                     </property>
                     <item>
-                     <widget class="QLabel" name="label_5">
+                     <widget class="QLabel" name="selected_model_NUM_INIT_BOXES_label">
                       <property name="text">
                        <string>初始箱数</string>
                       </property>
@@ -381,7 +381,7 @@
                      <number>3</number>
                     </property>
                     <item>
-                     <widget class="QLabel" name="label_6">
+                     <widget class="QLabel" name="selected_model_NUM_ITEMS_PER_BOX_label">
                       <property name="text">
                        <string>每箱件数</string>
                       </property>
@@ -426,7 +426,7 @@
                      <number>3</number>
                     </property>
                     <item>
-                     <widget class="QLabel" name="label_7">
+                     <widget class="QLabel" name="selected_model_PRIZE_label">
                       <property name="text">
                        <string>单价</string>
                       </property>
@@ -471,7 +471,7 @@
                      <number>3</number>
                     </property>
                     <item>
-                     <widget class="QLabel" name="label_8">
+                     <widget class="QLabel" name="selected_model_NUM_SOLD_BOXES_label">
                       <property name="text">
                        <string>已售箱数</string>
                       </property>
@@ -512,7 +512,7 @@
                   <number>3</number>
                  </property>
                  <item>
-                  <widget class="QLabel" name="label_9">
+                  <widget class="QLabel" name="selected_model_CONTAINER_label">
                    <property name="text">
                     <string>集装箱</string>
                    </property>
@@ -577,7 +577,7 @@
          <widget class="QWidget" name="widget_16" native="true">
           <layout class="QHBoxLayout" name="horizontalLayout_12">
            <item>
-            <widget class="QLabel" name="label_10">
+            <widget class="QLabel" name="search_CONTAINER_ID_label">
              <property name="text">
               <string>集装箱号</string>
              </property>
@@ -738,7 +738,7 @@
       </widget>
       <widget class="QWidget" name="add_model_tab">
        <attribute name="title">
-        <string>添加库存</string>
+        <string>添加新货</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_8">
         <item>
@@ -769,7 +769,7 @@
                  </size>
                 </property>
                 <property name="text">
-                 <string>开始添加库存</string>
+                 <string>开始添加新货物</string>
                 </property>
                </widget>
               </item>

@@ -148,7 +148,7 @@
             </size>
            </property>
            <property name="text">
-            <string>每箱件数</string>
+            <string>Piezas por caja/每箱件数</string>
            </property>
           </widget>
          </item>

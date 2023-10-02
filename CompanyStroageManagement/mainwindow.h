@@ -35,6 +35,8 @@ public:
 
     void update_GUI();
 
+    void setLanguage();
+
 private slots:
     void closeEvent (QCloseEvent *event);
     void on_search_MODELCODE_LE_textChanged(const QString& new_str);

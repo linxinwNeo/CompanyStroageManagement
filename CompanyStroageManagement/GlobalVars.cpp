@@ -13,4 +13,8 @@ class Lists lists; // holds all past list
 const QString EXCEL_FILTER = "Microsoft Excel Open XML Spreadsheet (*.xlsx)";
 const QString table_stylesheet = "QHeaderView::section { background-color:#F0F0F0; }";
 
+const QString DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+const QString DateFormat = "yyyy-MM-dd";
+const QString TimeFormat = "HH:mm:ss";
+
 unsigned int language_option = 0; // 0 for chinese, 1 for Spanish

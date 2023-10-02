@@ -78,10 +78,7 @@ void AddNewModelWindow::on_add_new_model_btn_clicked()
     const QString MODELCODE = this->ui->MODELCODE_LE->text().trimmed();
 
     if(MODELCODE.isEmpty()) {
-        QString msg;
-        if(language_option == 0) msg = ADD_NEW_MODEL_FAIL_MSG_CN + MODELCODE_EMPTY_ERROR_CN;
-        else if(language_option == 1) msg = ADD_NEW_MODEL_FAIL_MSG_SPAN + MODELCODE_EMPTY_ERROR_SPAN;
-        else msg = ADD_NEW_MODEL_FAIL_MSG_CN + MODELCODE_EMPTY_ERROR_CN;
+        QString msg = lan(ADD_NEW_MODEL_FAIL_MSG_CN, ADD_NEW_MODEL_FAIL_MSG_SPAN) + lan(MODELCODE_EMPTY_ERROR_CN, MODELCODE_EMPTY_ERROR_SPAN);
 
         QSharedPointer<QMessageBox> msgBox = this->create_MessageBox(msg);
         msgBox->exec();
@@ -94,14 +91,10 @@ void AddNewModelWindow::on_add_new_model_btn_clicked()
     // 检查货号和对应的集装箱组合是否已经存在
     const ModelPtr model = inventory.get_Model(MODELCODE, CONTAINER_ID);
     if(!model.isNull()){
-        QString msg;
-        if(language_option == 0) msg = ADD_NEW_MODEL_FAIL_MSG_CN + duplicate_Model_ERROR_MSG_CN;
-        else if(language_option == 1) msg = ADD_NEW_MODEL_FAIL_MSG_SPAN + duplicate_Model_ERROR_MSG_SPAN;
-        else msg = ADD_NEW_MODEL_FAIL_MSG_CN + duplicate_Model_ERROR_MSG_CN;
+        QString msg = lan(ADD_NEW_MODEL_FAIL_MSG_CN, ADD_NEW_MODEL_FAIL_MSG_SPAN) + lan(duplicate_Model_ERROR_MSG_CN, duplicate_Model_ERROR_MSG_SPAN);
 
         QSharedPointer<QMessageBox> msgBox = this->create_MessageBox(msg);
         msgBox->exec();
-        qDebug() << "adding an existing model";
         return;
     }
 
@@ -117,11 +110,7 @@ void AddNewModelWindow::on_add_new_model_btn_clicked()
 
     // 初始箱数不能少于已售箱数
     if(NUM_SOLD_BOXES > NUM_INIT_BOXES){
-        QString msg;
-        if(language_option == 0) msg = ADD_NEW_MODEL_FAIL_MSG_CN + SOLD_MORETHAN_INIT_BOXES_ERROR_MSG_CN;
-        else if(language_option == 1) msg = ADD_NEW_MODEL_FAIL_MSG_SPAN + SOLD_MORETHAN_INIT_BOXES_ERROR_MSG_SPAN;
-        else msg = ADD_NEW_MODEL_FAIL_MSG_CN + SOLD_MORETHAN_INIT_BOXES_ERROR_MSG_CN;
-
+        QString msg = lan(ADD_NEW_MODEL_FAIL_MSG_CN, ADD_NEW_MODEL_FAIL_MSG_SPAN) + lan(SOLD_MORETHAN_INIT_BOXES_ERROR_MSG_CN, SOLD_MORETHAN_INIT_BOXES_ERROR_MSG_SPAN);
         QSharedPointer<QMessageBox> msgBox = this->create_MessageBox(msg);
         msgBox->exec();
         return;
@@ -156,10 +145,7 @@ void AddNewModelWindow::on_add_new_model_btn_clicked()
     inventory.add_Model(new_model);
 
 
-    QString msg;
-    if(language_option == 0) msg = NEW_MODEL_ADD_SUCCESS_MSG_CN;
-    else if(language_option == 1) msg = NEW_MODEL_ADD_SUCCESS_MSG_SPAN;
-    else msg = NEW_MODEL_ADD_SUCCESS_MSG_CN;
+    QString msg = lan(NEW_MODEL_ADD_SUCCESS_MSG_CN, NEW_MODEL_ADD_SUCCESS_MSG_SPAN);
 
     QSharedPointer<QMessageBox> msgBox = this->create_MessageBox(msg);
     msgBox->exec();
