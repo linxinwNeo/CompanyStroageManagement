@@ -61,6 +61,9 @@ private slots:
 
     void on_read_from_new_file_btn_clicked();
 
+    void on_actionSpanish_triggered();
+    void on_actionChinese_triggered();
+
 private:
     ModelPtr selected_model;
     ContainerPtr selected_container;

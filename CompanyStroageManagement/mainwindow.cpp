@@ -101,7 +101,37 @@ void MainWindow::setLanguage()
     this->ui->tabWidget->setTabText(4, lan("保存或读取文件", "Guardar o leer archivos"));
 
     // change the first tab
+    this->ui->search_MODELCODE_label->setText(lan("货号", "MODELO"));
+    this->ui->search_MODELCODE_LE->setPlaceholderText(lan("在此输入需要查询的货号", "Introduzca aquí el número de artículo sobre el que desea realizar la consulta"));
+    this->ui->search_model_result_GB->setTitle(lan("货物查询结果", "Resultados de la consulta sobre cargas"));
+    QStringList headers = {
+        lan("货号", "MODELO"),
+        lan("品名(中文)", "DESCRIPTION(Chino)"),
+        lan("品名（西语）", "DESCRIPTION(Español)"),
+        lan("初始箱数", "Número inicial de cajas"),
+        lan("每箱件数", "Piezas por caja"),
+        lan("单价", "precio del artículo"),
+        lan("已售箱数", "Número de cajas vendidas"),
+        lan("已售件数", "Número de piezas vendidas"),
+        lan("剩余箱数", "Número de cajas restantes"),
+        lan("剩余件数", "Número de piezas restantes"),
+        lan("集装箱号", "número de contenedor")
+    };
+    this->ui->search_model_result_Table->setHorizontalHeaderLabels(headers);
 
+    this->ui->selected_model_GB->setTitle(lan("选中的货物", "las mercancías seleccionadas"));
+
+    const QString none = lan("暂无", "ninguno");
+    this->ui->selected_model_MODELCODE_label->setText(lan("货号", "MODELO"));
+    this->ui->selected_model_MODELCODE_LE->setPlaceholderText(none);
+
+    this->ui->selected_model_DESCRIPTION_CN_label->setText(lan("品名（中文）", "DESCRIPTION(Chino)"));
+    this->ui->selected_model_DESCRIPTION_CN_LE->setPlaceholderText(none);
+
+    this->ui->selected_model_DESCRIPTION_SPAN_label->setText(lan("品名（西语）", "DESCRIPTION(Español)"));
+    this->ui->selected_model_DESCRIPTION_SPAN_LE->setPlaceholderText(none);
+
+    //TODO
 }
 
 
@@ -607,5 +637,29 @@ bool MainWindow::is_time_for_backup() const
     }
 
     return false;
+}
+
+
+// change language to Spanish
+void MainWindow::on_actionSpanish_triggered()
+{
+    this->setDisabled(true);
+
+    language_option = 1;
+    this->setLanguage();
+
+    this->setEnabled(true);
+}
+
+
+// change language to Chinese
+void MainWindow::on_actionChinese_triggered()
+{
+    this->setDisabled(true);
+
+    language_option = 0;
+    this->setLanguage();
+
+    this->setEnabled(true);
 }
 

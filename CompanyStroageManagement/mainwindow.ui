@@ -49,7 +49,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QGroupBox" name="groupBox">
+            <widget class="QGroupBox" name="search_model_result_GB">
              <property name="title">
               <string>货物查询结果</string>
              </property>
@@ -594,7 +594,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QGroupBox" name="groupBox_3">
+         <widget class="QGroupBox" name="search_container_result_GB">
           <property name="title">
            <string>集装箱查询结果</string>
           </property>
@@ -652,7 +652,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QGroupBox" name="groupBox_4">
+         <widget class="QGroupBox" name="selected_container_GB">
           <property name="title">
            <string>该集装箱的货物</string>
           </property>
@@ -1030,8 +1030,26 @@
      <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuMenu">
+    <property name="title">
+     <string>Language</string>
+    </property>
+    <addaction name="actionChinese"/>
+    <addaction name="actionSpanish"/>
+   </widget>
+   <addaction name="menuMenu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionChinese">
+   <property name="text">
+    <string>中文/Chino</string>
+   </property>
+  </action>
+  <action name="actionSpanish">
+   <property name="text">
+    <string>西班牙语/Español</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
