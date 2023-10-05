@@ -24,6 +24,7 @@ public:
     void set_GUI();
 
     CreateListWin* parent_win = nullptr;
+    void setLanguage();
 
 private slots:
     void closeEvent (QCloseEvent *event);

@@ -1,5 +1,6 @@
 #include "Adjust_List_Item_Win.h"
 #include "CreateListWin.h"
+#include "GlobalVars.h"
 #include "qevent.h"
 #include "ui_Adjust_List_Item_Win.h"
 
@@ -12,6 +13,16 @@ Adjust_List_Item_Win::Adjust_List_Item_Win(QWidget *parent) :
     this->model_2be_adjusted = nullptr;
 }
 
+
+// set language according to the current language
+void Adjust_List_Item_Win::setLanguage()
+{
+    const QString none = lan("暂无", "ninguno");
+
+    this->ui->adjust_list_item_GB->setTitle(lan("调整数值", "información de los nuevos productos"));
+    this->ui->finish_btn->setText(lan("完成", "completar"));
+
+}
 
 Adjust_List_Item_Win::~Adjust_List_Item_Win()
 {
