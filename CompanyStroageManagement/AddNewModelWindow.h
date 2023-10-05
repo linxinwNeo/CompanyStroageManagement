@@ -22,6 +22,7 @@ public:
     ~AddNewModelWindow();
 
     void clear_content();
+    void setLanguage();
 private:
     Ui::AddNewModelWindow *ui;
 

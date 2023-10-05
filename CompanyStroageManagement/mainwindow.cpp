@@ -45,7 +45,8 @@ void MainWindow::init()
 
     // setting up tables
     auto container_table = ui->search_container_result_Table;
-    container_table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+//    container_table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    container_table->setStyleSheet(table_stylesheet);
 
     auto model_table = ui->search_model_result_Table;
 //    model_table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
@@ -131,7 +132,45 @@ void MainWindow::setLanguage()
     this->ui->selected_model_DESCRIPTION_SPAN_label->setText(lan("品名（西语）", "DESCRIPTION(Español)"));
     this->ui->selected_model_DESCRIPTION_SPAN_LE->setPlaceholderText(none);
 
-    //TODO
+    this->ui->selected_model_NUM_INIT_BOXES_label->setText(lan("初始箱数", "Número inicial de cajas"));
+    this->ui->selected_model_NUM_ITEMS_PER_BOX_label->setText(lan("每箱件数", "Piezas por caja"));
+
+    this->ui->selected_model_PRIZE_label->setText(lan("单价", "precio del artículo"));
+    this->ui->selected_model_NUM_SOLD_BOXES_label->setText(lan("已售箱数", "Número de cajas vendidas"));
+
+    this->ui->selected_model_CONTAINER_label->setText(lan("集装箱号", "número de contenedor"));
+    this->ui->selected_model_CONTAINER_LE->setText(none);
+
+    this->ui->delete_model_btn->setText(lan("删除货物", "eliminar"));
+
+    this->ui->search_CONTAINER_ID_label->setText(lan("集装箱号", "número de contenedor"));
+    this->ui->search_CONTAINER_ID_LE->setPlaceholderText(none);
+    this->ui->search_container_result_GB->setTitle(lan("搜索结果", "resultados de búsqueda"));
+
+    QStringList headers2 = {
+        lan("集装箱号", "número de contenedor"),
+        lan("货物种类数量", "cantidad de tipos de mercancías"),
+        lan("初始总箱数（箱）", "número total inicial de cajas (cajas)"),
+        lan("货物剩余数量（箱）", "cantidad restante de mercancía (cajas)"),
+        lan("货物初始数量（件）", "cantidad inicial de mercancía (unidades)"),
+        lan("货物剩余数量（件）", "cantidad restante de mercancía (unidades)"),
+    };
+
+    this->ui->search_container_result_Table->setHorizontalHeaderLabels(headers2);
+   //TODO
+
+    this->ui->selected_container_GB->setTitle(lan("该集装箱的货物", "la mercancía en este contenedor"));
+
+    this->ui->selected_container_Table->setHorizontalHeaderLabels(headers);
+
+    this->ui->start_add_model_btn->setText(lan("添加新货物", "añadir nueva mercancía"));
+
+    this->ui->new_list_btn->setText(lan("建立新清单", "crear una nueva lista"));
+
+    this->ui->search_past_list_btn->setText(lan("查询清单", "lista de consulta"));
+
+    this->ui->save2_new_file_btn->setText(lan("将库存保存至另一个文件", "guardar el inventario en otro archivo"));
+    this->ui->read_from_new_file_btn->setText(lan("从另一个文件中读取库存", "leer el inventario desde otro archivo"));
 }
 
 

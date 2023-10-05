@@ -628,7 +628,7 @@
              </column>
              <column>
               <property name="text">
-               <string>货物初始数量（箱）</string>
+               <string>货物总数量（箱）</string>
               </property>
              </column>
              <column>
@@ -769,7 +769,7 @@
                  </size>
                 </property>
                 <property name="text">
-                 <string>开始添加新货物</string>
+                 <string>添加新货物</string>
                 </property>
                </widget>
               </item>
@@ -839,7 +839,7 @@
               </size>
              </property>
              <property name="text">
-              <string>新清单</string>
+              <string>建立新清单</string>
              </property>
             </widget>
            </item>

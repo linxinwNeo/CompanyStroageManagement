@@ -18,9 +18,9 @@
     <widget class="QWidget" name="widget" native="true">
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="QGroupBox" name="groupBox">
+       <widget class="QGroupBox" name="newModel_info_GB">
         <property name="title">
-         <string>需要添加的新货物的信息</string>
+         <string>新货物的信息</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout">
          <item>
@@ -60,7 +60,7 @@
             <item>
              <widget class="QLineEdit" name="MODELCODE_LE">
               <property name="placeholderText">
-               <string>在此输入货号</string>
+               <string>暂无</string>
               </property>
              </widget>
             </item>
@@ -104,7 +104,7 @@
             <item>
              <widget class="QLineEdit" name="DESCRIPTION_CN_LE">
               <property name="placeholderText">
-               <string>在此输入品名</string>
+               <string>暂无</string>
               </property>
              </widget>
             </item>
@@ -148,7 +148,7 @@
             <item>
              <widget class="QLineEdit" name="DESCRIPTION_SPAN_LE">
               <property name="placeholderText">
-               <string>在此输入品名</string>
+               <string>暂无</string>
               </property>
              </widget>
             </item>
@@ -214,7 +214,7 @@
             <item>
              <widget class="QLabel" name="NUM_INIT_BOXES_label">
               <property name="text">
-               <string>进货箱数</string>
+               <string>初始箱数</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>

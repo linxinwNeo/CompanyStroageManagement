@@ -12,6 +12,38 @@ AddNewModelWindow::AddNewModelWindow(QWidget *parent) :
     ui(new Ui::AddNewModelWindow)
 {
     ui->setupUi(this);
+
+    this->setLanguage();
+}
+
+
+// set language according to the current language
+void AddNewModelWindow::setLanguage()
+{
+    const QString none = lan("暂无", "ninguno");
+
+    this->ui->newModel_info_GB->setTitle(lan("新货物的信息", "información de los nuevos productos"));
+
+    this->ui->MODELCODE_label->setText(lan("货号", "MODELO"));
+    this->ui->MODELCODE_LE->setPlaceholderText(none);
+
+    this->ui->DESCRIPTION_CN_label->setText(lan("品名（中文）", "DESCRIPTION(Chino)"));
+    this->ui->DESCRIPTION_CN_LE->setPlaceholderText(none);
+
+    this->ui->DESCRIPTION_SPAN_label->setText(lan("品名（西语）", "DESCRIPTION(Español)"));
+    this->ui->DESCRIPTION_SPAN_LE->setPlaceholderText(none);
+
+    this->ui->PRIZE_label->setText(lan("单价", "precio del artículo"));
+    this->ui->NUM_INIT_BOXES_label->setText(lan("初始箱数", "Número inicial de cajas"));
+    this->ui->NUM_SOLD_BOXES_label->setText(lan("已售箱数", "Número de cajas vendidas"));
+    this->ui->NUM_ITEMS_PER_BOX_label->setText(lan("每箱件数", "Piezas por caja"));
+
+    this->ui->container_ID_label->setText(lan("集装箱号", "número de contenedor"));
+
+    this->ui->container_ID_LE->setPlaceholderText(lan("在此输入集装箱号，如果没有的话空着",
+                                                      "Ingrese el número de contenedor aquí, si no tiene uno, deje este espacio en blanco"));
+
+    this->ui->add_new_model_btn->setText(lan("添加", "añadir"));
 }
 
 
