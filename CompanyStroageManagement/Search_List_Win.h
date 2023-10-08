@@ -27,6 +27,8 @@ public:
 
     void reset_list_info();
 
+    void setLanguage();
+
 private:
     Ui::Search_List_Win *ui;
 

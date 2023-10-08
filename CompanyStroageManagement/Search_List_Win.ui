@@ -198,7 +198,7 @@
                 <number>0</number>
                </property>
                <item>
-                <widget class="QLabel" name="CLIENTE_LE_label">
+                <widget class="QLabel" name="CLIENTE_label">
                  <property name="minimumSize">
                   <size>
                    <width>10</width>
@@ -212,7 +212,7 @@
                   </size>
                  </property>
                  <property name="text">
-                  <string>CLIENTE</string>
+                  <string>客户</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -228,7 +228,7 @@
                   <bool>true</bool>
                  </property>
                  <property name="placeholderText">
-                  <string>None</string>
+                  <string>在此输入</string>
                  </property>
                 </widget>
                </item>
@@ -268,7 +268,7 @@
                   </size>
                  </property>
                  <property name="text">
-                  <string>DOMICILIO</string>
+                  <string>地址</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -284,7 +284,7 @@
                   <bool>true</bool>
                  </property>
                  <property name="placeholderText">
-                  <string>None</string>
+                  <string>在此输入</string>
                  </property>
                 </widget>
                </item>
@@ -324,7 +324,7 @@
                   </size>
                  </property>
                  <property name="text">
-                  <string>CIUDAD</string>
+                  <string>城市</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -340,7 +340,7 @@
                   <bool>true</bool>
                  </property>
                  <property name="placeholderText">
-                  <string>None</string>
+                  <string>在此输入</string>
                  </property>
                 </widget>
                </item>
@@ -396,7 +396,7 @@
                   <bool>true</bool>
                  </property>
                  <property name="placeholderText">
-                  <string>None</string>
+                  <string>在此输入</string>
                  </property>
                 </widget>
                </item>
@@ -436,7 +436,7 @@
                   </size>
                  </property>
                  <property name="text">
-                  <string>AGENTE</string>
+                  <string>代理</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -452,7 +452,7 @@
                   <bool>true</bool>
                  </property>
                  <property name="placeholderText">
-                  <string>None</string>
+                  <string>在此输入</string>
                  </property>
                 </widget>
                </item>
@@ -492,7 +492,7 @@
                   </size>
                  </property>
                  <property name="text">
-                  <string>CONDICIONES DE PAGO</string>
+                  <string>付款方式</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -508,7 +508,7 @@
                   <bool>true</bool>
                  </property>
                  <property name="placeholderText">
-                  <string>None</string>
+                  <string>在此输入</string>
                  </property>
                 </widget>
                </item>
@@ -548,7 +548,7 @@
                   </size>
                  </property>
                  <property name="text">
-                  <string>DISCOUNT(%)</string>
+                  <string>折扣(%)</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -561,7 +561,7 @@
                   <bool>true</bool>
                  </property>
                  <property name="placeholderText">
-                  <string>None</string>
+                  <string>在此输入</string>
                  </property>
                 </widget>
                </item>

@@ -278,7 +278,7 @@ void CreateListWin::closeEvent (QCloseEvent *event)
     this->setDisabled(true);
 
     QMessageBox msg;
-    msg.setText(tr("你确定要退出吗?\n"));
+    msg.setText(lan(Are_You_Sure_to_Exit_CN, Are_You_Sure_to_Exit_SPAN));
     msg.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
     msg.setDefaultButton(QMessageBox::Yes);
     msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);

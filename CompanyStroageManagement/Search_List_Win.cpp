@@ -1,5 +1,7 @@
 #include "Search_List_Win.h"
+#include "CN_Strings.h"
 #include "GlobalVars.h"
+#include "SpanStrings.h"
 #include "ui_Search_List_Win.h"
 
 #include <QMessageBox>
@@ -11,6 +13,8 @@ Search_List_Win::Search_List_Win(QWidget *parent) :
     ui(new Ui::Search_List_Win)
 {
     ui->setupUi(this);
+
+    this->setLanguage();
 
     searched_lists_table = ui->searched_lists_table;
 //    searched_lists_table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
@@ -83,10 +87,64 @@ void Search_List_Win::reset_list_info()
 }
 
 
+// set language
+void Search_List_Win::setLanguage()
+{
+    this->ui->list_id_2be_searched_label->setText(lan("清单号", "número de lista"));
+
+    this->ui->list_id_2be_searched_LE->setPlaceholderText(lan("在此输入需要查询的清单号", "Ingrese el número de lista que desea consultar aquí"));
+
+    this->ui->search_list_result_GB->setTitle(lan("清单查询结果", "resultados de la consulta de la lista"));
+
+    QStringList headers = {
+       lan("清单号", "MODELO"),
+       lan("创建日期", "DESCRIPTION(Chino)"),
+       lan("创建时间", "DESCRIPTION(Español)"),
+       lan("货物箱数", "Número inicial de cajas"),
+       lan("价格", "Piezas por caja"),
+       lan("客户", "número de contenedor")
+    };
+    this->ui->searched_lists_table->setHorizontalHeaderLabels(headers);
+
+    this->ui->selected_list_GB->setTitle(lan("选中清单的详细信息", "detalles de la lista seleccionada"));
+
+    this->ui->selected_list_info_GB->setTitle(lan("清单信息", "información de la lista"));
+
+    const QString enter_here = lan("在此输入", "ingresa aquí");
+
+    this->ui->CLIENTE_label->setText(lan("客户", "CLIENTE"));
+    this->ui->CLIENTE_LE->setPlaceholderText(enter_here);
+
+    this->ui->DOMICILIO_label->setText(lan("地址", "DOMICILIO"));
+    this->ui->DOMICILIO_LE->setPlaceholderText(enter_here);
+
+    this->ui->CIUDAD_label->setText(lan("城市", "CIUDAD"));
+    this->ui->CIUDAD_LE->setPlaceholderText(enter_here);
+
+    this->ui->RFC_label->setText("R.F.C");
+    this->ui->RFC_LE->setPlaceholderText(enter_here);
+
+    this->ui->AGENTE_label->setText(lan("代理", "AGENTE"));
+    this->ui->AGENTE_LE->setPlaceholderText(enter_here);
+
+    this->ui->CONDICIONES_label->setText(lan("付款方式", "CONDICIONES DE PAGO"));
+    this->ui->CONDICIONES_LE->setPlaceholderText(enter_here);
+
+    this->ui->DISCOUNT_label->setText(lan("折扣", "DISCOUNT(%)"));
+    this->ui->DISCOUNT_LE->setPlaceholderText(enter_here);
+
+    this->ui->list_items_GB->setTitle(lan("清单货物", "productos de la lista"));
+
+    this->ui->delete_list_btn->setText(lan("删除此清单（不返还库存）", "eliminar esta lista (sin devolver el inventario)"));
+
+    this->ui->put_back_list_btn->setText(lan("退清单（返还库存）", "devolver lista (devolver inventario)"));
+}
+
+
 void Search_List_Win::closeEvent (QCloseEvent *event)
 {
     QMessageBox msg(this);
-    msg.setText(tr("你确定要退出吗?\n"));
+    msg.setText(lan(Are_You_Sure_to_Exit_CN, Are_You_Sure_to_Exit_SPAN));
     msg.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
     msg.setDefaultButton(QMessageBox::Yes);
     msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);

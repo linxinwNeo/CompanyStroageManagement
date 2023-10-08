@@ -842,7 +842,7 @@
              <cursorShape>PointingHandCursor</cursorShape>
             </property>
             <property name="text">
-             <string>预览清单</string>
+             <string>生成预览清单</string>
             </property>
            </widget>
           </item>
@@ -864,7 +864,7 @@
              <cursorShape>PointingHandCursor</cursorShape>
             </property>
             <property name="text">
-             <string>生成清单</string>
+             <string>正式生成清单</string>
             </property>
            </widget>
           </item>
