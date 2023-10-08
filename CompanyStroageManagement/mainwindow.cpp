@@ -55,20 +55,6 @@ void MainWindow::init()
     auto selected_container_table = ui->selected_container_Table;
 //    selected_container_table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     selected_container_table->setStyleSheet(table_stylesheet);
-
-    // read inventory.txt file
-    ReadFile read_file;
-//    // read inventory.txt file
-//    read_file.read_Inventory_txt_File(Inventory_FNAME); // build the inventory
-
-    read_file.read_Inventory_xlsx_File(Inventory_FNAME_xlsx);
-    // read lists.txt file
-    read_file.read_Lists_txt_File(Lists_FNAME); // build the lists
-
-    if(this->is_time_for_backup()){
-        WriteFile wf;
-        if(wf.save_BackUp_files()) wf.update_BackUpDate();
-    }
 }
 
 
@@ -91,7 +77,7 @@ void MainWindow::update_GUI()
 }
 
 
-// replace the language of mainWindow
+// set the language of mainWindow
 void MainWindow::setLanguage()
 {
     // change tab names
@@ -269,11 +255,17 @@ void MainWindow::closeEvent (QCloseEvent *event)
     msg.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
 
     int resBtn = msg.exec();
-    if (resBtn != QMessageBox::Yes) {
-        event->ignore();
+    if (resBtn == QMessageBox::Yes) {
+        WriteFile wf;
+        wf.save_settings_file();
+
+        if(this->is_time_for_backup()){
+            if(wf.save_BackUp_files()) wf.update_BackUpDate();
+        }
+        event->accept();
     }
     else {
-        event->accept();
+        event->ignore();
     }
 }
 
@@ -654,28 +646,25 @@ bool MainWindow::is_time_for_backup() const
     if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QTextStream stream(&file);
 
-        // Read and display the file contents line by line
-        while (!stream.atEnd()) {
-            QString line = stream.readLine();
+        QString line = stream.readLine();
 
-            QDateTime prev_DateTime = QDateTime::fromString(line, DateTimeFormat);
-            if(prev_DateTime.isValid()){
-                QDateTime curDateTime = QDateTime::currentDateTime();
-                int days = prev_DateTime.daysTo(curDateTime);
-                if(days > 3){
-                    return true;
-                }
+        QDateTime prev_DateTime = QDateTime::fromString(line, DateTimeFormat);
+        if(prev_DateTime.isValid()){
+            QDateTime curDateTime = QDateTime::currentDateTime();
+            int days = prev_DateTime.daysTo(curDateTime);
+            qDebug() << " days " << days;
+            if(days > 3){
+                return true;
             }
+            else
+                return false;
         }
+        else return true;
 
-        // Close the file when done
-        file.close();
     }
     else{ // no backup history, save
         return true;
     }
-
-    return false;
 }
 
 

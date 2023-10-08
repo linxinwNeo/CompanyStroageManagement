@@ -19,6 +19,7 @@ public:
     void read_Inventory_xlsx_File(const QString& path) const;
 
     void read_Lists_txt_File(const QString& path) const;
+    bool read_settings_file() const;
 };
 
 #endif //READFILE_H

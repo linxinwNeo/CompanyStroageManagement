@@ -104,7 +104,7 @@ bool WriteFile::Lists2txt(const QString &path) const
 {
     QFile file(path);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)){
-        write_error_file("WriteFile::Lists2txt: couldn't create the file: " + path);
+        write_error_file("WriteFile::Lists2txt: couldn't create the file: " + path + " \n");
         return false;
     }
 
@@ -180,10 +180,14 @@ bool WriteFile::save_BackUp_files() const
 {
     QDateTime currentDateTime = QDateTime::currentDateTime();
     QString folderName = currentDateTime.toString(DateTimeFormat);
-    QDir timeDir(BackUP_DirName + "/" + folderName);
+    QDir timeDir;
+
     // Create the subfolder named by datetime
-    if (!timeDir.exists()) {
-        timeDir.mkpath(".");
+    QString path = BackUP_DirName + "/" + folderName;
+    bool success = timeDir.mkpath(path);
+    if(!success){
+        write_error_file("WriteFile::save_BackUp_files: couldn't create the path: " + path + " \n");
+        return false;
     }
 
     QString path_to_list_file = BackUP_DirName + "/" + folderName + "/lists.txt";
@@ -191,5 +195,23 @@ bool WriteFile::save_BackUp_files() const
     QString path_to_inventory_file = BackUP_DirName + "/" + folderName + "/inventory.xlsx";
     if(!this->Inventory2Xlsx(path_to_inventory_file)) return false;
 
+    return true;
+}
+
+
+// save the settings to the file
+bool WriteFile::save_settings_file() const
+{
+    QFile file(Settings_FileName);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)){
+        write_error_file("WriteFile::save_settings_file: couldn't create the file: " + Settings_FileName);
+        return false;
+    }
+
+    QTextStream out(&file);
+
+    out << language_option << " \n"; // output language setting
+
+    file.close();
     return true;
 }

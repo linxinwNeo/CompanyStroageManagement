@@ -164,8 +164,8 @@ void ReadFile::read_Inventory_xlsx_File(const QString &path) const
     }
 
     qDebug() << "Read file" << path << "done, it has" <<
-        inventory.num_models() << "models and " <<
-        inventory.num_containers() << "containers.";
+            inventory.num_models() << "models and " <<
+            inventory.num_containers() << "containers.";
 }
 
 
@@ -245,4 +245,26 @@ void ReadFile::read_Lists_txt_File(const QString &path) const
 
     file.close();
     qDebug() << "Reading" << path << "done, it has" << lists.num_lists() << "lists";
+}
+
+
+// save the settings to the file
+bool ReadFile::read_settings_file() const
+{
+    QFile file(Settings_FileName);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)){
+        qDebug() << "couldn't open the file" << Settings_FileName;
+        return false;
+    }
+
+    QTextStream in(&file);
+
+    QString line = in.readLine();
+    language_option = line.toUInt();
+    if(language_option > 1){
+        language_option = 0;
+    }
+
+    file.close();
+    return true;
 }

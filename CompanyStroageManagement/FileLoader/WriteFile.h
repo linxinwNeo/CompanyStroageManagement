@@ -18,6 +18,8 @@ public:
 
     void update_BackUpDate() const;
     bool save_BackUp_files() const;
+
+    bool save_settings_file() const;
 };
 
 #endif // WRITEFILE_H

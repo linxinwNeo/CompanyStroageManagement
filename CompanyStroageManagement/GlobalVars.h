@@ -14,6 +14,9 @@ extern QString Lists_FNAME;
 
 extern const QString BackUP_DirName;
 extern const QString BackUP_FileName;
+extern const unsigned int backup_every_n_days;
+
+extern const QString Settings_FileName;
 
 extern Inventory inventory;
 extern Lists lists;
