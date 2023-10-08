@@ -21,6 +21,7 @@ CreateListWin::CreateListWin(QWidget *parent) :
     ui->setupUi(this);
 
     this->init();
+    this->setLanguage();
 }
 
 
@@ -66,6 +67,72 @@ void CreateListWin::remove_entry(const unsigned int idx)
 {
     cur_list_entries.remove_entry(idx);
     this->update_added_models_table();
+}
+
+
+// set language
+void CreateListWin::setLanguage()
+{
+    this->ui->client_info_GB->setTitle(lan("清单信息", "información de la lista"));
+
+    const QString enter_here = lan("在此输入", "ingresa aquí");
+
+    this->ui->CLIENTE_label->setText(lan("客户", "CLIENTE"));
+    this->ui->CLIENTE_LE->setPlaceholderText(enter_here);
+
+    this->ui->DOMICILIO_label->setText(lan("地址", "DOMICILIO"));
+    this->ui->DOMICILIO_LE->setPlaceholderText(enter_here);
+
+    this->ui->CIUDAD_label->setText(lan("城市", "CIUDAD"));
+    this->ui->CIUDAD_LE->setPlaceholderText(enter_here);
+
+    this->ui->RFC_label->setText("RFC");
+    this->ui->RFC_LE->setPlaceholderText(enter_here);
+
+    this->ui->AGENTE_label->setText(lan("代理", "AGENTE"));
+    this->ui->AGENTE_LE->setPlaceholderText(enter_here);
+
+    this->ui->CONDICIONES_label->setText(lan("付款方式", "CONDICIONES DE PAGO"));
+    this->ui->CONDICIONES_LE->setPlaceholderText(enter_here);
+
+    this->ui->discount_label->setText(lan("折扣(%)", "DISCOUNT(%)"));
+
+    this->ui->reset_list_info_btn->setText(lan("重置信息", "resetear la información"));
+
+    this->ui->searchModel_TW->setTabText(0, lan("使用货号搜索需要添加的货物", "buscar los productos a agregar utilizando el número de referencia"));
+
+    this->ui->model_code_for_search_label->setText(lan("货号", "MODELO"));
+    this->ui->model_code_for_search_LE->setPlaceholderText(lan("在此输入需要搜索的货号 比如 TA-0001", "Introduce el número de referencia que deseas buscar aquí, por ejemplo, TA-0001"));
+
+    QStringList headers = {
+       lan("货号", "MODELO"),
+       lan("品名(中文)", "DESCRIPTION(Chino)"),
+       lan("品名（西语）", "DESCRIPTION(Español)"),
+       lan("初始箱数", "Número inicial de cajas"),
+       lan("每箱件数", "Piezas por caja"),
+       lan("单价", "precio del artículo"),
+       lan("已售箱数", "Número de cajas vendidas"),
+       lan("已售件数", "Número de piezas vendidas"),
+       lan("剩余箱数", "Número de cajas restantes"),
+       lan("剩余件数", "Número de piezas restantes"),
+       lan("集装箱号", "número de contenedor")
+    };
+
+    this->ui->searched_models_table->setHorizontalHeaderLabels(headers);
+
+    this->ui->add_selected_model_btn->setText(lan("添加选中的货物", "añadir los productos seleccionados"));
+
+    this->ui->added_models_GB->setTitle(lan("已添加的货物（双击货物修改数量）", "Productos añadidos (doble clic para modificar la cantidad)"));
+
+    this->ui->remove_selected_model_btn->setText(lan("删除选中的货物", "eliminar los productos seleccionados"));
+
+    this->ui->reset_added_models_table_btn->setText(lan("删除所有已添加的货物", "eliminar todos los productos añadidos"));
+
+    this->ui->generate_list_GB->setTitle(lan("生成清单", "crear lista"));
+
+    this->ui->previewList_btn->setText(lan("生成预览清单", "crear una vista previa de la lista"));
+
+    this->ui->generatePDF_btn->setText(lan("正式生成清单", "crear el inventario final"));
 }
 
 

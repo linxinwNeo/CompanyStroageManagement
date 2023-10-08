@@ -28,7 +28,6 @@ SOURCES += \
     Others/create_pdf.cpp \
     Search_List_Win.cpp \
     SpanStrings.cpp \
-    flags.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -55,7 +54,6 @@ HEADERS += \
     Predefined.h \
     Search_List_Win.h \
     SpanStrings.h \
-    flags.h \
     helper_functions.h \
     mainwindow.h
 

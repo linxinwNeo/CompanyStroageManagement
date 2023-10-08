@@ -37,6 +37,8 @@ public:
 
     void remove_entry(const unsigned int idx);
 
+    void setLanguage();
+
 private slots:
     void closeEvent (QCloseEvent *event);
 
