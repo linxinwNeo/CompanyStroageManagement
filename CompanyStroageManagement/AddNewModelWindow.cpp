@@ -1,6 +1,7 @@
 #include "AddNewModelWindow.h"
 #include <QCloseEvent>
 #include "CN_Strings.h"
+#include "FileLoader/WriteFile.h"
 #include "SpanStrings.h"
 #include "mainwindow.h"
 #include "ui_AddNewModelWindow.h"
@@ -184,5 +185,9 @@ void AddNewModelWindow::on_add_new_model_btn_clicked()
 
     // clear the contents when the model is successfully added
     this->clear_content();
+
+    // save the inventory
+    WriteFile wf;
+    wf.Inventory2Xlsx(Inventory_FNAME_xlsx);
 }
 

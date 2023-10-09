@@ -1,5 +1,6 @@
 #include "Search_List_Win.h"
 #include "CN_Strings.h"
+#include "FileLoader/WriteFile.h"
 #include "GlobalVars.h"
 #include "SpanStrings.h"
 #include "ui_Search_List_Win.h"
@@ -269,6 +270,12 @@ void Search_List_Win::on_delete_list_btn_clicked()
     }
 Finish:
     this->selected_list = nullptr;
+
+    // save the inventory and lists
+    WriteFile wf;
+    wf.Inventory2Xlsx(Inventory_FNAME_xlsx);
+    wf.Lists2txt(Lists_FNAME);
+
     this->setEnabled(true);
 }
 
@@ -306,7 +313,14 @@ void Search_List_Win::on_put_back_list_btn_clicked()
 
         goto Finish;
     }
+
 Finish:
+    // save the inventory and lists
+    WriteFile wf;
+    wf.Inventory2Xlsx(Inventory_FNAME_xlsx);
+    wf.Lists2txt(Lists_FNAME);
+
+
     this->selected_list = nullptr;
     this->setEnabled(true);
 }

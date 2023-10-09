@@ -5,6 +5,7 @@
 
 #include "CN_Strings.h"
 #include "CreateListWin.h"
+#include "FileLoader/WriteFile.h"
 #include "Others/get_save_filePath.h"
 #include "Others/create_PDF.h"
 #include "SpanStrings.h"
@@ -210,6 +211,11 @@ void CreateListWin::on_generatePDF_btn_clicked()
     this->selected_model_in_search_table = nullptr; // reset selected model
 
 Finish:
+    // save the inventory and lists
+    WriteFile wf;
+    wf.Inventory2Xlsx(Inventory_FNAME_xlsx);
+    wf.Lists2txt(Lists_FNAME);
+
     this->setEnabled(true);
 }
 

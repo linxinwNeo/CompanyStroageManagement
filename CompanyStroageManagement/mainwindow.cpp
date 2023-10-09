@@ -391,6 +391,11 @@ Finish:
 
     this->update_GUI();
 
+    // save the inventory and lists
+    WriteFile wf;
+    wf.Inventory2Xlsx(Inventory_FNAME_xlsx);
+    wf.Lists2txt(Lists_FNAME);
+
     this->setEnabled(true);
 }
 
@@ -569,6 +574,11 @@ void MainWindow::on_delete_model_btn_clicked()
     this->update_GUI();
 
 ret:
+    // save the inventory and lists
+    WriteFile wf;
+    wf.Inventory2Xlsx(Inventory_FNAME_xlsx);
+    wf.Lists2txt(Lists_FNAME);
+
     this->setEnabled(true);
 }
 
