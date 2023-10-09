@@ -128,6 +128,7 @@ void MainWindow::setLanguage()
     this->ui->selected_model_CONTAINER_LE->setText(none);
 
     this->ui->delete_model_btn->setText(lan("删除货物", "eliminar"));
+    this->ui->update_selected_model_btn->setText(lan("更新货物", "actualizar productos"));
 
     this->ui->search_CONTAINER_ID_label->setText(lan("集装箱号", "número de contenedor"));
     this->ui->search_CONTAINER_ID_LE->setPlaceholderText(none);
@@ -652,8 +653,7 @@ bool MainWindow::is_time_for_backup() const
         if(prev_DateTime.isValid()){
             QDateTime curDateTime = QDateTime::currentDateTime();
             int days = prev_DateTime.daysTo(curDateTime);
-            qDebug() << " days " << days;
-            if(days > 3){
+            if(days > backup_every_n_days){
                 return true;
             }
             else
