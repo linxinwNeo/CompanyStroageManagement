@@ -17,7 +17,7 @@
    <item>
     <widget class="QGroupBox" name="adjust_list_item_GB">
      <property name="title">
-      <string>调整数值</string>
+      <string>调整数量</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>

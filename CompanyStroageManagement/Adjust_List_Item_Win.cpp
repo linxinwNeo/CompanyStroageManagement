@@ -19,7 +19,7 @@ void Adjust_List_Item_Win::setLanguage()
 {
     const QString none = lan("暂无", "ninguno");
 
-    this->ui->adjust_list_item_GB->setTitle(lan("调整数值", "información de los nuevos productos"));
+    this->ui->adjust_list_item_GB->setTitle(lan("调整数量", "información de los nuevos productos"));
     this->ui->finish_btn->setText(lan("完成", "completar"));
 
 }

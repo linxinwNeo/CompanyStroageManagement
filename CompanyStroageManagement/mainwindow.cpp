@@ -94,7 +94,7 @@ void MainWindow::setLanguage()
     QStringList headers = {
         lan("货号", "MODELO"),
         lan("品名(中文)", "DESCRIPTION(Chino)"),
-        lan("品名（西语）", "DESCRIPTION(Español)"),
+        lan("品名(西语)", "DESCRIPTION(Español)"),
         lan("初始箱数", "Número inicial de cajas"),
         lan("每箱件数", "Piezas por caja"),
         lan("单价", "precio del artículo"),

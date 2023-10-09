@@ -164,7 +164,7 @@ void ReadFile::read_Inventory_xlsx_File(const QString &path) const
     }
 
     qDebug() << "Read file" << path << "done, it has" <<
-            inventory.num_models() << "models and " <<
+            inventory.num_models() << "models and" <<
             inventory.num_containers() << "containers.";
 }
 

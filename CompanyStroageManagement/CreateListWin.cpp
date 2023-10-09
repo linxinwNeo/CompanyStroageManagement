@@ -86,7 +86,7 @@ void CreateListWin::setLanguage()
     this->ui->CIUDAD_label->setText(lan("城市", "CIUDAD"));
     this->ui->CIUDAD_LE->setPlaceholderText(enter_here);
 
-    this->ui->RFC_label->setText("RFC");
+    this->ui->RFC_label->setText("R.F.C.");
     this->ui->RFC_LE->setPlaceholderText(enter_here);
 
     this->ui->AGENTE_label->setText(lan("代理", "AGENTE"));
@@ -146,7 +146,7 @@ void CreateListWin::on_generatePDF_btn_clicked()
     Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
 
     if(cur_list_entries.num_entries() == 0) {
-        Msgbox.setText("清单是空的");
+        Msgbox.setText(lan("清单是空的", "La lista está vacía"));
         Msgbox.exec();
         return;
     }
@@ -223,7 +223,7 @@ void CreateListWin::on_previewList_btn_clicked()
     Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
 
     if(cur_list_entries.num_entries() == 0) {
-        Msgbox.setText("清单是空的");
+        Msgbox.setText(lan("清单是空的", "La lista está vacía"));
         Msgbox.exec();
         return;
     }

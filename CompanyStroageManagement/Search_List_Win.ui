@@ -110,7 +110,7 @@
         </column>
         <column>
          <property name="text">
-          <string>货物箱数</string>
+          <string>总箱数</string>
          </property>
         </column>
         <column>
@@ -574,7 +574,7 @@
          <item>
           <widget class="QGroupBox" name="list_items_GB">
            <property name="title">
-            <string>清单货物</string>
+            <string>清单里的货物</string>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_4">
             <property name="spacing">

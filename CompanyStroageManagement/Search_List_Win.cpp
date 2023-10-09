@@ -97,10 +97,10 @@ void Search_List_Win::setLanguage()
     this->ui->search_list_result_GB->setTitle(lan("清单查询结果", "resultados de la consulta de la lista"));
 
     QStringList headers = {
-       lan("清单号", "MODELO"),
-       lan("创建日期", "DESCRIPTION(Chino)"),
-       lan("创建时间", "DESCRIPTION(Español)"),
-       lan("货物箱数", "Número inicial de cajas"),
+       lan("清单号", "número de lista"),
+       lan("创建日期", "fecha de creación"),
+       lan("创建时间", "hora de creación"),
+       lan("总箱数", "número total de cajas"),
        lan("价格", "Piezas por caja"),
        lan("客户", "número de contenedor")
     };
@@ -133,7 +133,7 @@ void Search_List_Win::setLanguage()
     this->ui->DISCOUNT_label->setText(lan("折扣", "DISCOUNT(%)"));
     this->ui->DISCOUNT_LE->setPlaceholderText(enter_here);
 
-    this->ui->list_items_GB->setTitle(lan("清单货物", "productos de la lista"));
+    this->ui->list_items_GB->setTitle(lan("清单里的货物", "productos en la lista"));
 
     this->ui->delete_list_btn->setText(lan("删除此清单（不返还库存）", "eliminar esta lista (sin devolver el inventario)"));
 
