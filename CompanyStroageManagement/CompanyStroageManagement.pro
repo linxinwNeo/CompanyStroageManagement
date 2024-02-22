@@ -64,9 +64,9 @@ FORMS += \
     Search_List_Win.ui \
     mainwindow.ui
 
-win32 {
-    RC_FILE = exe_icon.rc
-}
+
+ RC_FILE = exe_icon.rc
+
 
 
 # Default rules for deployment.
@@ -75,17 +75,22 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 
-DISTFILES +=
-
 RESOURCES += \
     resources.qrc
+
 
 INCLUDEPATH += $$PWD/QXlsx
 DEPENDPATH += $$PWD/QXlsx
 
-win32: LIBS += -L$$PWD/QXlsx/bin64/ -lQXlsx
+macx{
+    LIBS += -L$$PWD/QXlsx/bin64/ -lQXlsx_Mac
 
-win32: PRE_TARGETDEPS += $$PWD/QXlsx/bin64/libQXlsx.a
+    PRE_TARGETDEPS += $$PWD/QXlsx/bin64/libQXlsx_Mac.a
+}
 
-INCLUDEPATH += $$PWD/QXlsx/include
-DEPENDPATH += $$PWD/QXlsx/include
+
+win32 {
+    LIBS += -L$$PWD/QXlsx/bin64/ -lQXlsx_Win
+
+    PRE_TARGETDEPS += $$PWD/QXlsx/bin64/libQXlsx_Win.a
+}
