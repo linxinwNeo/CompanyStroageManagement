@@ -35,4 +35,7 @@ extern const QString READ_FAIL_MSG_SPAN;
 extern const QString Are_You_Sure_to_Exit_SPAN;
 extern const QString Are_You_Sure_to_Update_SPAN;
 extern const QString SAVE_SUCCESS_MSG_SPAN;
+
+extern const QString OUT_OF_STOCK_MSG_SPAN;
+extern const QString MODEL_EXIST_IN_LIST_MSG_SPAN;
 #endif // SPANSTRINGS_H

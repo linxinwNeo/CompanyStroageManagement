@@ -92,7 +92,8 @@ void Inventory::remove_Model(QSharedPointer<Model> &m)
 QSet<ModelPtr> Inventory::get_Model(const QString &MODEL_CODE)
 {
     // if the model_map has the corresponding entry defined, we just return what's in that entry
-    if(this->model_map.contains(MODEL_CODE)) return this->model_map[MODEL_CODE];
+    if( this->model_map.contains(MODEL_CODE) )
+        return this->model_map[MODEL_CODE];
 
     // if not, we return empty set
     QSet<ModelPtr> emptySet;

@@ -420,7 +420,7 @@ void CreateListWin::on_add_selected_model_btn_clicked()
     QMessageBox Msgbox;
     Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
     if(this->selected_model_in_search_table->NUM_LEFT_ITEMS == 0){
-        Msgbox.setText("该货没有库存了");
+        Msgbox.setText(lan(OUT_OF_STOCK_MSG_CN, OUT_OF_STOCK_MSG_SPAN));
         Msgbox.exec();
         return;
     }
@@ -450,13 +450,13 @@ void CreateListWin::on_add_selected_model_btn_clicked()
 
     // check if this model has been added to <added_models_table> already
     if(cur_list_entries.has_Model(MODELCODE_2be_Added, ContainerID_2be_Added)){
-        Msgbox.setText("该货已经在清单中了");
+        Msgbox.setText(lan(MODEL_EXIST_IN_LIST_MSG_CN, MODEL_EXIST_IN_LIST_MSG_SPAN));
         Msgbox.exec();
         goto FINISH;
     }
 
     // create a new entry and add it to <cur_list_entries>
-    NUM_BOXES = model_2be_added->NUM_LEFT_BOXES;
+    NUM_BOXES = model_2be_added->NUM_LEFT_BOXES; // CAJA
     TOTAL_NUM_ITEMS = model_2be_added->NUM_LEFT_ITEMS;
     NUM_ITEMS_PER_BOX = model_2be_added->NUM_ITEMS_PER_BOX;
     MODEL_CODE = model_2be_added->MODEL_CODE;

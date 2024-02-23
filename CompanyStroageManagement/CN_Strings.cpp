@@ -31,3 +31,5 @@ const QString READ_FAIL_MSG_CN = "读取失败！";
 const QString Are_You_Sure_to_Exit_CN = "你确定要退出吗?\n";
 const QString Are_You_Sure_to_Update_CN = "你确定要更改吗\n";
 const QString SAVE_SUCCESS_MSG_CN = "保存成功！";
+const QString OUT_OF_STOCK_MSG_CN = "该货没有库存了!";
+const QString MODEL_EXIST_IN_LIST_MSG_CN = "该货已经在清单中了.";

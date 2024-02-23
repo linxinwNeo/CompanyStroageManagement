@@ -13,23 +13,10 @@ class QuickSorts
 public:
     QuickSorts() {};
     // sorts vector of models by their MODELCODEs
-    void QuickSort(QVector<ModelPtr>& arr);
-    void QuickSort(QVector<ContainerPtr>& arr);
-    void QuickSort(QVector<EntryPtr>& arr);
-    void QuickSort(QVector<ListPtr>& arr);
-
-private:
-    long int partition(QVector<ModelPtr>& arr, long int start, long int end);
-    void QuickSort_(QVector<ModelPtr>& arr, long int start, long int end);
-
-    long int partition(QVector<ContainerPtr>& arr, long int start, long int end);
-    void QuickSort_(QVector<ContainerPtr>& arr, long int start, long int end);
-
-    long int partition(QVector<EntryPtr>& arr, long int start, long int end);
-    void QuickSort_(QVector<EntryPtr>& arr, long int start, long int end);
-
-    long int partition(QVector<ListPtr>& arr, long int start, long int end);
-    void QuickSort_(QVector<ListPtr>& arr, long int start, long int end);
+    static void QuickSort(QVector<ModelPtr>& arr);
+    static void QuickSort(QVector<ContainerPtr>& arr);
+    static void QuickSort(QVector<EntryPtr>& arr);
+    static void QuickSort(QVector<ListPtr>& arr);
 };
 
 #endif // QUICKSORT_H

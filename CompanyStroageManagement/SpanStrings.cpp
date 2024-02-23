@@ -33,3 +33,5 @@ const QString READ_FAIL_MSG_SPAN = "¡Lea falló!";
 const QString Are_You_Sure_to_Exit_SPAN = "¿Seguro que quieres dejarlo?\n";
 const QString Are_You_Sure_to_Update_SPAN = "¿Estás seguro del cambio?\n";
 const QString SAVE_SUCCESS_MSG_SPAN = "¡Guardado con éxito!";
+const QString OUT_OF_STOCK_MSG_SPAN = "Este artículo está agotado.";
+const QString MODEL_EXIST_IN_LIST_MSG_SPAN = "Ya está en la lista.";

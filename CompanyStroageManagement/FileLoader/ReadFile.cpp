@@ -259,12 +259,14 @@ bool ReadFile::read_settings_file() const
 
     QTextStream in(&file);
 
-    QString line = in.readLine();
-    language_option = line.toUInt();
-    if(language_option > 1){
-        language_option = 0;
+    while(!in.atEnd()){
+        // read language option
+        QString line = in.readLine();
+        language_option = line.toUInt();
+        if(language_option > 1){
+            language_option = 0;
+        }
     }
-
     file.close();
     return true;
 }
