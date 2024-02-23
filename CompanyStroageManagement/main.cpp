@@ -3,18 +3,14 @@
 #include <QApplication>
 #include "GlobalVars.h"
 
+void readfile();
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     a.setWindowIcon(QIcon(":/resources/icon.icns"));
 
-    // read settings file
-    ReadFile rf;
-    rf.read_settings_file();
-    // read inventory.txt file
-    rf.read_Inventory_xlsx_File(Inventory_FNAME_xlsx);
-    // read lists.txt file
-    rf.read_Lists_txt_File(Lists_FNAME); // build the lists
+    readfile();
 
     MainWindow w;
     // setting up the window
@@ -23,6 +19,18 @@ int main(int argc, char *argv[])
     w.showMaximized();
 
     return a.exec();
+}
+
+
+void readfile()
+{
+    // read settings file
+    ReadFile rf;
+    rf.read_settings_file();
+    // read inventory.txt file
+    rf.read_Inventory_xlsx_File(Inventory_FNAME_xlsx);
+    // read lists.txt file
+    rf.read_Lists_txt_File(Lists_FNAME); // build the lists
 }
 
 

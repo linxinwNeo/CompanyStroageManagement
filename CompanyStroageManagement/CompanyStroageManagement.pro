@@ -65,7 +65,7 @@ FORMS += \
     mainwindow.ui
 
 
- RC_FILE = exe_icon.rc
+RC_FILE = exe_icon.rc
 
 
 
