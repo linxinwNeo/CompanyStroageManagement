@@ -1,10 +1,10 @@
 # CompanyStroageManagement/公司库存管理软件
 # Description
-在Qt上运行。
-使用Python进行文件预处理，保存在inventory.txt文件中。
-程序可读取库存并且允许用户做以下的事：
-1. 输出清单PDF文件并且自动从库存中加减。
-2. 可输出预清单并不从库存中减去
-3. 允许库存搜索，使用货号作为关键字。
-4. 
-目前不联网
+在Qt上运行, 目前Windows only。
+
+Settings.txt 保存用户的设置：
+1. 语言选项
+2. 最后一次打开的库存文件路径，.xlsx 或者 .txt
+3. more later
+
+BackUpDate.txt 保存上一次备份的时间， 超过一定时间就会在关闭应用时自动保存目前的数据到backUps文件夹中。
