@@ -76,7 +76,6 @@ void AddNewModelWindow::clear_content()
 QSharedPointer<QMessageBox> AddNewModelWindow::create_MessageBox(const QString &msg)
 {
     QSharedPointer<QMessageBox> Msgbox(new QMessageBox(this));
-    Msgbox->setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
     Msgbox->setText(msg);
     return Msgbox;
 }
@@ -89,7 +88,6 @@ void AddNewModelWindow::closeEvent(QCloseEvent *event)
     msg.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
     msg.setDefaultButton(QMessageBox::Yes);
     msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-    msg.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
 
     int resBtn = msg.exec();
     if (resBtn == QMessageBox::No) {

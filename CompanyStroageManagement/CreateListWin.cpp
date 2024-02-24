@@ -162,7 +162,6 @@ void CreateListWin::on_generatePDF_btn_clicked()
     QString filter;
     QString filePath;
     QMessageBox Msgbox;
-    Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
 
     if(cur_list_entries.num_entries() == 0) {
         Msgbox.setText(lan("清单是空的", "La lista está vacía"));
@@ -240,7 +239,6 @@ void CreateListWin::on_previewList_btn_clicked()
     QString filter;
     QString filePath;
     QMessageBox Msgbox;
-    Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
 
     if(cur_list_entries.num_entries() == 0) {
         Msgbox.setText(lan(EMPTY_LIST_CN, EMPTY_LIST_SPAN));
@@ -302,7 +300,6 @@ void CreateListWin::closeEvent (QCloseEvent *event)
     msg.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
     msg.setDefaultButton(QMessageBox::Yes);
     msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-    msg.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
 
     int resBtn = msg.exec();
     if (resBtn != QMessageBox::Yes) {
@@ -432,7 +429,7 @@ void CreateListWin::on_add_selected_model_btn_clicked()
     if(this->selected_model_in_search_table.isNull()) return;
     // we dont have this selected model anymore
     QMessageBox Msgbox;
-    Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
+
     if(this->selected_model_in_search_table->NUM_LEFT_ITEMS == 0){
         Msgbox.setText(lan(OUT_OF_STOCK_MSG_CN, OUT_OF_STOCK_MSG_SPAN));
         Msgbox.exec();

@@ -265,7 +265,6 @@ void MainWindow::closeEvent (QCloseEvent *event)
     msg.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
     msg.setDefaultButton(QMessageBox::Yes);
     msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-    msg.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
 
     int resBtn = msg.exec();
     if (resBtn == QMessageBox::Yes) {
@@ -342,7 +341,6 @@ void MainWindow::on_update_selected_model_btn_clicked()
     msg.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
     msg.setDefaultButton(QMessageBox::No);
     msg.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    msg.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
 
     int resBtn = msg.exec();
     if (resBtn == QMessageBox::No) {
@@ -397,7 +395,6 @@ void MainWindow::on_update_selected_model_btn_clicked()
 
 Finish:
     QMessageBox Msgbox(this);
-    Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
     Msgbox.setText(lan(SAVE_SUCCESS_MSG_CN, SAVE_SUCCESS_MSG_SPAN));
     Msgbox.exec();
 
@@ -571,7 +568,6 @@ void MainWindow::on_delete_model_btn_clicked()
     delete_confirmation_msg.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     delete_confirmation_msg.setDefaultButton(QMessageBox::No);
     delete_confirmation_msg.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    delete_confirmation_msg.setStyleSheet("QLabel{min-width: 400px; min-height: 50px;}");
 
     response = delete_confirmation_msg.exec();
     if (response == QMessageBox::No) goto ret;
@@ -620,7 +616,6 @@ void MainWindow::on_save2_new_file_btn_clicked()
             QMessageBox msg(this);
             msg.setText(lan("保存失败", "no salvar"));
             msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-            msg.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
             return;
         }
     }
@@ -648,7 +643,6 @@ void MainWindow::on_read_from_new_file_btn_clicked()
             QMessageBox msg(this);
             msg.setText(lan(READ_FAIL_MSG_CN, READ_FAIL_MSG_CN));
             msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-            msg.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
             return;
         }
 
@@ -666,14 +660,12 @@ void MainWindow::on_read_from_new_file_btn_clicked()
             QMessageBox msg(this);
             msg.setText(lan(READ_FAIL_MSG_CN, READ_FAIL_MSG_CN));
             msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-            msg.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
             return;
         }
 
         QMessageBox msg(this);
         msg.setText(lan(READ_SUCCESS_MSG_CN, READ_SUCCESS_MSG_SPAN));
         msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-        msg.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
     }
 }
 
@@ -728,5 +720,29 @@ void MainWindow::on_actionChinese_triggered()
     this->setLanguage();
 
     this->setEnabled(true);
+}
+
+//TODO
+void MainWindow::on_action_Save_Inventory_triggered()
+{
+
+}
+
+
+void MainWindow::on_action_Save_Lists_triggered()
+{
+
+}
+
+
+void MainWindow::on_save_lists_2_new_file_btn_clicked()
+{
+
+}
+
+
+void MainWindow::on_read_lists_from_new_file_btn_clicked()
+{
+
 }
 

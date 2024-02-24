@@ -7,7 +7,8 @@ const QString Search_List_WinTitle_CN = "搜索清单";
 
 // Error and Warning Messages
 const QString FATAL_ERROR_MSG_CN = "出现无法解决的错误，请联系制作者。";
-const QString UNABLE_OPEN_FILE_MSG_CN = "无法打开库存文件, 请在应用启动后手动选择库存文件";
+const QString UNABLE_OPEN_INVENTORY_FILE_MSG_CN = "无法打开库存文件, 请在应用启动后手动选择库存文件";
+const QString UNABLE_OPEN_LIST_FILE_MSG_CN = "无法打开清单历史文件, 请在应用启动后手动选择清单文件";
 const QString UNABLE_TO_SAVE_BACKUP_DATA_MSG_CN = "保存备份文件失败！";
 const QString SAVE_ERROR_MSG_CN = "保存失败, 关闭已经打开的文件并且再次保存可能解决该问题";
 const QString ADD_NEW_MODEL_FAIL_MSG_CN = "添加失败！";

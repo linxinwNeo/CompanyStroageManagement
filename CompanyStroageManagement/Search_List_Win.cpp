@@ -149,7 +149,6 @@ void Search_List_Win::closeEvent (QCloseEvent *event)
     msg.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
     msg.setDefaultButton(QMessageBox::Yes);
     msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-    msg.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
 
     int resBtn = msg.exec();
     if (resBtn == QMessageBox::No) {
@@ -245,17 +244,18 @@ void Search_List_Win::on_delete_list_btn_clicked()
 
     QMessageBox msg;
     msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-    msg.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
+
     // display message if nothing is selected
     if(this->selected_list.isNull()){
-        msg.setText("没有选中任何清单！");
+        msg.setText(lan("没有选中任何清单！", "No se ha comprobado ningún listado."));
         msg.exec();
         goto Finish;
     }
 
     msg.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
     msg.setDefaultButton(QMessageBox::Yes);
-    msg.setText("确定要删除单号为" + QString::number(this->selected_list->id) + "的清单吗？");
+    msg.setText(lan("确定要删除单号为", "¿Estás seguro de que quieres borrar la lista con el número de pedido") +
+                QString::number(this->selected_list->id) + lan("的清单吗？", "?"));
 
     if (msg.exec() == QMessageBox::Yes) {
         // 删除该清单
@@ -272,9 +272,8 @@ Finish:
     this->selected_list = nullptr;
 
     // save the inventory and lists
-    WriteFile wf;
-    wf.Inventory2Xlsx();
-    wf.Lists2txt(Lists_FNAME);
+    WriteFile::Inventory2Xlsx();
+    WriteFile::Lists2txt(Lists_FNAME);
 
     this->setEnabled(true);
 }
@@ -285,17 +284,17 @@ void Search_List_Win::on_put_back_list_btn_clicked()
 {
     QMessageBox msg;
     msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-    msg.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
     // display message if nothing is selected
     if(this->selected_list.isNull()){
-        msg.setText("没有选中任何清单！");
+        msg.setText(lan("没有选中任何清单！", "No se ha comprobado ningún listado."));
         msg.exec();
         goto Finish;
     }
 
     msg.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
     msg.setDefaultButton(QMessageBox::Yes);
-    msg.setText("确定要退单号为" + QString::number(this->selected_list->id) + "的清单吗？");
+    msg.setText(lan("确定要退单号为", "¿Estás seguro de que quieres devolver la lista con el número de pedido") +
+                QString::number(this->selected_list->id) + lan("的清单吗？", "?"));
 
     if (msg.exec() == QMessageBox::Yes) {
         // 将清单内的货物加回库存

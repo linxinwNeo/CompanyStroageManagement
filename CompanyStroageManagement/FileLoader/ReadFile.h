@@ -15,6 +15,9 @@ public:
     ReadFile();
     ~ReadFile();
 
+    static void read_Inventory_File_Auto();
+
+    static void read_Inventory_txt_File();
     static void read_Inventory_txt_File(const QString& path);
 
     static void read_Inventory_xlsx_File();

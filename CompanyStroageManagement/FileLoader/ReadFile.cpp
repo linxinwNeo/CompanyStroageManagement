@@ -19,6 +19,23 @@ ReadFile::~ReadFile()
 {
 }
 
+
+// based on saved path, automatically select a function to read
+void ReadFile::read_Inventory_File_Auto()
+{
+    if(last_inventory_path.endsWith(".xlsx")){
+        read_Inventory_xlsx_File(last_inventory_path);
+    }
+    else if(last_inventory_path.endsWith(".txt")){
+        read_Inventory_txt_File(last_inventory_path);
+    }
+}
+
+
+void ReadFile::read_Inventory_txt_File(){
+    read_Inventory_txt_File(last_inventory_path);
+}
+
 /* read models file, while reading models, we also build container instances */
 void ReadFile::read_Inventory_txt_File(const QString& path)
 {
@@ -27,7 +44,11 @@ void ReadFile::read_Inventory_txt_File(const QString& path)
     qDebug() << "Start Reading" << path;
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)){
-        qDebug() << "couldn't open the file" << path;
+        QMessageBox Msgbox(nullptr);
+        Msgbox.setText(lan(UNABLE_OPEN_INVENTORY_FILE_MSG_CN, UNABLE_OPEN_INVENTORY_FILE_MSG_SPAN));
+        Msgbox.exec();
+
+        qDebug() << "Couldn't open the file" << path;
         return;
     }
 
@@ -65,7 +86,7 @@ void ReadFile::read_Inventory_txt_File(const QString& path)
 
         // check if container exists
         if(containerID.startsWith("-1")){
-            m->container = nullptr; // do nothing if this model does not have
+            m->container = nullptr; // do nothing if this model does not have a container
         }
         else{
             /* this model has a container, we need to check if this container has been created already
@@ -89,12 +110,14 @@ void ReadFile::read_Inventory_txt_File(const QString& path)
     file.close();
     qDebug() << "Reading" << path << "done, it has" << inventory.num_models() << "Models, "
              << inventory.num_containers() << "Containers";
+
+    last_inventory_path = path;
 }
 
 
 void ReadFile::read_Inventory_xlsx_File()
 {
-    read_Inventory_xlsx_File(last_xlsx_path);
+    read_Inventory_xlsx_File(last_inventory_path);
 }
 
 
@@ -118,10 +141,10 @@ void ReadFile::read_Inventory_xlsx_File(const QString &path)
     }
     else {
         QMessageBox Msgbox(nullptr);
-        Msgbox.setText(lan(UNABLE_OPEN_FILE_MSG_CN, UNABLE_OPEN_FILE_MSG_SPAN));
-
-        Msgbox.setStyleSheet("QLabel{min-width: 300px; min-height: 50px;}");
+        Msgbox.setText(lan(UNABLE_OPEN_INVENTORY_FILE_MSG_CN, UNABLE_OPEN_INVENTORY_FILE_MSG_SPAN));
         Msgbox.exec();
+
+        return;
     }
 
     // read file
@@ -173,7 +196,7 @@ void ReadFile::read_Inventory_xlsx_File(const QString &path)
             inventory.num_models() << "models and" <<
             inventory.num_containers() << "containers.";
 
-    last_xlsx_path = path;
+    last_inventory_path = path;
 }
 
 
@@ -187,6 +210,10 @@ void ReadFile::read_Lists_txt_File(const QString &path)
     qDebug() << "Start Reading" << path;
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)){
+        QMessageBox Msgbox(nullptr);
+        Msgbox.setText(lan(UNABLE_OPEN_LIST_FILE_MSG_CN, UNABLE_OPEN_LIST_FILE_MSG_SPAN));
+        Msgbox.exec();
+
         qDebug() << "couldn't open the file" << path;
         return;
     }
@@ -253,6 +280,8 @@ void ReadFile::read_Lists_txt_File(const QString &path)
 
     file.close();
     qDebug() << "Reading" << path << "done, it has" << lists.num_lists() << "lists";
+
+    last_lists_path = path;
 }
 
 
@@ -261,7 +290,12 @@ bool ReadFile::read_settings_file()
 {
     QFile file(Settings_FileName);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)){
-        qDebug() << "couldn't open the file" << Settings_FileName;
+        qDebug() << "Couldn't open the file" << Settings_FileName;
+
+        QMessageBox Msgbox(nullptr);
+        Msgbox.setText(lan(UNABLE_OPEN_LIST_FILE_MSG_CN, UNABLE_OPEN_LIST_FILE_MSG_SPAN));
+        Msgbox.exec();
+
         return false;
     }
 
@@ -277,16 +311,15 @@ bool ReadFile::read_settings_file()
 
     if( in.atEnd() ){
         file.close();
-        return true;
+        return false;
     }
 
     // read last xlsx path
     line = in.readLine().trimmed();
     if(!line.isEmpty() && line.endsWith(".xlsx")){
         // save the path if it is not empty
-        last_xlsx_path = line;
+        last_inventory_path = line;
     }
-
 
     file.close();
     return true;

@@ -48,7 +48,7 @@ bool WriteFile::Inventory2Txt(const QString &path)
 
 bool WriteFile::Inventory2Xlsx()
 {
-    return Inventory2Xlsx(last_xlsx_path);
+    return Inventory2Xlsx(last_inventory_path);
 }
 
 
@@ -102,7 +102,6 @@ bool WriteFile::Inventory2Xlsx(const QString &path)
         QMessageBox Msgbox(nullptr);
         Msgbox.setText(lan(SAVE_ERROR_MSG_CN, SAVE_ERROR_MSG_SPAN));
 
-        Msgbox.setStyleSheet("QLabel{min-width: 300px; min-height: 50px;}");
         Msgbox.exec();
         return false;
     }
@@ -226,7 +225,7 @@ bool WriteFile::save_settings_file()
     out << language_option << " \n"; // output language setting
 
     // write last time opened .xlsx file path
-    out << last_xlsx_path << " \n"; // output language setting
+    out << last_inventory_path << " \n"; // output language setting
 
     file.close();
     return true;

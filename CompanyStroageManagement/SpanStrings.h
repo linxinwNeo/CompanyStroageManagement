@@ -10,7 +10,9 @@ extern const QString Search_List_WinTitle_SPAN;
 
 // Error and Warning Messages
 extern const QString FATAL_ERROR_MSG_SPAN;
-extern const QString UNABLE_OPEN_FILE_MSG_SPAN;
+extern const QString UNABLE_OPEN_INVENTORY_FILE_MSG_SPAN;
+extern const QString UNABLE_OPEN_LIST_FILE_MSG_SPAN;
+
 extern const QString UNABLE_TO_SAVE_BACKUP_DATA_MSG_SPAN;
 extern const QString SAVE_ERROR_MSG_SPAN;
 extern const QString ADD_NEW_MODEL_FAIL_MSG_SPAN;
