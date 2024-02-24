@@ -1,3 +1,6 @@
+/* 这个 list 是清单的意思。
+ * 一个清单会有多个Entry并由entryList控制
+*/
 #ifndef LIST_H
 #define LIST_H
 

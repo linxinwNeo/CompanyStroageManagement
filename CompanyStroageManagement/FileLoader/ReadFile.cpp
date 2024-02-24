@@ -20,7 +20,7 @@ ReadFile::~ReadFile()
 }
 
 /* read models file, while reading models, we also build container instances */
-void ReadFile::read_Inventory_txt_File(const QString& path) const
+void ReadFile::read_Inventory_txt_File(const QString& path)
 {
     QFile file(path);
     QTextStream in(&file);
@@ -92,8 +92,14 @@ void ReadFile::read_Inventory_txt_File(const QString& path) const
 }
 
 
+void ReadFile::read_Inventory_xlsx_File()
+{
+    read_Inventory_xlsx_File(last_xlsx_path);
+}
+
+
 // read inventory.xlsx file
-void ReadFile::read_Inventory_xlsx_File(const QString &path) const
+void ReadFile::read_Inventory_xlsx_File(const QString &path)
 {
     QXlsx::Document xlsx(path);
 
@@ -166,11 +172,13 @@ void ReadFile::read_Inventory_xlsx_File(const QString &path) const
     qDebug() << "Read file" << path << "done, it has" <<
             inventory.num_models() << "models and" <<
             inventory.num_containers() << "containers.";
+
+    last_xlsx_path = path;
 }
 
 
 // read past lists from txt file
-void ReadFile::read_Lists_txt_File(const QString &path) const
+void ReadFile::read_Lists_txt_File(const QString &path)
 {
     lists.clear();
 
@@ -249,7 +257,7 @@ void ReadFile::read_Lists_txt_File(const QString &path) const
 
 
 // save the settings to the file
-bool ReadFile::read_settings_file() const
+bool ReadFile::read_settings_file()
 {
     QFile file(Settings_FileName);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)){
@@ -259,14 +267,27 @@ bool ReadFile::read_settings_file() const
 
     QTextStream in(&file);
 
-    while(!in.atEnd()){
-        // read language option
-        QString line = in.readLine();
-        language_option = line.toUInt();
-        if(language_option > 1){
-            language_option = 0;
-        }
+
+    // read language option
+    QString line = in.readLine();
+    language_option = line.toUInt();
+    if(language_option > 1){
+        language_option = 0;
     }
+
+    if( in.atEnd() ){
+        file.close();
+        return true;
+    }
+
+    // read last xlsx path
+    line = in.readLine().trimmed();
+    if(!line.isEmpty() && line.endsWith(".xlsx")){
+        // save the path if it is not empty
+        last_xlsx_path = line;
+    }
+
+
     file.close();
     return true;
 }

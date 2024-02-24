@@ -273,7 +273,7 @@ Finish:
 
     // save the inventory and lists
     WriteFile wf;
-    wf.Inventory2Xlsx(Inventory_FNAME_xlsx);
+    wf.Inventory2Xlsx();
     wf.Lists2txt(Lists_FNAME);
 
     this->setEnabled(true);
@@ -283,8 +283,6 @@ Finish:
 // put back the list, put back all its items
 void Search_List_Win::on_put_back_list_btn_clicked()
 {
-    this->setDisabled(true);
-
     QMessageBox msg;
     msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
     msg.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
@@ -316,12 +314,9 @@ void Search_List_Win::on_put_back_list_btn_clicked()
 
 Finish:
     // save the inventory and lists
-    WriteFile wf;
-    wf.Inventory2Xlsx(Inventory_FNAME_xlsx);
-    wf.Lists2txt(Lists_FNAME);
-
+    WriteFile::Inventory2Xlsx();
+    WriteFile::Lists2txt(Lists_FNAME);
 
     this->selected_list = nullptr;
-    this->setEnabled(true);
 }
 

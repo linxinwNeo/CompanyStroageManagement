@@ -23,12 +23,30 @@ CreateListWin::CreateListWin(QWidget *parent) :
 
     this->init();
     this->setLanguage();
+
+    this->set_Window();
 }
 
 
 CreateListWin::~CreateListWin()
 {
     delete ui;
+
+    cur_list_entries.clear_memory();
+}
+
+
+void CreateListWin::set_Window()
+{
+    QScreen *screen = QApplication::screens().at(0);
+    QRect screenSize = screen->availableGeometry();
+
+    int width = static_cast<int>(screenSize.width() * widthRatio);
+    int height = static_cast<int>(screenSize.height() * heightRatio);
+
+    this->resize(width, height);
+
+    this->move(screenSize.width() / 2 - width / 2, screenSize.height() / 2 - height / 2);
 }
 
 
@@ -152,8 +170,6 @@ void CreateListWin::on_generatePDF_btn_clicked()
         return;
     }
 
-    this->setDisabled(true);
-
     const unsigned long int unused_unique_id = lists.get_unique_id();
 
     QString PDF_MSG_1 = lan(PDF_MESSAGE_1_CN, PDF_MESSAGE_1_SPAN);
@@ -213,10 +229,8 @@ void CreateListWin::on_generatePDF_btn_clicked()
 Finish:
     // save the inventory and lists
     WriteFile wf;
-    wf.Inventory2Xlsx(Inventory_FNAME_xlsx);
-    wf.Lists2txt(Lists_FNAME);
-
-    this->setEnabled(true);
+    WriteFile::Inventory2Xlsx();
+    WriteFile::Lists2txt(Lists_FNAME);
 }
 
 
@@ -229,7 +243,7 @@ void CreateListWin::on_previewList_btn_clicked()
     Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
 
     if(cur_list_entries.num_entries() == 0) {
-        Msgbox.setText(lan("清单是空的", "La lista está vacía"));
+        Msgbox.setText(lan(EMPTY_LIST_CN, EMPTY_LIST_SPAN));
         Msgbox.exec();
         return;
     }
@@ -275,7 +289,7 @@ void CreateListWin::on_previewList_btn_clicked()
     Msgbox.exec();
 
 Finish:
-    this->setEnabled(true);
+    return;
 }
 
 

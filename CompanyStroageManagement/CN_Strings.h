@@ -36,5 +36,6 @@ extern const QString Are_You_Sure_to_Update_CN;
 extern const QString SAVE_SUCCESS_MSG_CN;
 extern const QString OUT_OF_STOCK_MSG_CN;
 extern const QString MODEL_EXIST_IN_LIST_MSG_CN;
+extern const QString EMPTY_LIST_CN;
 
 #endif // CN_STRINGS_H

@@ -22,6 +22,7 @@ SOURCES += \
     DataStructures/client_info.cpp \
     DataStructures/entry.cpp \
     DataStructures/entrylist.cpp \
+    FileLoader/IO_Base.cpp \
     FileLoader/ReadFile.cpp \
     FileLoader/WriteFile.cpp \
     GlobalVars.cpp \
@@ -44,6 +45,7 @@ HEADERS += \
     DataStructures/client_info.h \
     DataStructures/entry.h \
     DataStructures/entrylist.h \
+    FileLoader/IO_Base.h \
     FileLoader/ReadFile.h \
     FileLoader/WriteFile.h \
     GlobalVars.h \

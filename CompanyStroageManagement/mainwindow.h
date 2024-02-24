@@ -5,7 +5,6 @@
 #include "CreateListWin.h"
 #include "DataStructures/Model.h"
 #include "DataStructures/Container.h"
-#include "DataStructures/client_info.h"
 #include "Search_List_Win.h"
 #include <QTableWidget>
 #include <QMainWindow>
@@ -24,6 +23,7 @@ public:
     ~MainWindow();
 
     void init();
+    void set_Window();
 
     void show_selected_model();
     void clear_selected_model();
@@ -75,6 +75,9 @@ private:
     QSharedPointer<Search_List_Win> SearchListWinPtr;
 
     bool is_time_for_backup() const;
+
+    const float widthRatio = 0.6;
+    const float heightRatio = 0.8;
 
 public:
     const unsigned int search_model_result_table_MODELCODE_idx = 0;

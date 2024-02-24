@@ -38,4 +38,6 @@ extern const QString SAVE_SUCCESS_MSG_SPAN;
 
 extern const QString OUT_OF_STOCK_MSG_SPAN;
 extern const QString MODEL_EXIST_IN_LIST_MSG_SPAN;
+
+extern const QString EMPTY_LIST_SPAN;
 #endif // SPANSTRINGS_H

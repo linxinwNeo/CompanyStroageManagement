@@ -1,7 +1,6 @@
 #include "GlobalVars.h"
 
 const QString APP_NAME = "Yi Hong Ding 库存管理软件";
-QString Inventory_FNAME_xlsx = "inventory.xlsx";
 QString Lists_FNAME = "lists.txt";
 
 const QString BackUP_DirName = "./backUps";

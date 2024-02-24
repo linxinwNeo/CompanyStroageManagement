@@ -20,6 +20,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->setLanguage();
     this->init();
+
+    this->set_Window();
 }
 
 
@@ -45,16 +47,26 @@ void MainWindow::init()
 
     // setting up tables
     auto container_table = ui->search_container_result_Table;
-//    container_table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     container_table->setStyleSheet(table_stylesheet);
 
     auto model_table = ui->search_model_result_Table;
-//    model_table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     model_table->setStyleSheet(table_stylesheet);
 
     auto selected_container_table = ui->selected_container_Table;
-//    selected_container_table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     selected_container_table->setStyleSheet(table_stylesheet);
+}
+
+void MainWindow::set_Window()
+{
+    QScreen *screen = QApplication::screens().at(0);
+    QRect screenSize = screen->availableGeometry();
+
+    int width = static_cast<int>(screenSize.width() * widthRatio);
+    int height = static_cast<int>(screenSize.height() * heightRatio);
+
+    this->resize(width, height);
+
+    this->move(screenSize.width() / 2 - width / 2, screenSize.height() / 2 - height / 2);
 }
 
 
@@ -392,9 +404,8 @@ Finish:
     this->update_GUI();
 
     // save the inventory and lists
-    WriteFile wf;
-    wf.Inventory2Xlsx(Inventory_FNAME_xlsx);
-    wf.Lists2txt(Lists_FNAME);
+    WriteFile::Inventory2Xlsx();
+    WriteFile::Lists2txt(Lists_FNAME);
 
     this->setEnabled(true);
 }
@@ -575,9 +586,8 @@ void MainWindow::on_delete_model_btn_clicked()
 
 ret:
     // save the inventory and lists
-    WriteFile wf;
-    wf.Inventory2Xlsx(Inventory_FNAME_xlsx);
-    wf.Lists2txt(Lists_FNAME);
+    WriteFile::Inventory2Xlsx();
+    WriteFile::Lists2txt(Lists_FNAME);
 
     this->setEnabled(true);
 }
@@ -590,20 +600,29 @@ void MainWindow::on_save2_new_file_btn_clicked()
     QFileDialog dialog;
     dialog.setFileMode(QFileDialog::AnyFile);
     dialog.setAcceptMode(QFileDialog::AcceptSave);
-    dialog.setNameFilter("Excel Files (*.xlsx)");
+    dialog.setNameFilter("Excel Files (*.xlsx);; Text files (*.txt)");
     dialog.setDefaultSuffix("xlsx");
-    dialog.selectFile(Inventory_FNAME_xlsx);
     QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
     dialog.setDirectory(desktopPath);
 
     // Show the dialog and wait for the user's selection
     if (dialog.exec()) {
-        QString filePath = dialog.selectedFiles().first();
+        QString filePath = dialog.selectedFiles()[0];
 
         if(filePath.trimmed().isNull()) return;
 
-        WriteFile WF;
-        WF.Inventory2Xlsx(filePath);
+        if(filePath.endsWith(".xlsx"))
+            WriteFile::Inventory2Xlsx(filePath);
+        else if(filePath.endsWith(".txt")){
+            WriteFile::Inventory2Txt(filePath);
+        }
+        else{
+            QMessageBox msg(this);
+            msg.setText(lan("保存失败", "no salvar"));
+            msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+            msg.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
+            return;
+        }
     }
 }
 
@@ -613,18 +632,17 @@ void MainWindow::on_save2_new_file_btn_clicked()
 void MainWindow::on_read_from_new_file_btn_clicked()
 {
     QFileDialog fileDialog;
-    fileDialog.setNameFilter("Excel Files (*.xlsx)");
+    fileDialog.setNameFilter("Excel Files (*.xlsx);; Text files (*.txt)");
     fileDialog.setDefaultSuffix("xlsx");
     fileDialog.setAcceptMode(QFileDialog::AcceptSave);
     QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
     fileDialog.setDirectory(desktopPath);
     fileDialog.setFileMode(QFileDialog::ExistingFile);
-    fileDialog.selectFile(Inventory_FNAME_xlsx);
 
     if (fileDialog.exec())
     {
         // Get the selected file
-        QString fileName = fileDialog.selectedFiles().first();
+        QString fileName = fileDialog.selectedFiles()[0];
 
         if(fileName.trimmed().isNull()){
             QMessageBox msg(this);
@@ -638,8 +656,19 @@ void MainWindow::on_read_from_new_file_btn_clicked()
         inventory.clear();
 
         // read the file
-        ReadFile RF;
-        RF.read_Inventory_xlsx_File(fileName);
+        if(fileName.endsWith(".xlsx")){
+            ReadFile::read_Inventory_xlsx_File(fileName);
+        }
+        else if(fileName.endsWith(".txt")){
+            ReadFile::read_Inventory_txt_File(fileName);
+        }
+        else{
+            QMessageBox msg(this);
+            msg.setText(lan(READ_FAIL_MSG_CN, READ_FAIL_MSG_CN));
+            msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+            msg.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
+            return;
+        }
 
         QMessageBox msg(this);
         msg.setText(lan(READ_SUCCESS_MSG_CN, READ_SUCCESS_MSG_SPAN));

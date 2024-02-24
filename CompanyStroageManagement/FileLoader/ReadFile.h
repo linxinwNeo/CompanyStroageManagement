@@ -5,8 +5,8 @@
 #include <QString>
 #include <QFile>
 #include <QSharedPointer>
+#include "IO_Base.h"
 
-const QString split_item = "&&";
 
 class ReadFile {
 
@@ -15,11 +15,13 @@ public:
     ReadFile();
     ~ReadFile();
 
-    void read_Inventory_txt_File(const QString& path) const;
-    void read_Inventory_xlsx_File(const QString& path) const;
+    static void read_Inventory_txt_File(const QString& path);
 
-    void read_Lists_txt_File(const QString& path) const;
-    bool read_settings_file() const;
+    static void read_Inventory_xlsx_File();
+    static void read_Inventory_xlsx_File(const QString& path);
+
+    static void read_Lists_txt_File(const QString& path);
+    static bool read_settings_file();
 };
 
 #endif //READFILE_H

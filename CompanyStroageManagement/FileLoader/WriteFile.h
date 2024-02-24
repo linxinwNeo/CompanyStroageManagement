@@ -2,24 +2,25 @@
 #define WRITEFILE_H
 
 #include <QString>
+#include "IO_Base.h"
 
-class WriteFile
-{
+class WriteFile {
 public:
-    const QString split_item = "&&";
 
-    WriteFile() {};
+    WriteFile();
     ~WriteFile() {};
 
-    bool Inventory2Txt(const QString& path) const;
-    bool Inventory2Xlsx(const QString& path) const;
+    static bool Inventory2Txt(const QString& path);
 
-    bool Lists2txt(const QString& path) const;
+    static bool Inventory2Xlsx();
+    static bool Inventory2Xlsx(const QString& path);
 
-    void update_BackUpDate() const;
-    bool save_BackUp_files() const;
+    static bool Lists2txt(const QString& path);
 
-    bool save_settings_file() const;
+    void update_BackUpDate();
+    bool save_BackUp_files();
+
+    bool save_settings_file();
 };
 
 #endif // WRITEFILE_H

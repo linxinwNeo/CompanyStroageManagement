@@ -9,7 +9,13 @@
 
 /* write models to a models.txt file
  * for each model, we need to output its properties, more specifically, output the container's ID */
-bool WriteFile::Inventory2Txt(const QString &path) const
+
+WriteFile::WriteFile()
+{
+
+}
+
+bool WriteFile::Inventory2Txt(const QString &path)
 {
     QFile file(path);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)){
@@ -40,8 +46,14 @@ bool WriteFile::Inventory2Txt(const QString &path) const
 }
 
 
+bool WriteFile::Inventory2Xlsx()
+{
+    return Inventory2Xlsx(last_xlsx_path);
+}
+
+
 /* write the models to a xlsx file */
-bool WriteFile::Inventory2Xlsx(const QString &path) const
+bool WriteFile::Inventory2Xlsx(const QString &path)
 {
     using namespace QXlsx;
 
@@ -100,7 +112,7 @@ bool WriteFile::Inventory2Xlsx(const QString &path) const
 
 
 /* write lists to a txt file */
-bool WriteFile::Lists2txt(const QString &path) const
+bool WriteFile::Lists2txt(const QString &path)
 {
     QFile file(path);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)){
@@ -133,7 +145,7 @@ bool WriteFile::Lists2txt(const QString &path) const
         // output num of models in the list
         out << list->num_model_types() << "\n"; // 11
         
-        for(EntryPtr entry : list->entryList.entries){
+        for(EntryPtr& entry : list->entryList.entries){
             out << entry->CLAVE << split_item // 0 modelCODE
                 << entry->ContainerID << split_item // 1 container ID
                 << entry->CAJA << split_item // 2 NUM_BOXES
@@ -154,7 +166,7 @@ bool WriteFile::Lists2txt(const QString &path) const
 
 
 // we update the BackUpDate
-void WriteFile::update_BackUpDate() const
+void WriteFile::update_BackUpDate()
 {
     QFile file(BackUP_FileName);
     if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
@@ -176,7 +188,7 @@ void WriteFile::update_BackUpDate() const
 
 
 // save the back up files in a folder
-bool WriteFile::save_BackUp_files() const
+bool WriteFile::save_BackUp_files()
 {
     QDateTime currentDateTime = QDateTime::currentDateTime();
     QString folderName = currentDateTime.toString(DateTimeFormat);
@@ -200,7 +212,7 @@ bool WriteFile::save_BackUp_files() const
 
 
 // save the settings to the file
-bool WriteFile::save_settings_file() const
+bool WriteFile::save_settings_file()
 {
     QFile file(Settings_FileName);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)){
@@ -210,7 +222,11 @@ bool WriteFile::save_settings_file() const
 
     QTextStream out(&file);
 
+    // write language option
     out << language_option << " \n"; // output language setting
+
+    // write last time opened .xlsx file path
+    out << last_xlsx_path << " \n"; // output language setting
 
     file.close();
     return true;

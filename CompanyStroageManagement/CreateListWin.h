@@ -1,14 +1,14 @@
 #ifndef CREATELISTWIN_H
 #define CREATELISTWIN_H
 
+#include <QTableWidget>
+#include <QMainWindow>
+#include <QVector2D>
+
 #include "Adjust_List_Item_Win.h"
 #include "DataStructures/List.h"
 #include "DataStructures/Model.h"
-#include "DataStructures/client_info.h"
-#include "DataStructures/entrylist.h"
-#include <qtablewidget.h>
-#include <QMainWindow>
-#include <QVector2D>
+
 
 class MainWindow;
 
@@ -32,6 +32,8 @@ public:
 
     CreateListWin(QWidget *parent = nullptr);
     ~CreateListWin();
+
+    void set_Window();
 
     void update_added_models_table();
 
@@ -96,6 +98,9 @@ public:
     const unsigned int added_models_table_PRIZE_idx = 6;
     const unsigned int added_models_table_TOTAL_idx = 7; // total prize
     const unsigned int added_models_table_ContainerID_idx = 8;
+
+    const float widthRatio = 0.6;
+    const float heightRatio = 0.8;
 };
 
 #endif // CREATELISTWIN_H
