@@ -1,26 +1,28 @@
 #include "model.h"
 #include "DataStructures/Container.h"
 #include "GlobalVars.h"
-#include "qdebug.h"
+#include <QDebug>
+#include <cmath>
 
 Model::Model()
 {
     this->reset();
 }
 
-Model::Model( const QString& MODEL_CODE, const QString& DESCRIPTION_SPAN, const QString& DESCRIPTION_CN,
-              const double& PRIZE, const double& NUM_INIT_BOXES, const double& NUM_SOLD_BOXES, const double& NUM_LEFT_BOXES,
-              const long int& NUM_LEFT_ITEMS, const long int& NUM_ITEMS_PER_BOX)
+
+/* constructor with parameters */
+Model::Model(const QString &MODEL_CODE, const QString &DESCRIPTION_SPAN, const QString &DESCRIPTION_CN,
+             const double &PRIZE, const unsigned long &NUM_INIT_PIECES, const unsigned long &NUM_SOLD_PIECES,
+             const unsigned long &NUM_LEFT_PIECES, const unsigned int &NUM_PIECES_PER_BOX)
 {
     this->MODEL_CODE = MODEL_CODE;
     this->DESCRIPTION_SPAN = DESCRIPTION_SPAN;
     this->DESCRIPTION_CN = DESCRIPTION_CN;
     this->PRIZE = PRIZE;
-    this->NUM_INIT_BOXES = NUM_INIT_BOXES;
-    this->NUM_SOLD_BOXES = NUM_SOLD_BOXES;
-    this->NUM_LEFT_BOXES = NUM_LEFT_BOXES;
-    this->NUM_LEFT_ITEMS = NUM_LEFT_ITEMS;
-    this->NUM_ITEMS_PER_BOX = NUM_ITEMS_PER_BOX;
+    this->NUM_INIT_PIECES = NUM_INIT_PIECES;
+    this->NUM_SOLD_PIECES = NUM_SOLD_PIECES;
+    this->NUM_LEFT_PIECES = NUM_LEFT_PIECES;
+    this->NUM_PIECES_PER_BOX = NUM_PIECES_PER_BOX;
 
     this->container = nullptr;
 }
@@ -32,67 +34,68 @@ Model::~Model()
 }
 
 
+/* set variables to the initial state */
 void Model::reset()
 {
     MODEL_CODE = "";
     DESCRIPTION_CN = "";
     DESCRIPTION_SPAN = "";
     PRIZE = 0.;
-    NUM_INIT_BOXES = 0.;
-    NUM_SOLD_BOXES = 0.;
-    NUM_LEFT_BOXES = 0.;
-    NUM_LEFT_ITEMS = 0;
-    NUM_ITEMS_PER_BOX = 0;
+    NUM_INIT_PIECES = 0;
+    NUM_SOLD_PIECES = 0;
+    NUM_LEFT_PIECES = 0;
+    NUM_PIECES_PER_BOX = 0;
 
     this->container = nullptr;
 }
 
 
-// return the prize of the corresponding items
-double Model::TOTAL_PRIZE(UI num_items) const {
-    return this->PRIZE * (double)num_items;
+// return the total prize of the corresponding items
+double Model::TOTAL_PRIZE(const long num_pieces) const {
+    return this->PRIZE * ((double)num_pieces);
 }
 
 
-double Model::TOTAL_PRIZE(double num_boxes) const
+// calculate the number of boxes
+double Model::num_boxes(const long num_pieces) const
 {
-    return this->PRIZE * num_boxes * this->NUM_ITEMS_PER_BOX;
+    double num_boxes = num_pieces / ((double)this->NUM_PIECES_PER_BOX);
+    double truncated_num = trunc(num_boxes * 100) / 100; // only get first two digits of the double
+    return truncated_num;
 }
 
 
-// deduct this many items
-void Model::sell_items(UI num_items)
+// deduct this many pieces
+// return true if sell operation is successful
+bool Model::sell(const unsigned long num_pieces_2_sell)
 {
-    double num_boxes_to_deduct = ((double)num_items) / (double)this->NUM_ITEMS_PER_BOX;
-    this->NUM_SOLD_BOXES += num_boxes_to_deduct;
-    this->NUM_LEFT_BOXES -= num_boxes_to_deduct;
-    this->NUM_LEFT_ITEMS -= num_items;
-
-    // make sure after adding back items, the number of initial boxes still makes sense
-    if(NUM_INIT_BOXES < NUM_LEFT_BOXES + NUM_SOLD_BOXES){
-        NUM_INIT_BOXES = NUM_LEFT_BOXES + NUM_SOLD_BOXES;
+    // check the num of left pieces, if not enough, return false
+    if(this->NUM_LEFT_PIECES < num_pieces_2_sell){
+        return false;
     }
+
+    // sell pieces
+    this->NUM_LEFT_PIECES -= num_pieces_2_sell;
+    this->NUM_SOLD_PIECES += num_pieces_2_sell;
+
+    return true;
 }
 
 
 // add back this many items
-void Model::addBack_items(UI num_items)
+// return false if exceeds sold number of pieces
+// return true if addBack opeartion is successful
+bool Model::addBack(const unsigned long num_pieces_2_add_back)
 {
-    double num_boxes_to_addBack = num_items / (double)this->NUM_ITEMS_PER_BOX;
-    if(NUM_SOLD_BOXES < num_boxes_to_addBack){
-        NUM_SOLD_BOXES = 0;
-    }
-    else{
-        this->NUM_SOLD_BOXES -= num_boxes_to_addBack;
+    if(this->NUM_SOLD_PIECES < num_pieces_2_add_back){
+        return false;
     }
 
-    this->NUM_LEFT_BOXES += num_boxes_to_addBack;
-    this->NUM_LEFT_ITEMS += num_items;
+    // add back pieces
+    this->NUM_LEFT_PIECES += num_pieces_2_add_back;
+    this->NUM_SOLD_PIECES -= num_pieces_2_add_back;
 
-    // make sure after adding back items, the number of initial boxes still makes sense
-    if(NUM_INIT_BOXES != NUM_LEFT_BOXES + NUM_SOLD_BOXES){
-        NUM_INIT_BOXES = NUM_LEFT_BOXES + NUM_SOLD_BOXES;
-    }
+    return true;
 }
 
 
