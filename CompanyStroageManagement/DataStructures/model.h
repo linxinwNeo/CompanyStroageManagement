@@ -12,36 +12,34 @@
 
 class Container;
 
-
 class Model
 {
-private:
-    // 尤其需要注意的是，可能有多个货物有一样的货号，但是他们必须有不同的集装箱号
-    QString MODEL_CODE;
-    QString DESCRIPTION_SPAN; // 西班牙语品名
-    QString DESCRIPTION_CN; // 中文品名
-    double PRIZE; // 每个单价
-    unsigned long NUM_INIT_PIECES; // 初始个数
-    unsigned long NUM_SOLD_PIECES; // 卖出个数
-    unsigned long NUM_LEFT_PIECES; // 剩余总个数
-    unsigned int NUM_PIECES_PER_BOX; //每箱多少个
-
 public:
     QSharedPointer<Container> container; // 从哪个集装箱运过来的
 
+    QString MODEL_CODE; // multiple models may have the same model_code but they do not have the same container
+    QString DESCRIPTION_SPAN; // 西班牙语品名
+    QString DESCRIPTION_CN; // 中文品名
+    double PRIZE; // 每件单价
+    double NUM_INIT_BOXES; // 初始箱数
+    double NUM_SOLD_BOXES; // 卖出箱数
+    double NUM_LEFT_BOXES; // 剩余总箱数
+    long int NUM_LEFT_ITEMS; // 剩余总件数
+    long int NUM_ITEMS_PER_BOX; //多少件每箱
+
     Model();
     Model(const QString& MODEL_CODE, const QString& DESCRIPTION_SPAN, const QString& DESCRIPTION_CN,
-          const double& PRIZE, const unsigned long& NUM_INIT_PIECES, const unsigned long& NUM_SOLD_PIECES,
-          const unsigned long& NUM_LEFT_PIECES, const unsigned int& NUM_PIECES_PER_BOX);
+          const double& PRIZE, const double& NUM_INIT_BOXES, const double& NUM_SOLD_BOXES, const double& NUM_LEFT_BOXES,
+          const long int& NUM_LEFT_ITEMS, const long int& NUM_ITEMS_PER_BOX);
     ~Model();
 
     void reset();
 
-    double TOTAL_PRIZE(const long num_items) const;
-    double num_boxes(const long num_items) const;
+    double TOTAL_PRIZE(UI num_items) const;
+    double TOTAL_PRIZE(double num_boxes) const;
     
-    bool sell(const unsigned long num_pieces);
-    bool addBack(const unsigned long num_pieces_2_add_back)
+    void sell_items(UI num_items);
+    void addBack_items(UI num_items);
     void addBack_boxes(double num_boxes);
     
     void searchResult_Regular(QVector<QString>& items) const;
