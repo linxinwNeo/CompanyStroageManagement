@@ -10,7 +10,9 @@ extern const QString Search_List_WinTitle_SPAN;
 
 // Error and Warning Messages
 extern const QString FATAL_ERROR_MSG_SPAN;
-extern const QString UNABLE_OPEN_FILE_MSG_SPAN;
+extern const QString UNABLE_OPEN_INVENTORY_FILE_MSG_SPAN;
+extern const QString UNABLE_OPEN_LISTS_FILE_MSG_SPAN;
+
 extern const QString UNABLE_TO_SAVE_BACKUP_DATA_MSG_SPAN;
 extern const QString SAVE_ERROR_MSG_SPAN;
 extern const QString ADD_NEW_MODEL_FAIL_MSG_SPAN;
@@ -35,4 +37,9 @@ extern const QString READ_FAIL_MSG_SPAN;
 extern const QString Are_You_Sure_to_Exit_SPAN;
 extern const QString Are_You_Sure_to_Update_SPAN;
 extern const QString SAVE_SUCCESS_MSG_SPAN;
+
+extern const QString OUT_OF_STOCK_MSG_SPAN;
+extern const QString MODEL_EXIST_IN_LIST_MSG_SPAN;
+
+extern const QString EMPTY_LIST_SPAN;
 #endif // SPANSTRINGS_H

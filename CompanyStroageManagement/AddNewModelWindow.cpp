@@ -76,7 +76,6 @@ void AddNewModelWindow::clear_content()
 QSharedPointer<QMessageBox> AddNewModelWindow::create_MessageBox(const QString &msg)
 {
     QSharedPointer<QMessageBox> Msgbox(new QMessageBox(this));
-    Msgbox->setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
     Msgbox->setText(msg);
     return Msgbox;
 }
@@ -85,11 +84,10 @@ QSharedPointer<QMessageBox> AddNewModelWindow::create_MessageBox(const QString &
 void AddNewModelWindow::closeEvent(QCloseEvent *event)
 {
     QMessageBox msg(this);
-    msg.setText(tr("你确定要退出吗?\n"));
+    msg.setText(lan("你确定要退出吗?", "¿Seguro que quieres dejarlo?"));
     msg.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
     msg.setDefaultButton(QMessageBox::Yes);
     msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-    msg.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
 
     int resBtn = msg.exec();
     if (resBtn == QMessageBox::No) {
@@ -102,7 +100,7 @@ void AddNewModelWindow::closeEvent(QCloseEvent *event)
 }
 
 
-/* 先对输入的数据进行差错，没有问题的话就创建一个新的货物
+/* 先对输入的数据进行查错，没有问题的话就创建一个新的货物
  * 可能还有一个新的集装箱 */
 void AddNewModelWindow::on_add_new_model_btn_clicked()
 {
@@ -187,7 +185,13 @@ void AddNewModelWindow::on_add_new_model_btn_clicked()
     this->clear_content();
 
     // save the inventory
-    WriteFile wf;
-    wf.Inventory2Xlsx(Inventory_FNAME_xlsx);
+    if( !WriteFile::SaveInventoryAuto(false) ) {
+        QMessageBox* msgBox = new QMessageBox();
+        msgBox->setAttribute(Qt::WA_DeleteOnClose);
+        msgBox->setIcon(QMessageBox::Warning);
+        msgBox->setText(lan(SAVE_ERROR_MSG_CN, SAVE_ERROR_MSG_SPAN));
+        msgBox->setStandardButtons(QMessageBox::Ok);
+        msgBox->exec();
+    }
 }
 

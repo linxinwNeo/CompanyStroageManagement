@@ -149,7 +149,6 @@ void Search_List_Win::closeEvent (QCloseEvent *event)
     msg.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
     msg.setDefaultButton(QMessageBox::Yes);
     msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-    msg.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
 
     int resBtn = msg.exec();
     if (resBtn == QMessageBox::No) {
@@ -241,21 +240,20 @@ Finish:
 // delete the selected list
 void Search_List_Win::on_delete_list_btn_clicked()
 {
-    this->setDisabled(true);
-
     QMessageBox msg;
     msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-    msg.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
+
     // display message if nothing is selected
     if(this->selected_list.isNull()){
-        msg.setText("没有选中任何清单！");
+        msg.setText(lan("没有选中任何清单！", "No se ha comprobado ningún listado."));
         msg.exec();
         goto Finish;
     }
 
     msg.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
     msg.setDefaultButton(QMessageBox::Yes);
-    msg.setText("确定要删除单号为" + QString::number(this->selected_list->id) + "的清单吗？");
+    msg.setText(lan("确定要删除单号为", "¿Estás seguro de que quieres borrar la lista con el número de pedido") +
+                QString::number(this->selected_list->id) + lan("的清单吗？", "?"));
 
     if (msg.exec() == QMessageBox::Yes) {
         // 删除该清单
@@ -264,7 +262,7 @@ void Search_List_Win::on_delete_list_btn_clicked()
         this->on_list_id_2be_searched_LE_textChanged(this->ui->list_id_2be_searched_LE->text());
 
         //更新 lists存储文件
-        lists.save_2_file();
+        lists.save_2_file(false);
 
         goto Finish;
     }
@@ -272,32 +270,27 @@ Finish:
     this->selected_list = nullptr;
 
     // save the inventory and lists
-    WriteFile wf;
-    wf.Inventory2Xlsx(Inventory_FNAME_xlsx);
-    wf.Lists2txt(Lists_FNAME);
-
-    this->setEnabled(true);
+    WriteFile::SaveInventoryAuto(false);
+    WriteFile::Lists2txt(false);
 }
 
 
 // put back the list, put back all its items
 void Search_List_Win::on_put_back_list_btn_clicked()
 {
-    this->setDisabled(true);
-
     QMessageBox msg;
     msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-    msg.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
     // display message if nothing is selected
     if(this->selected_list.isNull()){
-        msg.setText("没有选中任何清单！");
+        msg.setText(lan("没有选中任何清单！", "No se ha comprobado ningún listado."));
         msg.exec();
         goto Finish;
     }
 
     msg.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
     msg.setDefaultButton(QMessageBox::Yes);
-    msg.setText("确定要退单号为" + QString::number(this->selected_list->id) + "的清单吗？");
+    msg.setText(lan("确定要退单号为", "¿Estás seguro de que quieres devolver la lista con el número de pedido") +
+                QString::number(this->selected_list->id) + lan("的清单吗？", "?"));
 
     if (msg.exec() == QMessageBox::Yes) {
         // 将清单内的货物加回库存
@@ -309,19 +302,16 @@ void Search_List_Win::on_put_back_list_btn_clicked()
         this->on_list_id_2be_searched_LE_textChanged(this->ui->list_id_2be_searched_LE->text());
 
         //更新 lists存储文件
-        lists.save_2_file();
+        lists.save_2_file(false);
 
         goto Finish;
     }
 
 Finish:
     // save the inventory and lists
-    WriteFile wf;
-    wf.Inventory2Xlsx(Inventory_FNAME_xlsx);
-    wf.Lists2txt(Lists_FNAME);
-
+    WriteFile::SaveInventoryAuto(false);
+    WriteFile::Lists2txt(false);
 
     this->selected_list = nullptr;
-    this->setEnabled(true);
 }
 

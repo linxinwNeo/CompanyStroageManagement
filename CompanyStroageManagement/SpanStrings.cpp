@@ -7,7 +7,8 @@ const QString Search_List_WinTitle_SPAN = "Lista de búsqueda";
 
 // Error and Warning Messages
 const QString FATAL_ERROR_MSG_SPAN = "En caso de errores que no puedan resolverse, póngase en contacto con el productor.";
-const QString UNABLE_OPEN_FILE_MSG_SPAN = "No se puede abrir el archivo de inventario@";
+const QString UNABLE_OPEN_INVENTORY_FILE_MSG_SPAN = "El archivo de inventario no se puede abrir, por favor seleccione el archivo de inventario manualmente después de iniciar la aplicación.";
+const QString UNABLE_OPEN_LISTS_FILE_MSG_SPAN = "No se puede abrir el archivo del historial de la lista, por favor seleccione el archivo de la lista manualmente después de iniciar la aplicación.";
 const QString UNABLE_TO_SAVE_BACKUP_DATA_MSG_SPAN = "No se ha podido guardar el archivo de copia de seguridad.";
 const QString SAVE_ERROR_MSG_SPAN = "Si el guardado falla, cerrar el archivo abierto y guardarlo de nuevo puede resolver el problema.";
 const QString ADD_NEW_MODEL_FAIL_MSG_SPAN = "¡Añade fallido!";
@@ -33,3 +34,7 @@ const QString READ_FAIL_MSG_SPAN = "¡Lea falló!";
 const QString Are_You_Sure_to_Exit_SPAN = "¿Seguro que quieres dejarlo?\n";
 const QString Are_You_Sure_to_Update_SPAN = "¿Estás seguro del cambio?\n";
 const QString SAVE_SUCCESS_MSG_SPAN = "¡Guardado con éxito!";
+const QString OUT_OF_STOCK_MSG_SPAN = "Este artículo está agotado.";
+const QString MODEL_EXIST_IN_LIST_MSG_SPAN = "Ya está en la lista.";
+
+const QString EMPTY_LIST_SPAN = "La lista está vacía";

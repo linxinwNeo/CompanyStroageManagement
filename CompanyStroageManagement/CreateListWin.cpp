@@ -23,12 +23,30 @@ CreateListWin::CreateListWin(QWidget *parent) :
 
     this->init();
     this->setLanguage();
+
+    this->set_Window();
 }
 
 
 CreateListWin::~CreateListWin()
 {
     delete ui;
+
+    cur_list_entries.clear_memory();
+}
+
+
+void CreateListWin::set_Window()
+{
+    QScreen *screen = QApplication::screens().at(0);
+    QRect screenSize = screen->availableGeometry();
+
+    int width = static_cast<int>(screenSize.width() * widthRatio);
+    int height = static_cast<int>(screenSize.height() * heightRatio);
+
+    this->resize(width, height);
+
+    this->move(screenSize.width() / 2 - width / 2, screenSize.height() / 2 - height / 2);
 }
 
 
@@ -144,15 +162,12 @@ void CreateListWin::on_generatePDF_btn_clicked()
     QString filter;
     QString filePath;
     QMessageBox Msgbox;
-    Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
 
     if(cur_list_entries.num_entries() == 0) {
         Msgbox.setText(lan("清单是空的", "La lista está vacía"));
         Msgbox.exec();
         return;
     }
-
-    this->setDisabled(true);
 
     const unsigned long int unused_unique_id = lists.get_unique_id();
 
@@ -202,7 +217,7 @@ void CreateListWin::on_generatePDF_btn_clicked()
 
     // save the list to a txt file
     lists.add_list(this->list);
-    lists.save_2_file();
+    lists.save_2_file(false);
 
     cur_list_entries.clear_memory();
     this->added_models_table->clearContents();
@@ -212,11 +227,8 @@ void CreateListWin::on_generatePDF_btn_clicked()
 
 Finish:
     // save the inventory and lists
-    WriteFile wf;
-    wf.Inventory2Xlsx(Inventory_FNAME_xlsx);
-    wf.Lists2txt(Lists_FNAME);
-
-    this->setEnabled(true);
+    WriteFile::SaveInventoryAuto(false);
+    WriteFile::Lists2txt(false);
 }
 
 
@@ -226,15 +238,12 @@ void CreateListWin::on_previewList_btn_clicked()
     QString filter;
     QString filePath;
     QMessageBox Msgbox;
-    Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
 
     if(cur_list_entries.num_entries() == 0) {
-        Msgbox.setText(lan("清单是空的", "La lista está vacía"));
+        Msgbox.setText(lan(EMPTY_LIST_CN, EMPTY_LIST_SPAN));
         Msgbox.exec();
         return;
     }
-
-    this->setDisabled(true);
 
     QString PDF_MSG_1 = lan(PDF_MESSAGE_1_CN, PDF_MESSAGE_1_SPAN);
     QString PDF_MSG_2 = lan(PDF_MESSAGE_2_CN, PDF_MESSAGE_2_SPAN);
@@ -275,20 +284,17 @@ void CreateListWin::on_previewList_btn_clicked()
     Msgbox.exec();
 
 Finish:
-    this->setEnabled(true);
+    return;
 }
 
 
 void CreateListWin::closeEvent (QCloseEvent *event)
 {
-    this->setDisabled(true);
-
     QMessageBox msg;
     msg.setText(lan(Are_You_Sure_to_Exit_CN, Are_You_Sure_to_Exit_SPAN));
     msg.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
     msg.setDefaultButton(QMessageBox::Yes);
     msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-    msg.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
 
     int resBtn = msg.exec();
     if (resBtn != QMessageBox::Yes) {
@@ -298,9 +304,6 @@ void CreateListWin::closeEvent (QCloseEvent *event)
         this->parentPtr->show();
         event->accept();
     }
-
-
-    this->setEnabled(true);
 }
 
 
@@ -418,9 +421,9 @@ void CreateListWin::on_add_selected_model_btn_clicked()
     if(this->selected_model_in_search_table.isNull()) return;
     // we dont have this selected model anymore
     QMessageBox Msgbox;
-    Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
+
     if(this->selected_model_in_search_table->NUM_LEFT_ITEMS == 0){
-        Msgbox.setText("该货没有库存了");
+        Msgbox.setText(lan(OUT_OF_STOCK_MSG_CN, OUT_OF_STOCK_MSG_SPAN));
         Msgbox.exec();
         return;
     }
@@ -450,13 +453,13 @@ void CreateListWin::on_add_selected_model_btn_clicked()
 
     // check if this model has been added to <added_models_table> already
     if(cur_list_entries.has_Model(MODELCODE_2be_Added, ContainerID_2be_Added)){
-        Msgbox.setText("该货已经在清单中了");
+        Msgbox.setText(lan(MODEL_EXIST_IN_LIST_MSG_CN, MODEL_EXIST_IN_LIST_MSG_SPAN));
         Msgbox.exec();
         goto FINISH;
     }
 
     // create a new entry and add it to <cur_list_entries>
-    NUM_BOXES = model_2be_added->NUM_LEFT_BOXES;
+    NUM_BOXES = model_2be_added->NUM_LEFT_BOXES; // CAJA
     TOTAL_NUM_ITEMS = model_2be_added->NUM_LEFT_ITEMS;
     NUM_ITEMS_PER_BOX = model_2be_added->NUM_ITEMS_PER_BOX;
     MODEL_CODE = model_2be_added->MODEL_CODE;

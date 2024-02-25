@@ -1,3 +1,6 @@
+/* 这个 list 是清单的意思。
+ * 一个清单会有多个Entry并由entryList控制
+*/
 #ifndef LIST_H
 #define LIST_H
 
@@ -51,7 +54,7 @@ public:
 
     void get_list(QString id_prefix, QVector<ListPtr>& candidates, bool sorted);
 
-    void save_2_file() const;
+    bool save_2_file(const bool save_path) const;
 
     void clear();
 

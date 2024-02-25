@@ -5,7 +5,6 @@
 #include "CreateListWin.h"
 #include "DataStructures/Model.h"
 #include "DataStructures/Container.h"
-#include "DataStructures/client_info.h"
 #include "Search_List_Win.h"
 #include <QTableWidget>
 #include <QMainWindow>
@@ -24,6 +23,7 @@ public:
     ~MainWindow();
 
     void init();
+    void set_Window();
 
     void show_selected_model();
     void clear_selected_model();
@@ -57,12 +57,20 @@ private slots:
 
     void on_delete_model_btn_clicked();
 
-    void on_save2_new_file_btn_clicked();
+    void on_save_inventory_2_new_file_btn_clicked();
+    void on_read_inventory_from_new_file_btn_clicked();
 
-    void on_read_from_new_file_btn_clicked();
+    void on_save_lists_2_new_file_btn_clicked();
+    void on_read_lists_from_new_file_btn_clicked();
 
+    // Menu actions
     void on_actionSpanish_triggered();
     void on_actionChinese_triggered();
+
+    void on_action_Save_Inventory_triggered();
+    void on_action_Save_Lists_triggered();
+
+
 
 private:
     ModelPtr selected_model;
@@ -75,6 +83,9 @@ private:
     QSharedPointer<Search_List_Win> SearchListWinPtr;
 
     bool is_time_for_backup() const;
+
+    const float widthRatio = 0.6;
+    const float heightRatio = 0.8;
 
 public:
     const unsigned int search_model_result_table_MODELCODE_idx = 0;

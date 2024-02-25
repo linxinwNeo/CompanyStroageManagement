@@ -11,7 +11,8 @@ extern const QString Search_List_WinTitle_CN;
 
 // Error and Warning Messages
 extern const QString FATAL_ERROR_MSG_CN;
-extern const QString UNABLE_OPEN_FILE_MSG_CN;
+extern const QString UNABLE_OPEN_INVENTORY_FILE_MSG_CN;
+extern const QString UNABLE_OPEN_LISTS_FILE_MSG_CN;
 extern const QString UNABLE_TO_SAVE_BACKUP_DATA_MSG_CN;
 extern const QString SAVE_ERROR_MSG_CN;
 extern const QString ADD_NEW_MODEL_FAIL_MSG_CN;
@@ -34,4 +35,8 @@ extern const QString READ_FAIL_MSG_CN;
 extern const QString Are_You_Sure_to_Exit_CN;
 extern const QString Are_You_Sure_to_Update_CN;
 extern const QString SAVE_SUCCESS_MSG_CN;
+extern const QString OUT_OF_STOCK_MSG_CN;
+extern const QString MODEL_EXIST_IN_LIST_MSG_CN;
+extern const QString EMPTY_LIST_CN;
+
 #endif // CN_STRINGS_H

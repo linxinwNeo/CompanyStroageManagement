@@ -20,6 +20,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->setLanguage();
     this->init();
+
+    this->set_Window();
 }
 
 
@@ -45,16 +47,26 @@ void MainWindow::init()
 
     // setting up tables
     auto container_table = ui->search_container_result_Table;
-//    container_table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     container_table->setStyleSheet(table_stylesheet);
 
     auto model_table = ui->search_model_result_Table;
-//    model_table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     model_table->setStyleSheet(table_stylesheet);
 
     auto selected_container_table = ui->selected_container_Table;
-//    selected_container_table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     selected_container_table->setStyleSheet(table_stylesheet);
+}
+
+void MainWindow::set_Window()
+{
+    QScreen *screen = QApplication::screens().at(0);
+    QRect screenSize = screen->availableGeometry();
+
+    int width = static_cast<int>(screenSize.width() * widthRatio);
+    int height = static_cast<int>(screenSize.height() * heightRatio);
+
+    this->resize(width, height);
+
+    this->move(screenSize.width() / 2 - width / 2, screenSize.height() / 2 - height / 2);
 }
 
 
@@ -144,7 +156,6 @@ void MainWindow::setLanguage()
     };
 
     this->ui->search_container_result_Table->setHorizontalHeaderLabels(headers2);
-   //TODO
 
     this->ui->selected_container_GB->setTitle(lan("该集装箱的货物", "la mercancía en este contenedor"));
 
@@ -156,8 +167,19 @@ void MainWindow::setLanguage()
 
     this->ui->search_past_list_btn->setText(lan("查询清单", "lista de consulta"));
 
-    this->ui->save2_new_file_btn->setText(lan("将库存保存至另一个文件", "guardar el inventario en otro archivo"));
-    this->ui->read_from_new_file_btn->setText(lan("从另一个文件中读取库存", "leer el inventario desde otro archivo"));
+    this->ui->save_inventory_2_new_file_btn->setText(lan("将库存保存至另一个文件", "guardar el inventario en otro archivo"));
+    this->ui->read_inventory_from_new_file_btn->setText(lan("从另一个文件中读取库存", "leer el inventario desde otro archivo"));
+
+
+    this->ui->save_lists_2_new_file_btn->setText(lan("将清单历史文件保存至另一个文件", "Guardar el archivo del historial de listas en otro archivo"));
+    this->ui->read_lists_from_new_file_btn->setText(lan("从另一个文件中读取清单历史文件", "Lectura de un archivo de historial de listas desde otro archivo"));
+
+    // action menu
+    this->ui->FileMenu->setTitle(lan("文件", "papeles"));
+    this->ui->LanguageMenu->setTitle(lan("语言", "multilingüismo"));
+
+    this->ui->action_Save_Inventory->setText(lan("保存库存文件", "Conservación de los archivos de inventario"));
+    this->ui->action_Save_Lists->setText(lan("保存清单历史文件", "Guardar archivo de historial de listas"));
 }
 
 
@@ -253,15 +275,14 @@ void MainWindow::closeEvent (QCloseEvent *event)
     msg.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
     msg.setDefaultButton(QMessageBox::Yes);
     msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-    msg.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
 
     int resBtn = msg.exec();
     if (resBtn == QMessageBox::Yes) {
-        WriteFile wf;
-        wf.save_settings_file();
+        WriteFile::save_settings_file();
 
         if(this->is_time_for_backup()){
-            if(wf.save_BackUp_files()) wf.update_BackUpDate();
+            if( WriteFile::save_BackUp_files(false) )
+                WriteFile::update_BackUpDate();
         }
         event->accept();
     }
@@ -330,7 +351,6 @@ void MainWindow::on_update_selected_model_btn_clicked()
     msg.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
     msg.setDefaultButton(QMessageBox::No);
     msg.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    msg.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
 
     int resBtn = msg.exec();
     if (resBtn == QMessageBox::No) {
@@ -385,16 +405,14 @@ void MainWindow::on_update_selected_model_btn_clicked()
 
 Finish:
     QMessageBox Msgbox(this);
-    Msgbox.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
     Msgbox.setText(lan(SAVE_SUCCESS_MSG_CN, SAVE_SUCCESS_MSG_SPAN));
     Msgbox.exec();
 
     this->update_GUI();
 
     // save the inventory and lists
-    WriteFile wf;
-    wf.Inventory2Xlsx(Inventory_FNAME_xlsx);
-    wf.Lists2txt(Lists_FNAME);
+    WriteFile::SaveInventoryAuto(false);
+    WriteFile::Lists2txt(false);
 
     this->setEnabled(true);
 }
@@ -543,11 +561,8 @@ void MainWindow::on_search_past_list_btn_clicked()
 
 void MainWindow::on_delete_model_btn_clicked()
 {
-    this->setEnabled(false);
-
     QString prefix = lan(DELETE_MODEL_COMFIRMATION_MSG_PREFIX_CN, DELETE_MODEL_COMFIRMATION_MSG_SPAN);
     QString suffix = lan(DELETE_MODEL_COMFIRMATION_MSG_SUFFIX_CN, "?");
-    QString msg = lan(DELETE_SUCCESS_MSG_CN, DELETE_SUCCESS_MSG_SPAN);
 
     int response = QMessageBox::No;
     QMessageBox delete_confirmation_msg(this);
@@ -560,7 +575,6 @@ void MainWindow::on_delete_model_btn_clicked()
     delete_confirmation_msg.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     delete_confirmation_msg.setDefaultButton(QMessageBox::No);
     delete_confirmation_msg.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    delete_confirmation_msg.setStyleSheet("QLabel{min-width: 400px; min-height: 50px;}");
 
     response = delete_confirmation_msg.exec();
     if (response == QMessageBox::No) goto ret;
@@ -568,69 +582,66 @@ void MainWindow::on_delete_model_btn_clicked()
     // delete this model from inventory
     inventory.remove_Model(this->selected_model);
 
-    delete_success_msg.setText(DELETE_SUCCESS_MSG_CN);
+    delete_success_msg.setText(lan(DELETE_SUCCESS_MSG_CN, DELETE_SUCCESS_MSG_SPAN));
     delete_success_msg.exec();
 
     this->update_GUI();
 
 ret:
     // save the inventory and lists
-    WriteFile wf;
-    wf.Inventory2Xlsx(Inventory_FNAME_xlsx);
-    wf.Lists2txt(Lists_FNAME);
-
-    this->setEnabled(true);
+    WriteFile::SaveInventoryAuto(false);
+    WriteFile::Lists2txt(false);
 }
 
 
 // save inventory to a new file
-void MainWindow::on_save2_new_file_btn_clicked()
+void MainWindow::on_save_inventory_2_new_file_btn_clicked()
 {
     // prompt the user to select folder and enter file name
     QFileDialog dialog;
     dialog.setFileMode(QFileDialog::AnyFile);
     dialog.setAcceptMode(QFileDialog::AcceptSave);
-    dialog.setNameFilter("Excel Files (*.xlsx)");
+    dialog.setNameFilter("Excel Files (*.xlsx);; Text files (*.txt)");
     dialog.setDefaultSuffix("xlsx");
-    dialog.selectFile(Inventory_FNAME_xlsx);
     QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
     dialog.setDirectory(desktopPath);
 
     // Show the dialog and wait for the user's selection
     if (dialog.exec()) {
-        QString filePath = dialog.selectedFiles().first();
+        QString filePath = dialog.selectedFiles().at(0);
 
         if(filePath.trimmed().isNull()) return;
 
-        WriteFile WF;
-        WF.Inventory2Xlsx(filePath);
+        if( !WriteFile::SaveInventoryAuto(filePath, true) ){
+            QMessageBox msg(this);
+            msg.setText(lan("保存失败", "no salvar"));
+            msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+            return;
+        }
     }
 }
 
 
 
 // read inventory from a new file
-void MainWindow::on_read_from_new_file_btn_clicked()
+void MainWindow::on_read_inventory_from_new_file_btn_clicked()
 {
     QFileDialog fileDialog;
-    fileDialog.setNameFilter("Excel Files (*.xlsx)");
-    fileDialog.setDefaultSuffix("xlsx");
+    fileDialog.setNameFilter("Excel Files (*.xlsx);; Text files (*.txt)");
     fileDialog.setAcceptMode(QFileDialog::AcceptSave);
     QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
     fileDialog.setDirectory(desktopPath);
     fileDialog.setFileMode(QFileDialog::ExistingFile);
-    fileDialog.selectFile(Inventory_FNAME_xlsx);
 
     if (fileDialog.exec())
     {
         // Get the selected file
-        QString fileName = fileDialog.selectedFiles().first();
+        QString fileName = fileDialog.selectedFiles().at(0);
 
         if(fileName.trimmed().isNull()){
             QMessageBox msg(this);
             msg.setText(lan(READ_FAIL_MSG_CN, READ_FAIL_MSG_CN));
             msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-            msg.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
             return;
         }
 
@@ -638,13 +649,24 @@ void MainWindow::on_read_from_new_file_btn_clicked()
         inventory.clear();
 
         // read the file
-        ReadFile RF;
-        RF.read_Inventory_xlsx_File(fileName);
+        if( !ReadFile::read_Inventory_File_Auto(fileName, true) ){
+            QMessageBox* msgBox = new QMessageBox(this);
+            msgBox->setAttribute(Qt::WA_DeleteOnClose);
+            msgBox->setIcon(QMessageBox::Warning);
+            msgBox->setText(lan(READ_FAIL_MSG_CN, READ_FAIL_MSG_CN));
+            msgBox->setStandardButtons(QMessageBox::Ok);
+            msgBox->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+            msgBox->exec();
+            return;
+        }
 
-        QMessageBox msg(this);
-        msg.setText(lan(READ_SUCCESS_MSG_CN, READ_SUCCESS_MSG_SPAN));
-        msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-        msg.setStyleSheet("QLabel{min-width: 200px; min-height: 50px;}");
+        QMessageBox* msgBox = new QMessageBox(this);
+        msgBox->setAttribute(Qt::WA_DeleteOnClose);
+        msgBox->setIcon(QMessageBox::Warning);
+        msgBox->setText(lan(READ_SUCCESS_MSG_CN, READ_SUCCESS_MSG_SPAN));
+        msgBox->setStandardButtons(QMessageBox::Ok);
+        msgBox->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+        msgBox->exec();
     }
 }
 
@@ -662,7 +684,7 @@ bool MainWindow::is_time_for_backup() const
         QDateTime prev_DateTime = QDateTime::fromString(line, DateTimeFormat);
         if(prev_DateTime.isValid()){
             QDateTime curDateTime = QDateTime::currentDateTime();
-            int days = prev_DateTime.daysTo(curDateTime);
+            unsigned int days = prev_DateTime.daysTo(curDateTime);
             if(days > backup_every_n_days){
                 return true;
             }
@@ -678,26 +700,81 @@ bool MainWindow::is_time_for_backup() const
 }
 
 
-// change language to Spanish
-void MainWindow::on_actionSpanish_triggered()
+/* Save Lists file to a new path
+ */
+void MainWindow::on_save_lists_2_new_file_btn_clicked()
 {
-    this->setDisabled(true);
+    // prompt the user to select folder and enter file name
+    QFileDialog dialog;
+    dialog.setFileMode(QFileDialog::AnyFile);
+    dialog.setAcceptMode(QFileDialog::AcceptSave);
+    dialog.setNameFilter("Text files (*.txt)");
+    dialog.setDefaultSuffix("txt");
+    QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
+    dialog.setDirectory(desktopPath);
 
-    language_option = 1;
-    this->setLanguage();
+    // Show the dialog and wait for the user's selection
+    if (dialog.exec()) {
+        QString filePath = dialog.selectedFiles().at(0);
 
-    this->setEnabled(true);
+        if(filePath.trimmed().isNull()) return;
+
+        if( !WriteFile::Lists2txt(filePath, true) ){
+            QMessageBox msg(this);
+            msg.setText(lan("保存失败", "no salvar"));
+            msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+            return;
+        }
+    }
 }
 
 
-// change language to Chinese
-void MainWindow::on_actionChinese_triggered()
+/* Read Lists file from a new path
+ */
+void MainWindow::on_read_lists_from_new_file_btn_clicked()
 {
-    this->setDisabled(true);
+    QFileDialog fileDialog;
+    fileDialog.setNameFilter("Text files (*.txt)");
+    fileDialog.setAcceptMode(QFileDialog::AcceptSave);
+    fileDialog.setDefaultSuffix("txt");
+    QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
+    fileDialog.setDirectory(desktopPath);
+    fileDialog.setFileMode(QFileDialog::ExistingFile);
 
-    language_option = 0;
-    this->setLanguage();
+    if (fileDialog.exec())
+    {
+        // Get the selected file
+        QString fileName = fileDialog.selectedFiles().at(0);
 
-    this->setEnabled(true);
+        if(fileName.trimmed().isNull()){
+            QMessageBox msg(this);
+            msg.setText(lan(READ_FAIL_MSG_CN, READ_FAIL_MSG_CN));
+            msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+            return;
+        }
+
+        // clear the memory of inventory
+        lists.clear();
+
+        // read the file
+        if( !ReadFile::read_Lists_txt_File(fileName, true) ){
+            QMessageBox* msgBox = new QMessageBox(this);
+            msgBox->setAttribute(Qt::WA_DeleteOnClose);
+            msgBox->setIcon(QMessageBox::Warning);
+            msgBox->setText(lan(READ_FAIL_MSG_CN, READ_FAIL_MSG_CN));
+            msgBox->setStandardButtons(QMessageBox::Ok);
+            msgBox->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+            msgBox->exec();
+            return;
+        }
+
+        QMessageBox* msgBox = new QMessageBox(this);
+        msgBox->setAttribute(Qt::WA_DeleteOnClose);
+        msgBox->setIcon(QMessageBox::Warning);
+        msgBox->setText(lan(READ_SUCCESS_MSG_CN, READ_SUCCESS_MSG_SPAN));
+        msgBox->setStandardButtons(QMessageBox::Ok);
+        msgBox->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+        msgBox->exec();
+    }
 }
 

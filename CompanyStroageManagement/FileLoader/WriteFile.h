@@ -3,23 +3,26 @@
 
 #include <QString>
 
-class WriteFile
-{
-public:
-    const QString split_item = "&&";
 
-    WriteFile() {};
+class WriteFile {
+public:
+
+    WriteFile();
     ~WriteFile() {};
 
-    bool Inventory2Txt(const QString& path) const;
-    bool Inventory2Xlsx(const QString& path) const;
+    static bool SaveInventoryAuto(const bool save_path);
+    static bool SaveInventoryAuto(const QString& path, const bool save_path);
 
-    bool Lists2txt(const QString& path) const;
+    static bool Inventory2Txt(const QString& path, const bool save_path);
+    static bool Inventory2Xlsx(const QString& path, const bool save_path);
 
-    void update_BackUpDate() const;
-    bool save_BackUp_files() const;
+    static bool Lists2txt(const bool save_path);
+    static bool Lists2txt(const QString& path, const bool save_path);
 
-    bool save_settings_file() const;
+    static void update_BackUpDate();
+    static bool save_BackUp_files(const bool save_path);
+
+    static bool save_settings_file();
 };
 
 #endif // WRITEFILE_H

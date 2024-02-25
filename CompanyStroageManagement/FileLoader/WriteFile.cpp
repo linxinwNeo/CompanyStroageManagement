@@ -2,18 +2,55 @@
 #include "CN_Strings.h"
 #include "GlobalVars.h"
 #include "Others/output_error_file.h"
-#include "SpanStrings.h"
-#include "qdir.h"
-#include "qmessagebox.h"
 #include "header/xlsxdocument.h"
+#include <QDir>
+#include "IO_Base.h"
 
 /* write models to a models.txt file
  * for each model, we need to output its properties, more specifically, output the container's ID */
-bool WriteFile::Inventory2Txt(const QString &path) const
+
+WriteFile::WriteFile()
+{
+
+}
+
+
+/* 2/24/2024
+ * Automatically save inventory file to the path stored in last_inventory_path
+ */
+bool WriteFile::SaveInventoryAuto(const bool save_path)
+{
+    if(last_inventory_path.endsWith(".xlsx"))
+        return WriteFile::Inventory2Xlsx(last_inventory_path, save_path);
+    else if(last_inventory_path.endsWith(".txt")){
+        return WriteFile::Inventory2Txt(last_inventory_path, save_path);
+    }
+    else{
+        return false;
+    }
+}
+
+/* Automatically save inventory file to the path stored in last_inventory_path
+ * <save_path> indicates if we want to save the path to last_inventory_path
+ * We dont save path if save is not successful
+ */
+bool WriteFile::SaveInventoryAuto(const QString &path, const bool save_path)
+{
+    if(path.endsWith(".xlsx"))
+        return WriteFile::Inventory2Xlsx(path, save_path);
+    else if(path.endsWith(".txt")){
+        return WriteFile::Inventory2Txt(path, save_path);
+    }
+    else{
+        return false;
+    }
+}
+
+bool WriteFile::Inventory2Txt(const QString &path, const bool save_path)
 {
     QFile file(path);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)){
-        write_error_file("WriteFile::Models2txt: couldn't create the file: " + path);
+        write_error_file("WriteFile::Inventory2Txt: couldn't create the file: " + path);
         return false;
     }
 
@@ -36,12 +73,17 @@ bool WriteFile::Inventory2Txt(const QString &path) const
         }
     }
     file.close();
+
+    if(save_path){
+        last_inventory_path = path;
+    }
+
     return true;
 }
 
 
 /* write the models to a xlsx file */
-bool WriteFile::Inventory2Xlsx(const QString &path) const
+bool WriteFile::Inventory2Xlsx(const QString &path, const bool save_path)
 {
     using namespace QXlsx;
 
@@ -87,20 +129,23 @@ bool WriteFile::Inventory2Xlsx(const QString &path) const
     // Save the file
     const bool success = xlsx.saveAs(path);
     if(!success){
-        QMessageBox Msgbox(nullptr);
-        Msgbox.setText(lan(SAVE_ERROR_MSG_CN, SAVE_ERROR_MSG_SPAN));
-
-        Msgbox.setStyleSheet("QLabel{min-width: 300px; min-height: 50px;}");
-        Msgbox.exec();
         return false;
     }
 
+    if(save_path){
+        last_inventory_path = path;
+    }
     return true;
+}
+
+bool WriteFile::Lists2txt(const bool save_path)
+{
+    return Lists2txt(last_lists_path, save_path);
 }
 
 
 /* write lists to a txt file */
-bool WriteFile::Lists2txt(const QString &path) const
+bool WriteFile::Lists2txt(const QString &path, const bool save_path)
 {
     QFile file(path);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)){
@@ -117,8 +162,8 @@ bool WriteFile::Lists2txt(const QString &path) const
         // output list id first
         out << list->id << split_item; // 0
         // output list create data and time
-        out << list->date_created.toString("dd MMM yyyy") << split_item // 1
-            << list->time_created.toString("hh:mm:ss") << split_item; // 2
+        out << list->date_created.toString(DateFormat) << split_item // 1
+            << list->time_created.toString(TimeFormat) << split_item; // 2
 
         // output client_info
         out << list->client_info.CLIENTE << split_item // 3
@@ -133,7 +178,7 @@ bool WriteFile::Lists2txt(const QString &path) const
         // output num of models in the list
         out << list->num_model_types() << "\n"; // 11
         
-        for(EntryPtr entry : list->entryList.entries){
+        for(EntryPtr& entry : list->entryList.entries){
             out << entry->CLAVE << split_item // 0 modelCODE
                 << entry->ContainerID << split_item // 1 container ID
                 << entry->CAJA << split_item // 2 NUM_BOXES
@@ -149,12 +194,16 @@ bool WriteFile::Lists2txt(const QString &path) const
 
     file.close();
 
+    if(save_path){
+        last_inventory_path = path;
+    }
+
     return true;
 }
 
 
 // we update the BackUpDate
-void WriteFile::update_BackUpDate() const
+void WriteFile::update_BackUpDate()
 {
     QFile file(BackUP_FileName);
     if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
@@ -168,15 +217,14 @@ void WriteFile::update_BackUpDate() const
         file.close();
     }
     else{
-        // Display an error message box
-        QMessageBox::critical(nullptr, "Error",
-                              lan(UNABLE_TO_SAVE_BACKUP_DATA_MSG_CN, UNABLE_TO_SAVE_BACKUP_DATA_MSG_SPAN));
+        // write error message to
+        write_error_file(UNABLE_TO_SAVE_BACKUP_DATA_MSG_CN);
     }
 }
 
 
 // save the back up files in a folder
-bool WriteFile::save_BackUp_files() const
+bool WriteFile::save_BackUp_files(const bool save_path)
 {
     QDateTime currentDateTime = QDateTime::currentDateTime();
     QString folderName = currentDateTime.toString(DateTimeFormat);
@@ -191,16 +239,19 @@ bool WriteFile::save_BackUp_files() const
     }
 
     QString path_to_list_file = BackUP_DirName + "/" + folderName + "/lists.txt";
-    if(!this->Lists2txt(path_to_list_file)) return false;
+    if( !Lists2txt(path_to_list_file, save_path) )
+        return false;
+
     QString path_to_inventory_file = BackUP_DirName + "/" + folderName + "/inventory.xlsx";
-    if(!this->Inventory2Xlsx(path_to_inventory_file)) return false;
+    if( !SaveInventoryAuto(path_to_inventory_file, save_path) )
+        return false;
 
     return true;
 }
 
 
 // save the settings to the file
-bool WriteFile::save_settings_file() const
+bool WriteFile::save_settings_file()
 {
     QFile file(Settings_FileName);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)){
@@ -210,7 +261,14 @@ bool WriteFile::save_settings_file() const
 
     QTextStream out(&file);
 
+    // write language option
     out << language_option << " \n"; // output language setting
+
+    // write last time opened inventory file path
+    out << last_inventory_path << " \n"; // output inventory path
+
+    // write last time opened lists file path
+    out << last_lists_path << " \n"; // output lists path
 
     file.close();
     return true;

@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="search_model_tab">
        <attribute name="title">
@@ -953,10 +953,10 @@
             <number>3</number>
            </property>
            <item>
-            <widget class="QPushButton" name="save2_new_file_btn">
+            <widget class="QPushButton" name="save_inventory_2_new_file_btn">
              <property name="maximumSize">
               <size>
-               <width>400</width>
+               <width>200</width>
                <height>16777215</height>
               </size>
              </property>
@@ -987,15 +987,90 @@
             <number>3</number>
            </property>
            <item>
-            <widget class="QPushButton" name="read_from_new_file_btn">
+            <widget class="QPushButton" name="read_inventory_from_new_file_btn">
              <property name="maximumSize">
               <size>
-               <width>400</width>
+               <width>200</width>
                <height>16777215</height>
               </size>
              </property>
              <property name="text">
               <string>从另一个文件中读取库存</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="Line" name="line_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QWidget" name="widget_23" native="true">
+          <layout class="QHBoxLayout" name="horizontalLayout_20">
+           <property name="spacing">
+            <number>3</number>
+           </property>
+           <property name="leftMargin">
+            <number>3</number>
+           </property>
+           <property name="topMargin">
+            <number>3</number>
+           </property>
+           <property name="rightMargin">
+            <number>3</number>
+           </property>
+           <property name="bottomMargin">
+            <number>3</number>
+           </property>
+           <item>
+            <widget class="QPushButton" name="save_lists_2_new_file_btn">
+             <property name="maximumSize">
+              <size>
+               <width>200</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>将清单历史纪录文件保存至另一个文件</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QWidget" name="widget_24" native="true">
+          <layout class="QHBoxLayout" name="horizontalLayout_21">
+           <property name="spacing">
+            <number>3</number>
+           </property>
+           <property name="leftMargin">
+            <number>3</number>
+           </property>
+           <property name="topMargin">
+            <number>3</number>
+           </property>
+           <property name="rightMargin">
+            <number>3</number>
+           </property>
+           <property name="bottomMargin">
+            <number>3</number>
+           </property>
+           <item>
+            <widget class="QPushButton" name="read_lists_from_new_file_btn">
+             <property name="maximumSize">
+              <size>
+               <width>200</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>从另一个文件中读取清单历史</string>
              </property>
             </widget>
            </item>
@@ -1027,17 +1102,25 @@
      <x>0</x>
      <y>0</y>
      <width>1425</width>
-     <height>21</height>
+     <height>17</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuMenu">
+   <widget class="QMenu" name="LanguageMenu">
     <property name="title">
-     <string>Language</string>
+     <string>语言</string>
     </property>
     <addaction name="actionChinese"/>
     <addaction name="actionSpanish"/>
    </widget>
-   <addaction name="menuMenu"/>
+   <widget class="QMenu" name="FileMenu">
+    <property name="title">
+     <string>文件</string>
+    </property>
+    <addaction name="action_Save_Inventory"/>
+    <addaction name="action_Save_Lists"/>
+   </widget>
+   <addaction name="LanguageMenu"/>
+   <addaction name="FileMenu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionChinese">
@@ -1048,6 +1131,16 @@
   <action name="actionSpanish">
    <property name="text">
     <string>西班牙语/Español</string>
+   </property>
+  </action>
+  <action name="action_Save_Inventory">
+   <property name="text">
+    <string>保存库存</string>
+   </property>
+  </action>
+  <action name="action_Save_Lists">
+   <property name="text">
+    <string>保存清单历史</string>
    </property>
   </action>
  </widget>

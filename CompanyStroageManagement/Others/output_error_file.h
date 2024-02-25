@@ -1,6 +1,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QString>
+#include <QDateTime>
 
 inline void write_error_file(const QString message)
 {
@@ -8,7 +9,9 @@ inline void write_error_file(const QString message)
     QFile file("ErrorMessage.txt");
     file.open(QIODevice::WriteOnly | QIODevice::Append);
     QTextStream out(&file);
-    out << message;
+    QDateTime dt = dt.currentDateTime();
+
+    out << dt.toLocalTime().toString() << ": " << message;
 
     // optional, as QFile destructor will already do it:
     file.close();
