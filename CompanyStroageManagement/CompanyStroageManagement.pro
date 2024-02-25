@@ -26,6 +26,7 @@ SOURCES += \
     FileLoader/ReadFile.cpp \
     FileLoader/WriteFile.cpp \
     GlobalVars.cpp \
+    Menu/MainWindow_Actions.cpp \
     Others/create_pdf.cpp \
     Search_List_Win.cpp \
     SpanStrings.cpp \

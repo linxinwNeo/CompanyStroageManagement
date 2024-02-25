@@ -9,7 +9,6 @@
 #include "DataStructures/List.h"
 
 extern const QString APP_NAME;
-extern QString Lists_FNAME;
 
 extern const QString BackUP_DirName;
 extern const QString BackUP_FileName;

@@ -1105,22 +1105,22 @@
      <height>17</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuMenu">
+   <widget class="QMenu" name="LanguageMenu">
     <property name="title">
      <string>语言</string>
     </property>
     <addaction name="actionChinese"/>
     <addaction name="actionSpanish"/>
    </widget>
-   <widget class="QMenu" name="menu">
+   <widget class="QMenu" name="FileMenu">
     <property name="title">
      <string>文件</string>
     </property>
     <addaction name="action_Save_Inventory"/>
     <addaction name="action_Save_Lists"/>
    </widget>
-   <addaction name="menuMenu"/>
-   <addaction name="menu"/>
+   <addaction name="LanguageMenu"/>
+   <addaction name="FileMenu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionChinese">

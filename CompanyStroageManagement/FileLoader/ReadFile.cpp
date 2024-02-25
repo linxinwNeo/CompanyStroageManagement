@@ -1,14 +1,12 @@
-#include <QMessageBox>
 #include <QVector>
 #include <QTime>
 #include <QDateTime>
 #include <QFileDialog>
-#include "CN_Strings.h"
 #include "ReadFile.h"
 #include <QStandardPaths>
 #include "GlobalVars.h"
-#include "SpanStrings.h"
 #include "header/xlsxdocument.h"
+#include "IO_Base.h"
 
 ReadFile::ReadFile()
 {
@@ -21,35 +19,43 @@ ReadFile::~ReadFile()
 
 
 // based on saved path, automatically select a function to read
-void ReadFile::read_Inventory_File_Auto()
+bool ReadFile::read_Inventory_File_Auto(const bool save_path)
 {
     if(last_inventory_path.endsWith(".xlsx")){
-        read_Inventory_xlsx_File(last_inventory_path);
+        return read_Inventory_xlsx_File(last_inventory_path, save_path);
     }
     else if(last_inventory_path.endsWith(".txt")){
-        read_Inventory_txt_File(last_inventory_path);
+        return read_Inventory_txt_File(last_inventory_path, save_path);
+    }
+    else{
+        return false;
     }
 }
 
 
-void ReadFile::read_Inventory_txt_File(){
-    read_Inventory_txt_File(last_inventory_path);
+bool ReadFile::read_Inventory_File_Auto(const QString &path, const bool save_path)
+{
+    if(path.endsWith(".xlsx")){
+        return read_Inventory_xlsx_File(path, save_path);
+    }
+    else if(path.endsWith(".txt")){
+        return read_Inventory_txt_File(path, save_path);
+    }
+    else{
+        return false;
+    }
 }
 
+
 /* read models file, while reading models, we also build container instances */
-void ReadFile::read_Inventory_txt_File(const QString& path)
+bool ReadFile::read_Inventory_txt_File(const QString& path, const bool save_path)
 {
     QFile file(path);
     QTextStream in(&file);
     qDebug() << "Start Reading" << path;
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)){
-        QMessageBox Msgbox(nullptr);
-        Msgbox.setText(lan(UNABLE_OPEN_INVENTORY_FILE_MSG_CN, UNABLE_OPEN_INVENTORY_FILE_MSG_SPAN));
-        Msgbox.exec();
-
-        qDebug() << "Couldn't open the file" << path;
-        return;
+        return false;
     }
 
     QString line;
@@ -111,18 +117,14 @@ void ReadFile::read_Inventory_txt_File(const QString& path)
     qDebug() << "Reading" << path << "done, it has" << inventory.num_models() << "Models, "
              << inventory.num_containers() << "Containers";
 
-    last_inventory_path = path;
-}
+    if(save_path) last_inventory_path = path;
 
-
-void ReadFile::read_Inventory_xlsx_File()
-{
-    read_Inventory_xlsx_File(last_inventory_path);
+    return true;
 }
 
 
 // read inventory.xlsx file
-void ReadFile::read_Inventory_xlsx_File(const QString &path)
+bool ReadFile::read_Inventory_xlsx_File(const QString &path, const bool save_path)
 {
     QXlsx::Document xlsx(path);
 
@@ -140,11 +142,7 @@ void ReadFile::read_Inventory_xlsx_File(const QString &path)
         }
     }
     else {
-        QMessageBox Msgbox(nullptr);
-        Msgbox.setText(lan(UNABLE_OPEN_INVENTORY_FILE_MSG_CN, UNABLE_OPEN_INVENTORY_FILE_MSG_SPAN));
-        Msgbox.exec();
-
-        return;
+        return false;
     }
 
     // read file
@@ -196,12 +194,20 @@ void ReadFile::read_Inventory_xlsx_File(const QString &path)
             inventory.num_models() << "models and" <<
             inventory.num_containers() << "containers.";
 
-    last_inventory_path = path;
+    if(save_path) last_inventory_path = path;
+
+    return true;
+}
+
+
+bool ReadFile::read_Lists_txt_File(const bool save_path)
+{
+    return read_Lists_txt_File(last_lists_path, save_path);
 }
 
 
 // read past lists from txt file
-void ReadFile::read_Lists_txt_File(const QString &path)
+bool ReadFile::read_Lists_txt_File(const QString &path, const bool save_path)
 {
     lists.clear();
 
@@ -210,12 +216,7 @@ void ReadFile::read_Lists_txt_File(const QString &path)
     qDebug() << "Start Reading" << path;
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)){
-        QMessageBox Msgbox(nullptr);
-        Msgbox.setText(lan(UNABLE_OPEN_LIST_FILE_MSG_CN, UNABLE_OPEN_LIST_FILE_MSG_SPAN));
-        Msgbox.exec();
-
-        qDebug() << "couldn't open the file" << path;
-        return;
+        return false;
     }
 
     QString line;
@@ -223,7 +224,7 @@ void ReadFile::read_Lists_txt_File(const QString &path)
         line = in.readLine(); // read the first line, which contains the number of lists
         QStringList strList = line.split(split_item);
         unsigned int num_lists = strList[0].toUInt() + 1;
-        if(num_lists == 0) return;
+        if(num_lists == 0) return false;
         lists.lists.reserve(num_lists);
 
         line = in.readLine(); // read the second line, which contains nothing
@@ -240,8 +241,8 @@ void ReadFile::read_Lists_txt_File(const QString &path)
         new_list->id = strList[0].toULong();
 
         // read date and time for the list
-        new_list->date_created = QDate::fromString(strList[1], "dd MMM yyyy");
-        new_list->time_created = QTime::fromString(strList[2], "hh:mm:ss");
+        new_list->date_created = QDate::fromString(strList[1], DateFormat);
+        new_list->time_created = QTime::fromString(strList[2], TimeFormat);
 
         // read client_info
         new_list->client_info.CLIENTE = strList[3];
@@ -281,7 +282,10 @@ void ReadFile::read_Lists_txt_File(const QString &path)
     file.close();
     qDebug() << "Reading" << path << "done, it has" << lists.num_lists() << "lists";
 
-    last_lists_path = path;
+    if(save_path)
+        last_lists_path = path;
+
+    return true;
 }
 
 
@@ -291,10 +295,6 @@ bool ReadFile::read_settings_file()
     QFile file(Settings_FileName);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)){
         qDebug() << "Couldn't open the file" << Settings_FileName;
-
-        QMessageBox Msgbox(nullptr);
-        Msgbox.setText(lan(UNABLE_OPEN_LIST_FILE_MSG_CN, UNABLE_OPEN_LIST_FILE_MSG_SPAN));
-        Msgbox.exec();
 
         return false;
     }
@@ -316,9 +316,21 @@ bool ReadFile::read_settings_file()
 
     // read last xlsx path
     line = in.readLine().trimmed();
-    if(!line.isEmpty() && line.endsWith(".xlsx")){
+    if(!line.isEmpty() && (line.endsWith(".xlsx") || line.endsWith(".txt"))){
         // save the path if it is not empty
         last_inventory_path = line;
+    }
+
+    if( in.atEnd() ){
+        file.close();
+        return false;
+    }
+
+    // read last lists path
+    line = in.readLine().trimmed();
+    if(!line.isEmpty() && line.endsWith(".txt")){
+        // save the path if it is not empty
+        last_lists_path = line;
     }
 
     file.close();

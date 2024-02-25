@@ -240,8 +240,6 @@ Finish:
 // delete the selected list
 void Search_List_Win::on_delete_list_btn_clicked()
 {
-    this->setDisabled(true);
-
     QMessageBox msg;
     msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
 
@@ -264,7 +262,7 @@ void Search_List_Win::on_delete_list_btn_clicked()
         this->on_list_id_2be_searched_LE_textChanged(this->ui->list_id_2be_searched_LE->text());
 
         //更新 lists存储文件
-        lists.save_2_file();
+        lists.save_2_file(false);
 
         goto Finish;
     }
@@ -272,10 +270,8 @@ Finish:
     this->selected_list = nullptr;
 
     // save the inventory and lists
-    WriteFile::Inventory2Xlsx();
-    WriteFile::Lists2txt(Lists_FNAME);
-
-    this->setEnabled(true);
+    WriteFile::SaveInventoryAuto(false);
+    WriteFile::Lists2txt(false);
 }
 
 
@@ -306,15 +302,15 @@ void Search_List_Win::on_put_back_list_btn_clicked()
         this->on_list_id_2be_searched_LE_textChanged(this->ui->list_id_2be_searched_LE->text());
 
         //更新 lists存储文件
-        lists.save_2_file();
+        lists.save_2_file(false);
 
         goto Finish;
     }
 
 Finish:
     // save the inventory and lists
-    WriteFile::Inventory2Xlsx();
-    WriteFile::Lists2txt(Lists_FNAME);
+    WriteFile::SaveInventoryAuto(false);
+    WriteFile::Lists2txt(false);
 
     this->selected_list = nullptr;
 }

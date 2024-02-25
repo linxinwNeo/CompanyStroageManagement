@@ -176,9 +176,9 @@ void Lists::get_list(QString id_prefix, QVector<ListPtr>& candidates, bool sorte
 
 
 // write the list information in a file
-void Lists::save_2_file() const
+bool Lists::save_2_file(const bool save_path) const
 {
-    WriteFile::Lists2txt(Lists_FNAME);
+    return WriteFile::Lists2txt(save_path);
 }
 
 

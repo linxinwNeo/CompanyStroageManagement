@@ -57,20 +57,20 @@ private slots:
 
     void on_delete_model_btn_clicked();
 
-    void on_save2_new_file_btn_clicked();
+    void on_save_inventory_2_new_file_btn_clicked();
+    void on_read_inventory_from_new_file_btn_clicked();
 
-    void on_read_from_new_file_btn_clicked();
+    void on_save_lists_2_new_file_btn_clicked();
+    void on_read_lists_from_new_file_btn_clicked();
 
+    // Menu actions
     void on_actionSpanish_triggered();
     void on_actionChinese_triggered();
 
     void on_action_Save_Inventory_triggered();
-
     void on_action_Save_Lists_triggered();
 
-    void on_save_lists_2_new_file_btn_clicked();
 
-    void on_read_lists_from_new_file_btn_clicked();
 
 private:
     ModelPtr selected_model;

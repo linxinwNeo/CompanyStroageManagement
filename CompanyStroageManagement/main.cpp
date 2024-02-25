@@ -2,6 +2,9 @@
 #include "mainwindow.h"
 #include <QApplication>
 #include "GlobalVars.h"
+#include <QMessageBox>
+#include "CN_Strings.h"
+#include "SpanStrings.h"
 
 void readfile();
 
@@ -25,16 +28,28 @@ int main(int argc, char *argv[])
 
 void readfile()
 {
-    // read settings file
-    ReadFile rf;
+    // try to read settings file
+    ReadFile::read_settings_file();
 
-    rf.read_settings_file();
+    // try to read inventory file
+    if( !ReadFile::read_Inventory_File_Auto(false) ) {
+        QMessageBox* msgBox = new QMessageBox;
+        msgBox->setAttribute(Qt::WA_DeleteOnClose);
+        msgBox->setIcon(QMessageBox::Warning);
+        msgBox->setText(lan(UNABLE_OPEN_INVENTORY_FILE_MSG_CN, UNABLE_OPEN_INVENTORY_FILE_MSG_SPAN));
+        msgBox->setStandardButtons(QMessageBox::Ok);
+        msgBox->exec();
+    }
 
-    // read inventory.xlsx file
-    rf.read_Inventory_File_Auto();
-
-    // read lists.txt file
-    rf.read_Lists_txt_File(Lists_FNAME); // build the lists
+    // try to read lists file
+    if( !ReadFile::read_Lists_txt_File(false) ){
+        QMessageBox* msgBox = new QMessageBox;
+        msgBox->setAttribute(Qt::WA_DeleteOnClose);
+        msgBox->setIcon(QMessageBox::Warning);
+        msgBox->setText(lan(UNABLE_OPEN_LISTS_FILE_MSG_CN, UNABLE_OPEN_LISTS_FILE_MSG_SPAN));
+        msgBox->setStandardButtons(QMessageBox::Ok);
+        msgBox->exec();
+    }
 }
 
 

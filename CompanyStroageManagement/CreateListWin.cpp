@@ -217,7 +217,7 @@ void CreateListWin::on_generatePDF_btn_clicked()
 
     // save the list to a txt file
     lists.add_list(this->list);
-    lists.save_2_file();
+    lists.save_2_file(false);
 
     cur_list_entries.clear_memory();
     this->added_models_table->clearContents();
@@ -227,9 +227,8 @@ void CreateListWin::on_generatePDF_btn_clicked()
 
 Finish:
     // save the inventory and lists
-    WriteFile wf;
-    WriteFile::Inventory2Xlsx();
-    WriteFile::Lists2txt(Lists_FNAME);
+    WriteFile::SaveInventoryAuto(false);
+    WriteFile::Lists2txt(false);
 }
 
 
@@ -245,8 +244,6 @@ void CreateListWin::on_previewList_btn_clicked()
         Msgbox.exec();
         return;
     }
-
-    this->setDisabled(true);
 
     QString PDF_MSG_1 = lan(PDF_MESSAGE_1_CN, PDF_MESSAGE_1_SPAN);
     QString PDF_MSG_2 = lan(PDF_MESSAGE_2_CN, PDF_MESSAGE_2_SPAN);
@@ -293,8 +290,6 @@ Finish:
 
 void CreateListWin::closeEvent (QCloseEvent *event)
 {
-    this->setDisabled(true);
-
     QMessageBox msg;
     msg.setText(lan(Are_You_Sure_to_Exit_CN, Are_You_Sure_to_Exit_SPAN));
     msg.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
@@ -309,9 +304,6 @@ void CreateListWin::closeEvent (QCloseEvent *event)
         this->parentPtr->show();
         event->accept();
     }
-
-
-    this->setEnabled(true);
 }
 
 

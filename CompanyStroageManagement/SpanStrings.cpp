@@ -8,7 +8,7 @@ const QString Search_List_WinTitle_SPAN = "Lista de búsqueda";
 // Error and Warning Messages
 const QString FATAL_ERROR_MSG_SPAN = "En caso de errores que no puedan resolverse, póngase en contacto con el productor.";
 const QString UNABLE_OPEN_INVENTORY_FILE_MSG_SPAN = "El archivo de inventario no se puede abrir, por favor seleccione el archivo de inventario manualmente después de iniciar la aplicación.";
-const QString UNABLE_OPEN_LIST_FILE_MSG_SPAN = "No se puede abrir el archivo del historial de la lista, por favor seleccione el archivo de la lista manualmente después de iniciar la aplicación.";
+const QString UNABLE_OPEN_LISTS_FILE_MSG_SPAN = "No se puede abrir el archivo del historial de la lista, por favor seleccione el archivo de la lista manualmente después de iniciar la aplicación.";
 const QString UNABLE_TO_SAVE_BACKUP_DATA_MSG_SPAN = "No se ha podido guardar el archivo de copia de seguridad.";
 const QString SAVE_ERROR_MSG_SPAN = "Si el guardado falla, cerrar el archivo abierto y guardarlo de nuevo puede resolver el problema.";
 const QString ADD_NEW_MODEL_FAIL_MSG_SPAN = "¡Añade fallido!";
