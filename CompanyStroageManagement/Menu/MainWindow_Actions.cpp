@@ -23,7 +23,21 @@ void MainWindow::on_actionChinese_triggered()
  */
 void MainWindow::on_action_Save_Inventory_triggered()
 {
-    WriteFile a;
+    if(WriteFile::SaveInventoryAuto(false))
+    {
+        QMessageBox msg(this);
+        msg.setText(lan("保存成功", "Salvar con éxito"));
+        msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+        msg.exec();
+        return;
+    }
+    else{
+        QMessageBox msg(this);
+        msg.setText(lan("保存失败", "no salvar"));
+        msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+        msg.exec();
+        return;
+    }
 }
 
 
@@ -32,7 +46,21 @@ void MainWindow::on_action_Save_Inventory_triggered()
  */
 void MainWindow::on_action_Save_Lists_triggered()
 {
-
+    if( WriteFile::Lists2txt(false) )
+    {
+        QMessageBox msg(this);
+        msg.setText(lan("保存成功", "Salvar con éxito"));
+        msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+        msg.exec();
+        return;
+    }
+    else{
+        QMessageBox msg(this);
+        msg.setText(lan("保存失败", "no salvar"));
+        msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+        msg.exec();
+        return;
+    }
 }
 
 

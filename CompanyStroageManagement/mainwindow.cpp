@@ -614,10 +614,19 @@ void MainWindow::on_save_inventory_2_new_file_btn_clicked()
 
         if(filePath.trimmed().isNull()) return;
 
-        if( !WriteFile::SaveInventoryAuto(filePath, true) ){
+        if( WriteFile::SaveInventoryAuto(filePath, true) )
+        {
+            QMessageBox msg(this);
+            msg.setText(lan("保存成功", "Salvar con éxito"));
+            msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+            msg.exec();
+            return;
+        }
+        else{
             QMessageBox msg(this);
             msg.setText(lan("保存失败", "no salvar"));
             msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+            msg.exec();
             return;
         }
     }
