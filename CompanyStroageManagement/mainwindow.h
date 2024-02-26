@@ -23,7 +23,7 @@ public:
     ~MainWindow();
 
     void init();
-    void set_Window();
+    void setWindow();
 
     void show_selected_model();
     void clear_selected_model();

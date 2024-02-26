@@ -20,12 +20,12 @@ public:
     QString MODEL_CODE; // multiple models may have the same model_code but they do not have the same container
     QString DESCRIPTION_SPAN; // 西班牙语品名
     QString DESCRIPTION_CN; // 中文品名
-    double PRIZE; // 每件单价
+    double PRIZE; // 每个单价
     double NUM_INIT_BOXES; // 初始箱数
     double NUM_SOLD_BOXES; // 卖出箱数
     double NUM_LEFT_BOXES; // 剩余总箱数
-    long int NUM_LEFT_ITEMS; // 剩余总件数
-    long int NUM_ITEMS_PER_BOX; //多少件每箱
+    long int NUM_LEFT_ITEMS; // 剩余总个数
+    long int NUM_ITEMS_PER_BOX; //多少个每箱
 
     Model();
     Model(const QString& MODEL_CODE, const QString& DESCRIPTION_SPAN, const QString& DESCRIPTION_CN,

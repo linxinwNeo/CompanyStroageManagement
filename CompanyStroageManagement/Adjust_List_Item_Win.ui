@@ -52,15 +52,28 @@
           </widget>
          </item>
          <item>
+          <widget class="QDoubleSpinBox" name="NUM_BOXES_SB">
+           <property name="minimumSize">
+            <size>
+             <width>100</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="prefix">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QLineEdit" name="NUM_BOXES_LE">
            <property name="enabled">
             <bool>false</bool>
-           </property>
-           <property name="text">
-            <string>0.0</string>
-           </property>
-           <property name="readOnly">
-            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -94,12 +107,15 @@
             </size>
            </property>
            <property name="text">
-            <string>CANTIDAD/件数</string>
+            <string>CANTIDAD/个数</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QSpinBox" name="NUM_ITEMS_SB">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="minimumSize">
             <size>
              <width>100</width>
@@ -148,7 +164,7 @@
             </size>
            </property>
            <property name="text">
-            <string>Piezas por caja/每箱件数</string>
+            <string>Piezas por caja/每箱个数</string>
            </property>
           </widget>
          </item>

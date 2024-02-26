@@ -18,14 +18,14 @@ Search_List_Win::Search_List_Win(QWidget *parent) :
     this->setLanguage();
 
     searched_lists_table = ui->searched_lists_table;
-//    searched_lists_table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     searched_lists_table->setStyleSheet(table_stylesheet);
 
     list_models_table = ui->list_models_table;
-//    list_models_table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     list_models_table->setStyleSheet(table_stylesheet);
 
-    this->on_list_id_2be_searched_LE_textChanged(this->ui->list_id_2be_searched_LE->text());
+    this->on_list_id_2be_searched_LE_textChanged( this->ui->list_id_2be_searched_LE->text() );
+
+    this->setWindow();
 }
 
 
@@ -55,7 +55,7 @@ void Search_List_Win::view_selected_list()
     this->ui->DISCOUNT_LE->setText(QString::number(selected_list->client_info.DISCOUNT));
 
     // show the models of this entry
-    for(EntryPtr e : selected_list->entryList.entries){
+    for(EntryPtr& e : selected_list->entryList.entries){
         list_models_table->insertRow(list_models_table->rowCount());
 
         QVector<QString> items = e->view_values();
@@ -142,10 +142,24 @@ void Search_List_Win::setLanguage()
 }
 
 
+void Search_List_Win::setWindow()
+{
+    QScreen *screen = QApplication::screens().at(0);
+    QRect screenSize = screen->availableGeometry();
+
+    int width = static_cast<int>(screenSize.width() * widthRatio);
+    int height = static_cast<int>(screenSize.height() * heightRatio);
+
+    this->resize(width, height);
+
+    this->move(screenSize.width() / 2. - width / 2., screenSize.height() / 2. - height / 2.);
+}
+
+
 void Search_List_Win::closeEvent (QCloseEvent *event)
 {
     QMessageBox msg(this);
-    msg.setText(lan(Are_You_Sure_to_Exit_CN, Are_You_Sure_to_Exit_SPAN));
+    msg.setText(lan("你确定要返回主界面吗？", "¿Seguro que quieres volver a la pantalla principal?"));
     msg.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
     msg.setDefaultButton(QMessageBox::Yes);
     msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
@@ -261,7 +275,7 @@ void Search_List_Win::on_delete_list_btn_clicked()
         // 更新GUI
         this->on_list_id_2be_searched_LE_textChanged(this->ui->list_id_2be_searched_LE->text());
 
-        //更新 lists存储文件
+        // 更新 lists存储文件
         lists.save_2_file(false);
 
         goto Finish;

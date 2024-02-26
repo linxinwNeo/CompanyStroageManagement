@@ -17,12 +17,26 @@ Adjust_List_Item_Win::Adjust_List_Item_Win(QWidget *parent) :
 // set language according to the current language
 void Adjust_List_Item_Win::setLanguage()
 {
-    const QString none = lan("暂无", "ninguno");
+    //const QString none = lan("暂无", "ninguno");
 
     this->ui->adjust_list_item_GB->setTitle(lan("调整数量", "información de los nuevos productos"));
     this->ui->finish_btn->setText(lan("完成", "completar"));
-
 }
+
+
+void Adjust_List_Item_Win::setWindow()
+{
+    QScreen *screen = QApplication::screens().at(0);
+    QRect screenSize = screen->availableGeometry();
+
+    int width = static_cast<int>(screenSize.width() * widthRatio);
+    int height = static_cast<int>(screenSize.height() * heightRatio);
+
+    this->resize(width, height);
+
+    this->move(screenSize.width() / 2. - width / 2., screenSize.height() / 2. - height / 2.);
+}
+
 
 Adjust_List_Item_Win::~Adjust_List_Item_Win()
 {
@@ -38,18 +52,20 @@ void Adjust_List_Item_Win::set_model_and_entry(ModelPtr model, EntryPtr entry, c
 }
 
 
-void Adjust_List_Item_Win::set_GUI()
+void Adjust_List_Item_Win::set_Content()
 {
     if(this->model_2be_adjusted.isNull() || this->entry_2be_adjusted.isNull()) return;
 
-    const double NUM_BOXES = this->entry_2be_adjusted->CAJA;
+    const double CURR_NUM_BOXES = this->entry_2be_adjusted->CAJA;
 
-    this->ui->NUM_BOXES_LE->setText(QString::number(NUM_BOXES, 'f', 2));
+    this->ui->NUM_BOXES_LE->setText(QString::number(this->model_2be_adjusted->NUM_LEFT_BOXES, 'f', 2));
+    this->ui->NUM_BOXES_SB->setMaximum(this->model_2be_adjusted->NUM_LEFT_BOXES);
+    this->ui->NUM_BOXES_SB->setMinimum(0.);
+    this->ui->NUM_BOXES_SB->setValue(CURR_NUM_BOXES);
 
-    this->ui->NUM_ITEMS_SB->setMaximum(model_2be_adjusted->NUM_LEFT_ITEMS);
     this->ui->NUM_ITEMS_LE->setText(QString::number(model_2be_adjusted->NUM_LEFT_ITEMS));
+    this->ui->NUM_ITEMS_SB->setMaximum(model_2be_adjusted->NUM_LEFT_ITEMS);
     this->ui->NUM_ITEMS_SB->setValue(entry_2be_adjusted->CANTIDAD);
-
 
     this->ui->NUM_ITEMS_PER_BOX_LE->setText(QString::number(model_2be_adjusted->NUM_ITEMS_PER_BOX));
 
@@ -86,8 +102,8 @@ void Adjust_List_Item_Win::on_finish_btn_clicked()
     }
     else{
         // we only need to update three information: num of boxes, num of items, total of the entry
-        entry_2be_adjusted->CAJA = this->ui->NUM_BOXES_LE->text().toDouble();
         entry_2be_adjusted->CANTIDAD = this->ui->NUM_ITEMS_SB->value();
+        entry_2be_adjusted->CAJA = ((double)this->ui->NUM_ITEMS_SB->value()) / ((double)this->entry_2be_adjusted->CANT_POR_CAJA);
         entry_2be_adjusted->IMPORTE = this->ui->TOTAL_LE->text().toDouble();
     }
 
@@ -96,13 +112,14 @@ void Adjust_List_Item_Win::on_finish_btn_clicked()
 }
 
 
-void Adjust_List_Item_Win::on_NUM_ITEMS_SB_valueChanged(int cur_num_items)
+
+void Adjust_List_Item_Win::on_NUM_BOXES_SB_valueChanged(double num_boxes)
 {
-    double num_boxes = cur_num_items / (double) this->model_2be_adjusted->NUM_ITEMS_PER_BOX;
+    unsigned long num_items = num_boxes * this->model_2be_adjusted->NUM_ITEMS_PER_BOX;
+    // set number of pieces
+    this->ui->NUM_ITEMS_SB->setValue(num_items);
 
-    this->ui->NUM_BOXES_LE->setText(QString::number(num_boxes, 'f', 2));
-
-    const double total = cur_num_items * model_2be_adjusted->PRIZE;
+    const double total = num_items * this->model_2be_adjusted->PRIZE;
     this->ui->TOTAL_LE->setText(QString::number(total, 'f', 2));
 }
 

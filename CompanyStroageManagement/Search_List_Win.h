@@ -28,6 +28,7 @@ public:
     void reset_list_info();
 
     void setLanguage();
+    void setWindow();
 
 private:
     Ui::Search_List_Win *ui;
@@ -38,6 +39,9 @@ private:
     QTableWidget* list_models_table = nullptr;
 
     ListPtr selected_list = nullptr;
+
+    const float widthRatio = 0.6;
+    const float heightRatio = 0.8;
 
 private slots:
     void closeEvent (QCloseEvent *event);

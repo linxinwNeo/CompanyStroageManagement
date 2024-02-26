@@ -47,6 +47,8 @@ void create_pdf(QString filename, ListPtr list)
     painter.setFont(bold);
     painter.setPen(pen);
 
+    QLocale locale(QLocale::English, QLocale::UnitedStates);
+
     // CLIENTE
     painter.drawText(QPointF(width * 0.13, height * 0.172), client_info.CLIENTE);
 
@@ -77,15 +79,15 @@ void create_pdf(QString filename, ListPtr list)
         double x = width * 0.06; // reset x for each entry
 
         // CAJA
-        painter.drawText(QPointF(x, y), QString::number(entry->CAJA));
+        painter.drawText(QPointF(x, y), locale.toString((double)entry->CAJA, 'f', 2));
         x += width * 0.07;
 
         // CANTIDAD
-        painter.drawText(QPointF(x, y), QString::number(entry->CANTIDAD));
+        painter.drawText(QPointF(x, y), locale.toString(entry->CANTIDAD));
         x += width * 0.087;
 
         // CANT POR CAJA
-        painter.drawText(QPointF(x, y), QString::number(entry->CANT_POR_CAJA));
+        painter.drawText(QPointF(x, y), locale.toString(entry->CANT_POR_CAJA));
         x += width * 0.08;
 
         // CLAVE
@@ -97,11 +99,11 @@ void create_pdf(QString filename, ListPtr list)
         x += width * 0.273;
 
         // PRECIO U.
-        painter.drawText(QRect(0, y - height*0.009, x + width*0.116, y - height*0.009), QString::number((double)entry->PRECIO, 'f', 2), option);
+        painter.drawText(QRect(0, y - height*0.009, x + width*0.116, y - height*0.009), locale.toString((double)entry->PRECIO, 'f', 2), option);
         x += width * 0.129;
 
         // IMPORTE
-        painter.drawText(QRect(0, y - height*0.009, x + width*0.13, y - height*0.009), QString::number((double)entry->IMPORTE, 'f', 2), option);
+        painter.drawText(QRect(0, y - height*0.009, x + width*0.13, y - height*0.009), locale.toString((double)entry->IMPORTE, 'f', 2), option);
 
         // increment y
         y += height * 0.02;
@@ -112,19 +114,19 @@ void create_pdf(QString filename, ListPtr list)
     list->total(subtotal, total);
 
     // SUBTOTAL
-    painter.drawText(QRect(0, height * 0.815, width * 0.95, height * 0.815), QString::number(subtotal, 'f', 2), option);
+    painter.drawText(QRect(0, height * 0.815, width * 0.95, height * 0.815), locale.toString(subtotal, 'f', 2), option);
 
     // DESCUENTO
-    painter.drawText(QRect(0, height * 0.84, width * 0.95, height * 0.84), QString::number(subtotal-total, 'f', 2), option);
+    painter.drawText(QRect(0, height * 0.84, width * 0.95, height * 0.84), locale.toString(subtotal - total, 'f', 2), option);
 
     // IVA
     painter.drawText(QRect(0, height * 0.875, width * 0.95, height * 0.875), "0.00", option);
 
     // TOTAL
-    painter.drawText(QRect(0, height * 0.907, width * 0.95, height * 0.907), QString::number(total, 'f', 2), option);
+    painter.drawText(QRect(0, height * 0.907, width * 0.95, height * 0.907), locale.toString(total, 'f', 2), option);
 
     // the total number of boxes
-    painter.drawText(QPointF(width * 0.07, height * 0.91), QString::number(client_info.TOTAL_NUM_BOXES));
+    painter.drawText(QPointF(width * 0.07, height * 0.91), locale.toString(client_info.TOTAL_NUM_BOXES, 'f', 2));
 
     // the discount percent using thinner font
     painter.setFont(non_bold);

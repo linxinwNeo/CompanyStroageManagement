@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1425</width>
-    <height>710</height>
+    <width>700</width>
+    <height>500</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>4</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="search_model_tab">
        <attribute name="title">
@@ -117,7 +117,7 @@
                 </column>
                 <column>
                  <property name="text">
-                  <string>已售件数</string>
+                  <string>已售个数</string>
                  </property>
                 </column>
                 <column>
@@ -383,7 +383,7 @@
                     <item>
                      <widget class="QLabel" name="selected_model_NUM_ITEMS_PER_BOX_label">
                       <property name="text">
-                       <string>每箱件数</string>
+                       <string>每箱个数</string>
                       </property>
                       <property name="alignment">
                        <set>Qt::AlignCenter</set>
@@ -535,7 +535,7 @@
                   <widget class="QPushButton" name="delete_model_btn">
                    <property name="maximumSize">
                     <size>
-                     <width>400</width>
+                     <width>200</width>
                      <height>16777215</height>
                     </size>
                    </property>
@@ -548,7 +548,7 @@
                   <widget class="QPushButton" name="update_selected_model_btn">
                    <property name="maximumSize">
                     <size>
-                     <width>400</width>
+                     <width>200</width>
                      <height>16777215</height>
                     </size>
                    </property>
@@ -638,12 +638,12 @@
              </column>
              <column>
               <property name="text">
-               <string>货物初始数量（件）</string>
+               <string>货物初始数量（个）</string>
               </property>
              </column>
              <column>
               <property name="text">
-               <string>货物剩余数量（件）</string>
+               <string>货物剩余数量（个）</string>
               </property>
              </column>
             </widget>
@@ -696,7 +696,7 @@
              </column>
              <column>
               <property name="text">
-               <string>每箱件数</string>
+               <string>每箱个数</string>
               </property>
              </column>
              <column>
@@ -711,7 +711,7 @@
              </column>
              <column>
               <property name="text">
-               <string>已售件数</string>
+               <string>已售个数</string>
               </property>
              </column>
              <column>
@@ -721,7 +721,7 @@
              </column>
              <column>
               <property name="text">
-               <string>剩余件数</string>
+               <string>剩余个数</string>
               </property>
              </column>
              <column>
@@ -764,7 +764,7 @@
                <widget class="QPushButton" name="start_add_model_btn">
                 <property name="maximumSize">
                  <size>
-                  <width>400</width>
+                  <width>200</width>
                   <height>16777215</height>
                  </size>
                 </property>
@@ -834,7 +834,7 @@
             <widget class="QPushButton" name="new_list_btn">
              <property name="maximumSize">
               <size>
-               <width>400</width>
+               <width>200</width>
                <height>16777215</height>
               </size>
              </property>
@@ -868,7 +868,7 @@
             <widget class="QPushButton" name="search_past_list_btn">
              <property name="maximumSize">
               <size>
-               <width>400</width>
+               <width>200</width>
                <height>16777215</height>
               </size>
              </property>
@@ -1101,7 +1101,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1425</width>
+     <width>700</width>
      <height>17</height>
     </rect>
    </property>

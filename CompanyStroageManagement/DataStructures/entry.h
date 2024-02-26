@@ -15,8 +15,8 @@ public:
     QString CLAVE; // 货号
     QString ContainerID; // 集装箱号
     double CAJA; // 箱数
-    UL CANTIDAD; // 总件数
-    UL CANT_POR_CAJA; // 每箱件数
+    UL CANTIDAD; // 总个数
+    UL CANT_POR_CAJA; // 每箱个数
     QString Description_SPAN; // 品名（西语）
     QString Description_CN; // 品名（中文）
     double PRECIO; // 单价

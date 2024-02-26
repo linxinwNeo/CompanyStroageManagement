@@ -71,7 +71,7 @@ double Container::total_num_left_boxes() const
 }
 
 
-// 计算初始总件数
+// 计算初始总个数
 double Container::total_num_init_items() const
 {
     double sum = 0;
@@ -83,7 +83,7 @@ double Container::total_num_init_items() const
 }
 
 
-// 计算剩余总件数
+// 计算剩余总个数
 double Container::total_num_left_items() const
 {
     double sum = 0;
@@ -106,8 +106,8 @@ void Container::searchResult(QVector<QString> &items) const
     items.push_back(QString::number(this->total_num_init_boxes(), 'f', 2)); // 初始总箱数
     items.push_back(QString::number(this->total_num_left_boxes(), 'f', 2)); // 剩余总箱数
 
-    items.push_back(QString::number(this->total_num_init_items(), 'f', 2)); // 初始总件数
-    items.push_back(QString::number(this->total_num_left_items(), 'f', 2)); // 剩余总件数
+    items.push_back(QString::number(this->total_num_init_items(), 'f', 2)); // 初始总个数
+    items.push_back(QString::number(this->total_num_left_items(), 'f', 2)); // 剩余总个数
 }
 
 

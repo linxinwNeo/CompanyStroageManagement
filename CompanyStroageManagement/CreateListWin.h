@@ -33,13 +33,13 @@ public:
     CreateListWin(QWidget *parent = nullptr);
     ~CreateListWin();
 
-    void set_Window();
-
     void update_added_models_table();
 
     void remove_entry(const unsigned int idx);
 
     void setLanguage();
+
+    void setWindow();
 
 private slots:
     void closeEvent (QCloseEvent *event);
@@ -74,6 +74,9 @@ private:
     void clear_searched_models_table();
     void clear_added_models_table();
 
+    const float widthRatio = 0.6;
+    const float heightRatio = 0.8;
+
 public:
     // indices for searched_models_table
     const unsigned int searched_models_table_MODELCODE_idx = 0;
@@ -99,8 +102,7 @@ public:
     const unsigned int added_models_table_TOTAL_idx = 7; // total prize
     const unsigned int added_models_table_ContainerID_idx = 8;
 
-    const float widthRatio = 0.6;
-    const float heightRatio = 0.8;
+
 };
 
 #endif // CREATELISTWIN_H

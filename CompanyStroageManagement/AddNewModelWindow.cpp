@@ -15,6 +15,21 @@ AddNewModelWindow::AddNewModelWindow(QWidget *parent) :
     ui->setupUi(this);
 
     this->setLanguage();
+
+    this->setWindow();
+}
+
+void AddNewModelWindow::setWindow()
+{
+    QScreen *screen = QApplication::screens().at(0);
+    QRect screenSize = screen->availableGeometry();
+
+    int width = static_cast<int>(screenSize.width() * widthRatio);
+    int height = static_cast<int>(screenSize.height() * heightRatio);
+
+    this->resize(width, height);
+
+    this->move(screenSize.width() / 2 - width / 2, screenSize.height() / 2 - height / 2);
 }
 
 
@@ -37,7 +52,7 @@ void AddNewModelWindow::setLanguage()
     this->ui->PRIZE_label->setText(lan("单价", "precio del artículo"));
     this->ui->NUM_INIT_BOXES_label->setText(lan("初始箱数", "Número inicial de cajas"));
     this->ui->NUM_SOLD_BOXES_label->setText(lan("已售箱数", "Número de cajas vendidas"));
-    this->ui->NUM_ITEMS_PER_BOX_label->setText(lan("每箱件数", "Piezas por caja"));
+    this->ui->NUM_ITEMS_PER_BOX_label->setText(lan("每箱个数", "Piezas por caja"));
 
     this->ui->container_ID_label->setText(lan("集装箱号", "número de contenedor"));
 
@@ -84,7 +99,7 @@ QSharedPointer<QMessageBox> AddNewModelWindow::create_MessageBox(const QString &
 void AddNewModelWindow::closeEvent(QCloseEvent *event)
 {
     QMessageBox msg(this);
-    msg.setText(lan("你确定要退出吗?", "¿Seguro que quieres dejarlo?"));
+    msg.setText(lan("你确定要返回主界面吗？", "¿Seguro que quieres volver a la pantalla principal?"));
     msg.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
     msg.setDefaultButton(QMessageBox::Yes);
     msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);

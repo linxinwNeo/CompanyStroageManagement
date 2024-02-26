@@ -101,8 +101,8 @@ bool WriteFile::Inventory2Xlsx(const QString &path, const bool save_path)
     xlsx.write(row, col++, "进货箱数");
     xlsx.write(row, col++, "卖出箱数");
     xlsx.write(row, col++, "剩余箱数");
-    xlsx.write(row, col++, "剩余件数");
-    xlsx.write(row, col++, "每箱件数");
+    xlsx.write(row, col++, "剩余个数");
+    xlsx.write(row, col++, "每箱个数");
     xlsx.write(row, col++, "集装箱");
 
     row ++;

@@ -616,12 +616,12 @@
               </column>
               <column>
                <property name="text">
-                <string>CANTIDAD/件数</string>
+                <string>CANTIDAD/个数</string>
                </property>
               </column>
               <column>
                <property name="text">
-                <string>CANT POR CAJA/每箱件数</string>
+                <string>CANT POR CAJA/每箱个数</string>
                </property>
               </column>
               <column>

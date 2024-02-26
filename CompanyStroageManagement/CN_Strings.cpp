@@ -24,13 +24,13 @@ const QString duplicate_Model_ERROR_MSG_CN = "该货号已存在！";
 const QString SOLD_MORETHAN_INIT_BOXES_ERROR_MSG_CN = "出售箱数应该小于初始箱数！";
 const QString NEW_MODEL_ADD_SUCCESS_MSG_CN = "新货物已成功添加";
 const QString DELETE_MODEL_COMFIRMATION_MSG_PREFIX_CN = "你确定要删除货号为";
-const QString DELETE_MODEL_COMFIRMATION_MSG_SUFFIX_CN = "的货物吗?\n";
+const QString DELETE_MODEL_COMFIRMATION_MSG_SUFFIX_CN = "的货物吗?";
 
 const QString DELETE_SUCCESS_MSG_CN = "删除成功！";
 const QString READ_SUCCESS_MSG_CN = "读取成功！";
 const QString READ_FAIL_MSG_CN = "读取失败！";
-const QString Are_You_Sure_to_Exit_CN = "你确定要退出吗?\n";
-const QString Are_You_Sure_to_Update_CN = "你确定要更改吗\n";
+const QString Are_You_Sure_to_Exit_CN = "你确定要关闭程序吗?";
+const QString Are_You_Sure_to_Update_CN = "你确定要更改这个货物吗";
 const QString SAVE_SUCCESS_MSG_CN = "保存成功！";
 const QString OUT_OF_STOCK_MSG_CN = "该货没有库存了!";
 const QString MODEL_EXIST_IN_LIST_MSG_CN = "该货已经在清单中了.";

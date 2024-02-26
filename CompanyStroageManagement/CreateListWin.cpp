@@ -23,7 +23,7 @@ CreateListWin::CreateListWin(QWidget *parent) :
     this->init();
     this->setLanguage();
 
-    this->set_Window();
+    this->setWindow();
 }
 
 
@@ -35,7 +35,7 @@ CreateListWin::~CreateListWin()
 }
 
 
-void CreateListWin::set_Window()
+void CreateListWin::setWindow()
 {
     QScreen *screen = QApplication::screens().at(0);
     QRect screenSize = screen->availableGeometry();
@@ -127,12 +127,12 @@ void CreateListWin::setLanguage()
        lan("品名(中文)", "DESCRIPTION(Chino)"),
        lan("品名（西语）", "DESCRIPTION(Español)"),
        lan("初始箱数", "Número inicial de cajas"),
-       lan("每箱件数", "Piezas por caja"),
+       lan("每箱个数", "Piezas por caja"),
        lan("单价", "precio del artículo"),
        lan("已售箱数", "Número de cajas vendidas"),
-       lan("已售件数", "Número de piezas vendidas"),
+       lan("已售个数", "Número de piezas vendidas"),
        lan("剩余箱数", "Número de cajas restantes"),
-       lan("剩余件数", "Número de piezas restantes"),
+       lan("剩余个数", "Número de piezas restantes"),
        lan("集装箱号", "número de contenedor")
     };
 
@@ -308,7 +308,7 @@ Finish:
 void CreateListWin::closeEvent (QCloseEvent *event)
 {
     QMessageBox msg;
-    msg.setText(lan(Are_You_Sure_to_Exit_CN, Are_You_Sure_to_Exit_SPAN));
+    msg.setText(lan("你确定要返回主界面吗？", "¿Seguro que quieres volver a la pantalla principal?"));
     msg.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
     msg.setDefaultButton(QMessageBox::Yes);
     msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
@@ -560,7 +560,7 @@ void CreateListWin::on_added_models_table_cellDoubleClicked(int row, int column)
 
     adjust_list_item_win->parent_win = this;
     adjust_list_item_win->set_model_and_entry(model, entry, row);
-    adjust_list_item_win->set_GUI();
+    adjust_list_item_win->set_Content();
 
     adjust_list_item_win->show();
 }

@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
     this->setLanguage();
     this->init();
 
-    this->set_Window();
+    this->setWindow();
 }
 
 
@@ -56,7 +56,7 @@ void MainWindow::init()
     selected_container_table->setStyleSheet(table_stylesheet);
 }
 
-void MainWindow::set_Window()
+void MainWindow::setWindow()
 {
     QScreen *screen = QApplication::screens().at(0);
     QRect screenSize = screen->availableGeometry();
@@ -66,7 +66,7 @@ void MainWindow::set_Window()
 
     this->resize(width, height);
 
-    this->move(screenSize.width() / 2 - width / 2, screenSize.height() / 2 - height / 2);
+    this->move(screenSize.width() / 2. - width / 2., screenSize.height() / 2. - height / 2.);
 }
 
 
@@ -108,12 +108,12 @@ void MainWindow::setLanguage()
         lan("品名(中文)", "DESCRIPTION(Chino)"),
         lan("品名(西语)", "DESCRIPTION(Español)"),
         lan("初始箱数", "Número inicial de cajas"),
-        lan("每箱件数", "Piezas por caja"),
+        lan("每箱个数", "Piezas por caja"),
         lan("单价", "precio del artículo"),
         lan("已售箱数", "Número de cajas vendidas"),
-        lan("已售件数", "Número de piezas vendidas"),
+        lan("已售个数", "Número de piezas vendidas"),
         lan("剩余箱数", "Número de cajas restantes"),
-        lan("剩余件数", "Número de piezas restantes"),
+        lan("剩余个数", "Número de piezas restantes"),
         lan("集装箱号", "número de contenedor")
     };
     this->ui->search_model_result_Table->setHorizontalHeaderLabels(headers);
@@ -131,7 +131,7 @@ void MainWindow::setLanguage()
     this->ui->selected_model_DESCRIPTION_SPAN_LE->setPlaceholderText(none);
 
     this->ui->selected_model_NUM_INIT_BOXES_label->setText(lan("初始箱数", "Número inicial de cajas"));
-    this->ui->selected_model_NUM_ITEMS_PER_BOX_label->setText(lan("每箱件数", "Piezas por caja"));
+    this->ui->selected_model_NUM_ITEMS_PER_BOX_label->setText(lan("每箱个数", "Piezas por caja"));
 
     this->ui->selected_model_PRIZE_label->setText(lan("单价", "precio del artículo"));
     this->ui->selected_model_NUM_SOLD_BOXES_label->setText(lan("已售箱数", "Número de cajas vendidas"));
@@ -151,8 +151,8 @@ void MainWindow::setLanguage()
         lan("货物种类数量", "cantidad de tipos de mercancías"),
         lan("初始总箱数（箱）", "número total inicial de cajas (cajas)"),
         lan("货物剩余数量（箱）", "cantidad restante de mercancía (cajas)"),
-        lan("货物初始数量（件）", "cantidad inicial de mercancía (unidades)"),
-        lan("货物剩余数量（件）", "cantidad restante de mercancía (unidades)"),
+        lan("货物初始数量（个）", "cantidad inicial de mercancía (unidades)"),
+        lan("货物剩余数量（个）", "cantidad restante de mercancía (unidades)"),
     };
 
     this->ui->search_container_result_Table->setHorizontalHeaderLabels(headers2);
@@ -268,6 +268,7 @@ void MainWindow::clear_selected_container_table()
 }
 
 
+/* 退出库存管理软件 */
 void MainWindow::closeEvent (QCloseEvent *event)
 {
     QMessageBox msg(this);
@@ -513,13 +514,14 @@ void MainWindow::on_start_add_model_btn_clicked()
 {
     // init AddNewModelWindow
     QSharedPointer<AddNewModelWindow> w (new AddNewModelWindow(nullptr));
+
     this->AddNewModelWinPtr = w;
     // setting up the window
     QString title = lan(AddNewModel_WinTitle_CN, AddNewModel_WinTitle_SPAN);
-
     w->setWindowTitle(title);
-    w->show();
     w->parentPtr = this;
+    w->show();
+
 
     this->hide();
 }

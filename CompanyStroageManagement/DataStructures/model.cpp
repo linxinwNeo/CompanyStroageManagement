@@ -125,12 +125,12 @@ void Model::searchResult_Regular(QVector<QString> &items) const
     items.push_back(this->DESCRIPTION_CN); // 品名中文
     items.push_back(this->DESCRIPTION_SPAN); // 品名西语
     items.push_back(QString::number(this->NUM_INIT_BOXES, 'f', 2)); // 初始箱数
-    items.push_back(QString::number(this->NUM_ITEMS_PER_BOX)); // 每箱几件
+    items.push_back(QString::number(this->NUM_ITEMS_PER_BOX)); // 每箱几个
     items.push_back(QString::number(this->PRIZE, 'f', 2)); // 单价
     items.push_back(QString::number(this->NUM_SOLD_BOXES, 'f', 2)); // 卖出箱数
-    items.push_back(QString::number(this->NUM_SOLD_BOXES * this->NUM_ITEMS_PER_BOX)); // 卖出件数
+    items.push_back(QString::number((long)(this->NUM_SOLD_BOXES * this->NUM_ITEMS_PER_BOX))); // 卖出个数
     items.push_back(QString::number(this->NUM_LEFT_BOXES, 'f', 2)); // 剩余箱数
-    items.push_back(QString::number(this->NUM_LEFT_ITEMS)); // 剩余件数
+    items.push_back(QString::number(this->NUM_LEFT_ITEMS)); // 剩余个数
 
     if(this->container.isNull()) items.push_back(""); // 集装箱号
     else items.push_back(this->container->ID); // 集装箱号
@@ -145,8 +145,8 @@ void Model::searchResult_List(QVector<QString> &items) const
     items.reserve(9);
 
     items.push_back(QString::number(this->NUM_LEFT_BOXES, 'f', 2)); // 剩余箱数
-    items.push_back(QString::number(this->NUM_LEFT_ITEMS)); // 剩余件数
-    items.push_back(QString::number(this->NUM_ITEMS_PER_BOX)); // 每箱几件
+    items.push_back(QString::number(this->NUM_LEFT_ITEMS)); // 剩余个数
+    items.push_back(QString::number(this->NUM_ITEMS_PER_BOX)); // 每箱几个
     items.push_back(this->MODEL_CODE); // 货号
     items.push_back(this->DESCRIPTION_SPAN); // 品名西语
     items.push_back(this->DESCRIPTION_CN); // 品名中文

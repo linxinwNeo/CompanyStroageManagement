@@ -290,7 +290,7 @@
             <item>
              <widget class="QLabel" name="NUM_ITEMS_PER_BOX_label">
               <property name="text">
-               <string>每箱件数</string>
+               <string>每箱个数</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>

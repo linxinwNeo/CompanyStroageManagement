@@ -23,8 +23,12 @@ public:
 
     void clear_content();
     void setLanguage();
+    void setWindow();
 private:
     Ui::AddNewModelWindow *ui;
+
+    const float widthRatio = 0.6;
+    const float heightRatio = 0.8;
 
 private slots:
     void closeEvent (QCloseEvent *event);

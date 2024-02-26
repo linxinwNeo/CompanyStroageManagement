@@ -21,16 +21,17 @@ public:
     
     void set_model_and_entry(ModelPtr model, EntryPtr entry, const unsigned int entry_idx);
 
-    void set_GUI();
+    void set_Content();
 
     CreateListWin* parent_win = nullptr;
     void setLanguage();
+    void setWindow();
 
 private slots:
     void closeEvent (QCloseEvent *event);
     void on_finish_btn_clicked();
 
-    void on_NUM_ITEMS_SB_valueChanged(int arg1);
+    void on_NUM_BOXES_SB_valueChanged(double arg1);
 
 private:
     Ui::Adjust_List_Item_Win *ui;
@@ -38,6 +39,9 @@ private:
     ModelPtr model_2be_adjusted = nullptr;
     EntryPtr entry_2be_adjusted = nullptr;
     unsigned int entry_idx = -1;
+
+    const float widthRatio = 0.6;
+    const float heightRatio = 0.8;
 };
 
 #endif // ADJUST_LIST_ITEM_WIN_H
