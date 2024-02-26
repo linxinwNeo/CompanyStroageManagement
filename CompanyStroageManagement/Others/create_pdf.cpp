@@ -73,7 +73,7 @@ void create_pdf(QString filename, ListPtr list)
 
     double y = height * 0.31;
 
-    for(auto entry : items.entries){
+    for(auto& entry : items.entries){
         double x = width * 0.06; // reset x for each entry
 
         // CAJA

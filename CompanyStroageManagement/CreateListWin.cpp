@@ -6,7 +6,6 @@
 #include "CN_Strings.h"
 #include "CreateListWin.h"
 #include "FileLoader/WriteFile.h"
-#include "Others/get_save_filePath.h"
 #include "Others/create_PDF.h"
 #include "SpanStrings.h"
 #include "mainwindow.h"
@@ -159,9 +158,10 @@ void CreateListWin::setLanguage()
 // also clear the <added_models_table>
 void CreateListWin::on_generatePDF_btn_clicked()
 {
-    QString filter;
     QString filePath;
     QMessageBox Msgbox;
+    QFileDialog saveFileDialog;
+    QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
 
     if(cur_list_entries.num_entries() == 0) {
         Msgbox.setText(lan("清单是空的", "La lista está vacía"));
@@ -197,11 +197,17 @@ void CreateListWin::on_generatePDF_btn_clicked()
     list->time_created = QTime::currentTime();
 
     // ask for the path to store the file
-    filter = "PDF (*.pdf)";
+    saveFileDialog.setFileMode(QFileDialog::AnyFile);
+    saveFileDialog.setDirectory(desktopPath);
+    saveFileDialog.setWindowTitle(lan(WHERE_TO_SAVE_FILE_MESSAGE_CN, WHERE_TO_SAVE_FILE_MESSAGE_SPAN));
+    saveFileDialog.setDefaultSuffix("pdf");
+    saveFileDialog.setNameFilter("PDF (*.pdf)");
+    saveFileDialog.setAcceptMode(QFileDialog::AcceptSave);
 
-    filePath = get_save_filePath("list.pdf",
-                                 lan(WHERE_TO_SAVE_FILE_MESSAGE_CN, WHERE_TO_SAVE_FILE_MESSAGE_SPAN),
-                                 filter);
+    if (saveFileDialog.exec()) {
+        // Do something with the selected file
+        filePath = saveFileDialog.selectedFiles().at(0).trimmed();
+    }
 
     if(filePath.isEmpty()) goto Finish;
 
@@ -238,6 +244,8 @@ void CreateListWin::on_previewList_btn_clicked()
     QString filter;
     QString filePath;
     QMessageBox Msgbox;
+    QFileDialog saveFileDialog;
+    QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
 
     if(cur_list_entries.num_entries() == 0) {
         Msgbox.setText(lan(EMPTY_LIST_CN, EMPTY_LIST_SPAN));
@@ -268,11 +276,20 @@ void CreateListWin::on_previewList_btn_clicked()
     this->list->date_created = QDate::currentDate();
     this->list->time_created = QTime::currentTime();
 
+
     // ask for the path to store the file
-    filter = "PDF (*.pdf)";
-    filePath = get_save_filePath("list.pdf",
-                                 lan(WHERE_TO_SAVE_FILE_MESSAGE_CN, WHERE_TO_SAVE_FILE_MESSAGE_SPAN),
-                                 filter);
+    saveFileDialog.setFileMode(QFileDialog::AnyFile);
+    saveFileDialog.setDirectory(desktopPath);
+    saveFileDialog.setWindowTitle(lan(WHERE_TO_SAVE_FILE_MESSAGE_CN, WHERE_TO_SAVE_FILE_MESSAGE_SPAN));
+    saveFileDialog.setDefaultSuffix("pdf");
+    saveFileDialog.setNameFilter("PDF (*.pdf)");
+    saveFileDialog.setAcceptMode(QFileDialog::AcceptSave);
+
+    if (saveFileDialog.exec()) {
+        // Do something with the selected file
+        filePath = saveFileDialog.selectedFiles().at(0).trimmed();
+    }
+
 
     if(filePath.isEmpty()) goto Finish;
 
