@@ -293,6 +293,13 @@ void MainWindow::closeEvent (QCloseEvent *event)
 }
 
 
+// emit this signal when this MainWindow is the foreground window
+void MainWindow::set_as_front_window()
+{
+    this->show();
+}
+
+
 /* the user is typing in MODELCODE, we need to search the models starting with the same string and display them in
  *  the searchResult table */
 void MainWindow::on_search_MODELCODE_LE_textChanged(const QString& new_str)

@@ -85,6 +85,7 @@ void AddNewModelWindow::clear_content()
     this->ui->NUM_SOLD_BOXES_SB->setValue(0.);
     this->ui->NUM_ITEMS_PER_BOX_SB->setValue(0.);
     this->ui->DESCRIPTION_SPAN_LE->clear();
+    this->ui->container_ID_LE->clear();
 }
 
 
@@ -109,7 +110,7 @@ void AddNewModelWindow::closeEvent(QCloseEvent *event)
         event->ignore();
     }
     else {
-        if(this->parentPtr != nullptr) this->parentPtr->show(); // show the mainwindow
+        if(this->parentPtr != nullptr) emit this->parentPtr->set_as_front_window();
         event->accept();
     }
 }

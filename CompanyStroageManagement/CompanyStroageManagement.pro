@@ -1,4 +1,4 @@
-QT       -= core gui
+QT -= core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -82,17 +82,14 @@ RESOURCES += \
 
 
 INCLUDEPATH += $$PWD/QXlsx
-DEPENDPATH += $$PWD/QXlsx
 
 macx{
     LIBS += -L$$PWD/QXlsx/bin64/ -lQXlsx_Mac
-
     PRE_TARGETDEPS += $$PWD/QXlsx/bin64/libQXlsx_Mac.a
 }
 
 
 win32 {
     LIBS += -L$$PWD/QXlsx/bin64/ -lQXlsx_Win
-
     PRE_TARGETDEPS += $$PWD/QXlsx/bin64/libQXlsx_Win.a
 }

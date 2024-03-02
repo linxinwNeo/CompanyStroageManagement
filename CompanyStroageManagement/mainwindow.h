@@ -37,8 +37,13 @@ public:
 
     void setLanguage();
 
+
+public slots:
+    void set_as_front_window();
+
 private slots:
     void closeEvent (QCloseEvent *event);
+
     void on_search_MODELCODE_LE_textChanged(const QString& new_str);
 
     void on_update_selected_model_btn_clicked();
@@ -69,8 +74,6 @@ private slots:
 
     void on_action_Save_Inventory_triggered();
     void on_action_Save_Lists_triggered();
-
-
 
 private:
     ModelPtr selected_model;
