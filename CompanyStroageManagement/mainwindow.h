@@ -81,9 +81,10 @@ private:
     unsigned int num_search_model_result_table_columns = 11;
     unsigned int num_search_container_result_table_columns = 6;
     Ui::MainWindow *ui;
-    QSharedPointer<AddNewModelWindow> AddNewModelWinPtr;
-    QSharedPointer<CreateListWin> CreateListWinPtr;
-    QSharedPointer<Search_List_Win> SearchListWinPtr;
+
+    AddNewModelWindow AddNewModelWinPtr;
+    CreateListWin CreateListWinPtr;
+    Search_List_Win SearchListWinPtr;
 
     bool is_time_for_backup() const;
 

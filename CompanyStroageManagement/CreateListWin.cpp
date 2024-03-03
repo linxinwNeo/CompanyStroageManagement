@@ -21,7 +21,7 @@ CreateListWin::CreateListWin(QWidget *parent) :
     ui->setupUi(this);
 
     this->init();
-    this->setLanguage();
+    this->set_GUI_Language();
 
     this->setWindow();
 }
@@ -89,7 +89,7 @@ void CreateListWin::remove_entry(const unsigned int idx)
 
 
 // set language
-void CreateListWin::setLanguage()
+void CreateListWin::set_GUI_Language()
 {
     this->ui->client_info_GB->setTitle(lan("清单信息", "información de la lista"));
 

@@ -36,8 +36,8 @@ public:
     void update_added_models_table();
 
     void remove_entry(const unsigned int idx);
-
-    void setLanguage();
+    
+    void set_GUI_Language();
 
     void setWindow();
 

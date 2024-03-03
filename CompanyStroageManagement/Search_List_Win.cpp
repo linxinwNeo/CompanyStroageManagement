@@ -14,8 +14,8 @@ Search_List_Win::Search_List_Win(QWidget *parent) :
     ui(new Ui::Search_List_Win)
 {
     ui->setupUi(this);
-
-    this->setLanguage();
+    
+    this->set_GUI_Language();
 
     searched_lists_table = ui->searched_lists_table;
     searched_lists_table->setStyleSheet(table_stylesheet);
@@ -89,7 +89,7 @@ void Search_List_Win::reset_list_info()
 
 
 // set language
-void Search_List_Win::setLanguage()
+void Search_List_Win::set_GUI_Language()
 {
     this->ui->list_id_2be_searched_label->setText(lan("清单号", "número de lista"));
 

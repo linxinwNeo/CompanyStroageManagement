@@ -13,8 +13,8 @@ AddNewModelWindow::AddNewModelWindow(QWidget *parent) :
     ui(new Ui::AddNewModelWindow)
 {
     ui->setupUi(this);
-
-    this->setLanguage();
+    
+    this->set_GUI_Language();
 
     this->setWindow();
 }
@@ -34,7 +34,7 @@ void AddNewModelWindow::setWindow()
 
 
 // set language according to the current language
-void AddNewModelWindow::setLanguage()
+void AddNewModelWindow::set_GUI_Language()
 {
     const QString none = lan("暂无", "ninguno");
 
@@ -66,11 +66,6 @@ void AddNewModelWindow::setLanguage()
 AddNewModelWindow::~AddNewModelWindow()
 {
     delete ui;
-
-    if(this->parentPtr != nullptr) {
-        this->parentPtr->update_GUI();
-        this->parentPtr->show();
-    }
 }
 
 

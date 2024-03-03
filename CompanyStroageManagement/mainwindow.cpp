@@ -11,6 +11,9 @@
 #include <QFileDialog>
 #include "GlobalVars.h"
 
+const QString AddNewModelWin_Title = lan(AddNewModel_WinTitle_CN, AddNewModel_WinTitle_SPAN);
+const QString CreateNewListWin_Title= lan(CreateList_WinTitle_CN, CreateList_WinTitle_SPAN);
+const QString SearchListWin_Title= lan(Search_List_WinTitle_CN, Search_List_WinTitle_SPAN);
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -22,26 +25,30 @@ MainWindow::MainWindow(QWidget *parent)
     this->init();
 
     this->setWindow();
+
+    // setting up the add new model window
+    this->AddNewModelWinPtr.setWindowTitle(AddNewModelWin_Title);
+    this->AddNewModelWinPtr.parentPtr = this;
+
+    // setting up the create list window
+    this->CreateListWinPtr.setWindowTitle(CreateNewListWin_Title);
+    this->CreateListWinPtr.parentPtr = this;
+
+
+
+    this->SearchListWinPtr.setWindowTitle(SearchListWin_Title);
+    this->SearchListWinPtr.set_parentWin(this);
 }
 
 
 MainWindow::~MainWindow()
 {
-    this->AddNewModelWinPtr = nullptr;
-    this->CreateListWinPtr = nullptr;
-    this->selected_model = nullptr;
-    this->selected_container = nullptr;
     delete ui;
 }
 
 
 void MainWindow::init()
 {
-    this->AddNewModelWinPtr = nullptr;
-    this->CreateListWinPtr = nullptr;
-    this->selected_model = nullptr;
-    this->selected_container = nullptr;
-
     // select the first tab initially
     this->ui->tabWidget->setCurrentIndex(0);
 
@@ -125,10 +132,10 @@ void MainWindow::setLanguage()
     this->ui->selected_model_MODELCODE_LE->setPlaceholderText(none);
 
     this->ui->selected_model_DESCRIPTION_CN_label->setText(lan("品名（中文）", "DESCRIPTION(Chino)"));
-    this->ui->selected_model_DESCRIPTION_CN_LE->setPlaceholderText(none);
+    this->ui->selected_model_DESCRIPTION_CN_TextEdit->setPlaceholderText(none);
 
     this->ui->selected_model_DESCRIPTION_SPAN_label->setText(lan("品名（西语）", "DESCRIPTION(Español)"));
-    this->ui->selected_model_DESCRIPTION_SPAN_LE->setPlaceholderText(none);
+    this->ui->selected_model_DESCRIPTION_SPAN_TextEdit->setPlaceholderText(none);
 
     this->ui->selected_model_NUM_INIT_BOXES_label->setText(lan("初始箱数", "Número inicial de cajas"));
     this->ui->selected_model_NUM_ITEMS_PER_BOX_label->setText(lan("每箱个数", "Piezas por caja"));
@@ -189,8 +196,8 @@ void MainWindow::show_selected_model()
     if(this->selected_model.isNull()) return;
 
     ui->selected_model_MODELCODE_LE->setText(this->selected_model->MODEL_CODE);
-    ui->selected_model_DESCRIPTION_CN_LE->setText(this->selected_model->DESCRIPTION_CN);
-    ui->selected_model_DESCRIPTION_SPAN_LE->setText(this->selected_model->DESCRIPTION_SPAN);
+    ui->selected_model_DESCRIPTION_CN_TextEdit->setText(this->selected_model->DESCRIPTION_CN);
+    ui->selected_model_DESCRIPTION_SPAN_TextEdit->setText(this->selected_model->DESCRIPTION_SPAN);
     ui->selected_model_NUM_INIT_BOXES_SB->setValue(this->selected_model->NUM_INIT_BOXES);
     ui->selected_model_NUM_SOLD_BOXES_SB->setValue(this->selected_model->NUM_SOLD_BOXES);
     ui->selected_model_NUM_ITEMS_PER_BOX_SB->setValue(this->selected_model->NUM_ITEMS_PER_BOX);
@@ -207,8 +214,8 @@ void MainWindow::clear_selected_model()
     const QString empty;
     const double zero = 0.;
     ui->selected_model_MODELCODE_LE->setText(empty);
-    ui->selected_model_DESCRIPTION_CN_LE->setText(empty);
-    ui->selected_model_DESCRIPTION_SPAN_LE->setText(empty);
+    ui->selected_model_DESCRIPTION_CN_TextEdit->setText(empty);
+    ui->selected_model_DESCRIPTION_SPAN_TextEdit->setText(empty);
     ui->selected_model_NUM_INIT_BOXES_SB->setValue(zero);
     ui->selected_model_NUM_SOLD_BOXES_SB->setValue(zero);
     ui->selected_model_NUM_ITEMS_PER_BOX_SB->setValue(zero);
@@ -366,8 +373,8 @@ void MainWindow::on_update_selected_model_btn_clicked()
         return;
     }
 
-    selected_model->DESCRIPTION_CN = ui->selected_model_DESCRIPTION_CN_LE->text().trimmed();
-    selected_model->DESCRIPTION_SPAN = ui->selected_model_DESCRIPTION_SPAN_LE->text().trimmed();
+    selected_model->DESCRIPTION_CN = ui->selected_model_DESCRIPTION_CN_TextEdit->toPlainText().trimmed();
+    selected_model->DESCRIPTION_SPAN = ui->selected_model_DESCRIPTION_SPAN_TextEdit->toPlainText().trimmed();
     selected_model->NUM_INIT_BOXES = ui->selected_model_NUM_INIT_BOXES_SB->value();
     selected_model->NUM_SOLD_BOXES = ui->selected_model_NUM_SOLD_BOXES_SB->value();
     selected_model->PRIZE = ui->selected_model_PRIZE_SB->value();
@@ -520,15 +527,11 @@ void MainWindow::on_search_container_result_Table_cellClicked(int row, int colum
 void MainWindow::on_start_add_model_btn_clicked()
 {
     // init AddNewModelWindow
-    QSharedPointer<AddNewModelWindow> w (new AddNewModelWindow(nullptr));
+    this->AddNewModelWinPtr.set_GUI_Language();
+    this->AddNewModelWinPtr.setWindow();
 
-    this->AddNewModelWinPtr = w;
-    // setting up the window
-    QString title = lan(AddNewModel_WinTitle_CN, AddNewModel_WinTitle_SPAN);
-    w->setWindowTitle(title);
-    w->parentPtr = this;
-    w->show();
 
+    this->AddNewModelWinPtr.show();
 
     this->hide();
 }
@@ -537,15 +540,10 @@ void MainWindow::on_start_add_model_btn_clicked()
 // 打开创建新清单的页面
 void MainWindow::on_new_list_btn_clicked()
 {
-    // init CreateListWin
-    QSharedPointer<CreateListWin> w (new CreateListWin(nullptr));
-    this->CreateListWinPtr = w;
-    // setting up the window
-    QString title = lan(CreateList_WinTitle_CN, CreateList_WinTitle_SPAN);
+    this->CreateListWinPtr.set_GUI_Language();
+    this->CreateListWinPtr.setWindow();
 
-    w->setWindowTitle(title);
-    w->parentPtr = this;
-    w->show();
+    this->CreateListWinPtr.show();
 
     this->hide();
 }
@@ -554,15 +552,10 @@ void MainWindow::on_new_list_btn_clicked()
 // 打开<Search_List_Win>
 void MainWindow::on_search_past_list_btn_clicked()
 {
-    QSharedPointer<Search_List_Win> w (new Search_List_Win(nullptr));
-    this->SearchListWinPtr = w;
+    this->SearchListWinPtr.setWindow();
+    this->SearchListWinPtr.set_GUI_Language();
 
-    QString title = lan(Search_List_WinTitle_CN, Search_List_WinTitle_SPAN);
-
-    w->setWindowTitle(title);
-    w->set_parentWin(this);
-
-    w->show();
+    this->SearchListWinPtr.show();
 
     this->hide();
 }

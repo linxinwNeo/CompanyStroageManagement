@@ -26,8 +26,8 @@ public:
     void view_selected_list();
 
     void reset_list_info();
-
-    void setLanguage();
+    
+    void set_GUI_Language();
     void setWindow();
 
 private:

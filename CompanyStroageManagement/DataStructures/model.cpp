@@ -1,4 +1,4 @@
-#include "model.h"
+#include "Model.h"
 #include "DataStructures/Container.h"
 #include "GlobalVars.h"
 #include "qdebug.h"

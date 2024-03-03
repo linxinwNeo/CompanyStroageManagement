@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>700</width>
-    <height>500</height>
+    <width>790</width>
+    <height>735</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="search_model_tab">
        <attribute name="title">
@@ -33,8 +33,17 @@
              <layout class="QHBoxLayout" name="horizontalLayout">
               <item>
                <widget class="QLabel" name="search_MODELCODE_label">
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>0</height>
+                 </size>
+                </property>
                 <property name="text">
                  <string>货号</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -184,8 +193,17 @@
                     </property>
                     <item>
                      <widget class="QLabel" name="selected_model_MODELCODE_label">
+                      <property name="minimumSize">
+                       <size>
+                        <width>100</width>
+                        <height>0</height>
+                       </size>
+                      </property>
                       <property name="text">
                        <string>货号</string>
+                      </property>
+                      <property name="alignment">
+                       <set>Qt::AlignCenter</set>
                       </property>
                      </widget>
                     </item>
@@ -210,25 +228,10 @@
               </item>
               <item>
                <widget class="QWidget" name="widget_17" native="true">
-                <layout class="QVBoxLayout" name="verticalLayout_5">
-                 <property name="spacing">
-                  <number>3</number>
-                 </property>
-                 <property name="leftMargin">
-                  <number>3</number>
-                 </property>
-                 <property name="topMargin">
-                  <number>3</number>
-                 </property>
-                 <property name="rightMargin">
-                  <number>3</number>
-                 </property>
-                 <property name="bottomMargin">
-                  <number>3</number>
-                 </property>
+                <layout class="QHBoxLayout" name="horizontalLayout_3">
                  <item>
                   <widget class="QWidget" name="widget_8" native="true">
-                   <layout class="QHBoxLayout" name="horizontalLayout_3">
+                   <layout class="QVBoxLayout" name="verticalLayout_5">
                     <property name="spacing">
                      <number>3</number>
                     </property>
@@ -246,15 +249,40 @@
                     </property>
                     <item>
                      <widget class="QLabel" name="selected_model_DESCRIPTION_CN_label">
+                      <property name="minimumSize">
+                       <size>
+                        <width>100</width>
+                        <height>0</height>
+                       </size>
+                      </property>
                       <property name="text">
                        <string>品名(中文)</string>
+                      </property>
+                      <property name="alignment">
+                       <set>Qt::AlignCenter</set>
                       </property>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QLineEdit" name="selected_model_DESCRIPTION_CN_LE">
-                      <property name="placeholderText">
-                       <string>暂无</string>
+                     <widget class="Line" name="line_6">
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="selected_model_DESCRIPTION_SPAN_label">
+                      <property name="minimumSize">
+                       <size>
+                        <width>100</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="text">
+                       <string>品名(西语)</string>
+                      </property>
+                      <property name="alignment">
+                       <set>Qt::AlignCenter</set>
                       </property>
                      </widget>
                     </item>
@@ -263,7 +291,7 @@
                  </item>
                  <item>
                   <widget class="QWidget" name="widget_9" native="true">
-                   <layout class="QHBoxLayout" name="horizontalLayout_4">
+                   <layout class="QVBoxLayout" name="verticalLayout_9">
                     <property name="spacing">
                      <number>3</number>
                     </property>
@@ -280,14 +308,21 @@
                      <number>3</number>
                     </property>
                     <item>
-                     <widget class="QLabel" name="selected_model_DESCRIPTION_SPAN_label">
-                      <property name="text">
-                       <string>品名(西语)</string>
+                     <widget class="QTextEdit" name="selected_model_DESCRIPTION_CN_TextEdit">
+                      <property name="placeholderText">
+                       <string>暂无</string>
                       </property>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QLineEdit" name="selected_model_DESCRIPTION_SPAN_LE">
+                     <widget class="Line" name="line_5">
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QTextEdit" name="selected_model_DESCRIPTION_SPAN_TextEdit">
                       <property name="placeholderText">
                        <string>暂无</string>
                       </property>
@@ -347,6 +382,9 @@
                     </item>
                     <item>
                      <widget class="QDoubleSpinBox" name="selected_model_NUM_INIT_BOXES_SB">
+                      <property name="alignment">
+                       <set>Qt::AlignCenter</set>
+                      </property>
                       <property name="maximum">
                        <double>100000000.000000000000000</double>
                       </property>
@@ -392,6 +430,9 @@
                     </item>
                     <item>
                      <widget class="QSpinBox" name="selected_model_NUM_ITEMS_PER_BOX_SB">
+                      <property name="alignment">
+                       <set>Qt::AlignCenter</set>
+                      </property>
                       <property name="maximum">
                        <number>100000000</number>
                       </property>
@@ -437,6 +478,9 @@
                     </item>
                     <item>
                      <widget class="QDoubleSpinBox" name="selected_model_PRIZE_SB">
+                      <property name="alignment">
+                       <set>Qt::AlignCenter</set>
+                      </property>
                       <property name="maximum">
                        <double>100000000.000000000000000</double>
                       </property>
@@ -482,6 +526,9 @@
                     </item>
                     <item>
                      <widget class="QDoubleSpinBox" name="selected_model_NUM_SOLD_BOXES_SB">
+                      <property name="alignment">
+                       <set>Qt::AlignCenter</set>
+                      </property>
                       <property name="maximum">
                        <double>100000000.000000000000000</double>
                       </property>
@@ -513,8 +560,17 @@
                  </property>
                  <item>
                   <widget class="QLabel" name="selected_model_CONTAINER_label">
+                   <property name="minimumSize">
+                    <size>
+                     <width>100</width>
+                     <height>0</height>
+                    </size>
+                   </property>
                    <property name="text">
                     <string>集装箱</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
                    </property>
                   </widget>
                  </item>
@@ -578,8 +634,17 @@
           <layout class="QHBoxLayout" name="horizontalLayout_12">
            <item>
             <widget class="QLabel" name="search_CONTAINER_ID_label">
+             <property name="minimumSize">
+              <size>
+               <width>100</width>
+               <height>0</height>
+              </size>
+             </property>
              <property name="text">
               <string>集装箱号</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
              </property>
             </widget>
            </item>
@@ -954,9 +1019,21 @@
            </property>
            <item>
             <widget class="QPushButton" name="save_inventory_2_new_file_btn">
-             <property name="maximumSize">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
               <size>
                <width>200</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
                <height>16777215</height>
               </size>
              </property>
@@ -988,9 +1065,21 @@
            </property>
            <item>
             <widget class="QPushButton" name="read_inventory_from_new_file_btn">
-             <property name="maximumSize">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
               <size>
                <width>200</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
                <height>16777215</height>
               </size>
              </property>
@@ -1029,9 +1118,21 @@
            </property>
            <item>
             <widget class="QPushButton" name="save_lists_2_new_file_btn">
-             <property name="maximumSize">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
               <size>
                <width>200</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
                <height>16777215</height>
               </size>
              </property>
@@ -1063,9 +1164,21 @@
            </property>
            <item>
             <widget class="QPushButton" name="read_lists_from_new_file_btn">
-             <property name="maximumSize">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
               <size>
                <width>200</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
                <height>16777215</height>
               </size>
              </property>
@@ -1101,8 +1214,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>700</width>
-     <height>17</height>
+     <width>790</width>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="LanguageMenu">
