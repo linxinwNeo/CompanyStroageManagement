@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>3</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="search_model_tab">
        <attribute name="title">
@@ -59,6 +59,18 @@
            </item>
            <item>
             <widget class="QGroupBox" name="search_model_result_GB">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
              <property name="title">
               <string>货物查询结果</string>
              </property>
@@ -67,6 +79,12 @@
                <widget class="QTableWidget" name="search_model_result_Table">
                 <property name="enabled">
                  <bool>true</bool>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>0</height>
+                 </size>
                 </property>
                 <property name="layoutDirection">
                  <enum>Qt::LeftToRight</enum>
@@ -228,6 +246,12 @@
               </item>
               <item>
                <widget class="QWidget" name="widget_17" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
                 <layout class="QHBoxLayout" name="horizontalLayout_3">
                  <item>
                   <widget class="QWidget" name="widget_8" native="true">
@@ -249,6 +273,9 @@
                     </property>
                     <item>
                      <widget class="QLabel" name="selected_model_DESCRIPTION_CN_label">
+                      <property name="enabled">
+                       <bool>true</bool>
+                      </property>
                       <property name="minimumSize">
                        <size>
                         <width>100</width>
@@ -272,6 +299,9 @@
                     </item>
                     <item>
                      <widget class="QLabel" name="selected_model_DESCRIPTION_SPAN_label">
+                      <property name="enabled">
+                       <bool>true</bool>
+                      </property>
                       <property name="minimumSize">
                        <size>
                         <width>100</width>
@@ -309,6 +339,27 @@
                     </property>
                     <item>
                      <widget class="QTextEdit" name="selected_model_DESCRIPTION_CN_TextEdit">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>200</width>
+                        <height>30</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>60</height>
+                       </size>
+                      </property>
+                      <property name="sizeAdjustPolicy">
+                       <enum>QAbstractScrollArea::AdjustToContents</enum>
+                      </property>
                       <property name="placeholderText">
                        <string>暂无</string>
                       </property>
@@ -323,6 +374,27 @@
                     </item>
                     <item>
                      <widget class="QTextEdit" name="selected_model_DESCRIPTION_SPAN_TextEdit">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>200</width>
+                        <height>30</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>60</height>
+                       </size>
+                      </property>
+                      <property name="sizeAdjustPolicy">
+                       <enum>QAbstractScrollArea::AdjustToContents</enum>
+                      </property>
                       <property name="placeholderText">
                        <string>暂无</string>
                       </property>
@@ -372,6 +444,9 @@
                     </property>
                     <item>
                      <widget class="QLabel" name="selected_model_NUM_INIT_BOXES_label">
+                      <property name="enabled">
+                       <bool>true</bool>
+                      </property>
                       <property name="text">
                        <string>初始箱数</string>
                       </property>
@@ -420,6 +495,9 @@
                     </property>
                     <item>
                      <widget class="QLabel" name="selected_model_NUM_ITEMS_PER_BOX_label">
+                      <property name="enabled">
+                       <bool>true</bool>
+                      </property>
                       <property name="text">
                        <string>每箱个数</string>
                       </property>
@@ -468,6 +546,9 @@
                     </property>
                     <item>
                      <widget class="QLabel" name="selected_model_PRIZE_label">
+                      <property name="enabled">
+                       <bool>true</bool>
+                      </property>
                       <property name="text">
                        <string>单价</string>
                       </property>
@@ -1215,7 +1296,7 @@
      <x>0</x>
      <y>0</y>
      <width>790</width>
-     <height>24</height>
+     <height>17</height>
     </rect>
    </property>
    <widget class="QMenu" name="LanguageMenu">

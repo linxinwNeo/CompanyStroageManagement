@@ -373,8 +373,8 @@ void MainWindow::on_update_selected_model_btn_clicked()
         return;
     }
 
-    selected_model->DESCRIPTION_CN = ui->selected_model_DESCRIPTION_CN_TextEdit->toPlainText().trimmed();
-    selected_model->DESCRIPTION_SPAN = ui->selected_model_DESCRIPTION_SPAN_TextEdit->toPlainText().trimmed();
+    selected_model->DESCRIPTION_CN = ui->selected_model_DESCRIPTION_CN_TextEdit->toPlainText().replace("\n", "").trimmed(); // remove newline characters
+    selected_model->DESCRIPTION_SPAN = ui->selected_model_DESCRIPTION_SPAN_TextEdit->toPlainText().replace("\n", "").trimmed(); // remove newline characters
     selected_model->NUM_INIT_BOXES = ui->selected_model_NUM_INIT_BOXES_SB->value();
     selected_model->NUM_SOLD_BOXES = ui->selected_model_NUM_SOLD_BOXES_SB->value();
     selected_model->PRIZE = ui->selected_model_PRIZE_SB->value();
@@ -788,4 +788,3 @@ void MainWindow::on_read_lists_from_new_file_btn_clicked()
         msgBox->exec();
     }
 }
-
