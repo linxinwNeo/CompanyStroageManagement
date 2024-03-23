@@ -14,9 +14,9 @@ def read_inventory_file(file_path, models):
         model = Model()
         model.MODEL_CODE = row[0]
         model.DESCRIPTION_SPAN = remove_lineSwitcher(row[1])
-        model.NUM_INITIAL_BOXES = row[4]
-        model.NUM_SOLD_BOXES = row[5]
-        model.NUM_LEFT_ITEMS = row[6]
-        model.NUM_LEFT_BOXES = row[7]
-        model.NUM_ITEMS_PER_BOX = row[8]
+        model.NUM_INITIAL_BOXES = float(row[4])
+        model.NUM_SOLD_BOXES = float(row[5])
+        model.NUM_LEFT_ITEMS = float(row[6])
+        model.NUM_LEFT_BOXES = float(row[7])
+        model.NUM_ITEMS_PER_BOX = int(row[8])
         models[model.MODEL_CODE] = model 

@@ -3,9 +3,8 @@ from readInventario import read_inventory_file
 from readPrizes import read_Prizes_file
 from save2txt import write2txt
 
-inventory_file_path = 'C:/Users/linxi/OneDrive/Documents/GitHub/CompanyStroageManagement/inventory.xlsx'
-prizes_file_path = 'C:/Users/linxi/OneDrive/Documents/GitHub/CompanyStroageManagement/prizes.xlsx'
-
+inventory_file_path = 'C:/Users/linxi/OneDrive/Documents/GitHub/CompanyStroageManagement/pythonFiles/raw_data_before_processing/inventory.xlsx'
+prizes_file_path = 'C:/Users/linxi/OneDrive/Documents/GitHub/CompanyStroageManagement/pythonFiles/raw_data_before_processing/prizes.xlsx'
 
 # a dict of models
 models = {}
