@@ -21,7 +21,7 @@ Model::Model(const QString &MODEL_CODE, const QString &DESCRIPTION_SPAN, const Q
     this->NUM_LEFT_PIECES = NUM_LEFT_PIECES;
     this->NUM_PIECES_PER_BOX = NUM_PIECES_PER_BOX;
 
-
+    this->last_time_modified = nullptr;
     this->container = nullptr;
 }
 
@@ -44,6 +44,7 @@ void Model::reset()
     NUM_PIECES_PER_BOX = 0;
 
     this->container = nullptr;
+    this->last_time_modified = nullptr;
 }
 
 
@@ -111,7 +112,7 @@ bool Model::AddBack(unsigned long num_pieces_to_addBack)
 void Model::searchResult_Regular(QVector<QString> &items) const
 {
     items.clear();
-    items.reserve(12);
+    items.reserve(13);
 
     items.push_back(this->MODEL_CODE); // 1.货号
 
@@ -133,18 +134,25 @@ void Model::searchResult_Regular(QVector<QString> &items) const
     items.push_back(QString::number(this->NUM_LEFT_PIECES)); // 11.剩余个数
 
     items.push_back(QString::number(this->PRIZE, 'f', 2)); // 12.单价
+
+    items.push_back(this->last_time_modified->toString(DateTimeFormat)); // 13. 修改时间
 }
 
 
 // need to call qDebug().noquote() to print this message
 QString Model::describe_this_model() const
 {
-    return this->MODEL_CODE + "\n"
-           + this->DESCRIPTION_CN + "/n"
-           + this->DESCRIPTION_SPAN + "\n"
-           + QString::number(this->PRIZE) + "\n"
-           + QString::number(this->NUM_INIT_PIECES) + "\n"
-           + QString::number(this->NUM_SOLD_PIECES) + "\n"
-           + QString::number(this->NUM_LEFT_PIECES) + "\n"
-           + QString::number(this->NUM_PIECES_PER_BOX);
+    QString ret = this->MODEL_CODE + "\n"
+                  + this->DESCRIPTION_CN + "/n"
+                  + this->DESCRIPTION_SPAN + "\n"
+                  + QString::number(this->PRIZE) + "\n"
+                  + QString::number(this->NUM_INIT_PIECES) + "\n"
+                  + QString::number(this->NUM_SOLD_PIECES) + "\n"
+                  + QString::number(this->NUM_LEFT_PIECES) + "\n"
+                  + QString::number(this->NUM_PIECES_PER_BOX) + "\n";
+    if(!this->last_time_modified.isNull()){
+        ret += this->last_time_modified->toString(DateTimeFormat);
+    }
+
+    return ret;
 }

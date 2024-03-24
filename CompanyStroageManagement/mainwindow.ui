@@ -167,6 +167,11 @@
                   <string>单价</string>
                  </property>
                 </column>
+                <column>
+                 <property name="text">
+                  <string>上次修改时间</string>
+                 </property>
+                </column>
                </widget>
               </item>
              </layout>
@@ -800,6 +805,11 @@
              <column>
               <property name="text">
                <string>单价</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>上次修改时间</string>
               </property>
              </column>
             </widget>

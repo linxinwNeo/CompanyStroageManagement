@@ -6,6 +6,7 @@
 #include <QVector>
 #include <QSharedPointer>
 #include <QSet>
+#include <QDateTime>
 
 #define ModelPtr QSharedPointer<Model>
 
@@ -24,6 +25,8 @@ public:
     unsigned long NUM_SOLD_PIECES; // 卖出个数
     unsigned long NUM_LEFT_PIECES; // 剩余总个数
     unsigned long NUM_PIECES_PER_BOX; //多少个每箱
+
+    QSharedPointer<QDateTime> last_time_modified; // 上次被修改的时间
 
     Model();
     Model(const QString& MODEL_CODE, const QString& DESCRIPTION_SPAN, const QString& DESCRIPTION_CN,

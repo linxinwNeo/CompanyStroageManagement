@@ -27,8 +27,6 @@ extern const QString table_stylesheet;
 extern unsigned int language_option;
 
 extern const QString DateTimeFormat;
-extern const QString DateFormat;
-extern const QString TimeFormat;
 
 inline QString lan(const QString& CN_Str, const QString& Span_Str)
 {

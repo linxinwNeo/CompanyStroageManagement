@@ -54,28 +54,38 @@ bool WriteFile::Inventory2Txt(const QString &path, const bool save_path)
         return false;
     }
 
-
     QTextStream out(&file);
     // write the number of models
     out << "% " << inventory.num_models() << split_item << " \n";
     // write the name for each column
-    out << "% MODEL_CODE DESCRIPTION_SPAN DESCRIPTION_CN PRIZE_PER_PIECE NUM_INITIAL_PIECES NUM_SOLD_PIECES NUM_LEFT_PIECES NUM_PIECES_PER_BOX CONTAINER_ID \n";
+    out << "% MODEL_CODE CONTAINER_ID DESCRIPTION_CN DESCRIPTION_SPAN NUM_INITIAL_PIECES NUM_SOLD_PIECES NUM_LEFT_PIECES NUM_PIECES_PER_BOX PRIZE_PER_PIECE TIME_MODIFIED \n";
 
     for(const auto& m : inventory.model_set){
         out << m->MODEL_CODE + split_item;
-        out << m->DESCRIPTION_SPAN + split_item;
-        out << m->DESCRIPTION_CN + split_item;
-        out << QString::number(m->PRIZE) + split_item;
-        out << QString::number(m->NUM_INIT_PIECES) + split_item;
-        out << QString::number(m->NUM_SOLD_PIECES) + split_item;
-        out << QString::number(m->NUM_LEFT_PIECES) + split_item;
-        out << QString::number(m->NUM_PIECES_PER_BOX) + split_item;
         if(m->container.isNull()){
             out << "-1\n"; // if this model does not have a container, we put -1 to indicate
         }
         else{
             out << m->container->ID + "\n";
         }
+
+        out << m->DESCRIPTION_CN + split_item;
+        out << m->DESCRIPTION_SPAN + split_item;
+
+        out << QString::number(m->NUM_INIT_PIECES) + split_item;
+        out << QString::number(m->NUM_SOLD_PIECES) + split_item;
+        out << QString::number(m->NUM_LEFT_PIECES) + split_item;
+        out << QString::number(m->NUM_PIECES_PER_BOX) + split_item;
+        out << QString::number(m->PRIZE) + split_item;
+
+        if(m->last_time_modified.isNull()){
+            QDateTime currentDateTime = QDateTime::currentDateTime();
+            out << currentDateTime.toString(DateTimeFormat) + split_item + "\n";
+        }
+        else{
+            out << m->last_time_modified->toString(DateTimeFormat) + split_item + "\n";
+        }
+
     }
     file.close();
 
@@ -103,11 +113,14 @@ bool WriteFile::Inventory2Xlsx(const QString &path, const bool save_path)
     xlsx.write(row, col++, "集装箱");
     xlsx.write(row, col++, "品名（中文）");
     xlsx.write(row, col++, "品名（西语）");
-    xlsx.write(row, col++, "单价");
+
     xlsx.write(row, col++, "进货个数");
     xlsx.write(row, col++, "出售个数");
     xlsx.write(row, col++, "剩余个数");
+
     xlsx.write(row, col++, "每箱个数");
+    xlsx.write(row, col++, "单价");
+    xlsx.write(row, col++, "上次修改时间");
 
     row ++;
 
@@ -121,11 +134,22 @@ bool WriteFile::Inventory2Xlsx(const QString &path, const bool save_path)
         if(!model->container.isNull()) xlsx.write(row, col++, model->container->ID);
         xlsx.write(row, col++, model->DESCRIPTION_CN);
         xlsx.write(row, col++, model->DESCRIPTION_SPAN);
-        xlsx.write(row, col++, model->PRIZE);
+
         xlsx.write(row, col++, (unsigned long long)model->NUM_INIT_PIECES);
         xlsx.write(row, col++, (unsigned long long)model->NUM_SOLD_PIECES);
         xlsx.write(row, col++, (unsigned long long)model->NUM_LEFT_PIECES);
+
         xlsx.write(row, col++, QString::number(model->NUM_PIECES_PER_BOX));
+        xlsx.write(row, col++, model->PRIZE);
+
+        if(model->last_time_modified.isNull()){
+            QDateTime currentDateTime = QDateTime::currentDateTime();
+            xlsx.write(row, col++, currentDateTime.toString(DateTimeFormat));
+        }
+        else{
+            xlsx.write(row, col++, model->last_time_modified->toString(DateTimeFormat));
+        }
+
         row++;
     }
 
