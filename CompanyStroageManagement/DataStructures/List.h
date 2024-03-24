@@ -17,12 +17,12 @@ public:
     EntryList entryList;
     QDate date_created;
     QTime time_created;
-    unsigned long int id;
+    unsigned long id;
 
     List() {};
     ~List() {};
 
-    unsigned long int num_model_types() const;
+    unsigned long num_model_types() const;
     void add_item(EntryPtr&);
     double total_num_boxes() const;
 
@@ -38,19 +38,19 @@ public:
 class Lists
 {
 public:
-    QHash<unsigned long int, ListPtr> lists; // <id, list> pairs
+    QHash<unsigned long, ListPtr> lists; // <id, list> pairs
 
     Lists() {};
     ~Lists() {};
 
-    unsigned long int get_unique_id() const;
+    unsigned long get_unique_id() const;
 
     void add_list(ListPtr);
-    ListPtr remove_list(unsigned long int id);
+    ListPtr remove_list(unsigned long id);
 
-    unsigned long int num_lists() const;
+    unsigned long num_lists() const;
 
-    ListPtr get_list(unsigned long int id);
+    ListPtr get_list(unsigned long id);
 
     void get_list(QString id_prefix, QVector<ListPtr>& candidates, bool sorted);
 

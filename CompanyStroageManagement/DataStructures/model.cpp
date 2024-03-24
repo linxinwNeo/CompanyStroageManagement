@@ -8,19 +8,19 @@ Model::Model()
     this->reset();
 }
 
-Model::Model( const QString& MODEL_CODE, const QString& DESCRIPTION_SPAN, const QString& DESCRIPTION_CN,
-              const double& PRIZE, const double& NUM_INIT_BOXES, const double& NUM_SOLD_BOXES, const double& NUM_LEFT_BOXES,
-              const long int& NUM_LEFT_ITEMS, const long int& NUM_ITEMS_PER_BOX)
+Model::Model(const QString &MODEL_CODE, const QString &DESCRIPTION_SPAN, const QString &DESCRIPTION_CN, const double &PRIZE,
+             const unsigned long &NUM_INIT_PIECES, const unsigned long &NUM_SOLD_PIECES, const unsigned long &NUM_LEFT_PIECES,
+             const unsigned long &NUM_PIECES_PER_BOX)
 {
     this->MODEL_CODE = MODEL_CODE;
     this->DESCRIPTION_SPAN = DESCRIPTION_SPAN;
     this->DESCRIPTION_CN = DESCRIPTION_CN;
     this->PRIZE = PRIZE;
-    this->NUM_INIT_BOXES = NUM_INIT_BOXES;
-    this->NUM_SOLD_BOXES = NUM_SOLD_BOXES;
-    this->NUM_LEFT_BOXES = NUM_LEFT_BOXES;
-    this->NUM_LEFT_ITEMS = NUM_LEFT_ITEMS;
-    this->NUM_ITEMS_PER_BOX = NUM_ITEMS_PER_BOX;
+    this->NUM_INIT_PIECES = NUM_INIT_PIECES;
+    this->NUM_SOLD_PIECES = NUM_SOLD_PIECES;
+    this->NUM_LEFT_PIECES = NUM_LEFT_PIECES;
+    this->NUM_PIECES_PER_BOX = NUM_PIECES_PER_BOX;
+
 
     this->container = nullptr;
 }
@@ -38,80 +38,72 @@ void Model::reset()
     DESCRIPTION_CN = "";
     DESCRIPTION_SPAN = "";
     PRIZE = 0.;
-    NUM_INIT_BOXES = 0.;
-    NUM_SOLD_BOXES = 0.;
-    NUM_LEFT_BOXES = 0.;
-    NUM_LEFT_ITEMS = 0;
-    NUM_ITEMS_PER_BOX = 0;
+    NUM_INIT_PIECES = 0;
+    NUM_SOLD_PIECES = 0;
+    NUM_LEFT_PIECES = 0;
+    NUM_PIECES_PER_BOX = 0;
 
     this->container = nullptr;
 }
 
 
-// return the prize of the corresponding items
-double Model::TOTAL_PRIZE(UI num_items) const {
-    return this->PRIZE * (double)num_items;
+double Model::init_num_boxes() const
+{
+    const double num_init_pieces = this->NUM_INIT_PIECES;
+    const double num_pieces_per_box = this->NUM_PIECES_PER_BOX;
+    return num_init_pieces / num_pieces_per_box;
 }
 
 
-double Model::TOTAL_PRIZE(double num_boxes) const
+double Model::sold_num_boxes() const
 {
-    return this->PRIZE * num_boxes * this->NUM_ITEMS_PER_BOX;
+    const double num_sold_pieces = this->NUM_SOLD_PIECES;
+    const double num_pieces_per_box = this->NUM_PIECES_PER_BOX;
+    return num_sold_pieces / num_pieces_per_box;
 }
 
 
-// deduct this many items
-void Model::sell_items(UI num_items)
+double Model::left_num_boxes() const
 {
-    double num_boxes_to_deduct = ((double)num_items) / (double)this->NUM_ITEMS_PER_BOX;
-    this->NUM_SOLD_BOXES += num_boxes_to_deduct;
-    this->NUM_LEFT_BOXES -= num_boxes_to_deduct;
-    this->NUM_LEFT_ITEMS -= num_items;
-
-    // make sure after adding back items, the number of initial boxes still makes sense
-    if(NUM_INIT_BOXES < NUM_LEFT_BOXES + NUM_SOLD_BOXES){
-        NUM_INIT_BOXES = NUM_LEFT_BOXES + NUM_SOLD_BOXES;
-    }
+    const double num_left_pieces = this->NUM_LEFT_PIECES;
+    const double num_pieces_per_box = this->NUM_PIECES_PER_BOX;
+    return num_left_pieces / num_pieces_per_box;
 }
 
 
-// add back this many items
-void Model::addBack_items(UI num_items)
-{
-    double num_boxes_to_addBack = num_items / (double)this->NUM_ITEMS_PER_BOX;
-    if(NUM_SOLD_BOXES < num_boxes_to_addBack){
-        NUM_SOLD_BOXES = 0;
-    }
-    else{
-        this->NUM_SOLD_BOXES -= num_boxes_to_addBack;
-    }
-
-    this->NUM_LEFT_BOXES += num_boxes_to_addBack;
-    this->NUM_LEFT_ITEMS += num_items;
-
-    // make sure after adding back items, the number of initial boxes still makes sense
-    if(NUM_INIT_BOXES != NUM_LEFT_BOXES + NUM_SOLD_BOXES){
-        NUM_INIT_BOXES = NUM_LEFT_BOXES + NUM_SOLD_BOXES;
-    }
+// return the prize of the corresponding number of pieces
+double Model::TOTAL_PRIZE(unsigned long num_pieces) const {
+    const double num_items_temp = num_pieces;
+    return this->PRIZE * num_items_temp;
 }
 
 
-// add back this many boxes, you don't need to call addBack_items anymore.
-void Model::addBack_boxes(double num_boxes_to_addBack)
+// sell num_pieces pieces
+// check if the number is valid, return true if we have enough left pieces
+bool Model::Sell(unsigned long num_pieces_to_sell)
 {
-    if(NUM_SOLD_BOXES < num_boxes_to_addBack){
-        NUM_SOLD_BOXES = 0;
+    // we make sure we have enough left piece to sell
+    if(this->NUM_LEFT_PIECES >= num_pieces_to_sell){
+        this->NUM_SOLD_PIECES += num_pieces_to_sell;
+        this->NUM_LEFT_PIECES -= num_pieces_to_sell;
+        return true;
     }
-    else{
-        NUM_SOLD_BOXES -= num_boxes_to_addBack;
-    }
-    NUM_LEFT_BOXES += num_boxes_to_addBack;
-    NUM_LEFT_ITEMS += (num_boxes_to_addBack * this->NUM_ITEMS_PER_BOX);
 
-    // make sure after adding back items, the number of initial boxes still makes sense
-    if(NUM_INIT_BOXES != NUM_LEFT_BOXES + NUM_SOLD_BOXES){
-        NUM_INIT_BOXES = NUM_LEFT_BOXES + NUM_SOLD_BOXES;
+    return false;
+}
+
+
+// add back this many pieces
+// check if the number is valid, return true if they don't exceed num_sold_pieces
+bool Model::AddBack(unsigned long num_pieces_to_addBack)
+{
+    if(num_pieces_to_addBack <= this->NUM_SOLD_PIECES){
+        this->NUM_SOLD_PIECES -= num_pieces_to_addBack;
+        this->NUM_LEFT_PIECES += num_pieces_to_addBack;
+        return true;
     }
+
+    return false;
 }
 
 
@@ -119,43 +111,28 @@ void Model::addBack_boxes(double num_boxes_to_addBack)
 void Model::searchResult_Regular(QVector<QString> &items) const
 {
     items.clear();
-    items.reserve(11);
+    items.reserve(12);
 
-    items.push_back(this->MODEL_CODE); // 货号
-    items.push_back(this->DESCRIPTION_CN); // 品名中文
-    items.push_back(this->DESCRIPTION_SPAN); // 品名西语
-    items.push_back(QString::number(this->NUM_INIT_BOXES, 'f', 2)); // 初始箱数
-    items.push_back(QString::number(this->NUM_ITEMS_PER_BOX)); // 每箱几个
-    items.push_back(QString::number(this->PRIZE, 'f', 2)); // 单价
-    items.push_back(QString::number(this->NUM_SOLD_BOXES, 'f', 2)); // 卖出箱数
-    items.push_back(QString::number((long)(this->NUM_SOLD_BOXES * this->NUM_ITEMS_PER_BOX))); // 卖出个数
-    items.push_back(QString::number(this->NUM_LEFT_BOXES, 'f', 2)); // 剩余箱数
-    items.push_back(QString::number(this->NUM_LEFT_ITEMS)); // 剩余个数
+    items.push_back(this->MODEL_CODE); // 1.货号
 
-    if(this->container.isNull()) items.push_back(""); // 集装箱号
-    else items.push_back(this->container->ID); // 集装箱号
+    if( this->container.isNull() ) // 2.集装箱号
+        items.push_back("");
+    else
+        items.push_back(this->container->ID);
 
-}
+    items.push_back(this->DESCRIPTION_CN); // 3.品名中文
+    items.push_back(this->DESCRIPTION_SPAN); // 4.品名西语
+    items.push_back(QString::number((double)this->NUM_INIT_PIECES / (double)this->NUM_PIECES_PER_BOX, 'f', 2)); // 5.进货箱数
+    items.push_back(QString::number((double)this->NUM_SOLD_PIECES / (double)this->NUM_PIECES_PER_BOX, 'f', 2)); // 6.已售箱数
+    items.push_back(QString::number((double)this->NUM_LEFT_PIECES / (double)this->NUM_PIECES_PER_BOX, 'f', 2)); // 7.剩余箱数
 
+    items.push_back(QString::number(this->NUM_PIECES_PER_BOX)); // 8.每箱几个
 
-/* return items that are used to put in the added_models_table */
-void Model::searchResult_List(QVector<QString> &items) const
-{
-    items.clear();
-    items.reserve(9);
+    items.push_back(QString::number(this->NUM_INIT_PIECES)); // 9.进货个数
+    items.push_back(QString::number(this->NUM_SOLD_PIECES)); // 10.已售个数
+    items.push_back(QString::number(this->NUM_LEFT_PIECES)); // 11.剩余个数
 
-    items.push_back(QString::number(this->NUM_LEFT_BOXES, 'f', 2)); // 剩余箱数
-    items.push_back(QString::number(this->NUM_LEFT_ITEMS)); // 剩余个数
-    items.push_back(QString::number(this->NUM_ITEMS_PER_BOX)); // 每箱几个
-    items.push_back(this->MODEL_CODE); // 货号
-    items.push_back(this->DESCRIPTION_SPAN); // 品名西语
-    items.push_back(this->DESCRIPTION_CN); // 品名中文
-    items.push_back(QString::number(this->PRIZE, 'f', 2)); // 单价
-    items.push_back(QString::number(this->PRIZE*this->NUM_LEFT_BOXES*this->NUM_ITEMS_PER_BOX, 'f', 2)); // 总价
-
-    if(this->container.isNull()) items.push_back(""); // 集装箱号
-    else items.push_back(this->container->ID); // 集装箱号
-
+    items.push_back(QString::number(this->PRIZE, 'f', 2)); // 12.单价
 }
 
 
@@ -166,9 +143,8 @@ QString Model::describe_this_model() const
            + this->DESCRIPTION_CN + "/n"
            + this->DESCRIPTION_SPAN + "\n"
            + QString::number(this->PRIZE) + "\n"
-           + QString::number(this->NUM_INIT_BOXES) + "\n"
-           + QString::number(this->NUM_SOLD_BOXES) + "\n"
-           + QString::number(this->NUM_LEFT_BOXES) + "\n"
-           + QString::number(this->NUM_LEFT_ITEMS) + "\n"
-           + QString::number(this->NUM_ITEMS_PER_BOX);
+           + QString::number(this->NUM_INIT_PIECES) + "\n"
+           + QString::number(this->NUM_SOLD_PIECES) + "\n"
+           + QString::number(this->NUM_LEFT_PIECES) + "\n"
+           + QString::number(this->NUM_PIECES_PER_BOX);
 }

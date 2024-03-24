@@ -23,8 +23,8 @@ public:
 
     void reset();
     void clear();
-    void reserve_model_space(UI size);
-    void reserve_container_space(UI size);
+    void reserve_model_space(unsigned long size);
+    void reserve_container_space(unsigned long size);
 
     // model stuff
     void add_Model( ModelPtr& m );
@@ -41,8 +41,8 @@ public:
     bool contains_container(const QString& ID) const;
     bool contains_container(const ContainerPtr& container) const;
 
-    UI num_models() const;
-    UI num_containers() const;
+    unsigned long num_models() const;
+    unsigned long num_containers() const;
 
     void searchModel_starts_with(const QString str,  QVector<ModelPtr>& models);
     void searchContainer_starts_with(const QString str,  QVector<ContainerPtr>& containers);

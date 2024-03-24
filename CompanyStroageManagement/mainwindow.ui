@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>790</width>
-    <height>735</height>
+    <width>842</width>
+    <height>481</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -114,6 +114,11 @@
                 </column>
                 <column>
                  <property name="text">
+                  <string>集装箱号</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
                   <string>品名（中文）</string>
                  </property>
                 </column>
@@ -124,17 +129,7 @@
                 </column>
                 <column>
                  <property name="text">
-                  <string>初始箱数</string>
-                 </property>
-                </column>
-                <column>
-                 <property name="text">
-                  <string>每箱件数</string>
-                 </property>
-                </column>
-                <column>
-                 <property name="text">
-                  <string>单价</string>
+                  <string>进货箱数</string>
                  </property>
                 </column>
                 <column>
@@ -144,22 +139,32 @@
                 </column>
                 <column>
                  <property name="text">
-                  <string>已售个数</string>
-                 </property>
-                </column>
-                <column>
-                 <property name="text">
                   <string>剩余箱数</string>
                  </property>
                 </column>
                 <column>
                  <property name="text">
-                  <string>剩余件数</string>
+                  <string>每箱个数</string>
                  </property>
                 </column>
                 <column>
                  <property name="text">
-                  <string>集装箱</string>
+                  <string>进货个数</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>已售个数</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>剩余个数</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>单价</string>
                  </property>
                 </column>
                </widget>
@@ -174,8 +179,14 @@
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_11">
               <item>
-               <widget class="QWidget" name="widget_6" native="true">
-                <layout class="QHBoxLayout" name="horizontalLayout_10">
+               <widget class="QWidget" name="widget_17" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <layout class="QHBoxLayout" name="horizontalLayout_3">
                  <property name="spacing">
                   <number>3</number>
                  </property>
@@ -192,8 +203,8 @@
                   <number>3</number>
                  </property>
                  <item>
-                  <widget class="QWidget" name="widget_7" native="true">
-                   <layout class="QHBoxLayout" name="horizontalLayout_2">
+                  <widget class="QWidget" name="widget_8" native="true">
+                   <layout class="QVBoxLayout" name="verticalLayout_5">
                     <property name="spacing">
                      <number>3</number>
                     </property>
@@ -226,52 +237,6 @@
                      </widget>
                     </item>
                     <item>
-                     <widget class="QLineEdit" name="selected_model_MODELCODE_LE">
-                      <property name="enabled">
-                       <bool>false</bool>
-                      </property>
-                      <property name="readOnly">
-                       <bool>true</bool>
-                      </property>
-                      <property name="placeholderText">
-                       <string>暂无</string>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-              <item>
-               <widget class="QWidget" name="widget_17" native="true">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <layout class="QHBoxLayout" name="horizontalLayout_3">
-                 <item>
-                  <widget class="QWidget" name="widget_8" native="true">
-                   <layout class="QVBoxLayout" name="verticalLayout_5">
-                    <property name="spacing">
-                     <number>3</number>
-                    </property>
-                    <property name="leftMargin">
-                     <number>3</number>
-                    </property>
-                    <property name="topMargin">
-                     <number>3</number>
-                    </property>
-                    <property name="rightMargin">
-                     <number>3</number>
-                    </property>
-                    <property name="bottomMargin">
-                     <number>3</number>
-                    </property>
-                    <item>
                      <widget class="QLabel" name="selected_model_DESCRIPTION_CN_label">
                       <property name="enabled">
                        <bool>true</bool>
@@ -287,13 +252,6 @@
                       </property>
                       <property name="alignment">
                        <set>Qt::AlignCenter</set>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="Line" name="line_6">
-                      <property name="orientation">
-                       <enum>Qt::Horizontal</enum>
                       </property>
                      </widget>
                     </item>
@@ -338,27 +296,12 @@
                      <number>3</number>
                     </property>
                     <item>
-                     <widget class="QTextEdit" name="selected_model_DESCRIPTION_CN_TextEdit">
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
+                     <widget class="QLineEdit" name="selected_model_MODELCODE_LE">
+                      <property name="enabled">
+                       <bool>false</bool>
                       </property>
-                      <property name="minimumSize">
-                       <size>
-                        <width>200</width>
-                        <height>30</height>
-                       </size>
-                      </property>
-                      <property name="maximumSize">
-                       <size>
-                        <width>16777215</width>
-                        <height>60</height>
-                       </size>
-                      </property>
-                      <property name="sizeAdjustPolicy">
-                       <enum>QAbstractScrollArea::AdjustToContents</enum>
+                      <property name="readOnly">
+                       <bool>true</bool>
                       </property>
                       <property name="placeholderText">
                        <string>暂无</string>
@@ -366,35 +309,14 @@
                      </widget>
                     </item>
                     <item>
-                     <widget class="Line" name="line_5">
-                      <property name="orientation">
-                       <enum>Qt::Horizontal</enum>
+                     <widget class="QLineEdit" name="selected_model_DESCRIPTION_CN_lineEdit">
+                      <property name="placeholderText">
+                       <string>暂无</string>
                       </property>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QTextEdit" name="selected_model_DESCRIPTION_SPAN_TextEdit">
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
-                      </property>
-                      <property name="minimumSize">
-                       <size>
-                        <width>200</width>
-                        <height>30</height>
-                       </size>
-                      </property>
-                      <property name="maximumSize">
-                       <size>
-                        <width>16777215</width>
-                        <height>60</height>
-                       </size>
-                      </property>
-                      <property name="sizeAdjustPolicy">
-                       <enum>QAbstractScrollArea::AdjustToContents</enum>
-                      </property>
+                     <widget class="QLineEdit" name="selected_model_DESCRIPTION_SPAN_TextEdit_lineEdit">
                       <property name="placeholderText">
                        <string>暂无</string>
                       </property>
@@ -448,7 +370,7 @@
                        <bool>true</bool>
                       </property>
                       <property name="text">
-                       <string>初始箱数</string>
+                       <string>进货个数</string>
                       </property>
                       <property name="alignment">
                        <set>Qt::AlignCenter</set>
@@ -456,12 +378,12 @@
                      </widget>
                     </item>
                     <item>
-                     <widget class="QDoubleSpinBox" name="selected_model_NUM_INIT_BOXES_SB">
+                     <widget class="QSpinBox" name="selected_model_NUM_INIT_BOXES_SB">
                       <property name="alignment">
                        <set>Qt::AlignCenter</set>
                       </property>
                       <property name="maximum">
-                       <double>100000000.000000000000000</double>
+                       <number>999999999</number>
                       </property>
                      </widget>
                     </item>
@@ -494,7 +416,7 @@
                      <number>3</number>
                     </property>
                     <item>
-                     <widget class="QLabel" name="selected_model_NUM_ITEMS_PER_BOX_label">
+                     <widget class="QLabel" name="selected_model_NUM_PIECES_PER_BOX_label">
                       <property name="enabled">
                        <bool>true</bool>
                       </property>
@@ -512,7 +434,7 @@
                        <set>Qt::AlignCenter</set>
                       </property>
                       <property name="maximum">
-                       <number>100000000</number>
+                       <number>999999999</number>
                       </property>
                      </widget>
                     </item>
@@ -563,7 +485,7 @@
                        <set>Qt::AlignCenter</set>
                       </property>
                       <property name="maximum">
-                       <double>100000000.000000000000000</double>
+                       <double>999999999999999.000000000000000</double>
                       </property>
                      </widget>
                     </item>
@@ -598,7 +520,7 @@
                     <item>
                      <widget class="QLabel" name="selected_model_NUM_SOLD_BOXES_label">
                       <property name="text">
-                       <string>已售箱数</string>
+                       <string>已售个数</string>
                       </property>
                       <property name="alignment">
                        <set>Qt::AlignCenter</set>
@@ -606,12 +528,12 @@
                      </widget>
                     </item>
                     <item>
-                     <widget class="QDoubleSpinBox" name="selected_model_NUM_SOLD_BOXES_SB">
+                     <widget class="QSpinBox" name="selected_model_NUM_SOLD_BOXES_SB">
                       <property name="alignment">
                        <set>Qt::AlignCenter</set>
                       </property>
                       <property name="maximum">
-                       <double>100000000.000000000000000</double>
+                       <number>999999999</number>
                       </property>
                      </widget>
                     </item>
@@ -648,7 +570,7 @@
                     </size>
                    </property>
                    <property name="text">
-                    <string>集装箱</string>
+                    <string>集装箱号</string>
                    </property>
                    <property name="alignment">
                     <set>Qt::AlignCenter</set>
@@ -784,7 +706,7 @@
              </column>
              <column>
               <property name="text">
-               <string>货物初始数量（个）</string>
+               <string>货物进货数量（个）</string>
               </property>
              </column>
              <column>
@@ -827,6 +749,11 @@
              </column>
              <column>
               <property name="text">
+               <string>集装箱</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
                <string>品名（中文）</string>
               </property>
              </column>
@@ -837,17 +764,7 @@
              </column>
              <column>
               <property name="text">
-               <string>初始箱数</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>每箱个数</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>单价</string>
+               <string>进货箱数</string>
               </property>
              </column>
              <column>
@@ -857,12 +774,22 @@
              </column>
              <column>
               <property name="text">
-               <string>已售个数</string>
+               <string>剩余箱数</string>
               </property>
              </column>
              <column>
               <property name="text">
-               <string>剩余箱数</string>
+               <string>每箱个数</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>进货个数</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>已售个数</string>
               </property>
              </column>
              <column>
@@ -872,7 +799,7 @@
              </column>
              <column>
               <property name="text">
-               <string>集装箱</string>
+               <string>单价</string>
               </property>
              </column>
             </widget>
@@ -1295,7 +1222,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>790</width>
+     <width>842</width>
      <height>17</height>
     </rect>
    </property>

@@ -1,7 +1,7 @@
 #include "DataStructures/entry.h"
 #include "GlobalVars.h"
 
-Entry::Entry(double CAJA, UL CANTIDAD, UL CANT_POR_CAJA ,
+Entry::Entry(double CAJA, unsigned long CANTIDAD, unsigned long CANT_POR_CAJA ,
              QString CLAVE, QString ContainerID,
              QString Description_SPAN, QString Description_CN,
              double PRECIO, double IMPORTE)

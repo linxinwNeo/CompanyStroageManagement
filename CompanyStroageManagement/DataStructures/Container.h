@@ -1,7 +1,6 @@
 #ifndef CONTAINER_H
 #define CONTAINER_H
 
-#include "Predefined.h"
 #include <QString>
 #include <QSet>
 #include <QSharedPointer>
@@ -27,7 +26,7 @@ public:
 
     bool has_model(QSharedPointer<Model>& m) const;
 
-    UI num_models() const;
+    unsigned long num_models() const;
 
     double total_num_init_boxes() const;
     double total_num_left_boxes() const;

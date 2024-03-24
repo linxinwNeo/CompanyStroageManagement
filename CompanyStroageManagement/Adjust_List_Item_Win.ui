@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>538</width>
-    <height>552</height>
+    <width>445</width>
+    <height>387</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <item>
     <widget class="QGroupBox" name="adjust_list_item_GB">
      <property name="title">
-      <string>调整数量</string>
+      <string>调整出售货物的数量</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
@@ -112,7 +112,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="NUM_ITEMS_SB">
+          <widget class="QSpinBox" name="NUM_PIECES_SB">
            <property name="enabled">
             <bool>false</bool>
            </property>
@@ -128,7 +128,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="NUM_ITEMS_LE">
+          <widget class="QLineEdit" name="NUM_PIECES_LE">
            <property name="enabled">
             <bool>false</bool>
            </property>
@@ -169,7 +169,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="NUM_ITEMS_PER_BOX_LE">
+          <widget class="QLineEdit" name="NUM_PIECES_PER_BOX_LE">
            <property name="enabled">
             <bool>false</bool>
            </property>

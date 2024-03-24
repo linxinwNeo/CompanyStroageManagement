@@ -20,9 +20,9 @@ public:
 
     void add_entry(EntryPtr& entry);
     void remove_last_entry();
-    void remove_entry(const UL);
-    inline UL num_entries() const;
-    EntryPtr get_entry(const UL);
+    void remove_entry(const unsigned long);
+    inline unsigned long num_entries() const;
+    EntryPtr get_entry(const unsigned long);
 
     bool has_Model(const QString &ModelCode, const QString &ContainerID) const;
 
@@ -40,7 +40,7 @@ EntryList::~EntryList()
     this->clear_memory();
 }
 
-UL EntryList::num_entries() const
+unsigned long EntryList::num_entries() const
 {
     return this->entries.size();
 }

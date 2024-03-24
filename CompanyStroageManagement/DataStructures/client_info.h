@@ -3,7 +3,6 @@
 
 #include <QString>
 #include <QDebug>
-#include "Predefined.h"
 
 class Client_info
 {

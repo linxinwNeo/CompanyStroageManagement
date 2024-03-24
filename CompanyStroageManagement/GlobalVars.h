@@ -3,9 +3,7 @@
 
 #include <QString>
 #include <QSharedPointer>
-#include "Predefined.h"
 #include "DataStructures/Inventory.h"
-#include "DataStructures/client_info.h"
 #include "DataStructures/List.h"
 
 extern const QString APP_NAME;

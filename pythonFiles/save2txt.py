@@ -9,7 +9,7 @@ def write2txt(models, path) :
         # Write content to the file
         
         # write the number of models
-        file.write('% ' + str(len(models)) + split_item + '0 \n')
+        file.write('% ' + str(len(models)) + split_item + ' \n')
         file.write('% MODEL_CODE DESCRIPTION_SPAN DESCRIPTION_CN PRIZE_PER_PIECE NUM_INITIAL_PIECES NUM_SOLD_PIECES NUM_LEFT_PIECES NUM_PIECES_PER_BOX CONTAINER_ID\n')
         for key, value in models.items():
             file.write(value.MODEL_CODE + split_item)

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1527</width>
-    <height>680</height>
+    <width>887</width>
+    <height>430</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -201,13 +201,13 @@
                 <widget class="QLabel" name="CLIENTE_label">
                  <property name="minimumSize">
                   <size>
-                   <width>10</width>
+                   <width>50</width>
                    <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>60</width>
+                   <width>100</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -257,13 +257,13 @@
                 <widget class="QLabel" name="DOMICILIO_label">
                  <property name="minimumSize">
                   <size>
-                   <width>10</width>
+                   <width>50</width>
                    <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>60</width>
+                   <width>50</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -313,13 +313,13 @@
                 <widget class="QLabel" name="CIUDAD_label">
                  <property name="minimumSize">
                   <size>
-                   <width>10</width>
+                   <width>50</width>
                    <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>60</width>
+                   <width>50</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -369,7 +369,7 @@
                 <widget class="QLabel" name="RFC_label">
                  <property name="minimumSize">
                   <size>
-                   <width>10</width>
+                   <width>50</width>
                    <height>0</height>
                   </size>
                  </property>
@@ -425,13 +425,13 @@
                 <widget class="QLabel" name="AGENTE_label">
                  <property name="minimumSize">
                   <size>
-                   <width>10</width>
+                   <width>50</width>
                    <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>60</width>
+                   <width>50</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -481,13 +481,13 @@
                 <widget class="QLabel" name="CONDICIONES_label">
                  <property name="minimumSize">
                   <size>
-                   <width>10</width>
+                   <width>50</width>
                    <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>130</width>
+                   <width>50</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -537,13 +537,13 @@
                 <widget class="QLabel" name="DISCOUNT_label">
                  <property name="minimumSize">
                   <size>
-                   <width>10</width>
+                   <width>50</width>
                    <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>80</width>
+                   <width>50</width>
                    <height>100</height>
                   </size>
                  </property>
@@ -611,22 +611,17 @@
               </attribute>
               <column>
                <property name="text">
-                <string>CAJA/箱数</string>
-               </property>
-              </column>
-              <column>
-               <property name="text">
-                <string>CANTIDAD/个数</string>
-               </property>
-              </column>
-              <column>
-               <property name="text">
-                <string>CANT POR CAJA/每箱个数</string>
-               </property>
-              </column>
-              <column>
-               <property name="text">
                 <string>CLAVE/货号</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>CONTAINER/集装箱号</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>DESCRIPTION/品名（中文）</string>
                </property>
               </column>
               <column>
@@ -636,7 +631,17 @@
               </column>
               <column>
                <property name="text">
-                <string>DESCRIPTION/品名（中文）</string>
+                <string>CAJA/箱数</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>CANT POR CAJA/每箱个数</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>CANTIDAD/个数</string>
                </property>
               </column>
               <column>
@@ -647,11 +652,6 @@
               <column>
                <property name="text">
                 <string>IMPORTE/总价</string>
-               </property>
-              </column>
-              <column>
-               <property name="text">
-                <string>CONTAINER/集装箱号</string>
                </property>
               </column>
              </widget>

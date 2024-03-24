@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1162</width>
-    <height>641</height>
+    <width>403</width>
+    <height>346</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -212,9 +212,9 @@
              <number>3</number>
             </property>
             <item>
-             <widget class="QLabel" name="NUM_INIT_BOXES_label">
+             <widget class="QLabel" name="NUM_INIT_PIECES_label">
               <property name="text">
-               <string>初始箱数</string>
+               <string>进货个数</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -250,9 +250,9 @@
              <number>3</number>
             </property>
             <item>
-             <widget class="QLabel" name="NUM_SOLD_BOXES_label">
+             <widget class="QLabel" name="NUM_SOLD_PIECES_label">
               <property name="text">
-               <string>已出售箱数</string>
+               <string>已出售个数</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -288,7 +288,7 @@
              <number>3</number>
             </property>
             <item>
-             <widget class="QLabel" name="NUM_ITEMS_PER_BOX_label">
+             <widget class="QLabel" name="NUM_PIECES_PER_BOX_label">
               <property name="text">
                <string>每箱个数</string>
               </property>
