@@ -78,8 +78,6 @@ private slots:
 private:
     ModelPtr selected_model;
     ContainerPtr selected_container;
-    unsigned int num_search_model_result_table_columns = 11;
-    unsigned int num_search_container_result_table_columns = 6;
     Ui::MainWindow *ui;
 
     AddNewModelWindow AddNewModelWinPtr;
@@ -90,11 +88,5 @@ private:
 
     const float widthRatio = 0.6;
     const float heightRatio = 0.8;
-
-public:
-    const unsigned int search_model_result_table_MODELCODE_idx = 0;
-    const unsigned int search_model_result_table_ContainerID_idx = 10;
-
-    const unsigned int search_container_result_table_ContainerID_idx = 0;
 };
 #endif // MAINWINDOW_H

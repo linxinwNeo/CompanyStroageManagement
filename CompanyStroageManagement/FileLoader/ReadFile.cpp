@@ -262,18 +262,18 @@ bool ReadFile::read_Lists_txt_File(const QString &path, const bool save_path)
             );      // 2. 创建时间
 
         // read client_info
-        new_list->client_info.CLIENTE = strList[3]; // 3.
-        new_list->client_info.DOMICILIO = strList[4]; // 4.
-        new_list->client_info.CIUDAD = strList[5]; // 5.
-        new_list->client_info.RFC = strList[6]; // 6.
-        new_list->client_info.AGENTE = strList[7]; // 7.
-        new_list->client_info.CONDICIONES = strList[8]; // 8.
-        new_list->client_info.TOTAL_NUM_BOXES = strList[9].toDouble(); // 9.
-        new_list->client_info.DISCOUNT = strList[10].toDouble(); // 10.
+        new_list->client_info.CLIENTE = strList[2]; // 2.
+        new_list->client_info.DOMICILIO = strList[3]; // 3.
+        new_list->client_info.CIUDAD = strList[4]; // 4.
+        new_list->client_info.RFC = strList[5]; // 5.
+        new_list->client_info.AGENTE = strList[6]; // 6.
+        new_list->client_info.CONDICIONES = strList[7]; // 7.
+        new_list->client_info.TOTAL_NUM_BOXES = strList[8].toDouble(); // 8.
+        new_list->client_info.DISCOUNT = strList[9].toDouble(); // 9.
 
         // reading entries
-        unsigned long num_items = strList[11].toUInt();
-        for(unsigned int i = 0; i < num_items; i++){
+        unsigned long num_items = strList[10].toUInt(); // 10.
+        for(unsigned long i = 0; i < num_items; i++){
             line = in.readLine();
             QStringList entryRawData = line.split(split_item);
 
@@ -281,12 +281,12 @@ bool ReadFile::read_Lists_txt_File(const QString &path, const bool save_path)
 
             newEntry->CLAVE = entryRawData[0];
             newEntry->ContainerID = entryRawData[1];
-            newEntry->CANTIDAD = entryRawData[3].toDouble();
-            newEntry->CANT_POR_CAJA = entryRawData[4].toUInt();
-            newEntry->Description_SPAN = entryRawData[5];
-            newEntry->Description_CN = entryRawData[6];
-            newEntry->PRECIO = entryRawData[7].toDouble();
-            newEntry->IMPORTE = entryRawData[8].toDouble();
+            newEntry->CANTIDAD = entryRawData[2].toULong();
+            newEntry->CANT_POR_CAJA = entryRawData[3].toULong();
+            newEntry->Description_SPAN = entryRawData[4];
+            newEntry->Description_CN = entryRawData[5];
+            newEntry->PRECIO = entryRawData[6].toDouble();
+            newEntry->IMPORTE = entryRawData[7].toDouble();
 
             new_list->add_item(newEntry);
         }

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>759</width>
-    <height>539</height>
+    <height>661</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -579,6 +579,11 @@
                <string>单价</string>
               </property>
              </column>
+             <column>
+              <property name="text">
+               <string>进货时间</string>
+              </property>
+             </column>
             </widget>
            </item>
            <item>
@@ -695,7 +700,7 @@
             </column>
             <column>
              <property name="text">
-              <string>DESCRIPTION/品名（中文）</string>
+              <string>DESCRIPTION/品名(中文)</string>
              </property>
             </column>
             <column>
@@ -887,7 +892,7 @@
      <x>0</x>
      <y>0</y>
      <width>759</width>
-     <height>17</height>
+     <height>24</height>
     </rect>
    </property>
   </widget>

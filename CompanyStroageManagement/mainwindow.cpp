@@ -132,16 +132,16 @@ void MainWindow::setLanguage()
     this->ui->selected_model_MODELCODE_LE->setPlaceholderText(none);
 
     this->ui->selected_model_DESCRIPTION_CN_label->setText(lan("品名（中文）", "DESCRIPTION(Chino)"));
-    this->ui->selected_model_DESCRIPTION_CN_TextEdit->setPlaceholderText(none);
+    this->ui->selected_model_DESCRIPTION_CN_lineEdit->setPlaceholderText(none);
 
     this->ui->selected_model_DESCRIPTION_SPAN_label->setText(lan("品名（西语）", "DESCRIPTION(Español)"));
-    this->ui->selected_model_DESCRIPTION_SPAN_TextEdit->setPlaceholderText(none);
+    this->ui->selected_model_DESCRIPTION_SPAN_lineEdit->setPlaceholderText(none);
 
-    this->ui->selected_model_NUM_INIT_BOXES_label->setText(lan("初始箱数", "Número inicial de cajas"));
-    this->ui->selected_model_NUM_ITEMS_PER_BOX_label->setText(lan("每箱个数", "Piezas por caja"));
+    this->ui->selected_model_NUM_INIT_PIECES_label->setText(lan("进货个数", "Número de piezas adquiridas"));
+    this->ui->selected_model_NUM_PIECES_PER_BOX_label->setText(lan("每箱个数", "Número de piezas por caja"));
 
     this->ui->selected_model_PRIZE_label->setText(lan("单价", "precio del artículo"));
-    this->ui->selected_model_NUM_SOLD_BOXES_label->setText(lan("已售箱数", "Número de cajas vendidas"));
+    this->ui->selected_model_NUM_SOLD_PIECES_label->setText(lan("已售个数", "Número de piezas vendidas"));
 
     this->ui->selected_model_CONTAINER_label->setText(lan("集装箱号", "número de contenedor"));
     this->ui->selected_model_CONTAINER_LE->setText(none);

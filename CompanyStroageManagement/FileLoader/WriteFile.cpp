@@ -200,25 +200,25 @@ bool WriteFile::Lists2txt(const QString &path, const bool save_path)
 
     for(const ListPtr& list : lists.lists){
         // output list id first
-        out << list->id << split_item; // 0
-        // output list creation datatime
+        out << list->id << split_item; // 0.
+        // 1. output list creation datatime
         if(list->datetime_created.isNull()){ // if no date time, put current time
             list->datetime_created = QSharedPointer<QDateTime>::create(QDateTime().currentDateTime());
         }
         out << list->datetime_created->toString(DateTimeFormat) << split_item;
 
         // output client_info
-        out << list->client_info.CLIENTE << split_item // 3
-            << list->client_info.DOMICILIO << split_item // 4
-            << list->client_info.CIUDAD << split_item // 5
-            << list->client_info.RFC << split_item // 6
-            << list->client_info.AGENTE << split_item // 7
-            << list->client_info.CONDICIONES << split_item // 8
-            << list->client_info.TOTAL_NUM_BOXES << split_item // 9
-            << list->client_info.DISCOUNT << split_item; // 10
+        out << list->client_info.CLIENTE << split_item // 2
+            << list->client_info.DOMICILIO << split_item // 3
+            << list->client_info.CIUDAD << split_item // 4
+            << list->client_info.RFC << split_item // 5
+            << list->client_info.AGENTE << split_item // 6
+            << list->client_info.CONDICIONES << split_item // 7
+            << list->client_info.TOTAL_NUM_BOXES << split_item // 8
+            << list->client_info.DISCOUNT << split_item; // 9
 
         // output num of models in the list
-        out << list->num_model_types() << "\n"; // 11
+        out << list->num_model_types() << "\n"; // 10
         
         for(EntryPtr& entry : list->entryList.entries){
             out << entry->CLAVE << split_item // 0. 货号

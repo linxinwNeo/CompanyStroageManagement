@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>842</width>
-    <height>481</height>
+    <height>582</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -321,7 +321,7 @@
                      </widget>
                     </item>
                     <item>
-                     <widget class="QLineEdit" name="selected_model_DESCRIPTION_SPAN_TextEdit_lineEdit">
+                     <widget class="QLineEdit" name="selected_model_DESCRIPTION_SPAN_lineEdit">
                       <property name="placeholderText">
                        <string>暂无</string>
                       </property>
@@ -370,7 +370,7 @@
                      <number>3</number>
                     </property>
                     <item>
-                     <widget class="QLabel" name="selected_model_NUM_INIT_BOXES_label">
+                     <widget class="QLabel" name="selected_model_NUM_INIT_PIECES_label">
                       <property name="enabled">
                        <bool>true</bool>
                       </property>
@@ -434,7 +434,7 @@
                      </widget>
                     </item>
                     <item>
-                     <widget class="QSpinBox" name="selected_model_NUM_ITEMS_PER_BOX_SB">
+                     <widget class="QSpinBox" name="selected_model_NUM_PIECES_PER_BOX_SB">
                       <property name="alignment">
                        <set>Qt::AlignCenter</set>
                       </property>
@@ -523,7 +523,7 @@
                      <number>3</number>
                     </property>
                     <item>
-                     <widget class="QLabel" name="selected_model_NUM_SOLD_BOXES_label">
+                     <widget class="QLabel" name="selected_model_NUM_SOLD_PIECES_label">
                       <property name="text">
                        <string>已售个数</string>
                       </property>
@@ -533,7 +533,7 @@
                      </widget>
                     </item>
                     <item>
-                     <widget class="QSpinBox" name="selected_model_NUM_SOLD_BOXES_SB">
+                     <widget class="QSpinBox" name="selected_model_NUM_SOLD_PIECES_SB">
                       <property name="alignment">
                        <set>Qt::AlignCenter</set>
                       </property>
@@ -1233,7 +1233,7 @@
      <x>0</x>
      <y>0</y>
      <width>842</width>
-     <height>17</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="LanguageMenu">
