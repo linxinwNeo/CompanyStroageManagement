@@ -4,7 +4,7 @@
 #include "DataStructures/Container.h"
 #include "DataStructures/List.h"
 #include "DataStructures/Model.h"
-#include "DataStructures/entry.h"
+#include "DataStructures/Entry.h"
 #include <QString>
 #include <QVector>
 

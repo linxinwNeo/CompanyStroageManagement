@@ -1,13 +1,12 @@
 #include "DataStructures/entry.h"
 #include "GlobalVars.h"
 
-Entry::Entry(double CAJA, unsigned long CANTIDAD, unsigned long CANT_POR_CAJA ,
+Entry::Entry(unsigned long CANTIDAD, unsigned long CANT_POR_CAJA ,
              QString CLAVE, QString ContainerID,
              QString Description_SPAN, QString Description_CN,
              double PRECIO, double IMPORTE)
 {
     this->CLAVE = CLAVE;
-    this->CAJA = CAJA;
     this->CANTIDAD = CANTIDAD;
     this->CANT_POR_CAJA = CANT_POR_CAJA;
     this->Description_SPAN = Description_SPAN;
@@ -32,7 +31,7 @@ ModelPtr Entry::get_corresponding_model() const
 QVector<QString> Entry::view_values() const
 {
     return {
-        QString::number(CAJA, 'f', 2),
+        QString::number(this->num_boxes(), 'f', 2),
         QString::number(CANTIDAD),
         QString::number(CANT_POR_CAJA),
         CLAVE,
@@ -42,4 +41,14 @@ QVector<QString> Entry::view_values() const
         QString::number(IMPORTE, 'f', 2),
         ContainerID
     };
+}
+
+
+// 计算箱数
+double Entry::num_boxes() const
+{
+    const double number_of_pieces = this->CANTIDAD;
+    const double number_of_pieces_per_box = this->CANT_POR_CAJA;
+    const double num = number_of_pieces / number_of_pieces_per_box;
+    return num;
 }

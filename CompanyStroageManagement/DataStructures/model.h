@@ -29,9 +29,13 @@ public:
     QSharedPointer<QDateTime> last_time_modified; // 上次被修改的时间
 
     Model();
-    Model(const QString& MODEL_CODE, const QString& DESCRIPTION_SPAN, const QString& DESCRIPTION_CN,
+    Model(const QString& MODEL_CODE,
+          const QString& DESCRIPTION_SPAN,
+          const QString& DESCRIPTION_CN,
           const double& PRIZE,
-          const unsigned long& NUM_INIT_PIECES, const unsigned long& NUM_SOLD_PIECES, const unsigned long& NUM_LEFT_PIECES,
+          const unsigned long& NUM_INIT_PIECES,
+          const unsigned long& NUM_SOLD_PIECES,
+          const unsigned long& NUM_LEFT_PIECES,
           const unsigned long& NUM_PIECES_PER_BOX);
     ~Model();
 
@@ -42,9 +46,19 @@ public:
     double left_num_boxes() const;
 
     double TOTAL_PRIZE(unsigned long num_items) const;
+    double TOTAL_PRIZE(float) = delete; // Prevent calling with float
+    double TOTAL_PRIZE(double) = delete; // Prevent calling with double
+    double TOTAL_PRIZE(long double) = delete; // Prevent calling with long double
     
     bool Sell(unsigned long num_pieces_to_sell);
+    bool Sell(float) = delete; // Prevent calling with float
+    bool Sell(double) = delete; // Prevent calling with double
+    bool Sell(long double) = delete; // Prevent calling with long double
+
     bool AddBack(unsigned long num_pieces_to_addBack);
+    bool AddBack(float) = delete; // Prevent calling with float
+    bool AddBack(double) = delete; // Prevent calling with double
+    bool AddBack(long double) = delete; // Prevent calling with long double
     
     void searchResult_Regular(QVector<QString>& items) const;
 

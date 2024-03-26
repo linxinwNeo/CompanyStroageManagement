@@ -2,7 +2,7 @@
 #define ADJUST_LIST_ITEM_WIN_H
 
 #include "DataStructures/Model.h"
-#include "DataStructures/entry.h"
+#include "DataStructures/Entry.h"
 #include <QWidget>
 #include <QTableWidgetItem>
 

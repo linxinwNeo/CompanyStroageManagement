@@ -1,7 +1,7 @@
 #ifndef INVENTORY_H
 #define INVENTORY_H
 
-#include "DataStructures/entry.h"
+#include "DataStructures/Entry.h"
 #include <QString>
 #include <QHash>
 #include <DataStructures/Model.h>
@@ -27,7 +27,7 @@ public:
     void reserve_container_space(unsigned long size);
 
     // model stuff
-    void add_Model( ModelPtr& m );
+    void add_new_Model( ModelPtr& m );
     void remove_Model( ModelPtr& m );
     QSet<ModelPtr> get_Model(const QString& MODEL_CODE);
     ModelPtr get_Model(const QString& MODEL_CODE, const QString& Container_ID);

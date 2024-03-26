@@ -7,6 +7,7 @@
 #include "GlobalVars.h"
 #include "header/xlsxdocument.h"
 #include "IO_Base.h"
+#include "Others/write_error_file.h"
 
 ReadFile::ReadFile()
 {
@@ -62,8 +63,10 @@ bool ReadFile::read_Inventory_txt_File(const QString& path, const bool save_path
     { // read first two lines
         line = in.readLine(); // read the first line, which contains the number of models and the number of containers
         QStringList strList = line.split(split_item);
-        unsigned int num_models = strList[0].toUInt() + 1;
-        unsigned int num_containers = strList[1].toUInt() + 1;
+        unsigned int num_models = strList[0].toULong() + 1;
+        unsigned int num_containers = strList[1].toULong() + 1;
+
+        inventory.clear();
         inventory.reserve_model_space(num_models * 1.5);
         inventory.reserve_container_space(num_containers * 1.3);
 
@@ -75,22 +78,14 @@ bool ReadFile::read_Inventory_txt_File(const QString& path, const bool save_path
 
         QStringList strList = line.split(split_item);
         QSharedPointer<Model> m(new Model());
-        m->MODEL_CODE = strList[0];
+        m->MODEL_CODE = strList[0]; // 1. 货号/MODEL_CODE
         if(m->MODEL_CODE.isEmpty()) {
-            qDebug() << "encounter an empty model";
+            write_error_file("Encounter an empty Model CODE");
             continue;
         }
-        m->DESCRIPTION_SPAN = strList[1];
-        m->DESCRIPTION_CN = strList[2];
-        m->PRIZE = strList[3].toDouble();
-        m->NUM_INIT_BOXES = strList[4].toDouble();
-        m->NUM_SOLD_BOXES = strList[5].toDouble();
-        m->NUM_LEFT_ITEMS = strList[6].toInt();
-        m->NUM_LEFT_BOXES = strList[7].toDouble();
-        m->NUM_ITEMS_PER_BOX = strList[8].toInt();
-        QString containerID = strList[9];
 
-        // check if container exists
+        QString containerID = strList[1].trimmed(); // 2. 集装箱号/CONTAINER_ID
+        // check if the container exists
         if(containerID.startsWith("-1")){
             m->container = nullptr; // do nothing if this model does not have a container
         }
@@ -110,7 +105,21 @@ bool ReadFile::read_Inventory_txt_File(const QString& path, const bool save_path
             container->add_model(m); // add this model to the container
             m->container = container;// add container to this model
         }
-        inventory.add_Model(m);
+
+        m->DESCRIPTION_CN = strList[2]; // 3. 品名（中文）/DESCRIPTION_CN
+        m->DESCRIPTION_SPAN = strList[3]; // 4. 品名（西语）/DESCRIPTION_SPAN
+
+        m->NUM_INIT_PIECES = strList[4].toDouble(); // 5. 进货个数/NUM_INITIAL_PIECES
+        m->NUM_SOLD_PIECES = strList[5].toDouble(); // 6. 已售个数/NUM_SOLD_PIECES
+        m->NUM_LEFT_PIECES = strList[6].toULong(); // 7. 剩余个数/NUM_LEFT_PIECES
+        m->NUM_PIECES_PER_BOX = strList[7].toULong(); // 8.每箱个数/NUM_PIECES_PER_BOX
+        m->PRIZE = strList[8].toDouble(); // 9. 单价/PRIZE_PER_PIECE
+        // 10. 上次修改时间/TIME_MODIFIED
+        m->last_time_modified = QSharedPointer<QDateTime>::create(
+            QDateTime::fromString(strList[9], DateTimeFormat)
+            );
+
+        inventory.add_new_Model(m);
     }
 
     file.close();
@@ -128,9 +137,9 @@ bool ReadFile::read_Inventory_xlsx_File(const QString &path, const bool save_pat
 {
     QXlsx::Document xlsx(path);
 
-    unsigned long int row = 2;
-    unsigned long int col = 1;
-    unsigned long int rowCount = 0;
+    unsigned long row = 2;
+    unsigned long col = 1;
+    unsigned long rowCount = 0;
 
     bool selected_a_sheet = xlsx.selectSheet(0);
 
@@ -148,7 +157,7 @@ bool ReadFile::read_Inventory_xlsx_File(const QString &path, const bool save_pat
     // read file
     for(row = 2; row < rowCount + 2; row++){
         col = 1;
-        QString modelCode = xlsx.read(row, col++).toString().trimmed();
+        QString modelCode = xlsx.read(row, col++).toString().trimmed(); // 1. 货号/MODEL_CODE
         if(modelCode.isEmpty()) continue; // skip empty rows
 
         QSharedPointer<Model> m(new Model());
@@ -157,17 +166,8 @@ bool ReadFile::read_Inventory_xlsx_File(const QString &path, const bool save_pat
             continue;
         }
 
-        m->DESCRIPTION_CN = xlsx.read(row, col++).toString().trimmed();
-        m->DESCRIPTION_SPAN = xlsx.read(row, col++).toString().trimmed();
-        m->PRIZE = xlsx.read(row, col++).toDouble();
-        m->NUM_INIT_BOXES = xlsx.read(row, col++).toDouble();
-        m->NUM_SOLD_BOXES = xlsx.read(row, col++).toDouble();
-        m->NUM_LEFT_ITEMS = xlsx.read(row, col++).toULongLong();
-        m->NUM_LEFT_BOXES = xlsx.read(row, col++).toULongLong();
-        m->NUM_ITEMS_PER_BOX = xlsx.read(row, col++).toULongLong();
-        QString containerID = xlsx.read(row, col++).toString().trimmed();
-
-        // check if container exists
+        QString containerID = xlsx.read(row, col++).toString().trimmed(); // 2. 集装箱号/CONTAINER_ID
+        // check if this container with this ID exists
         if(containerID.isEmpty()){
             m->container = nullptr; // do nothing if this model does not have a container
         }
@@ -187,7 +187,23 @@ bool ReadFile::read_Inventory_xlsx_File(const QString &path, const bool save_pat
             container->add_model(m); // add this model to the container
             m->container = container;// add container to this model
         }
-        inventory.add_Model(m);
+
+        m->DESCRIPTION_CN = xlsx.read(row, col++).toString().trimmed(); // 3. 品名（中文）/DESCRIPTION_CN
+        m->DESCRIPTION_SPAN = xlsx.read(row, col++).toString().trimmed(); // 4. 品名（西语）/DESCRIPTION_SPAN
+
+        // because when we output data, we used unsigned long long
+        m->NUM_INIT_PIECES = xlsx.read(row, col++).toULongLong(); // 5. 进货个数/NUM_INITIAL_PIECES
+        m->NUM_SOLD_PIECES = xlsx.read(row, col++).toULongLong(); // 6. 已售个数/NUM_SOLD_PIECES
+        m->NUM_LEFT_PIECES = xlsx.read(row, col++).toULongLong(); // 7. 剩余个数/NUM_LEFT_PIECES
+        m->NUM_PIECES_PER_BOX = xlsx.read(row, col++).toULongLong(); // 8. 每箱个数/NUM_PIECES_PER_BOX
+        m->PRIZE = xlsx.read(row, col++).toDouble(); // 9. 单价/PRIZE_PER_PIECE
+
+        // 10. 上次修改时间/TIME_MODIFIED
+        m->last_time_modified = QSharedPointer<QDateTime>::create(
+            QDateTime::fromString(xlsx.read(row, col++).toString(), DateTimeFormat)
+            );
+
+        inventory.add_new_Model(m);
     }
 
     qDebug() << "Read file" << path << "done, it has" <<
@@ -238,22 +254,22 @@ bool ReadFile::read_Lists_txt_File(const QString &path, const bool save_path)
         ListPtr new_list (new List());
 
         // read id
-        new_list->id = strList[0].toULong();
+        new_list->id = strList[0].toULong(); // 1. 清单号
 
         // read date and time for the list
-        new_list->date_created = QDate::fromString(strList[1], DateFormat);
-        new_list->time_created = QTime::fromString(strList[2], TimeFormat);
+        new_list->datetime_created = QSharedPointer<QDateTime>::create(
+            QDateTime::fromString(strList[1], DateTimeFormat)
+            );      // 2. 创建时间
 
         // read client_info
-        new_list->client_info.CLIENTE = strList[3];
-        new_list->client_info.DOMICILIO = strList[4];
-        new_list->client_info.CIUDAD = strList[5];
-        new_list->client_info.RFC = strList[6];
-        new_list->client_info.AGENTE = strList[7];
-        new_list->client_info.CONDICIONES = strList[8];
-        new_list->client_info.TOTAL_NUM_BOXES = strList[9].toDouble();
-        new_list->client_info.DISCOUNT = strList[10].toDouble();
-
+        new_list->client_info.CLIENTE = strList[3]; // 3.
+        new_list->client_info.DOMICILIO = strList[4]; // 4.
+        new_list->client_info.CIUDAD = strList[5]; // 5.
+        new_list->client_info.RFC = strList[6]; // 6.
+        new_list->client_info.AGENTE = strList[7]; // 7.
+        new_list->client_info.CONDICIONES = strList[8]; // 8.
+        new_list->client_info.TOTAL_NUM_BOXES = strList[9].toDouble(); // 9.
+        new_list->client_info.DISCOUNT = strList[10].toDouble(); // 10.
 
         // reading entries
         unsigned long num_items = strList[11].toUInt();
@@ -265,7 +281,6 @@ bool ReadFile::read_Lists_txt_File(const QString &path, const bool save_path)
 
             newEntry->CLAVE = entryRawData[0];
             newEntry->ContainerID = entryRawData[1];
-            newEntry->CAJA = entryRawData[2].toDouble();
             newEntry->CANTIDAD = entryRawData[3].toDouble();
             newEntry->CANT_POR_CAJA = entryRawData[4].toUInt();
             newEntry->Description_SPAN = entryRawData[5];

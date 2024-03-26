@@ -184,7 +184,7 @@ void AddNewModelWindow::on_add_new_model_btn_clicked()
     }
 
     new_model->container = container;
-    inventory.add_Model(new_model);
+    inventory.add_new_Model(new_model);
 
 
     QString msg = lan(NEW_MODEL_ADD_SUCCESS_MSG_CN, NEW_MODEL_ADD_SUCCESS_MSG_SPAN);

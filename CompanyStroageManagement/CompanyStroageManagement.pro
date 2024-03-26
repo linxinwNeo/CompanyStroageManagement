@@ -16,12 +16,12 @@ SOURCES += \
     CN_Strings.cpp \
     CreateListWin.cpp \
     DataStructures/Container.cpp \
+    DataStructures/Entry.cpp \
+    DataStructures/Entrylist.cpp \
     DataStructures/Inventory.cpp \
     DataStructures/List.cpp \
     DataStructures/Model.cpp \
     DataStructures/client_info.cpp \
-    DataStructures/entry.cpp \
-    DataStructures/entrylist.cpp \
     FileLoader/IO_Base.cpp \
     FileLoader/ReadFile.cpp \
     FileLoader/WriteFile.cpp \
@@ -40,19 +40,19 @@ HEADERS += \
     CN_Strings.h \
     CreateListWin.h \
     DataStructures/Container.h \
+    DataStructures/Entry.h \
+    DataStructures/Entrylist.h \
     DataStructures/Inventory.h \
     DataStructures/List.h \
     DataStructures/Model.h \
     DataStructures/client_info.h \
-    DataStructures/entry.h \
-    DataStructures/entrylist.h \
     FileLoader/IO_Base.h \
     FileLoader/ReadFile.h \
     FileLoader/WriteFile.h \
     GlobalVars.h \
     Others/create_pdf.h \
     Others/is_int_float.h \
-    Others/output_error_file.h \
+    Others/write_error_file.h \
     Search_List_Win.h \
     SpanStrings.h \
     helper_functions.h \

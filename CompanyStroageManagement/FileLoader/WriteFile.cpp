@@ -1,7 +1,7 @@
 #include "WriteFile.h"
 #include "CN_Strings.h"
 #include "GlobalVars.h"
-#include "Others/output_error_file.h"
+#include "Others/write_error_file.h"
 #include "header/xlsxdocument.h"
 #include <QDir>
 #include "IO_Base.h"
@@ -58,28 +58,37 @@ bool WriteFile::Inventory2Txt(const QString &path, const bool save_path)
     // write the number of models
     out << "% " << inventory.num_models() << split_item << " \n";
     // write the name for each column
-    out << "% MODEL_CODE CONTAINER_ID DESCRIPTION_CN DESCRIPTION_SPAN NUM_INITIAL_PIECES NUM_SOLD_PIECES NUM_LEFT_PIECES NUM_PIECES_PER_BOX PRIZE_PER_PIECE TIME_MODIFIED \n";
+    out << QString("% 货号/MODEL_CODE ") +
+            "集装箱号/CONTAINER_ID " +
+            "品名（中文）/DESCRIPTION_CN " +
+            "品名（西语）/DESCRIPTION_SPAN " +
+            "进货个数/NUM_INITIAL_PIECES " +
+            "已售个数/NUM_SOLD_PIECES " +
+            "剩余个数/NUM_LEFT_PIECES " +
+            "每箱个数/NUM_PIECES_PER_BOX " +
+            "单价/PRIZE_PER_PIECE " +
+            "上次修改时间/TIME_MODIFIED \n";
 
-    for(const auto& m : inventory.model_set){
-        out << m->MODEL_CODE + split_item;
-        if(m->container.isNull()){
+    for(const QSharedPointer<Model>& m : inventory.model_set){
+        out << m->MODEL_CODE + split_item; // 1. 货号/MODEL_CODE
+        if(m->container.isNull()){  // 2. 集装箱号/CONTAINER_ID
             out << "-1\n"; // if this model does not have a container, we put -1 to indicate
         }
         else{
             out << m->container->ID + "\n";
         }
 
-        out << m->DESCRIPTION_CN + split_item;
-        out << m->DESCRIPTION_SPAN + split_item;
+        out << m->DESCRIPTION_CN + split_item; // 3. 品名（中文）
+        out << m->DESCRIPTION_SPAN + split_item; // 4. 品名（西语）
 
-        out << QString::number(m->NUM_INIT_PIECES) + split_item;
-        out << QString::number(m->NUM_SOLD_PIECES) + split_item;
-        out << QString::number(m->NUM_LEFT_PIECES) + split_item;
-        out << QString::number(m->NUM_PIECES_PER_BOX) + split_item;
-        out << QString::number(m->PRIZE) + split_item;
+        out << QString::number(m->NUM_INIT_PIECES) + split_item; // 5. 进货个数/NUM_INITIAL_PIECES
+        out << QString::number(m->NUM_SOLD_PIECES) + split_item; // 6. 已售个数/NUM_SOLD_PIECES
+        out << QString::number(m->NUM_LEFT_PIECES) + split_item; // 7. 剩余个数/NUM_LEFT_PIECES
+        out << QString::number(m->NUM_PIECES_PER_BOX) + split_item;  // 8. 每箱个数/NUM_PIECES_PER_BOX
+        out << QString::number(m->PRIZE) + split_item; // 9. 单价/PRIZE_PER_PIECE
 
-        if(m->last_time_modified.isNull()){
-            QDateTime currentDateTime = QDateTime::currentDateTime();
+        if(m->last_time_modified.isNull()){ // 10. 上次修改时间/TIME_MODIFIED
+            const QDateTime currentDateTime = QDateTime::currentDateTime();
             out << currentDateTime.toString(DateTimeFormat) + split_item + "\n";
         }
         else{
@@ -109,18 +118,18 @@ bool WriteFile::Inventory2Xlsx(const QString &path, const bool save_path)
     unsigned int long col = 1;
 
     // write the info about each column
-    xlsx.write(row, col++, "货号");
-    xlsx.write(row, col++, "集装箱");
-    xlsx.write(row, col++, "品名（中文）");
-    xlsx.write(row, col++, "品名（西语）");
+    xlsx.write(row, col++, "货号/MODEL_CODE");
+    xlsx.write(row, col++, "集装箱号/CONTAINER_ID");
+    xlsx.write(row, col++, "品名（中文）/DESCRIPTION_CN");
+    xlsx.write(row, col++, "品名（西语）/DESCRIPTION_SPAN");
 
-    xlsx.write(row, col++, "进货个数");
-    xlsx.write(row, col++, "出售个数");
-    xlsx.write(row, col++, "剩余个数");
+    xlsx.write(row, col++, "进货个数/NUM_INITIAL_PIECES");
+    xlsx.write(row, col++, "已售个数/NUM_SOLD_PIECES");
+    xlsx.write(row, col++, "剩余个数/NUM_LEFT_PIECES");
 
-    xlsx.write(row, col++, "每箱个数");
-    xlsx.write(row, col++, "单价");
-    xlsx.write(row, col++, "上次修改时间");
+    xlsx.write(row, col++, "每箱个数/NUM_PIECES_PER_BOX");
+    xlsx.write(row, col++, "单价/PRIZE_PER_PIECE");
+    xlsx.write(row, col++, "上次修改时间/TIME_MODIFIED");
 
     row ++;
 
@@ -130,19 +139,23 @@ bool WriteFile::Inventory2Xlsx(const QString &path, const bool save_path)
     // write models to it
     for(const ModelPtr& model : models){
         col = 1;
-        xlsx.write(row, col++, model->MODEL_CODE);
-        if(!model->container.isNull()) xlsx.write(row, col++, model->container->ID);
-        xlsx.write(row, col++, model->DESCRIPTION_CN);
-        xlsx.write(row, col++, model->DESCRIPTION_SPAN);
+        xlsx.write(row, col++, model->MODEL_CODE); // 1. 货号/MODEL_CODE
 
-        xlsx.write(row, col++, (unsigned long long)model->NUM_INIT_PIECES);
-        xlsx.write(row, col++, (unsigned long long)model->NUM_SOLD_PIECES);
-        xlsx.write(row, col++, (unsigned long long)model->NUM_LEFT_PIECES);
+        if(!model->container.isNull()) xlsx.write(row, col++, model->container->ID); // 2. 集装箱号/CONTAINER_ID
+        else xlsx.write(row, col++, "-1"); // if this model does not have a container, we put -1 to indicate
 
-        xlsx.write(row, col++, QString::number(model->NUM_PIECES_PER_BOX));
-        xlsx.write(row, col++, model->PRIZE);
+        xlsx.write(row, col++, model->DESCRIPTION_CN); // 3. 品名（中文）/DESCRIPTION_CN
+        xlsx.write(row, col++, model->DESCRIPTION_SPAN); // 4. 品名（西语）/DESCRIPTION_SPAN
 
-        if(model->last_time_modified.isNull()){
+        // 需要cast到unsigned long long才不会报错
+        xlsx.write(row, col++, (unsigned long long)model->NUM_INIT_PIECES); // 5. 进货个数/NUM_INITIAL_PIECES
+        xlsx.write(row, col++, (unsigned long long)model->NUM_SOLD_PIECES); // 6. 已售个数/NUM_SOLD_PIECES
+        xlsx.write(row, col++, (unsigned long long)model->NUM_LEFT_PIECES); // 7. 剩余个数/NUM_LEFT_PIECES
+
+        xlsx.write(row, col++, QString::number(model->NUM_PIECES_PER_BOX)); // 8. 每箱个数/NUM_PIECES_PER_BOX
+        xlsx.write(row, col++, model->PRIZE); // 9. 单价/PRIZE_PER_PIECE
+
+        if(model->last_time_modified.isNull()){ // 10. 上次修改时间
             QDateTime currentDateTime = QDateTime::currentDateTime();
             xlsx.write(row, col++, currentDateTime.toString(DateTimeFormat));
         }
@@ -188,9 +201,11 @@ bool WriteFile::Lists2txt(const QString &path, const bool save_path)
     for(const ListPtr& list : lists.lists){
         // output list id first
         out << list->id << split_item; // 0
-        // output list create data and time
-        out << list->date_created.toString(DateFormat) << split_item // 1
-            << list->time_created.toString(TimeFormat) << split_item; // 2
+        // output list creation datatime
+        if(list->datetime_created.isNull()){ // if no date time, put current time
+            list->datetime_created = QSharedPointer<QDateTime>::create(QDateTime().currentDateTime());
+        }
+        out << list->datetime_created->toString(DateTimeFormat) << split_item;
 
         // output client_info
         out << list->client_info.CLIENTE << split_item // 3
@@ -206,11 +221,11 @@ bool WriteFile::Lists2txt(const QString &path, const bool save_path)
         out << list->num_model_types() << "\n"; // 11
         
         for(EntryPtr& entry : list->entryList.entries){
-            out << entry->CLAVE << split_item // 0 modelCODE
-                << entry->ContainerID << split_item // 1 container ID
-                << entry->CAJA << split_item // 2 NUM_BOXES
-                << entry->CANTIDAD << split_item // 3 TOTAL_NUM_ITEMS
-                << entry->CANT_POR_CAJA << split_item // 4 NUM_ITEMS_PER_BOX
+            out << entry->CLAVE << split_item // 0. 货号
+                << entry->ContainerID << split_item // 1. 集装箱号
+                << entry->num_boxes() << split_item // 2. 箱数
+                << entry->CANTIDAD << split_item // 3. 总个数
+                << entry->CANT_POR_CAJA << split_item // 4 每箱几个
                 << entry->Description_SPAN << split_item // 5 品名（西语）
                 << entry->Description_CN << split_item // 6 品名（中文）
                 << entry->PRECIO << split_item // 7 单价
@@ -230,7 +245,7 @@ bool WriteFile::Lists2txt(const QString &path, const bool save_path)
 
 
 // we update the BackUpDate
-void WriteFile::update_BackUpDate()
+bool WriteFile::update_BackUpDate()
 {
     QFile file(BackUP_FileName);
     if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
@@ -242,10 +257,13 @@ void WriteFile::update_BackUpDate()
 
         // Close the file when done
         file.close();
+
+        return true;
     }
     else{
         // write error message to
         write_error_file(UNABLE_TO_SAVE_BACKUP_DATA_MSG_CN);
+        return false;
     }
 }
 

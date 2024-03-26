@@ -1,5 +1,6 @@
-#include "DataStructures/entrylist.h"
+#include "DataStructures/Entrylist.h"
 #include "Algorithm/QuickSort.h"
+#include "Others/write_error_file.h"
 
 void EntryList::clear_memory()
 {
@@ -29,24 +30,29 @@ void EntryList::remove_last_entry()
 
 
 // remove an arbitrary entry if exists
-void EntryList::remove_entry(const UL idx)
+void EntryList::remove_entry(const unsigned long idx)
 {
     // check if the idx is valid
     if( !(idx <= this->num_entries() - 1) ) {
-        qDebug() << "void EntryList::remove_entry(const UL idx): idx invalid!";
+        write_error_file("void EntryList::remove_entry(const UL idx): idx" +
+                         QString::number(idx) +" invalid!");
         return;
     }
 
-    this->entries.erase(this->entries.begin() + idx); // get this idx out from the vector
+    this->entries.erase(this->entries.begin() + idx); // get this element of idx out from the vector
 }
 
 
 // return an entry at idx
-QSharedPointer<Entry> EntryList::get_entry(const UL idx)
+QSharedPointer<Entry> EntryList::get_entry(const unsigned long idx)
 {
     // check if the idx is valid
     if( idx >= this->num_entries() ) {
-        qDebug() << "Entry *EntryList::get_entry(const UL idx): idx invalid!";
+        QString errorMessage = "Entry *EntryList::get_entry(const UL idx): idx " +
+                              QString::number(idx) +
+                              " invalid!";
+
+        write_error_file(errorMessage);
         return nullptr;
     }
 
@@ -71,7 +77,7 @@ bool EntryList::has_Model(const QString &ModelCode, const QString &ContainerID) 
 double EntryList::total_num_boxes() const
 {
     double sum = 0;
-    for(auto entry : this->entries){
+    for(const QSharedPointer<Entry>& entry : this->entries){
         sum += entry->CAJA;
     }
     return sum;

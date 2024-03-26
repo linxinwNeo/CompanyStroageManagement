@@ -2,7 +2,7 @@
 #include "Algorithm/QuickSort.h"
 #include "FileLoader/WriteFile.h"
 #include "GlobalVars.h"
-#include "Others/output_error_file.h"
+#include "Others/write_error_file.h"
 
 unsigned long int List::num_model_types() const
 {
@@ -47,10 +47,12 @@ void List::return_models() const
         if(model.isNull()){
             /* the model doesn't exist in inventory, this is usually because the model is deleted
              * after this list has been created, we need to create this model */
-            model = ModelPtr (new Model(entry->CLAVE, entry->Description_SPAN, entry->Description_CN,
-                                       entry->PRECIO, entry->CAJA, 0, entry->CAJA,
-                                       entry->CANTIDAD, entry->CANT_POR_CAJA));
-            inventory.add_Model(model);
+            model = ModelPtr (new Model(entry->CLAVE,
+                                       entry->Description_SPAN, entry->Description_CN,
+                                       entry->PRECIO,
+                                       entry->CANTIDAD, 0, entry->CANTIDAD,
+                                       entry->CANT_POR_CAJA));
+            inventory.add_new_Model(model);
 
             /* if the container of this model also doesn't exist, we need to create one */
             if(container.isNull() && !entry->ContainerID.isEmpty()){
@@ -64,9 +66,9 @@ void List::return_models() const
             continue;
         }
 
-        // the model is not null, so we can add the model back directly
+        // the model exists in our inventory, so we can add the model back directly
         // the addBack function will handle the case that after adding back the num of boxes exceed the max
-        model->addBack_items(entry->CANTIDAD);
+        model->AddBack(entry->CANTIDAD);
     }
 }
 
@@ -77,14 +79,17 @@ QVector<QString> List::describe_this_list() const
     QVector<QString> items(6);
 
     items[0] = QString::number(this->id);
-    items[1] = this->date_created.toString("dd MMM yyyy");
-    items[2] = this->time_created.toString("hh:mm:ss");
-    items[3] = QString::number(this->total_num_boxes(), 'f', 2);
+    if(this->datetime_created.isNull()){
+        items[1] = "No Creation Time Recorded.";
+    }
+    items[1] = this->datetime_created->toString(DateTimeFormat);
+
+    items[2] = QString::number(this->total_num_boxes(), 'f', 2);
     double p1, p2;
     p1 = p2 = 0;
     this->total(p1, p2);
-    items[4] = QString::number(p2, 'f', 2);
-    items[5] = this->client_info.CLIENTE;
+    items[3] = QString::number(p2, 'f', 2);
+    items[4] = this->client_info.CLIENTE;
 
     return items;
 }
@@ -108,7 +113,7 @@ unsigned long int Lists::get_unique_id() const
 void Lists::add_list(ListPtr list_2be_added)
 {
     if(list_2be_added.isNull()){
-        qDebug() << "Lists::add_list: trying to add a null list";
+        write_error_file("Lists::add_list: trying to add a null list");
         return;
     }
 
@@ -147,17 +152,17 @@ ListPtr Lists::get_list(unsigned long id)
 void Lists::get_list(QString id_prefix, QVector<ListPtr>& candidates, bool sorted)
 {
     candidates.clear();
-    candidates.reserve(this->num_lists()/9 + 10);
+    candidates.reserve(this->num_lists()/9. + 10);
 
     // return if id_prefix is empty
     if(id_prefix.isEmpty()){
-        for(ListPtr list : this->lists){
+        for(ListPtr& list : this->lists){
             candidates.push_back(list);
         }
     }
     else{
         // for each list in the database, we convert it to a string and testing
-        for(ListPtr list : this->lists){
+        for(ListPtr& list : this->lists){
             QString cur_id = QString::number(list->id);
             if(cur_id.startsWith(id_prefix)){
                 candidates.push_back(list);
@@ -165,10 +170,9 @@ void Lists::get_list(QString id_prefix, QVector<ListPtr>& candidates, bool sorte
         }
     }
 
-    // sort the vector if needed
+    // sort the vector by list ids if needed
     if(sorted){
-        QuickSorts QS;
-        QS.QuickSort(candidates);
+        QuickSorts::QuickSort(candidates);
     }
 
     return;

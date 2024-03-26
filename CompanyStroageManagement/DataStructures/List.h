@@ -5,7 +5,7 @@
 #define LIST_H
 
 #include "DataStructures/client_info.h"
-#include "DataStructures/entrylist.h"
+#include "DataStructures/Entrylist.h"
 #include <QDate>
 #include <QTime>
 
@@ -15,8 +15,7 @@ class List
 public:
     Client_info client_info;
     EntryList entryList;
-    QDate date_created;
-    QTime time_created;
+    QSharedPointer<QDateTime> datetime_created = nullptr;
     unsigned long id;
 
     List() {};

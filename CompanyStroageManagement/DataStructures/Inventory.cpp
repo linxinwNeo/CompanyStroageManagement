@@ -1,6 +1,5 @@
 #include "Inventory.h"
 #include "Algorithm/QuickSort.h"
-#include "GlobalVars.h"
 
 Inventory::Inventory()
 {
@@ -31,7 +30,7 @@ void Inventory::clear()
 }
 
 
-void Inventory::reserve_model_space(unsigned int size)
+void Inventory::reserve_model_space(unsigned long size)
 {
     // return if model containers are not empty
     if(this->model_map.size() != 0 || this->model_set.size() != 0) return;
@@ -41,7 +40,7 @@ void Inventory::reserve_model_space(unsigned int size)
 }
 
 
-void Inventory::reserve_container_space(unsigned int size)
+void Inventory::reserve_container_space(unsigned long size)
 {
     // return if container containers are not empty
     if(this->container_map.size() != 0 || this->container_set.size() != 0) return;
@@ -51,7 +50,7 @@ void Inventory::reserve_container_space(unsigned int size)
 }
 
 
-void Inventory::add_Model(ModelPtr &m)
+void Inventory::add_new_Model(ModelPtr &m)
 {
     if(this->contains_model(m)) return;
 
@@ -168,13 +167,13 @@ bool Inventory::contains_container(const QSharedPointer<Container> &container) c
 }
 
 
-UI Inventory::num_models() const
+unsigned long Inventory::num_models() const
 {
     return this->model_set.size();
 }
 
 
-UI Inventory::num_containers() const
+unsigned long Inventory::num_containers() const
 {
     return this->container_set.size();
 }
@@ -193,8 +192,7 @@ void Inventory::searchModel_starts_with(const QString str, QVector<ModelPtr>& mo
         }
     }
 
-    QuickSorts QS;
-    QS.QuickSort(models);
+    QuickSorts::QuickSort(models);
     return;
 }
 
@@ -209,8 +207,7 @@ void Inventory::searchContainer_starts_with(const QString str, QVector< Containe
         }
     }
 
-    QuickSorts QS;
-    QS.QuickSort(containers);
+    QuickSorts::QuickSort(containers);
     return;
 }
 
@@ -226,7 +223,7 @@ void Inventory::deduct_models(const QVector<EntryPtr> & entries)
             continue;
         }
 
-        model_needs_modify->sell_items(entry->CANTIDAD);
+        model_needs_modify->Sell(entry->CANTIDAD);
     }
 }
 
@@ -242,8 +239,6 @@ void Inventory::modelSet_2_Vector(QVector<QSharedPointer<Model> >& output)
     }
 
     // sort the vector
-    QuickSorts QS;
-    QS.QuickSort(output);
-
+    QuickSorts::QuickSort(output);
 }
 

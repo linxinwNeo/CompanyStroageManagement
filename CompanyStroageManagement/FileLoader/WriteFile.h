@@ -19,7 +19,7 @@ public:
     static bool Lists2txt(const bool save_path);
     static bool Lists2txt(const QString& path, const bool save_path);
 
-    static void update_BackUpDate();
+    static bool update_BackUpDate();
     static bool save_BackUp_files(const bool save_path);
 
     static bool save_settings_file();

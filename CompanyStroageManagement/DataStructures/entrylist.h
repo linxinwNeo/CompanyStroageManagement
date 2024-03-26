@@ -4,7 +4,7 @@
 #include <QVector>
 #include <QSharedPointer>
 #include <QDebug>
-#include "entry.h"
+#include "Entry.h"
 
 
 class EntryList

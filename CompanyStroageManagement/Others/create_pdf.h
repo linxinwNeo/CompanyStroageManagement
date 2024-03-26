@@ -12,7 +12,7 @@
 
 #include "GlobalVars.h"
 #include "DataStructures/client_info.h"
-#include "DataStructures/entrylist.h"
+#include "DataStructures/Entrylist.h"
 
 
 QString currDate(const QDate date);
