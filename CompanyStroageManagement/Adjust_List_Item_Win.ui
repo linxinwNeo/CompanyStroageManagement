@@ -47,7 +47,7 @@
             </size>
            </property>
            <property name="text">
-            <string>CAJA/箱数</string>
+            <string>箱数</string>
            </property>
           </widget>
          </item>
@@ -107,7 +107,7 @@
             </size>
            </property>
            <property name="text">
-            <string>CANTIDAD/个数</string>
+            <string>个数</string>
            </property>
           </widget>
          </item>
@@ -164,7 +164,7 @@
             </size>
            </property>
            <property name="text">
-            <string>Piezas por caja/每箱个数</string>
+            <string>每箱个数</string>
            </property>
           </widget>
          </item>
@@ -208,7 +208,7 @@
             </size>
            </property>
            <property name="text">
-            <string>CLAVE/货号</string>
+            <string>货号</string>
            </property>
           </widget>
          </item>
@@ -252,7 +252,7 @@
             </size>
            </property>
            <property name="text">
-            <string>DESCRIPTION/品名(西语)</string>
+            <string>品名(西语)</string>
            </property>
           </widget>
          </item>
@@ -299,7 +299,7 @@
             </size>
            </property>
            <property name="text">
-            <string>DESCRIPTION/品名(中文)</string>
+            <string>品名(中文)</string>
            </property>
           </widget>
          </item>
@@ -343,7 +343,7 @@
             </size>
            </property>
            <property name="text">
-            <string>PRECIO U./单价</string>
+            <string>单价</string>
            </property>
           </widget>
          </item>
@@ -387,7 +387,7 @@
             </size>
            </property>
            <property name="text">
-            <string>IMPORTE/总价</string>
+            <string>总价</string>
            </property>
           </widget>
          </item>

@@ -40,15 +40,15 @@ public:
     ~Model();
 
     void reset();
-
-    double init_num_boxes() const;
-    double sold_num_boxes() const;
-    double left_num_boxes() const;
+    
+    double num_init_boxes() const;
+    double num_sold_boxes() const;
+    double num_left_boxes() const;
 
     double TOTAL_PRIZE(unsigned long num_items) const;
-    double TOTAL_PRIZE(float) = delete; // Prevent calling with float
-    double TOTAL_PRIZE(double) = delete; // Prevent calling with double
-    double TOTAL_PRIZE(long double) = delete; // Prevent calling with long double
+    bool TOTAL_PRIZE(float) const = delete; // Prevent calling with float
+    bool TOTAL_PRIZE(double) const = delete; // Prevent calling with double
+    bool TOTAL_PRIZE(long double) const = delete; // Prevent calling with long double
     
     bool Sell(unsigned long num_pieces_to_sell);
     bool Sell(float) = delete; // Prevent calling with float

@@ -31,8 +31,8 @@ public:
     double total_num_init_boxes() const;
     double total_num_left_boxes() const;
 
-    double total_num_init_items() const;
-    double total_num_left_items() const;
+    unsigned long long total_num_init_pieces() const;
+    unsigned long long total_num_left_pieces() const;
     
     void searchResult(QVector<QString>& items) const;
 

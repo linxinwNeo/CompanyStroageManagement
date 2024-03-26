@@ -15,8 +15,7 @@ void EntryList::add_entry(QSharedPointer<Entry>& entry_to_be_added)
     this->entries.append(entry_to_be_added);
 
     // sort the list by their MODELCODE/CLAVE
-    QuickSorts QS;
-    QS.QuickSort(this->entries);
+    QuickSorts::QuickSort(this->entries);
 }
 
 

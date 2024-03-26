@@ -11,6 +11,7 @@
 #include "mainwindow.h"
 #include "ui_CreateListWin.h"
 #include "GlobalVars.h"
+#include "Others/write_error_file.h"
 
 EntryList cur_list_entries;
 
@@ -58,7 +59,7 @@ void CreateListWin::update_added_models_table()
     this->added_models_table->setRowCount(0);
 
     // for each entry, make a row for it
-    for(UI row = 0; row < cur_list_entries.num_entries(); row++){
+    for(unsigned long row = 0; row < cur_list_entries.num_entries(); row++){
         const EntryPtr entry = cur_list_entries.get_entry(row);
         if(entry.isNull()) continue;
 
@@ -66,7 +67,7 @@ void CreateListWin::update_added_models_table()
 
         auto rowValues = entry->view_values();
 
-        for( UI col = 0; col < rowValues.size(); col++ ){
+        for( unsigned long col = 0; col < rowValues.size(); col++ ){
             QTableWidgetItem *tableWidgetItem = new QTableWidgetItem();
             tableWidgetItem->setText( rowValues[col] );
 
@@ -124,8 +125,8 @@ void CreateListWin::set_GUI_Language()
 
     QStringList headers = {
        lan("货号", "MODELO"),
-       lan("品名(中文)", "DESCRIPTION(Chino)"),
-       lan("品名（西语）", "DESCRIPTION(Español)"),
+       lan("品名(中文)", "Nombre del producto (en chino)"),
+       lan("品名（西语）", "Nombre del producto (en español)"),
        lan("初始箱数", "Número inicial de cajas"),
        lan("每箱个数", "Piezas por caja"),
        lan("单价", "precio del artículo"),
@@ -193,8 +194,7 @@ void CreateListWin::on_generatePDF_btn_clicked()
     this->list->client_info.TOTAL_NUM_BOXES = this->list->total_num_boxes();
     this->list->id = unused_unique_id;
 
-    list->date_created = QDate::currentDate();
-    list->time_created = QTime::currentTime();
+    this->list->datetime_created = QSharedPointer<QDateTime>::create(QDateTime().currentDateTime());
 
     // ask for the path to store the file
     saveFileDialog.setFileMode(QFileDialog::AnyFile);
@@ -273,8 +273,7 @@ void CreateListWin::on_previewList_btn_clicked()
     this->list->client_info.CONDICIONES = this->ui->CONDICIONES_LE->text();
     this->list->client_info.DISCOUNT = this->ui->discount_SB->value() / 100.; // the value the user is entering is between 0-100
     this->list->client_info.TOTAL_NUM_BOXES = this->list->total_num_boxes();
-    this->list->date_created = QDate::currentDate();
-    this->list->time_created = QTime::currentTime();
+    this->list->datetime_created = QSharedPointer<QDateTime>::create(QDateTime().currentDateTime());
 
 
     // ask for the path to store the file
@@ -347,7 +346,7 @@ void CreateListWin::on_model_code_for_search_LE_textChanged(const QString &new_s
     inventory.searchModel_starts_with(userInput, models);
 
     // for each model, make a row for it
-    for(UI row = 0; row < models.size(); row++){
+    for(unsigned long row = 0; row < models.size(); row++){
         const ModelPtr model = models[row];
 
         table->insertRow(table->rowCount());
@@ -355,7 +354,7 @@ void CreateListWin::on_model_code_for_search_LE_textChanged(const QString &new_s
         QVector<QString> items;
         model->searchResult_Regular(items);
 
-        for( UI col = 0; col < items.size(); col++ ){
+        for( unsigned long col = 0; col < items.size(); col++ ){
             QTableWidgetItem *tableWidgetItem = new QTableWidgetItem();
             tableWidgetItem->setText( items[col] );
 
@@ -439,7 +438,7 @@ void CreateListWin::on_add_selected_model_btn_clicked()
     // we dont have this selected model anymore
     QMessageBox Msgbox;
 
-    if(this->selected_model_in_search_table->NUM_LEFT_ITEMS == 0){
+    if(this->selected_model_in_search_table->NUM_LEFT_PIECES == 0){
         Msgbox.setText(lan(OUT_OF_STOCK_MSG_CN, OUT_OF_STOCK_MSG_SPAN));
         Msgbox.exec();
         return;
@@ -449,15 +448,13 @@ void CreateListWin::on_add_selected_model_btn_clicked()
     QString MODELCODE_2be_Added;
     QString ContainerID_2be_Added;
 
-    double NUM_BOXES;
-    unsigned long TOTAL_NUM_ITEMS;
-    unsigned long NUM_ITEMS_PER_BOX;
+    unsigned long NUM_LEFT_PIECES = 0.;
+    unsigned long NUM_PIECES_PER_BOX = 0.;
+    double NUM_BOXES = 0;
     QString MODEL_CODE;
     QString DESCRIPTION_SPAN;
     QString DESCRIPTION_CN;
-    double PRIZE;
-    double TOTAL_PRIZE;
-    QString ContainerID;
+    double PRIZE = 0.;
     EntryPtr new_entry;
 
     this->setDisabled(true);
@@ -476,19 +473,20 @@ void CreateListWin::on_add_selected_model_btn_clicked()
     }
 
     // create a new entry and add it to <cur_list_entries>
-    NUM_BOXES = model_2be_added->NUM_LEFT_BOXES; // CAJA
-    TOTAL_NUM_ITEMS = model_2be_added->NUM_LEFT_ITEMS;
-    NUM_ITEMS_PER_BOX = model_2be_added->NUM_ITEMS_PER_BOX;
-    MODEL_CODE = model_2be_added->MODEL_CODE;
+    NUM_LEFT_PIECES = model_2be_added->NUM_LEFT_PIECES; // CANTIDAD
+
+    NUM_PIECES_PER_BOX = model_2be_added->NUM_PIECES_PER_BOX;
+    // compute number of avaliable boxes
+    NUM_BOXES = ((double)NUM_LEFT_PIECES) / ((double)NUM_PIECES_PER_BOX); // CAJA
+
     DESCRIPTION_SPAN = model_2be_added->DESCRIPTION_SPAN;
     DESCRIPTION_CN = model_2be_added->DESCRIPTION_CN;
     PRIZE = model_2be_added->PRIZE;
-    TOTAL_PRIZE = model_2be_added->TOTAL_PRIZE(model_2be_added->NUM_LEFT_BOXES);
-    ContainerID = ContainerID_2be_Added;
-    new_entry = EntryPtr (new Entry( NUM_BOXES, TOTAL_NUM_ITEMS, NUM_ITEMS_PER_BOX,
-                                     MODEL_CODE, ContainerID,
+
+    new_entry = EntryPtr (new Entry( NUM_LEFT_PIECES, NUM_BOXES,
+                                     MODEL_CODE, ContainerID_2be_Added,
                                      DESCRIPTION_SPAN, DESCRIPTION_CN,
-                                     PRIZE, TOTAL_PRIZE));
+                                     PRIZE));
 
     cur_list_entries.add_entry(new_entry);
 
@@ -553,7 +551,7 @@ void CreateListWin::on_added_models_table_cellDoubleClicked(int row, int column)
     EntryPtr entry = cur_list_entries.entries[row];
     ModelPtr model = entry->get_corresponding_model();
     if(model.isNull()){
-        qDebug() << "CreateListWin::on_added_models_table_cellDoubleClicked: model is empty!";
+        write_error_file("CreateListWin::on_added_models_table_cellDoubleClicked: model is empty!");
         this->setEnabled(true);
         return;
     }

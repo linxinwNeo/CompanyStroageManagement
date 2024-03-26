@@ -43,10 +43,10 @@ void AddNewModelWindow::set_GUI_Language()
     this->ui->MODELCODE_label->setText(lan("货号", "MODELO"));
     this->ui->MODELCODE_LE->setPlaceholderText(none);
 
-    this->ui->DESCRIPTION_CN_label->setText(lan("品名（中文）", "DESCRIPTION(Chino)"));
+    this->ui->DESCRIPTION_CN_label->setText(lan("品名（中文）", "Nombre del producto (en chino)"));
     this->ui->DESCRIPTION_CN_LE->setPlaceholderText(none);
 
-    this->ui->DESCRIPTION_SPAN_label->setText(lan("品名（西语）", "DESCRIPTION(Español)"));
+    this->ui->DESCRIPTION_SPAN_label->setText(lan("品名（西语）", "Nombre del producto (en español)"));
     this->ui->DESCRIPTION_SPAN_LE->setPlaceholderText(none);
 
     this->ui->PRIZE_label->setText(lan("单价", "precio del artículo"));

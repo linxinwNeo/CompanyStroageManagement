@@ -1,18 +1,18 @@
 #include "DataStructures/entry.h"
 #include "GlobalVars.h"
 
-Entry::Entry(unsigned long CANTIDAD, unsigned long CANT_POR_CAJA ,
-             QString CLAVE, QString ContainerID,
+Entry::Entry(unsigned long NUM_PIECES, unsigned long NUM_PIECES_PER_BOX,
+             QString MODEL_CODE, QString ContainerID,
              QString Description_SPAN, QString Description_CN,
-             double PRECIO, double IMPORTE)
+             double PRIZE_PER_PIECE)
 {
-    this->CLAVE = CLAVE;
-    this->CANTIDAD = CANTIDAD;
-    this->CANT_POR_CAJA = CANT_POR_CAJA;
+    this->CLAVE = MODEL_CODE;
+    this->CANTIDAD = NUM_PIECES;
+    this->CANT_POR_CAJA = NUM_PIECES_PER_BOX;
     this->Description_SPAN = Description_SPAN;
     this->Description_CN = Description_CN;
-    this->PRECIO = PRECIO;
-    this->IMPORTE = IMPORTE;
+    this->PRECIO = PRIZE_PER_PIECE;
+    this->IMPORTE = ((double)NUM_PIECES) * PRIZE_PER_PIECE;
     this->ContainerID = ContainerID;
 }
 

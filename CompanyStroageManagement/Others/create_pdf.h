@@ -6,8 +6,7 @@
 #include <QFileDialog>
 #include <QPdfWriter>
 #include <QPainter>
-#include <QDate>
-#include <QTime>
+#include <QDateTime>
 #include <QFile>
 
 #include "GlobalVars.h"

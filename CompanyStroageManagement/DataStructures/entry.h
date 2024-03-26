@@ -21,10 +21,10 @@ public:
     double IMPORTE; // 总价
 
     //functions
-    Entry(unsigned long CANTIDAD = 0., unsigned long CANT_POR_CAJA = 0.,
-          QString CLAVE = "", QString ContainerID = "",
+    Entry(unsigned long NUM_PIECES = 0., unsigned long NUM_PIECES_PER_BOX = 0.,
+          QString MODEL_CODE = "", QString ContainerID = "",
           QString Description_SPAN = "", QString Description_CN = "",
-          double PRECIO = 0., double IMPORTE = 0.);
+          double PRIZE_PER_PIECE = 0.);
 
     ModelPtr get_corresponding_model() const;
     QVector<QString> view_values() const;

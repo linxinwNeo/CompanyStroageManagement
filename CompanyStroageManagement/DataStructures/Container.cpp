@@ -45,7 +45,7 @@ bool Container::has_model(ModelPtr &m) const
 }
 
 
-UI Container::num_models() const
+unsigned long Container::num_models() const
 {
     return this->models_set.size();
 }
@@ -55,7 +55,7 @@ double Container::total_num_init_boxes() const
 {
     double sum = 0;
     for(const auto& m : this->models_set){
-        sum += m->NUM_INIT_BOXES;
+        sum += m->num_init_boxes();
     }
     return sum;
 }
@@ -65,18 +65,18 @@ double Container::total_num_left_boxes() const
 {
     double sum = 0;
     for(const auto& m : this->models_set){
-        sum += m->NUM_LEFT_BOXES;
+        sum += m->num_left_boxes();
     }
     return sum;
 }
 
 
-// 计算初始总个数
-double Container::total_num_init_items() const
+// 计算进货总个数
+unsigned long long Container::total_num_init_pieces() const
 {
-    double sum = 0;
+    unsigned long long sum = 0;
     for(const auto& m : this->models_set){
-        sum += (m->NUM_INIT_BOXES * m->NUM_ITEMS_PER_BOX);
+        sum += m->NUM_INIT_PIECES;
     }
 
     return sum;
@@ -84,11 +84,11 @@ double Container::total_num_init_items() const
 
 
 // 计算剩余总个数
-double Container::total_num_left_items() const
+unsigned long long Container::total_num_left_pieces() const
 {
-    double sum = 0;
+    unsigned long long sum = 0;
     for(const auto& m : this->models_set){
-        sum += m->NUM_LEFT_ITEMS;
+        sum += m->NUM_LEFT_PIECES;
     }
 
     return sum;
@@ -106,8 +106,8 @@ void Container::searchResult(QVector<QString> &items) const
     items.push_back(QString::number(this->total_num_init_boxes(), 'f', 2)); // 初始总箱数
     items.push_back(QString::number(this->total_num_left_boxes(), 'f', 2)); // 剩余总箱数
 
-    items.push_back(QString::number(this->total_num_init_items(), 'f', 2)); // 初始总个数
-    items.push_back(QString::number(this->total_num_left_items(), 'f', 2)); // 剩余总个数
+    items.push_back(QString::number(this->total_num_init_pieces(), 'f', 2)); // 初始总个数
+    items.push_back(QString::number(this->total_num_left_pieces(), 'f', 2)); // 剩余总个数
 }
 
 

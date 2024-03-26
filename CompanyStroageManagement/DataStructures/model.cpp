@@ -48,7 +48,7 @@ void Model::reset()
 }
 
 
-double Model::init_num_boxes() const
+double Model::num_init_boxes() const
 {
     const double num_init_pieces = this->NUM_INIT_PIECES;
     const double num_pieces_per_box = this->NUM_PIECES_PER_BOX;
@@ -56,7 +56,7 @@ double Model::init_num_boxes() const
 }
 
 
-double Model::sold_num_boxes() const
+double Model::num_sold_boxes() const
 {
     const double num_sold_pieces = this->NUM_SOLD_PIECES;
     const double num_pieces_per_box = this->NUM_PIECES_PER_BOX;
@@ -64,7 +64,7 @@ double Model::sold_num_boxes() const
 }
 
 
-double Model::left_num_boxes() const
+double Model::num_left_boxes() const
 {
     const double num_left_pieces = this->NUM_LEFT_PIECES;
     const double num_pieces_per_box = this->NUM_PIECES_PER_BOX;

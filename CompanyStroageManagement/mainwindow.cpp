@@ -110,18 +110,24 @@ void MainWindow::setLanguage()
     this->ui->search_MODELCODE_label->setText(lan("货号", "MODELO"));
     this->ui->search_MODELCODE_LE->setPlaceholderText(lan("在此输入需要查询的货号", "Introduzca aquí el número de artículo sobre el que desea realizar la consulta"));
     this->ui->search_model_result_GB->setTitle(lan("货物查询结果", "Resultados de la consulta sobre cargas"));
-    QStringList headers = {
+    const QStringList headers = {
         lan("货号", "MODELO"),
-        lan("品名(中文)", "DESCRIPTION(Chino)"),
-        lan("品名(西语)", "DESCRIPTION(Español)"),
-        lan("初始箱数", "Número inicial de cajas"),
+        lan("集装箱号", "Número de contenedor"),
+        lan("品名(中文)", "Nombre del producto (en chino)"),
+        lan("品名(西语)", "Nombre del producto (en español)"),
+
+        lan("进货箱数", "Núm. cajas adq."),
+        lan("已售箱数", "Núm. cajas vend."),
+        lan("剩余箱数", "Núm. cajas rest."),
+
         lan("每箱个数", "Piezas por caja"),
-        lan("单价", "precio del artículo"),
-        lan("已售箱数", "Número de cajas vendidas"),
-        lan("已售个数", "Número de piezas vendidas"),
-        lan("剩余箱数", "Número de cajas restantes"),
-        lan("剩余个数", "Número de piezas restantes"),
-        lan("集装箱号", "número de contenedor")
+
+        lan("进货个数", "Núm. piezas adq."),
+        lan("已售个数", "Núm. piezas vend."),
+        lan("剩余个数", "Núm. unidades rest."),
+
+        lan("单价", "Prec. por pieza"),
+        lan("上次修改时间", "Fecha últ. modif."),
     };
     this->ui->search_model_result_Table->setHorizontalHeaderLabels(headers);
 
@@ -131,35 +137,35 @@ void MainWindow::setLanguage()
     this->ui->selected_model_MODELCODE_label->setText(lan("货号", "MODELO"));
     this->ui->selected_model_MODELCODE_LE->setPlaceholderText(none);
 
-    this->ui->selected_model_DESCRIPTION_CN_label->setText(lan("品名（中文）", "DESCRIPTION(Chino)"));
+    this->ui->selected_model_DESCRIPTION_CN_label->setText(lan("品名（中文）", "Nombre del producto (en chino)"));
     this->ui->selected_model_DESCRIPTION_CN_lineEdit->setPlaceholderText(none);
 
-    this->ui->selected_model_DESCRIPTION_SPAN_label->setText(lan("品名（西语）", "DESCRIPTION(Español)"));
+    this->ui->selected_model_DESCRIPTION_SPAN_label->setText(lan("品名（西语）", "Nombre del producto (en español)"));
     this->ui->selected_model_DESCRIPTION_SPAN_lineEdit->setPlaceholderText(none);
 
-    this->ui->selected_model_NUM_INIT_PIECES_label->setText(lan("进货个数", "Número de piezas adquiridas"));
+    this->ui->selected_model_NUM_INIT_PIECES_label->setText(lan("进货个数", "Núm. piezas adq."));
     this->ui->selected_model_NUM_PIECES_PER_BOX_label->setText(lan("每箱个数", "Número de piezas por caja"));
 
     this->ui->selected_model_PRIZE_label->setText(lan("单价", "precio del artículo"));
-    this->ui->selected_model_NUM_SOLD_PIECES_label->setText(lan("已售个数", "Número de piezas vendidas"));
+    this->ui->selected_model_NUM_SOLD_PIECES_label->setText(lan("已售个数", "Núm. piezas vend."));
 
-    this->ui->selected_model_CONTAINER_label->setText(lan("集装箱号", "número de contenedor"));
+    this->ui->selected_model_CONTAINER_label->setText(lan("集装箱号", "Número de contenedor"));
     this->ui->selected_model_CONTAINER_LE->setText(none);
 
     this->ui->delete_model_btn->setText(lan("删除货物", "eliminar"));
-    this->ui->update_selected_model_btn->setText(lan("更新货物", "actualizar productos"));
+    this->ui->update_selected_model_btn->setText(lan("更新该货物", "Actualizar la mercancía"));
 
-    this->ui->search_CONTAINER_ID_label->setText(lan("集装箱号", "número de contenedor"));
+    this->ui->search_CONTAINER_ID_label->setText(lan("集装箱号", "Número de contenedor"));
     this->ui->search_CONTAINER_ID_LE->setPlaceholderText(none);
     this->ui->search_container_result_GB->setTitle(lan("搜索结果", "resultados de búsqueda"));
 
     QStringList headers2 = {
-        lan("集装箱号", "número de contenedor"),
-        lan("货物种类数量", "cantidad de tipos de mercancías"),
-        lan("初始总箱数（箱）", "número total inicial de cajas (cajas)"),
-        lan("货物剩余数量（箱）", "cantidad restante de mercancía (cajas)"),
-        lan("货物初始数量（个）", "cantidad inicial de mercancía (unidades)"),
-        lan("货物剩余数量（个）", "cantidad restante de mercancía (unidades)"),
+        lan("集装箱号", "Número de contenedor"),
+        lan("货物种类数量", "Núm. categorías merc."),
+        lan("进货箱数", "Núm. cajas adq."),
+        lan("剩余箱数", "Núm. cajas rest."),
+        lan("进货个数", "Núm. piezas adq."),
+        lan("剩余个数", "Núm. piezas rest."),
     };
 
     this->ui->search_container_result_Table->setHorizontalHeaderLabels(headers2);
@@ -182,7 +188,7 @@ void MainWindow::setLanguage()
     this->ui->read_lists_from_new_file_btn->setText(lan("从另一个文件中读取清单历史文件", "Lectura de un archivo de historial de listas desde otro archivo"));
 
     // action menu
-    this->ui->FileMenu->setTitle(lan("文件", "papeles"));
+    this->ui->FileMenu->setTitle(lan("文件", "Archivo"));
     this->ui->LanguageMenu->setTitle(lan("语言", "multilingüismo"));
 
     this->ui->action_Save_Inventory->setText(lan("保存库存文件", "Conservación de los archivos de inventario"));
@@ -196,12 +202,12 @@ void MainWindow::show_selected_model()
     if(this->selected_model.isNull()) return;
 
     ui->selected_model_MODELCODE_LE->setText(this->selected_model->MODEL_CODE);
-    ui->selected_model_DESCRIPTION_CN_TextEdit->setText(this->selected_model->DESCRIPTION_CN);
-    ui->selected_model_DESCRIPTION_SPAN_TextEdit->setText(this->selected_model->DESCRIPTION_SPAN);
-    ui->selected_model_NUM_INIT_BOXES_SB->setValue(this->selected_model->NUM_INIT_BOXES);
-    ui->selected_model_NUM_SOLD_BOXES_SB->setValue(this->selected_model->NUM_SOLD_BOXES);
-    ui->selected_model_NUM_ITEMS_PER_BOX_SB->setValue(this->selected_model->NUM_ITEMS_PER_BOX);
-    ui->selected_model_PRIZE_SB->setValue(this->selected_model->NUM_SOLD_BOXES);
+    ui->selected_model_DESCRIPTION_CN_lineEdit->setText(this->selected_model->DESCRIPTION_CN);
+    ui->selected_model_DESCRIPTION_SPAN_lineEdit->setText(this->selected_model->DESCRIPTION_SPAN);
+    ui->selected_model_NUM_INIT_PIECES_SB->setValue(this->selected_model->NUM_INIT_PIECES);
+    ui->selected_model_NUM_SOLD_PIECES_SB->setValue(this->selected_model->NUM_SOLD_PIECES);
+    ui->selected_model_NUM_PIECES_PER_BOX_SB->setValue(this->selected_model->NUM_PIECES_PER_BOX);
+    ui->selected_model_PRIZE_SB->setValue(this->selected_model->PRIZE);
 
     if(this->selected_model->container.isNull()) ui->selected_model_CONTAINER_LE->setText("");
     else ui->selected_model_CONTAINER_LE->setText(this->selected_model->container->ID);
@@ -214,16 +220,17 @@ void MainWindow::clear_selected_model()
     const QString empty;
     const double zero = 0.;
     ui->selected_model_MODELCODE_LE->setText(empty);
-    ui->selected_model_DESCRIPTION_CN_TextEdit->setText(empty);
-    ui->selected_model_DESCRIPTION_SPAN_TextEdit->setText(empty);
-    ui->selected_model_NUM_INIT_BOXES_SB->setValue(zero);
-    ui->selected_model_NUM_SOLD_BOXES_SB->setValue(zero);
-    ui->selected_model_NUM_ITEMS_PER_BOX_SB->setValue(zero);
+    ui->selected_model_DESCRIPTION_CN_lineEdit->setText(empty);
+    ui->selected_model_DESCRIPTION_SPAN_lineEdit->setText(empty);
+    ui->selected_model_NUM_INIT_PIECES_SB->setValue(zero);
+    ui->selected_model_NUM_SOLD_PIECES_SB->setValue(zero);
+    ui->selected_model_NUM_PIECES_PER_BOX_SB->setValue(zero);
     ui->selected_model_PRIZE_SB->setValue(zero);
     ui->selected_model_CONTAINER_LE->setText(empty);
 
     this->selected_model = nullptr;
 }
+
 
 void MainWindow::clear_search_model_result_table()
 {
@@ -245,14 +252,14 @@ void MainWindow::show_selected_container()
     this->selected_container->models_Set2Vec(models, true); // sorted models
 
     // for each model, make a row for it
-    UI row = 0;
+    unsigned long row = 0;
     for(const ModelPtr& model : models){
         table->insertRow(table->rowCount());
 
         QVector<QString> items;
         model->searchResult_Regular(items);
 
-        for( UI col = 0; col < items.size(); col++ ){
+        for( unsigned long col = 0; col < items.size(); col++ ){
             QTableWidgetItem *tableWidgetItem = new QTableWidgetItem();
             tableWidgetItem->setText( items[col] );
 
@@ -331,7 +338,7 @@ void MainWindow::on_search_MODELCODE_LE_textChanged(const QString& new_str)
     inventory.searchModel_starts_with(userInput, models);
 
     // for each model, make a row for it
-    for(UI row = 0; row < models.size(); row++){
+    for( unsigned long row = 0; row < models.size(); row++ ){
         const ModelPtr model = models[row];
 
         table->insertRow(table->rowCount());
@@ -339,7 +346,7 @@ void MainWindow::on_search_MODELCODE_LE_textChanged(const QString& new_str)
         QVector<QString> items;
         model->searchResult_Regular(items);
 
-        for( UI col = 0; col < items.size(); col++ ){
+        for( unsigned long col = 0; col < items.size(); col++ ){
             QTableWidgetItem *tableWidgetItem = new QTableWidgetItem();
             tableWidgetItem->setText( items[col] );
 
@@ -373,15 +380,14 @@ void MainWindow::on_update_selected_model_btn_clicked()
         return;
     }
 
-    selected_model->DESCRIPTION_CN = ui->selected_model_DESCRIPTION_CN_TextEdit->toPlainText().replace("\n", "").trimmed(); // remove newline characters
-    selected_model->DESCRIPTION_SPAN = ui->selected_model_DESCRIPTION_SPAN_TextEdit->toPlainText().replace("\n", "").trimmed(); // remove newline characters
-    selected_model->NUM_INIT_BOXES = ui->selected_model_NUM_INIT_BOXES_SB->value();
-    selected_model->NUM_SOLD_BOXES = ui->selected_model_NUM_SOLD_BOXES_SB->value();
+    selected_model->DESCRIPTION_CN = ui->selected_model_DESCRIPTION_CN_lineEdit->text().replace("\n", "").trimmed(); // remove newline characters
+    selected_model->DESCRIPTION_SPAN = ui->selected_model_DESCRIPTION_SPAN_lineEdit->text().replace("\n", "").trimmed(); // remove newline characters
+    selected_model->NUM_INIT_PIECES = ui->selected_model_NUM_INIT_PIECES_SB->value();
+    selected_model->NUM_SOLD_PIECES = ui->selected_model_NUM_SOLD_PIECES_SB->value();
     selected_model->PRIZE = ui->selected_model_PRIZE_SB->value();
-    selected_model->NUM_ITEMS_PER_BOX = ui->selected_model_NUM_ITEMS_PER_BOX_SB->value();
+    selected_model->NUM_PIECES_PER_BOX = ui->selected_model_NUM_PIECES_PER_BOX_SB->value();
 
-    selected_model->NUM_LEFT_BOXES = selected_model->NUM_INIT_BOXES - selected_model->NUM_SOLD_BOXES;
-    selected_model->NUM_LEFT_ITEMS = selected_model->NUM_INIT_BOXES * selected_model->NUM_ITEMS_PER_BOX;
+    selected_model->NUM_LEFT_PIECES = selected_model->NUM_INIT_PIECES - selected_model->NUM_SOLD_PIECES;
 
     const QString container_ID = ui->selected_model_CONTAINER_LE->text().trimmed();
 
@@ -445,8 +451,8 @@ void MainWindow::on_search_model_result_Table_cellClicked(int row, int column)
 
     QList items = table->selectedItems();
 
-    QString MODEL_CODE = items[search_model_result_table_MODELCODE_idx]->text().trimmed(); // index 0 is the MODEL_CODE
-    QString Container_ID = items[search_model_result_table_ContainerID_idx]->text().trimmed();
+    QString MODEL_CODE = items[0]->text().trimmed(); // index 0 is the MODEL_CODE
+    QString Container_ID = items[1]->text().trimmed(); // index 1 is the container_ID
     // set ID to empty if this model does not have a container
 
     this->selected_model = inventory.get_Model(MODEL_CODE, Container_ID);
@@ -480,7 +486,7 @@ void MainWindow::on_search_CONTAINER_ID_LE_textChanged(const QString &new_str)
     inventory.searchContainer_starts_with(new_str, containers);
 
     // for each model, make a row for it
-    for(UI row = 0; row < containers.size(); row++){
+    for( unsigned long row = 0; row < containers.size(); row++ ){
         const ContainerPtr container = containers[row];
 
         table->insertRow(table->rowCount());
@@ -488,7 +494,7 @@ void MainWindow::on_search_CONTAINER_ID_LE_textChanged(const QString &new_str)
         QVector<QString> items;
         container->searchResult(items);
 
-        for( UI col = 0; col < items.size(); col++ ){
+        for( unsigned long col = 0; col < items.size(); col++ ){
             QTableWidgetItem *tableWidgetItem = new QTableWidgetItem();
             tableWidgetItem->setText( items[col] );
 
@@ -515,7 +521,7 @@ void MainWindow::on_search_container_result_Table_cellClicked(int row, int colum
 
     QList items = table->selectedItems();
 
-    QString Container_ID = items[ search_container_result_table_ContainerID_idx ]->text().trimmed();
+    QString Container_ID = items[ 1 ]->text().trimmed(); // idx 1 is the container id
 
     this->selected_container = inventory.get_container(Container_ID);
 

@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="search_model_tab">
        <attribute name="title">
@@ -383,7 +383,7 @@
                      </widget>
                     </item>
                     <item>
-                     <widget class="QSpinBox" name="selected_model_NUM_INIT_BOXES_SB">
+                     <widget class="QSpinBox" name="selected_model_NUM_INIT_PIECES_SB">
                       <property name="alignment">
                        <set>Qt::AlignCenter</set>
                       </property>
@@ -696,27 +696,27 @@
              </column>
              <column>
               <property name="text">
-               <string>货物种类数量</string>
+               <string>种类数量</string>
               </property>
              </column>
              <column>
               <property name="text">
-               <string>货物总数量（箱）</string>
+               <string>进货箱数</string>
               </property>
              </column>
              <column>
               <property name="text">
-               <string>货物剩余数量（箱）</string>
+               <string>剩余箱数</string>
               </property>
              </column>
              <column>
               <property name="text">
-               <string>货物进货数量（个）</string>
+               <string>进货个数</string>
               </property>
              </column>
              <column>
               <property name="text">
-               <string>货物剩余数量（个）</string>
+               <string>剩余个数</string>
               </property>
              </column>
             </widget>
@@ -1233,7 +1233,7 @@
      <x>0</x>
      <y>0</y>
      <width>842</width>
-     <height>24</height>
+     <height>17</height>
     </rect>
    </property>
    <widget class="QMenu" name="LanguageMenu">
