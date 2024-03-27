@@ -215,7 +215,7 @@ void Inventory::searchContainer_starts_with(const QString str, QVector< Containe
 void Inventory::deduct_models(const QVector<EntryPtr> & entries)
 {
     for(const EntryPtr& entry : entries){
-        const QString& MODELCODE = entry->CLAVE;
+        const QString& MODELCODE = entry->MODEL_CODE;
         const QString& ContainerID = entry->ContainerID;
         ModelPtr model_needs_modify = this->get_Model(MODELCODE, ContainerID);
         if(model_needs_modify.isNull()) {

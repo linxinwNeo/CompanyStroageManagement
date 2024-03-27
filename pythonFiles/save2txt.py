@@ -17,7 +17,7 @@ def write2txt(models, path) :
         file.write('% MODEL_CODE CONTAINER_ID DESCRIPTION_CN DESCRIPTION_SPAN NUM_INITIAL_PIECES NUM_SOLD_PIECES NUM_LEFT_PIECES NUM_PIECES_PER_BOX PRIZE_PER_PIECE TIME_MODIFIED \n')
         for key, value in models.items():
             file.write(value.MODEL_CODE + split_item)
-            file.write( '-1' ) # default container is -1
+            file.write( '-1' + split_item) # default container is -1
 
             if value.DESCRIPTION_CN is not None:
                 file.write(value.DESCRIPTION_CN + split_item)

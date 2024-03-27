@@ -42,18 +42,18 @@ void List::AddBack_Models() const
 {
     for(const EntryPtr& entry : this->entryList.entries){
         // 找到对应货号的库存
-        ModelPtr model = inventory.get_Model(entry->CLAVE, entry->ContainerID);
+        ModelPtr model = inventory.get_Model(entry->MODEL_CODE, entry->ContainerID);
         ContainerPtr container = inventory.get_container(entry->ContainerID);
         if(model.isNull()){
             /* the model doesn't exist in inventory, this is usually because the model is deleted
              * after this list has been created, we need to create this model */
-            model = ModelPtr (new Model(entry->CLAVE, // 货号
+            model = ModelPtr (new Model(entry->MODEL_CODE, // 货号
                                        entry->Description_SPAN, // 品名西语
                                        entry->Description_CN, // 品名中文
-                                       entry->PRECIO, // 单价
+                                       entry->PRICE_PER_PIECE, // 单价
                                        entry->NUM_PIECES, // 进货个数
                                        0, // 已售个数
-                                       entry->CANT_POR_CAJA)); // 每箱个数
+                                       entry->NUM_PIECES_PER_BOX)); // 每箱个数
             inventory.add_new_Model(model);
 
             /* if the container of this model also doesn't exist, we need to create one */

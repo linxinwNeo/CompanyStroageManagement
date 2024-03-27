@@ -2,14 +2,16 @@
 #include "create_pdf.h"
 
 
-QString currDate(const QDate date)
+QString currDate(QSharedPointer<QDateTime> date)
 {
-    return date.toString("dd MMM yyyy");
+    if(date.isNull()) return QDateTime().currentDateTime().toString("dd MMM yyyy");
+    else return date->toString("dd MMM yyyy");
 }
 
-QString currTime(const QTime time)
+QString currTime(QSharedPointer<QDateTime> time)
 {
-    return time.toString("hh:mm:ss");
+    if(time.isNull()) return QDateTime().currentDateTime().toString("hh:mm:ss");
+    else return time->toString("hh:mm:ss");
 }
 
 
@@ -56,7 +58,7 @@ void create_pdf(QString filename, ListPtr list)
     painter.drawText(QPointF(width * 0.78, height * 0.168), client_info.AGENTE);
 
     // FECHA
-    painter.drawText(QPointF(width * 0.78, height * 0.19), currDate(list->date_created));
+    painter.drawText(QPointF(width * 0.78, height * 0.19), currDate(list->datetime_created));
 
     // DOMICILIO
     painter.drawText(QPointF(width * 0.13, height * 0.212), client_info.DOMICILIO);
@@ -65,7 +67,7 @@ void create_pdf(QString filename, ListPtr list)
     painter.drawText(QPointF(width * 0.13, height * 0.23), client_info.CIUDAD);
 
     // Hora
-    painter.drawText(QPointF(width * 0.78, height * 0.229), currTime(list->time_created));
+    painter.drawText(QPointF(width * 0.78, height * 0.229), currTime(list->datetime_created));
 
     // RFC
     painter.drawText(QPointF(width * 0.13, height * 0.2475), client_info.RFC);
@@ -79,7 +81,7 @@ void create_pdf(QString filename, ListPtr list)
         double x = width * 0.06; // reset x for each entry
 
         // CAJA
-        painter.drawText(QPointF(x, y), locale.toString((double)entry->CAJA, 'f', 2));
+        painter.drawText(QPointF(x, y), locale.toString(entry->num_boxes(), 'f', 2));
         x += width * 0.07;
 
         // CANTIDAD
@@ -87,11 +89,11 @@ void create_pdf(QString filename, ListPtr list)
         x += width * 0.087;
 
         // CANT POR CAJA
-        painter.drawText(QPointF(x, y), locale.toString(entry->CANT_POR_CAJA));
+        painter.drawText(QPointF(x, y), locale.toString(entry->NUM_PIECES_PER_BOX));
         x += width * 0.08;
 
         // CLAVE
-        painter.drawText(QPointF(x, y), entry->CLAVE);
+        painter.drawText(QPointF(x, y), entry->MODEL_CODE);
         x += width * 0.122;
 
         // DESCRIPTION
@@ -99,11 +101,11 @@ void create_pdf(QString filename, ListPtr list)
         x += width * 0.273;
 
         // PRECIO U.
-        painter.drawText(QRect(0, y - height*0.009, x + width*0.116, y - height*0.009), locale.toString((double)entry->PRECIO, 'f', 2), option);
+        painter.drawText(QRect(0, y - height*0.009, x + width*0.116, y - height*0.009), locale.toString(entry->PRICE_PER_PIECE, 'f', 2), option);
         x += width * 0.129;
 
         // IMPORTE
-        painter.drawText(QRect(0, y - height*0.009, x + width*0.13, y - height*0.009), locale.toString((double)entry->TOTAL, 'f', 2), option);
+        painter.drawText(QRect(0, y - height*0.009, x + width*0.13, y - height*0.009), locale.toString(entry->TOTAL, 'f', 2), option);
 
         // increment y
         y += height * 0.02;

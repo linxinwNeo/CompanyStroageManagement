@@ -22,7 +22,7 @@ void QuickSorts::QuickSort(QVector<ContainerPtr>& arr)
 void QuickSorts::QuickSort(QVector<EntryPtr>& arr)
 {
     std::sort(arr.begin(), arr.end(), [](const EntryPtr &a, const EntryPtr &b) {
-        return a->CLAVE < b->CLAVE;
+        return a->MODEL_CODE < b->MODEL_CODE;
     });
 }
 

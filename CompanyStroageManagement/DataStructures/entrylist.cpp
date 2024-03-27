@@ -64,7 +64,7 @@ bool EntryList::has_Model(const QString &ModelCode, const QString &ContainerID) 
 {
     QString trimmed_ID = ContainerID.trimmed();
     for(const EntryPtr& entry : this->entries){
-        if(ModelCode == entry->CLAVE){
+        if(ModelCode == entry->MODEL_CODE){
             if(trimmed_ID == entry->ContainerID.trimmed()) return true;
         }
     }

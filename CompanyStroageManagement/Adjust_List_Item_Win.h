@@ -30,8 +30,10 @@ public:
 private slots:
     void closeEvent (QCloseEvent *event);
     void on_finish_btn_clicked();
+    
+    void on_NUM_BOXES_DoubleSpinBox_valueChanged(double arg1);
 
-    void on_NUM_BOXES_SB_valueChanged(double arg1);
+    void on_NUM_PIECES_SpinBox_valueChanged(int arg1);
 
 private:
     Ui::Adjust_List_Item_Win *ui;

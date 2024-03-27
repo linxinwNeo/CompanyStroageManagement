@@ -60,7 +60,7 @@ void Search_List_Win::view_selected_list()
 
         QVector<QString> items = e->view_values();
 
-        for(UI col = 0; col < items.size(); col++){
+        for(unsigned long col = 0; col < items.size(); col++){
             QTableWidgetItem *tableWidgetItem = new QTableWidgetItem();
             tableWidgetItem->setText( items[col] );
             tableWidgetItem->setTextAlignment(Qt::AlignVCenter);
@@ -195,14 +195,14 @@ void Search_List_Win::on_list_id_2be_searched_LE_textChanged(const QString & lis
     lists.get_list(userInput, candidates, true);
 
     // for each list, make a row for it
-    for(UI row = 0; row < candidates.size(); row++){
+    for( unsigned long row = 0; row < candidates.size(); row++ ){
         const ListPtr list = candidates[row];
 
         searched_lists_table->insertRow(searched_lists_table->rowCount());
 
         QVector<QString> items = list->describe_this_list();
 
-        for( UI col = 0; col < items.size(); col++ ){
+        for( unsigned long col = 0; col < items.size(); col++ ){
             QTableWidgetItem *tableWidgetItem = new QTableWidgetItem();
             tableWidgetItem->setText( items[col] );
 

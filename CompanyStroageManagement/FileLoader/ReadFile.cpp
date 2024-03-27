@@ -279,13 +279,13 @@ bool ReadFile::read_Lists_txt_File(const QString &path, const bool save_path)
 
             EntryPtr newEntry(new Entry());
 
-            newEntry->CLAVE = entryRawData[0];
+            newEntry->MODEL_CODE = entryRawData[0];
             newEntry->ContainerID = entryRawData[1];
             newEntry->NUM_PIECES = entryRawData[2].toULong();
-            newEntry->CANT_POR_CAJA = entryRawData[3].toULong();
+            newEntry->NUM_PIECES_PER_BOX = entryRawData[3].toULong();
             newEntry->Description_SPAN = entryRawData[4];
             newEntry->Description_CN = entryRawData[5];
-            newEntry->PRECIO = entryRawData[6].toDouble();
+            newEntry->PRICE_PER_PIECE = entryRawData[6].toDouble();
             newEntry->TOTAL = entryRawData[7].toDouble();
 
             new_list->add_item(newEntry);
