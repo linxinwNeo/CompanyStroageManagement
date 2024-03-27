@@ -1,8 +1,8 @@
 #include "Search_List_Win.h"
 #include "CN_Strings.h"
+#include "SpanStrings.h"
 #include "FileLoader/WriteFile.h"
 #include "GlobalVars.h"
-#include "SpanStrings.h"
 #include "ui_Search_List_Win.h"
 
 #include <QMessageBox>
@@ -17,11 +17,11 @@ Search_List_Win::Search_List_Win(QWidget *parent) :
     
     this->set_GUI_Language();
 
-    searched_lists_table = ui->searched_lists_table;
-    searched_lists_table->setStyleSheet(table_stylesheet);
+    search_result_Table = ui->search_result_Table;
+    search_result_Table->setStyleSheet(table_stylesheet);
 
-    list_models_table = ui->list_models_table;
-    list_models_table->setStyleSheet(table_stylesheet);
+    selected_list_entries_Table = ui->selected_list_entries_Table;
+    selected_list_entries_Table->setStyleSheet(table_stylesheet);
 
     this->on_list_id_2be_searched_LE_textChanged( this->ui->list_id_2be_searched_LE->text() );
 
@@ -56,7 +56,7 @@ void Search_List_Win::view_selected_list()
 
     // show the models of this entry
     for(EntryPtr& e : selected_list->entryList.entries){
-        list_models_table->insertRow(list_models_table->rowCount());
+        selected_list_entries_Table->insertRow(selected_list_entries_Table->rowCount());
 
         QVector<QString> items = e->view_values();
 
@@ -65,7 +65,7 @@ void Search_List_Win::view_selected_list()
             tableWidgetItem->setText( items[col] );
             tableWidgetItem->setTextAlignment(Qt::AlignVCenter);
 
-            list_models_table->setItem(list_models_table->rowCount()-1, col, tableWidgetItem);
+            selected_list_entries_Table->setItem(selected_list_entries_Table->rowCount()-1, col, tableWidgetItem);
         }
     }
 }
@@ -75,8 +75,8 @@ void Search_List_Win::reset_list_info()
 {
     this->selected_list = nullptr;
 
-    list_models_table->clearContents();
-    list_models_table->setRowCount(0);
+    selected_list_entries_Table->clearContents();
+    selected_list_entries_Table->setRowCount(0);
 
     this->ui->CLIENTE_LE->clear();
     this->ui->DOMICILIO_LE->clear();
@@ -98,14 +98,13 @@ void Search_List_Win::set_GUI_Language()
     this->ui->search_list_result_GB->setTitle(lan("清单查询结果", "resultados de la consulta de la lista"));
 
     QStringList headers = {
-       lan("清单号", "número de lista"),
-       lan("创建日期", "fecha de creación"),
-       lan("创建时间", "hora de creación"),
-       lan("总箱数", "número total de cajas"),
-       lan("价格", "Piezas por caja"),
-       lan("客户", "número de contenedor")
+       lan("清单号", "Número de lista"),
+       lan("创建时间", "Tiempo de creación"),
+       lan("总箱数", "Número total de cajas"),
+       lan("总价", "IMPORTE"),
+       lan("客户", "CLIENTE")
     };
-    this->ui->searched_lists_table->setHorizontalHeaderLabels(headers);
+    search_result_Table->setHorizontalHeaderLabels(headers);
 
     this->ui->selected_list_GB->setTitle(lan("选中清单的详细信息", "detalles de la lista seleccionada"));
 
@@ -134,11 +133,22 @@ void Search_List_Win::set_GUI_Language()
     this->ui->DISCOUNT_label->setText(lan("折扣", "DISCOUNT(%)"));
     this->ui->DISCOUNT_LE->setPlaceholderText(enter_here);
 
-    this->ui->list_items_GB->setTitle(lan("清单里的货物", "productos en la lista"));
+    this->ui->list_items_GB->setTitle(lan("清单里的货物", "Mercancías en la lista"));
 
-    this->ui->delete_list_btn->setText(lan("删除此清单（不返还库存）", "eliminar esta lista (sin devolver el inventario)"));
+    this->ui->delete_list_btn->setText(lan("删除此清单（不退还库存）", "Eliminar esta lista (sin devolver al inventario)"));
 
-    this->ui->put_back_list_btn->setText(lan("退清单（返还库存）", "devolver lista (devolver inventario)"));
+    this->ui->put_back_list_btn->setText(lan("退回清单（返还库存）", "Devolver la lista (reintegrar al inventario)"));
+
+
+    // 设置 selected_list_entries_Table 的语言
+    QStringList headers2 = {
+        lan("货号", "Número de lista"),
+        lan("集装箱号", "Tiempo de creación"),
+        lan("品名(中文)", "Número total de cajas"),
+        lan("品名(西语)", "Número total de cajas"),
+        lan("客户
+    };
+    selected_list_entries_Table->setHorizontalHeaderLabels(headers);
 }
 
 
@@ -188,8 +198,8 @@ void Search_List_Win::on_list_id_2be_searched_LE_textChanged(const QString & lis
     QString userInput = list_id_prefix.trimmed(); // remove useless empty spaces
 
     // clear content of <searched_lists_table>
-    searched_lists_table->clearContents();
-    searched_lists_table->setRowCount(0);
+    search_result_Table->clearContents();
+    search_result_Table->setRowCount(0);
 
     QVector<ListPtr> candidates;
     lists.get_list(userInput, candidates, true);
@@ -198,7 +208,7 @@ void Search_List_Win::on_list_id_2be_searched_LE_textChanged(const QString & lis
     for( unsigned long row = 0; row < candidates.size(); row++ ){
         const ListPtr list = candidates[row];
 
-        searched_lists_table->insertRow(searched_lists_table->rowCount());
+        search_result_Table->insertRow(search_result_Table->rowCount());
 
         QVector<QString> items = list->describe_this_list();
 
@@ -208,7 +218,7 @@ void Search_List_Win::on_list_id_2be_searched_LE_textChanged(const QString & lis
 
             tableWidgetItem->setTextAlignment(Qt::AlignVCenter);
 
-            searched_lists_table->setItem(row, col, tableWidgetItem);
+            search_result_Table->setItem(row, col, tableWidgetItem);
         }
     }
 
@@ -220,18 +230,18 @@ void Search_List_Win::on_list_id_2be_searched_LE_textChanged(const QString & lis
 }
 
 
-void Search_List_Win::on_searched_lists_table_cellClicked(int row, int column)
+void Search_List_Win::on_search_result_Table_cellClicked(int row, int column)
 {
     Q_UNUSED(column);
 
     this->setDisabled(true);
 
     // clear content of <list_models_table>
-    list_models_table->clearContents();
-    list_models_table->setRowCount(0);
+    selected_list_entries_Table->clearContents();
+    selected_list_entries_Table->setRowCount(0);
 
-    searched_lists_table->selectRow(row);
-    QList items = searched_lists_table->selectedItems();
+    search_result_Table->selectRow(row);
+    QList items = search_result_Table->selectedItems();
     QString list_id = items[searched_lists_table_list_id_idx]->text();
 
     unsigned long int list_ID = list_id.toULong();

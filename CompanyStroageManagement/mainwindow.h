@@ -46,6 +46,7 @@ private slots:
 
     void on_search_MODELCODE_LE_textChanged(const QString& new_str);
 
+    void on_delete_model_btn_clicked();
     void on_update_selected_model_btn_clicked();
 
     void on_search_model_result_Table_cellClicked(int row, int column);
@@ -60,7 +61,6 @@ private slots:
 
     void on_search_past_list_btn_clicked();
 
-    void on_delete_model_btn_clicked();
 
     void on_save_inventory_2_new_file_btn_clicked();
     void on_read_inventory_from_new_file_btn_clicked();

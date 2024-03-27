@@ -34,8 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
     this->CreateListWinPtr.setWindowTitle(CreateNewListWin_Title);
     this->CreateListWinPtr.parentPtr = this;
 
-
-
+    // setting up the search list window
     this->SearchListWinPtr.setWindowTitle(SearchListWin_Title);
     this->SearchListWinPtr.set_parentWin(this);
 }
@@ -365,14 +364,19 @@ Ret:
 /* update the model with the info entered */
 void MainWindow::on_update_selected_model_btn_clicked()
 {
-    this->setEnabled(false);
+    QMessageBox msg(this);
+    msg.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    // 如果没有选中的model，需要提示用户
+    if(this->selected_model.isNull()){
+        msg.setText(lan("没有选中货物。", "No se ha seleccionado ninguna mercancía."));
+        msg.exec();
+        return;
+    }
 
     // make sure user is indeed wanting to update the values
-    QMessageBox msg(this);
     msg.setText(lan(Are_You_Sure_to_Update_CN, Are_You_Sure_to_Update_SPAN));
     msg.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
-    msg.setDefaultButton(QMessageBox::No);
-    msg.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     int resBtn = msg.exec();
     if (resBtn == QMessageBox::No) {
@@ -391,7 +395,7 @@ void MainWindow::on_update_selected_model_btn_clicked()
 
     const QString container_ID = ui->selected_model_CONTAINER_LE->text().trimmed();
 
-    if(container_ID.isEmpty()) // current container of selected model does not exist
+    if(container_ID.isEmpty()) // current container of selected model is empty, it must not exist
     {
         // check if the model has container previsously
         if(selected_model->container.isNull()) goto Finish; // if no, then we don't need to do anything
@@ -400,27 +404,27 @@ void MainWindow::on_update_selected_model_btn_clicked()
             this->selected_model->container = nullptr;
         }
     }
-    else{ // the container exists
-        // check if current container exists, if not, create one
+    else{ // a container is entered, it may correspond to an existing container or not
         ContainerPtr prev_container = selected_model->container;
-        ContainerPtr cur_container = inventory.get_container(container_ID);
-        if(cur_container.isNull()){ // if no such container exists, create one
+        // remove previous container first, it may be empty
+        if(!prev_container.isNull()) // the selected_model has container previously, we need to remove this model from its previous container
+        {
+            prev_container->remove_model(this->selected_model);
+            this->selected_model->container = nullptr;
+        }
+
+        // check if container_ID container exists in our record, if not, create one
+        ContainerPtr cur_container = inventory.get_container(container_ID); // try to obtain the container obj with container_ID
+        if(cur_container.isNull()){ // there is no existing container that is associated with this container_ID
+            // create a new container with this ID
             cur_container = ContainerPtr (new Container(container_ID));
-            cur_container->add_model(this->selected_model); // add the selected model to the container
-            selected_model->container = cur_container;
         }
 
-        // check if the container ID is the same as before
-        if(container_ID == prev_container->ID){
-            goto Finish;
-        }
-        else{
-            // the container for the model has been modified
+        cur_container->add_model(this->selected_model); // add the selected model to the container
+        selected_model->container = cur_container;
+        inventory.add_Container(cur_container); // don't forget to add this container to the inventory
 
-            // remove selected_model from the previous container
-            prev_container->remove_model(selected_model);
-            selected_model->container = cur_container;
-        }
+        goto Finish;
     }
 
 
@@ -434,8 +438,6 @@ Finish:
     // save the inventory and lists
     WriteFile::SaveInventoryAuto(false);
     WriteFile::Lists2txt(false);
-
-    this->setEnabled(true);
 }
 
 
@@ -576,7 +578,15 @@ void MainWindow::on_delete_model_btn_clicked()
     QMessageBox delete_confirmation_msg(this);
     QMessageBox delete_success_msg(this);
 
-    if(this->selected_model.isNull()) goto ret;
+    if(this->selected_model.isNull()){
+        QMessageBox msg(this);
+        msg.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+        // 如果没有选中的model，需要提示用户
+        msg.setText(lan("没有选中货物。", "No se ha seleccionado ninguna mercancía."));
+        msg.exec();
+        return;
+    }
 
     // make sure user is indeed wanting to remove this model
     delete_confirmation_msg.setText(prefix + this->selected_model->MODEL_CODE + suffix);

@@ -35,8 +35,8 @@ private:
 
     MainWindow* parentWin = nullptr;
 
-    QTableWidget* searched_lists_table = nullptr;
-    QTableWidget* list_models_table = nullptr;
+    QTableWidget* search_result_Table = nullptr;
+    QTableWidget* selected_list_entries_Table = nullptr;
 
     ListPtr selected_list = nullptr;
 
@@ -47,7 +47,7 @@ private slots:
     void closeEvent (QCloseEvent *event);
 
     void on_list_id_2be_searched_LE_textChanged(const QString &arg1);
-    void on_searched_lists_table_cellClicked(int row, int column);
+    void on_search_result_Table_cellClicked(int row, int column);
     void on_delete_list_btn_clicked();
     void on_put_back_list_btn_clicked();
 };

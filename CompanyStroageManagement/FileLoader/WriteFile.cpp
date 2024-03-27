@@ -75,10 +75,10 @@ bool WriteFile::Inventory2Txt(const QString &path, const bool save_path)
     for(const QSharedPointer<Model>& m : inventory.model_set){
         out << m->MODEL_CODE + split_item; // 1. 货号/MODEL_CODE
         if(m->container.isNull()){  // 2. 集装箱号/CONTAINER_ID
-            out << "-1\n"; // if this model does not have a container, we put -1 to indicate
+            out << "-1" + split_item; // if this model does not have a container, we put -1 to indicate
         }
         else{
-            out << m->container->ID + "\n";
+            out << m->container->ID + "" + split_item;
         }
 
         out << m->DESCRIPTION_CN + split_item; // 3. 品名（中文）

@@ -109,8 +109,8 @@ bool ReadFile::read_Inventory_txt_File(const QString& path, const bool save_path
         m->DESCRIPTION_CN = strList[2]; // 3. 品名（中文）/DESCRIPTION_CN
         m->DESCRIPTION_SPAN = strList[3]; // 4. 品名（西语）/DESCRIPTION_SPAN
 
-        m->NUM_INIT_PIECES = strList[4].toDouble(); // 5. 进货个数/NUM_INITIAL_PIECES
-        m->NUM_SOLD_PIECES = strList[5].toDouble(); // 6. 已售个数/NUM_SOLD_PIECES
+        m->NUM_INIT_PIECES = strList[4].toULong(); // 5. 进货个数/NUM_INITIAL_PIECES
+        m->NUM_SOLD_PIECES = strList[5].toULong(); // 6. 已售个数/NUM_SOLD_PIECES
         m->NUM_LEFT_PIECES = strList[6].toULong(); // 7. 剩余个数/NUM_LEFT_PIECES
         m->NUM_PIECES_PER_BOX = strList[7].toULong(); // 8.每箱个数/NUM_PIECES_PER_BOX
         m->PRIZE = strList[8].toDouble(); // 9. 单价/PRIZE_PER_PIECE
