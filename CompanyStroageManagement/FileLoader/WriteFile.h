@@ -3,10 +3,8 @@
 
 #include <QString>
 
-
 class WriteFile {
 public:
-
     WriteFile();
     ~WriteFile() {};
 

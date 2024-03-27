@@ -6,7 +6,7 @@ from datetime import datetime
 split_item = '&&'
                 
 def write2txt(models, path) :
-    current_time = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
+    current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
 
     with open(path, 'w', encoding="utf-8") as file:

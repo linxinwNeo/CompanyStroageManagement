@@ -5,6 +5,9 @@
 #include "header/xlsxdocument.h"
 #include <QDir>
 #include "IO_Base.h"
+#include <QLocale>
+
+QLocale locale(QLocale::English, QLocale::UnitedStates);
 
 /* write models to a models.txt file
  * for each model, we need to output its properties, more specifically, output the container's ID */
@@ -147,13 +150,12 @@ bool WriteFile::Inventory2Xlsx(const QString &path, const bool save_path)
         xlsx.write(row, col++, model->DESCRIPTION_CN); // 3. 品名（中文）/DESCRIPTION_CN
         xlsx.write(row, col++, model->DESCRIPTION_SPAN); // 4. 品名（西语）/DESCRIPTION_SPAN
 
-        // 需要cast到unsigned long long才不会报错
-        xlsx.write(row, col++, (unsigned long long)model->NUM_INIT_PIECES); // 5. 进货个数/NUM_INITIAL_PIECES
-        xlsx.write(row, col++, (unsigned long long)model->NUM_SOLD_PIECES); // 6. 已售个数/NUM_SOLD_PIECES
-        xlsx.write(row, col++, (unsigned long long)model->NUM_LEFT_PIECES); // 7. 剩余个数/NUM_LEFT_PIECES
+        xlsx.write(row, col++, locale.toString(model->NUM_INIT_PIECES)); // 5. 进货个数/NUM_INITIAL_PIECES
+        xlsx.write(row, col++, locale.toString(model->NUM_SOLD_PIECES)); // 6. 已售个数/NUM_SOLD_PIECES
+        xlsx.write(row, col++, locale.toString(model->NUM_LEFT_PIECES)); // 7. 剩余个数/NUM_LEFT_PIECES
 
-        xlsx.write(row, col++, QString::number(model->NUM_PIECES_PER_BOX)); // 8. 每箱个数/NUM_PIECES_PER_BOX
-        xlsx.write(row, col++, model->PRIZE); // 9. 单价/PRIZE_PER_PIECE
+        xlsx.write(row, col++, locale.toString(model->NUM_PIECES_PER_BOX)); // 8. 每箱个数/NUM_PIECES_PER_BOX
+        xlsx.write(row, col++, locale.toString(model->PRIZE, 'f', 2)); // 9. 单价/PRIZE_PER_PIECE
 
         if(model->last_time_modified.isNull()){ // 10. 上次修改时间
             QDateTime currentDateTime = QDateTime::currentDateTime();
