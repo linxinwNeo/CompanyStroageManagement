@@ -18,3 +18,6 @@ const QString DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
 
 
 unsigned int language_option = 0; // 0 for chinese, 1 for Spanish
+
+
+QLocale locale(QLocale::English, QLocale::UnitedStates);

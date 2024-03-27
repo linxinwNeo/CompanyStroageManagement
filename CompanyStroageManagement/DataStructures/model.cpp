@@ -16,9 +16,10 @@ Model::Model(const QString &MODEL_CODE, const QString &DESCRIPTION_SPAN, const Q
     this->DESCRIPTION_SPAN = DESCRIPTION_SPAN;
     this->DESCRIPTION_CN = DESCRIPTION_CN;
     this->PRIZE = PRIZE;
+
     this->NUM_INIT_PIECES = NUM_INIT_PIECES;
     this->NUM_SOLD_PIECES = NUM_SOLD_PIECES;
-    this->NUM_LEFT_PIECES = NUM_INIT_PIECES - NUM_SOLD_PIECES;
+
     this->NUM_PIECES_PER_BOX = NUM_PIECES_PER_BOX;
 
     this->last_time_modified = nullptr;
@@ -40,11 +41,16 @@ void Model::reset()
     PRIZE = 0.;
     NUM_INIT_PIECES = 0;
     NUM_SOLD_PIECES = 0;
-    NUM_LEFT_PIECES = 0;
     NUM_PIECES_PER_BOX = 0;
 
     this->container = nullptr;
     this->last_time_modified = nullptr;
+}
+
+
+unsigned long Model::NUM_LEFT_PIECES() const
+{
+    return this->NUM_INIT_PIECES - this->NUM_SOLD_PIECES;
 }
 
 
@@ -66,7 +72,7 @@ double Model::num_sold_boxes() const
 
 double Model::num_left_boxes() const
 {
-    const double num_left_pieces = this->NUM_LEFT_PIECES;
+    const double num_left_pieces = this->NUM_LEFT_PIECES();
     const double num_pieces_per_box = this->NUM_PIECES_PER_BOX;
 
     return num_left_pieces / num_pieces_per_box;
@@ -95,9 +101,8 @@ double Model::TOTAL_PRIZE(unsigned long num_pieces) const {
 bool Model::Sell(unsigned long num_pieces_to_sell)
 {
     // we make sure we have enough left piece to sell
-    if(this->NUM_LEFT_PIECES >= num_pieces_to_sell){
+    if(this->NUM_LEFT_PIECES() >= num_pieces_to_sell){
         this->NUM_SOLD_PIECES += num_pieces_to_sell;
-        this->NUM_LEFT_PIECES -= num_pieces_to_sell;
         return true;
     }
 
@@ -111,7 +116,6 @@ bool Model::AddBack(unsigned long num_pieces_to_addBack)
 {
     if(num_pieces_to_addBack <= this->NUM_SOLD_PIECES){
         this->NUM_SOLD_PIECES -= num_pieces_to_addBack;
-        this->NUM_LEFT_PIECES += num_pieces_to_addBack;
         return true;
     }
 
@@ -134,17 +138,17 @@ void Model::searchResult_Regular(QVector<QString> &items) const
 
     items.push_back(this->DESCRIPTION_CN); // 3.品名中文
     items.push_back(this->DESCRIPTION_SPAN); // 4.品名西语
-    items.push_back(QString::number((double)this->NUM_INIT_PIECES / (double)this->NUM_PIECES_PER_BOX, 'f', 2)); // 5.进货箱数
-    items.push_back(QString::number((double)this->NUM_SOLD_PIECES / (double)this->NUM_PIECES_PER_BOX, 'f', 2)); // 6.已售箱数
-    items.push_back(QString::number((double)this->NUM_LEFT_PIECES / (double)this->NUM_PIECES_PER_BOX, 'f', 2)); // 7.剩余箱数
+    items.push_back(locale.toString(this->num_pieces_2_num_boxes(this->NUM_INIT_PIECES), 'f', 2)); // 5.进货箱数
+    items.push_back(locale.toString(this->num_pieces_2_num_boxes(this->NUM_SOLD_PIECES), 'f', 2)); // 6.已售箱数
+    items.push_back(locale.toString(this->num_pieces_2_num_boxes(this->NUM_LEFT_PIECES()), 'f', 2)); // 7.剩余箱数
 
-    items.push_back(QString::number(this->NUM_PIECES_PER_BOX)); // 8.每箱几个
+    items.push_back(locale.toString(this->NUM_PIECES_PER_BOX)); // 8.每箱几个
 
-    items.push_back(QString::number(this->NUM_INIT_PIECES)); // 9.进货个数
-    items.push_back(QString::number(this->NUM_SOLD_PIECES)); // 10.已售个数
-    items.push_back(QString::number(this->NUM_LEFT_PIECES)); // 11.剩余个数
+    items.push_back(locale.toString(this->NUM_INIT_PIECES)); // 9.进货个数
+    items.push_back(locale.toString(this->NUM_SOLD_PIECES)); // 10.已售个数
+    items.push_back(locale.toString(this->NUM_LEFT_PIECES())); // 11.剩余个数
 
-    items.push_back(QString::number(this->PRIZE, 'f', 2)); // 12.单价
+    items.push_back(locale.toString(this->PRIZE, 'f', 2)); // 12.单价
 
     items.push_back(this->last_time_modified->toString(DateTimeFormat)); // 13. 修改时间
 }
@@ -159,7 +163,7 @@ QString Model::describe_this_model() const
                   + QString::number(this->PRIZE) + "\n"
                   + QString::number(this->NUM_INIT_PIECES) + "\n"
                   + QString::number(this->NUM_SOLD_PIECES) + "\n"
-                  + QString::number(this->NUM_LEFT_PIECES) + "\n"
+                  + QString::number(this->NUM_LEFT_PIECES()) + "\n"
                   + QString::number(this->NUM_PIECES_PER_BOX) + "\n";
     if(!this->last_time_modified.isNull()){
         ret += this->last_time_modified->toString(DateTimeFormat);

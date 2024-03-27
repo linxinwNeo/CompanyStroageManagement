@@ -88,7 +88,7 @@ unsigned long long Container::total_num_left_pieces() const
 {
     unsigned long long sum = 0;
     for(const auto& m : this->models_set){
-        sum += m->NUM_LEFT_PIECES;
+        sum += m->NUM_LEFT_PIECES();
     }
 
     return sum;

@@ -124,17 +124,23 @@ void CreateListWin::set_GUI_Language()
     this->ui->model_code_for_search_LE->setPlaceholderText(lan("在此输入需要搜索的货号 比如 TA-0001", "Introduce el número de referencia que deseas buscar aquí, por ejemplo, TA-0001"));
 
     QStringList headers = {
-       lan("货号", "MODELO"),
-       lan("品名(中文)", "Nombre del producto (en chino)"),
-       lan("品名（西语）", "Nombre del producto (en español)"),
-       lan("初始箱数", "Número inicial de cajas"),
-       lan("每箱个数", "Piezas por caja"),
-       lan("单价", "precio del artículo"),
-       lan("已售箱数", "Número de cajas vendidas"),
-       lan("已售个数", "Número de piezas vendidas"),
-       lan("剩余箱数", "Número de cajas restantes"),
-       lan("剩余个数", "Número de piezas restantes"),
-       lan("集装箱号", "número de contenedor")
+        lan("货号", "MODELO"),
+        lan("集装箱号", "Número de contenedor"),
+        lan("品名(中文)", "Nombre del producto (en chino)"),
+        lan("品名(西语)", "Nombre del producto (en español)"),
+
+        lan("进货箱数", "Núm. cajas adq."),
+        lan("已售箱数", "Núm. cajas vend."),
+        lan("剩余箱数", "Núm. cajas rest."),
+
+        lan("每箱个数", "Piezas por caja"),
+
+        lan("进货个数", "Núm. piezas adq."),
+        lan("已售个数", "Núm. piezas vend."),
+        lan("剩余个数", "Núm. unidades rest."),
+
+        lan("单价", "Prec. por pieza"),
+        lan("上次修改时间", "Fecha últ. modif."),
     };
 
     this->ui->searched_models_table->setHorizontalHeaderLabels(headers);
@@ -419,10 +425,9 @@ void CreateListWin::on_searched_models_table_cellClicked(int row, int column)
     QString ContainerID;
 
     QList items = table->selectedItems();
-    if(items.length() != this->NUM_SEARCHED_MODELS_TABLE_COLS) goto Finish;
 
-    MODELCODE = items[searched_models_table_MODELCODE_idx]->text(); // index 0 is the MODEL_CODE
-    ContainerID = items[searched_models_table_ContainerID_idx]->text();
+    MODELCODE = items[0]->text(); // index 0 is the MODEL_CODE
+    ContainerID = items[1]->text().trimmed();
 
     this->selected_model_in_search_table = inventory.get_Model(MODELCODE, ContainerID);
 
@@ -435,10 +440,11 @@ Finish:
 void CreateListWin::on_add_selected_model_btn_clicked()
 {
     if(this->selected_model_in_search_table.isNull()) return;
+
     // we dont have this selected model anymore
     QMessageBox Msgbox;
 
-    if(this->selected_model_in_search_table->NUM_LEFT_PIECES == 0){
+    if(this->selected_model_in_search_table->NUM_LEFT_PIECES() == 0){
         Msgbox.setText(lan(OUT_OF_STOCK_MSG_CN, OUT_OF_STOCK_MSG_SPAN));
         Msgbox.exec();
         return;
@@ -450,8 +456,6 @@ void CreateListWin::on_add_selected_model_btn_clicked()
 
     unsigned long NUM_LEFT_PIECES = 0.;
     unsigned long NUM_PIECES_PER_BOX = 0.;
-    double NUM_BOXES = 0;
-    QString MODEL_CODE;
     QString DESCRIPTION_SPAN;
     QString DESCRIPTION_CN;
     double PRIZE = 0.;
@@ -465,7 +469,7 @@ void CreateListWin::on_add_selected_model_btn_clicked()
     if(this->selected_model_in_search_table->container.isNull()) ContainerID_2be_Added.clear();
     else ContainerID_2be_Added = model_2be_added->container->ID;
 
-    // check if this model has been added to <added_models_table> already
+    // check if this model has been added to <selected_list_entries_Table> already
     if(cur_list_entries.has_Model(MODELCODE_2be_Added, ContainerID_2be_Added)){
         Msgbox.setText(lan(MODEL_EXIST_IN_LIST_MSG_CN, MODEL_EXIST_IN_LIST_MSG_SPAN));
         Msgbox.exec();
@@ -473,18 +477,17 @@ void CreateListWin::on_add_selected_model_btn_clicked()
     }
 
     // create a new entry and add it to <cur_list_entries>
-    NUM_LEFT_PIECES = model_2be_added->NUM_LEFT_PIECES; // CANTIDAD
+    NUM_LEFT_PIECES = model_2be_added->NUM_LEFT_PIECES(); // CANTIDAD
 
     NUM_PIECES_PER_BOX = model_2be_added->NUM_PIECES_PER_BOX;
     // compute number of avaliable boxes
-    NUM_BOXES = ((double)NUM_LEFT_PIECES) / ((double)NUM_PIECES_PER_BOX); // CAJA
 
     DESCRIPTION_SPAN = model_2be_added->DESCRIPTION_SPAN;
     DESCRIPTION_CN = model_2be_added->DESCRIPTION_CN;
     PRIZE = model_2be_added->PRIZE;
 
-    new_entry = EntryPtr (new Entry( NUM_LEFT_PIECES, NUM_BOXES,
-                                     MODEL_CODE, ContainerID_2be_Added,
+    new_entry = EntryPtr (new Entry( NUM_LEFT_PIECES, NUM_PIECES_PER_BOX,
+                                     MODELCODE_2be_Added, ContainerID_2be_Added,
                                      DESCRIPTION_SPAN, DESCRIPTION_CN,
                                      PRIZE));
 

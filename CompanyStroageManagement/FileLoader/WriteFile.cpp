@@ -5,9 +5,6 @@
 #include "header/xlsxdocument.h"
 #include <QDir>
 #include "IO_Base.h"
-#include <QLocale>
-
-QLocale locale(QLocale::English, QLocale::UnitedStates);
 
 /* write models to a models.txt file
  * for each model, we need to output its properties, more specifically, output the container's ID */
@@ -86,7 +83,7 @@ bool WriteFile::Inventory2Txt(const QString &path, const bool save_path)
 
         out << QString::number(m->NUM_INIT_PIECES) + split_item; // 5. 进货个数/NUM_INITIAL_PIECES
         out << QString::number(m->NUM_SOLD_PIECES) + split_item; // 6. 已售个数/NUM_SOLD_PIECES
-        out << QString::number(m->NUM_LEFT_PIECES) + split_item; // 7. 剩余个数/NUM_LEFT_PIECES
+        out << QString::number(m->NUM_LEFT_PIECES()) + split_item; // 7. 剩余个数/NUM_LEFT_PIECES
         out << QString::number(m->NUM_PIECES_PER_BOX) + split_item;  // 8. 每箱个数/NUM_PIECES_PER_BOX
         out << QString::number(m->PRIZE) + split_item; // 9. 单价/PRIZE_PER_PIECE
 
@@ -152,7 +149,7 @@ bool WriteFile::Inventory2Xlsx(const QString &path, const bool save_path)
 
         xlsx.write(row, col++, locale.toString(model->NUM_INIT_PIECES)); // 5. 进货个数/NUM_INITIAL_PIECES
         xlsx.write(row, col++, locale.toString(model->NUM_SOLD_PIECES)); // 6. 已售个数/NUM_SOLD_PIECES
-        xlsx.write(row, col++, locale.toString(model->NUM_LEFT_PIECES)); // 7. 剩余个数/NUM_LEFT_PIECES
+        xlsx.write(row, col++, locale.toString(model->NUM_LEFT_PIECES())); // 7. 剩余个数/NUM_LEFT_PIECES
 
         xlsx.write(row, col++, locale.toString(model->NUM_PIECES_PER_BOX)); // 8. 每箱个数/NUM_PIECES_PER_BOX
         xlsx.write(row, col++, locale.toString(model->PRIZE, 'f', 2)); // 9. 单价/PRIZE_PER_PIECE
@@ -274,14 +271,14 @@ bool WriteFile::update_BackUpDate()
 bool WriteFile::save_BackUp_files(const bool save_path)
 {
     QDateTime currentDateTime = QDateTime::currentDateTime();
-    QString folderName = currentDateTime.toString(DateTimeFormat);
+    QString folderName = currentDateTime.toString("yyyy-MM-dd-HH-mm-ss");
     QDir timeDir;
 
     // Create the subfolder named by datetime
     QString path = BackUP_DirName + "/" + folderName;
     bool success = timeDir.mkpath(path);
     if(!success){
-        write_error_file("WriteFile::save_BackUp_files: couldn't create the path: " + path + " \n");
+        write_error_file("WriteFile::save_BackUp_files: couldn't create the path: " + path);
         return false;
     }
 

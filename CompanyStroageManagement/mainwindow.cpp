@@ -391,8 +391,6 @@ void MainWindow::on_update_selected_model_btn_clicked()
     selected_model->PRIZE = ui->selected_model_PRIZE_SB->value();
     selected_model->NUM_PIECES_PER_BOX = ui->selected_model_NUM_PIECES_PER_BOX_SB->value();
 
-    selected_model->NUM_LEFT_PIECES = selected_model->NUM_INIT_PIECES - selected_model->NUM_SOLD_PIECES;
-
     const QString container_ID = ui->selected_model_CONTAINER_LE->text().trimmed();
 
     if(container_ID.isEmpty()) // current container of selected model is empty, it must not exist

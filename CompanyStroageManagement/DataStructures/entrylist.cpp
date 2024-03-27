@@ -12,7 +12,7 @@ void EntryList::add_entry(QSharedPointer<Entry>& entry_to_be_added)
 {
     if(entry_to_be_added.isNull()) return;
 
-    this->entries.append(entry_to_be_added);
+    this->entries.push_back(entry_to_be_added);
 
     // sort the list by their MODELCODE/CLAVE
     QuickSorts::QuickSort(this->entries);

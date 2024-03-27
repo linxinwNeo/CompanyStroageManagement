@@ -72,17 +72,19 @@ void Adjust_List_Item_Win::set_GUI_values()
 
     unsigned long CURR_NUM_PIECES = this->entry_2be_adjusted->NUM_PIECES;
     // make sure current num of pieces is smaller than the left pieces
-    if(CURR_NUM_PIECES > this->model_2be_adjusted->NUM_LEFT_PIECES){
-        CURR_NUM_PIECES = this->model_2be_adjusted->NUM_LEFT_PIECES;
+    if(CURR_NUM_PIECES > this->model_2be_adjusted->NUM_LEFT_PIECES()){
+        CURR_NUM_PIECES = this->model_2be_adjusted->NUM_LEFT_PIECES();
     }
 
-    this->ui->MAX_NUM_BOXES_LineEdit->setText(QString::number(this->model_2be_adjusted->num_left_boxes(), 'f', 2));
+    extern QLocale locale;
+    this->ui->MAX_NUM_BOXES_LineEdit->setText(locale.toString(this->model_2be_adjusted->num_left_boxes(), 'f', 2));
 
     this->ui->NUM_BOXES_DoubleSpinBox->setMaximum(this->model_2be_adjusted->num_left_boxes());
     this->ui->NUM_BOXES_DoubleSpinBox->setMinimum(0.);
     this->ui->NUM_BOXES_DoubleSpinBox->setValue(this->model_2be_adjusted->num_pieces_2_num_boxes(CURR_NUM_PIECES));
 
-    this->ui->MAX_NUM_PIECES_LineEdit->setText(QString::number(model_2be_adjusted->NUM_LEFT_PIECES));
+
+    this->ui->MAX_NUM_PIECES_LineEdit->setText(locale.toString(model_2be_adjusted->NUM_LEFT_PIECES()));
     this->ui->NUM_PIECES_SpinBox->setMinimum(0.);
     this->ui->NUM_PIECES_SpinBox->setMaximum(CURR_NUM_PIECES);
     this->ui->NUM_PIECES_SpinBox->setValue(CURR_NUM_PIECES);
@@ -94,9 +96,9 @@ void Adjust_List_Item_Win::set_GUI_values()
     this->ui->DESCRIPTION_CN_TextEdit->setText(model_2be_adjusted->DESCRIPTION_CN);
     this->ui->DESCRIPTION_SPAN_TextEdit->setText(model_2be_adjusted->DESCRIPTION_SPAN);
 
-    this->ui->PREZE_LineEdit->setText(QString::number(model_2be_adjusted->PRIZE, 'f', 2));
+    this->ui->PREZE_LineEdit->setText(locale.toString(model_2be_adjusted->PRIZE, 'f', 2));
 
-    this->ui->TOTAL_LineEdit->setText(QString::number(model_2be_adjusted->PRIZE * entry_2be_adjusted->NUM_PIECES, 'f', 2));
+    this->ui->TOTAL_LineEdit->setText(locale.toString(model_2be_adjusted->PRIZE * entry_2be_adjusted->NUM_PIECES, 'f', 2));
 }
 
 

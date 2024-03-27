@@ -1,5 +1,6 @@
 #include "DataStructures/entry.h"
 #include "GlobalVars.h"
+#include <QLocale>
 
 Entry::Entry(unsigned long NUM_PIECES, unsigned long NUM_PIECES_PER_BOX,
              QString MODEL_CODE, QString ContainerID,
@@ -31,15 +32,17 @@ ModelPtr Entry::get_corresponding_model() const
 QVector<QString> Entry::view_values() const
 {
     return {
-        QString::number(this->num_boxes(), 'f', 2),
-        QString::number(NUM_PIECES),
-        QString::number(this->NUM_PIECES_PER_BOX),
         this->MODEL_CODE,
-        Description_SPAN,
+        this->ContainerID,
+
         Description_CN,
-        QString::number(this->PRICE_PER_PIECE, 'f', 2),
-        QString::number(this->TOTAL, 'f', 2),
-        ContainerID
+        Description_SPAN,
+
+        locale.toString(this->num_boxes(), 'f', 2),
+        locale.toString(this->NUM_PIECES_PER_BOX),
+        locale.toString(NUM_PIECES),
+        locale.toString(this->PRICE_PER_PIECE, 'f', 2),
+        locale.toString(this->TOTAL, 'f', 2),
     };
 }
 

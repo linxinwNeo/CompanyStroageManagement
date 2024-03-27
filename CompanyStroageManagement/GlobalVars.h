@@ -5,6 +5,7 @@
 #include <QSharedPointer>
 #include "DataStructures/Inventory.h"
 #include "DataStructures/List.h"
+#include <QLocale>
 
 extern const QString APP_NAME;
 
@@ -34,5 +35,7 @@ inline QString lan(const QString& CN_Str, const QString& Span_Str)
     else if(language_option == 1) return Span_Str;
     else return CN_Str;
 }
+
+extern QLocale locale;
 
 #endif // GLOBALVARS_H

@@ -15,8 +15,6 @@ Search_List_Win::Search_List_Win(QWidget *parent) :
 {
     ui->setupUi(this);
     
-    this->set_GUI_Language();
-
     search_result_Table = ui->search_result_Table;
     search_result_Table->setStyleSheet(table_stylesheet);
 
@@ -26,6 +24,8 @@ Search_List_Win::Search_List_Win(QWidget *parent) :
     this->on_list_id_2be_searched_LE_textChanged( this->ui->list_id_2be_searched_LE->text() );
 
     this->setWindow();
+
+    this->set_GUI_Language();
 }
 
 
@@ -142,11 +142,15 @@ void Search_List_Win::set_GUI_Language()
 
     // 设置 selected_list_entries_Table 的语言
     QStringList headers2 = {
-        lan("货号", "Número de lista"),
-        lan("集装箱号", "Tiempo de creación"),
-        lan("品名(中文)", "Número total de cajas"),
-        lan("品名(西语)", "Número total de cajas"),
-        lan("客户
+        lan("货号", "CLAVE"),
+        lan("集装箱号", "CONTAINER"),
+        lan("品名(中文)", "Nombre del producto (en chino)"),
+        lan("品名(西语)", "Nombre del producto (en español)"),
+        lan("箱数", "CAJA"),
+        lan("每箱个数", "CANT POR CAJA"),
+        lan("个数", "CAMTODAD"),
+        lan("单价", "PRECOP U."),
+        lan("总价", "IMPORTE")
     };
     selected_list_entries_Table->setHorizontalHeaderLabels(headers);
 }

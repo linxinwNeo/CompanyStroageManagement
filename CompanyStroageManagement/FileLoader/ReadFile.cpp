@@ -111,7 +111,7 @@ bool ReadFile::read_Inventory_txt_File(const QString& path, const bool save_path
 
         m->NUM_INIT_PIECES = strList[4].toULong(); // 5. 进货个数/NUM_INITIAL_PIECES
         m->NUM_SOLD_PIECES = strList[5].toULong(); // 6. 已售个数/NUM_SOLD_PIECES
-        m->NUM_LEFT_PIECES = strList[6].toULong(); // 7. 剩余个数/NUM_LEFT_PIECES
+        // m->NUM_LEFT_PIECES = strList[6].toULong(); // 7. 剩余个数/NUM_LEFT_PIECES
         m->NUM_PIECES_PER_BOX = strList[7].toULong(); // 8.每箱个数/NUM_PIECES_PER_BOX
         m->PRIZE = strList[8].toDouble(); // 9. 单价/PRIZE_PER_PIECE
         // 10. 上次修改时间/TIME_MODIFIED
@@ -194,7 +194,8 @@ bool ReadFile::read_Inventory_xlsx_File(const QString &path, const bool save_pat
         // because when we output data, we used unsigned long long
         m->NUM_INIT_PIECES = xlsx.read(row, col++).toULongLong(); // 5. 进货个数/NUM_INITIAL_PIECES
         m->NUM_SOLD_PIECES = xlsx.read(row, col++).toULongLong(); // 6. 已售个数/NUM_SOLD_PIECES
-        m->NUM_LEFT_PIECES = xlsx.read(row, col++).toULongLong(); // 7. 剩余个数/NUM_LEFT_PIECES
+        // m->NUM_LEFT_PIECES = xlsx.read(row, col++).toULongLong(); // 7. 剩余个数/NUM_LEFT_PIECES
+        col++;
         m->NUM_PIECES_PER_BOX = xlsx.read(row, col++).toULongLong(); // 8. 每箱个数/NUM_PIECES_PER_BOX
         m->PRIZE = xlsx.read(row, col++).toDouble(); // 9. 单价/PRIZE_PER_PIECE
 

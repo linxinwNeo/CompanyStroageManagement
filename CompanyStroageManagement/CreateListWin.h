@@ -25,9 +25,6 @@ class CreateListWin : public QMainWindow
 public:
     ListPtr list;
 
-    const unsigned int NUM_SEARCHED_MODELS_TABLE_COLS = 11;
-    const unsigned int NUM_ADDED_MODELS_TABLE_COLS = 9;
-
     MainWindow* parentPtr = nullptr;
 
     CreateListWin(QWidget *parent = nullptr);
@@ -76,33 +73,6 @@ private:
 
     const float widthRatio = 0.6;
     const float heightRatio = 0.8;
-
-public:
-    // indices for searched_models_table
-    const unsigned int searched_models_table_MODELCODE_idx = 0;
-    const unsigned int searched_models_table_DESCRIPTION_CN_idx = 1;
-    const unsigned int searched_models_table_DESCRIPTION_SPAN_idx = 2;
-    const unsigned int searched_models_table_NUM_INIT_BOXES_idx = 3;
-    const unsigned int searched_models_table_NUM_ITEMS_PER_BOX_idx = 4;
-    const unsigned int searched_models_table_PRIZE_idx = 5;
-    const unsigned int searched_models_table_NUM_SOLD_BOXES_idx = 6;
-    const unsigned int searched_models_table_NUM_SOLD_ITEMS_idx = 7;
-    const unsigned int searched_models_table_NUM_LEFT_BOXES_idx = 8;
-    const unsigned int searched_models_table_NUM_LEFT_ITEMS_idx = 9;
-    const unsigned int searched_models_table_ContainerID_idx = 10;
-
-    // indices for added_models_table
-    const unsigned int added_models_table_NUM_BOXES_idx = 0;
-    const unsigned int added_models_table_NUM_ITEMS_idx = 1;
-    const unsigned int added_models_table_NUM_ITEMS_PER_BOX_idx = 2;
-    const unsigned int added_models_table_MODELCODE_idx = 3;
-    const unsigned int added_models_table_DESCRIPTION_SPAN_idx = 4;
-    const unsigned int added_models_table_DESCRIPTION_CN_idx = 5;
-    const unsigned int added_models_table_PRIZE_idx = 6;
-    const unsigned int added_models_table_TOTAL_idx = 7; // total prize
-    const unsigned int added_models_table_ContainerID_idx = 8;
-
-
 };
 
 #endif // CREATELISTWIN_H

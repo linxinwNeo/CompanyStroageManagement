@@ -23,7 +23,6 @@ public:
     double PRIZE; // 每个单价
     unsigned long NUM_INIT_PIECES; // 初始个数
     unsigned long NUM_SOLD_PIECES; // 卖出个数
-    unsigned long NUM_LEFT_PIECES; // 剩余总个数
     unsigned long NUM_PIECES_PER_BOX; //多少个每箱
 
     QSharedPointer<QDateTime> last_time_modified; // 上次被修改的时间
@@ -39,6 +38,8 @@ public:
     ~Model();
 
     void reset();
+
+    unsigned long NUM_LEFT_PIECES() const;
     
     double num_init_boxes() const;
     double num_sold_boxes() const;
