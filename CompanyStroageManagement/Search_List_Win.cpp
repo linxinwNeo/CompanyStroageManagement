@@ -308,7 +308,7 @@ void Search_List_Win::on_put_back_list_btn_clicked()
 
     if (msg.exec() == QMessageBox::Yes) {
         // 将清单内的货物加回库存
-        this->selected_list->return_models();
+        this->selected_list->AddBack_Models();
 
         // 删除该清单
         lists.remove_list(this->selected_list->id);

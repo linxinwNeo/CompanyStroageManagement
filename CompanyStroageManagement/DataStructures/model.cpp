@@ -9,7 +9,7 @@ Model::Model()
 }
 
 Model::Model(const QString &MODEL_CODE, const QString &DESCRIPTION_SPAN, const QString &DESCRIPTION_CN, const double &PRIZE,
-             const unsigned long &NUM_INIT_PIECES, const unsigned long &NUM_SOLD_PIECES, const unsigned long &NUM_LEFT_PIECES,
+             const unsigned long &NUM_INIT_PIECES, const unsigned long &NUM_SOLD_PIECES,
              const unsigned long &NUM_PIECES_PER_BOX)
 {
     this->MODEL_CODE = MODEL_CODE;
@@ -18,7 +18,7 @@ Model::Model(const QString &MODEL_CODE, const QString &DESCRIPTION_SPAN, const Q
     this->PRIZE = PRIZE;
     this->NUM_INIT_PIECES = NUM_INIT_PIECES;
     this->NUM_SOLD_PIECES = NUM_SOLD_PIECES;
-    this->NUM_LEFT_PIECES = NUM_LEFT_PIECES;
+    this->NUM_LEFT_PIECES = NUM_INIT_PIECES - NUM_SOLD_PIECES;
     this->NUM_PIECES_PER_BOX = NUM_PIECES_PER_BOX;
 
     this->last_time_modified = nullptr;
@@ -68,7 +68,18 @@ double Model::num_left_boxes() const
 {
     const double num_left_pieces = this->NUM_LEFT_PIECES;
     const double num_pieces_per_box = this->NUM_PIECES_PER_BOX;
+
     return num_left_pieces / num_pieces_per_box;
+}
+
+
+// conver the number of pieces to the number of boxes
+double Model::num_pieces_2_num_boxes(unsigned long n) const
+{
+    const double num_pieces = n;
+    const double num_pieces_per_box = this->NUM_PIECES_PER_BOX;
+
+    return num_pieces / num_pieces_per_box;
 }
 
 

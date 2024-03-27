@@ -26,8 +26,8 @@ public:
     double total_num_boxes() const;
 
     void total(double& p1, double& p2) const;
-
-    void return_models() const;
+    
+    void AddBack_Models() const;
 
     QVector<QString> describe_this_list() const;
 };

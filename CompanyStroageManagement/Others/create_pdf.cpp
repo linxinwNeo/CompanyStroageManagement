@@ -83,7 +83,7 @@ void create_pdf(QString filename, ListPtr list)
         x += width * 0.07;
 
         // CANTIDAD
-        painter.drawText(QPointF(x, y), locale.toString(entry->CANTIDAD));
+        painter.drawText(QPointF(x, y), locale.toString(entry->NUM_PIECES));
         x += width * 0.087;
 
         // CANT POR CAJA
@@ -103,7 +103,7 @@ void create_pdf(QString filename, ListPtr list)
         x += width * 0.129;
 
         // IMPORTE
-        painter.drawText(QRect(0, y - height*0.009, x + width*0.13, y - height*0.009), locale.toString((double)entry->IMPORTE, 'f', 2), option);
+        painter.drawText(QRect(0, y - height*0.009, x + width*0.13, y - height*0.009), locale.toString((double)entry->TOTAL, 'f', 2), option);
 
         // increment y
         y += height * 0.02;

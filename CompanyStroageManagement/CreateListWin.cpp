@@ -558,7 +558,7 @@ void CreateListWin::on_added_models_table_cellDoubleClicked(int row, int column)
 
     adjust_list_item_win->parent_win = this;
     adjust_list_item_win->set_model_and_entry(model, entry, row);
-    adjust_list_item_win->set_Content();
+    adjust_list_item_win->set_GUI_values();
 
     adjust_list_item_win->show();
 }

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>403</width>
-    <height>346</height>
+    <height>418</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -194,7 +194,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QWidget" name="widget_7" native="true">
+          <widget class="QWidget" name="INIT_" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_5">
             <property name="spacing">
              <number>3</number>
@@ -222,11 +222,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QDoubleSpinBox" name="NUM_INIT_BOXES_SB">
-              <property name="maximum">
-               <double>100000000.000000000000000</double>
-              </property>
-             </widget>
+             <widget class="QSpinBox" name="NUM_INIT_PIECES_SB"/>
             </item>
            </layout>
           </widget>
@@ -252,7 +248,7 @@
             <item>
              <widget class="QLabel" name="NUM_SOLD_PIECES_label">
               <property name="text">
-               <string>已出售个数</string>
+               <string>已售个数</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -260,9 +256,9 @@
              </widget>
             </item>
             <item>
-             <widget class="QDoubleSpinBox" name="NUM_SOLD_BOXES_SB">
-              <property name="maximum">
-               <double>100000000.000000000000000</double>
+             <widget class="QSpinBox" name="NUM_SOLD_PIECES_SB">
+              <property name="alignment">
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
               </property>
              </widget>
             </item>
@@ -298,7 +294,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="NUM_ITEMS_PER_BOX_SB">
+             <widget class="QSpinBox" name="NUM_PIECES_PER_BOX_SB">
               <property name="maximum">
                <number>1000000000</number>
               </property>

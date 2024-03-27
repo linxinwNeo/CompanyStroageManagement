@@ -77,7 +77,7 @@ double EntryList::total_num_boxes() const
 {
     double sum = 0;
     for(const QSharedPointer<Entry>& entry : this->entries){
-        sum += entry->CAJA;
+        sum += entry->num_boxes();
     }
     return sum;
 }

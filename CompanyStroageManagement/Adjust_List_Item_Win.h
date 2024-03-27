@@ -20,8 +20,8 @@ public:
     ~Adjust_List_Item_Win();
     
     void set_model_and_entry(ModelPtr model, EntryPtr entry, const unsigned int entry_idx);
-
-    void set_Content();
+    
+    void set_GUI_values();
 
     CreateListWin* parent_win = nullptr;
     void setLanguage();

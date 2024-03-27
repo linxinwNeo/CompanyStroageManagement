@@ -11,14 +11,14 @@ class Entry
 {
 public:
     // variables
-    QString CLAVE; // 货号
+    QString MODEL_CODE; // 货号 / CLAVE
     QString ContainerID; // 集装箱号
-    unsigned long CANTIDAD; // 个数
-    unsigned long CANT_POR_CAJA; // 每箱个数
+    unsigned long NUM_PIECES; // 个数 / CANTIDAD
+    unsigned long NUM_PIECES_PER_BOX; // 每箱个数 / CANT_POR_CAJA
     QString Description_SPAN; // 品名（西语）
     QString Description_CN; // 品名（中文）
-    double PRECIO; // 单价
-    double IMPORTE; // 总价
+    double PRICE_PER_PIECE; // 单价 / PRECIO
+    double TOTAL; // 总价 / TOTAL
 
     //functions
     Entry(unsigned long NUM_PIECES = 0., unsigned long NUM_PIECES_PER_BOX = 0.,
@@ -26,7 +26,7 @@ public:
           QString Description_SPAN = "", QString Description_CN = "",
           double PRIZE_PER_PIECE = 0.);
 
-    ModelPtr get_corresponding_model() const;
+    QSharedPointer<Model> get_corresponding_model() const;
     QVector<QString> view_values() const;
 
     double num_boxes() const;

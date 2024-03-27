@@ -35,7 +35,6 @@ public:
           const double& PRIZE,
           const unsigned long& NUM_INIT_PIECES,
           const unsigned long& NUM_SOLD_PIECES,
-          const unsigned long& NUM_LEFT_PIECES,
           const unsigned long& NUM_PIECES_PER_BOX);
     ~Model();
 
@@ -44,8 +43,13 @@ public:
     double num_init_boxes() const;
     double num_sold_boxes() const;
     double num_left_boxes() const;
+    
+    double num_pieces_2_num_boxes(unsigned long num_pieces) const;
+    double num_pieces_2_num_boxes(float) const = delete; // Prevent calling with float
+    double num_pieces_2_num_boxes(double) const = delete; // Prevent calling with double
+    double num_pieces_2_num_boxes(long double) const = delete; // Prevent calling with long double
 
-    double TOTAL_PRIZE(unsigned long num_items) const;
+    double TOTAL_PRIZE(unsigned long num_pieces) const;
     bool TOTAL_PRIZE(float) const = delete; // Prevent calling with float
     bool TOTAL_PRIZE(double) const = delete; // Prevent calling with double
     bool TOTAL_PRIZE(long double) const = delete; // Prevent calling with long double

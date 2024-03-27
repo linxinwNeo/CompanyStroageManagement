@@ -30,7 +30,7 @@ void List::total(double &p1, double &p2) const
     p1 = 0;
 
     for(auto& entry : this->entryList.entries){
-        p1 += (entry->IMPORTE);
+        p1 += (entry->TOTAL);
     }
 
     p2 = (p1 * (1. - this->client_info.DISCOUNT) );
@@ -38,7 +38,7 @@ void List::total(double &p1, double &p2) const
 
 
 // 将该清单内的所有货物加回库存
-void List::return_models() const
+void List::AddBack_Models() const
 {
     for(const EntryPtr& entry : this->entryList.entries){
         // 找到对应货号的库存
@@ -47,11 +47,13 @@ void List::return_models() const
         if(model.isNull()){
             /* the model doesn't exist in inventory, this is usually because the model is deleted
              * after this list has been created, we need to create this model */
-            model = ModelPtr (new Model(entry->CLAVE,
-                                       entry->Description_SPAN, entry->Description_CN,
-                                       entry->PRECIO,
-                                       entry->CANTIDAD, 0, entry->CANTIDAD,
-                                       entry->CANT_POR_CAJA));
+            model = ModelPtr (new Model(entry->CLAVE, // 货号
+                                       entry->Description_SPAN, // 品名西语
+                                       entry->Description_CN, // 品名中文
+                                       entry->PRECIO, // 单价
+                                       entry->NUM_PIECES, // 进货个数
+                                       0, // 已售个数
+                                       entry->CANT_POR_CAJA)); // 每箱个数
             inventory.add_new_Model(model);
 
             /* if the container of this model also doesn't exist, we need to create one */
@@ -68,7 +70,7 @@ void List::return_models() const
 
         // the model exists in our inventory, so we can add the model back directly
         // the addBack function will handle the case that after adding back the num of boxes exceed the max
-        model->AddBack(entry->CANTIDAD);
+        model->AddBack(entry->NUM_PIECES);
     }
 }
 

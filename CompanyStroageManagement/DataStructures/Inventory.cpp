@@ -222,8 +222,8 @@ void Inventory::deduct_models(const QVector<EntryPtr> & entries)
             qDebug() << "Could't find the model to deduct!";
             continue;
         }
-
-        model_needs_modify->Sell(entry->CANTIDAD);
+        
+        model_needs_modify->Sell(entry->NUM_PIECES);
     }
 }
 
