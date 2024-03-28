@@ -52,13 +52,13 @@ void MainWindow::init()
     this->ui->tabWidget->setCurrentIndex(0);
 
     // setting up tables
-    auto container_table = ui->search_container_result_Table;
-    container_table->setStyleSheet(table_stylesheet);
-
     auto model_table = ui->search_model_result_Table;
     model_table->setStyleSheet(table_stylesheet);
 
-    auto selected_container_table = ui->selected_container_Table;
+    auto container_table = ui->search_container_result_Table;
+    container_table->setStyleSheet(table_stylesheet);
+
+    auto selected_container_table = ui->selected_container_models_Table;
     selected_container_table->setStyleSheet(table_stylesheet);
 }
 
@@ -171,7 +171,7 @@ void MainWindow::setLanguage()
 
     this->ui->selected_container_GB->setTitle(lan("该集装箱的货物", "la mercancía en este contenedor"));
 
-    this->ui->selected_container_Table->setHorizontalHeaderLabels(headers);
+    this->ui->selected_container_models_Table->setHorizontalHeaderLabels(headers);
 
     this->ui->start_add_model_btn->setText(lan("添加新货物", "añadir nueva mercancía"));
 
@@ -246,7 +246,7 @@ void MainWindow::show_selected_container()
 
     this->clear_selected_container_table();
 
-    auto table = this->ui->selected_container_Table;
+    auto table = this->ui->selected_container_models_Table;
     QVector<ModelPtr> models;
     this->selected_container->models_Set2Vec(models, true); // sorted models
 
@@ -275,7 +275,7 @@ void MainWindow::show_selected_container()
 /* deselect the container, clear the selected_container_table */
 void MainWindow::clear_selected_container_table()
 {
-    auto table = this->ui->selected_container_Table;
+    auto table = this->ui->selected_container_models_Table;
     table->clearContents(); // clear the table contents but columns are reserved
     table->setRowCount(0);
 }
@@ -431,6 +431,9 @@ Finish:
     Msgbox.setText(lan(SAVE_SUCCESS_MSG_CN, SAVE_SUCCESS_MSG_SPAN));
     Msgbox.exec();
 
+    // update time
+    selected_model->last_time_modified = QSharedPointer<QDateTime>::create(QDateTime().currentDateTime());
+
     this->update_GUI();
 
     // save the inventory and lists
@@ -443,8 +446,6 @@ Finish:
 void MainWindow::on_search_model_result_Table_cellClicked(int row, int column)
 {
     Q_UNUSED(column);
-
-    this->setEnabled(false);
 
     const auto& table = this->ui->search_model_result_Table;
     table->selectRow(row);
@@ -459,7 +460,6 @@ void MainWindow::on_search_model_result_Table_cellClicked(int row, int column)
 
     this->show_selected_model();
 
-    this->setEnabled(true);
 }
 
 
@@ -521,7 +521,7 @@ void MainWindow::on_search_container_result_Table_cellClicked(int row, int colum
 
     QList items = table->selectedItems();
 
-    QString Container_ID = items[ 1 ]->text().trimmed(); // idx 1 is the container id
+    QString Container_ID = items[ 0 ]->text().trimmed(); // idx 1 is the container id
 
     this->selected_container = inventory.get_container(Container_ID);
 
@@ -706,7 +706,7 @@ bool MainWindow::is_time_for_backup() const
 
         QString line = stream.readLine();
 
-        QDateTime prev_DateTime = QDateTime::fromString(line, DateTimeFormat);
+        QDateTime prev_DateTime = QDateTime::fromString(line, DateTimeFormat_for_backup_file);
         if(prev_DateTime.isValid()){
             QDateTime curDateTime = QDateTime::currentDateTime();
             unsigned int days = prev_DateTime.daysTo(curDateTime);

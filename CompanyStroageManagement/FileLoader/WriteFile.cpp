@@ -271,7 +271,7 @@ bool WriteFile::update_BackUpDate()
 bool WriteFile::save_BackUp_files(const bool save_path)
 {
     QDateTime currentDateTime = QDateTime::currentDateTime();
-    QString folderName = currentDateTime.toString("yyyy-MM-dd-HH-mm-ss");
+    QString folderName = currentDateTime.toString(DateTimeFormat_for_backup_file);
     QDir timeDir;
 
     // Create the subfolder named by datetime

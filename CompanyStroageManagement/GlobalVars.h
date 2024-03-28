@@ -28,6 +28,7 @@ extern const QString table_stylesheet;
 extern unsigned int language_option;
 
 extern const QString DateTimeFormat;
+extern const QString DateTimeFormat_for_backup_file;
 
 inline QString lan(const QString& CN_Str, const QString& Span_Str)
 {
