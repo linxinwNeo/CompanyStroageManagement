@@ -26,5 +26,6 @@
 
 # QT specific
 *build-*
+build/
 *.pro.user
 database.xlsx

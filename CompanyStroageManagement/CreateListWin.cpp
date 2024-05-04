@@ -247,7 +247,6 @@ Finish:
 // create a pdf but do not deduct items from the stroage
 void CreateListWin::on_previewList_btn_clicked()
 {
-    QString filter;
     QString filePath;
     QMessageBox Msgbox;
     QFileDialog saveFileDialog;
@@ -279,6 +278,7 @@ void CreateListWin::on_previewList_btn_clicked()
     this->list->client_info.CONDICIONES = this->ui->CONDICIONES_LE->text();
     this->list->client_info.DISCOUNT = this->ui->discount_SB->value() / 100.; // the value the user is entering is between 0-100
     this->list->client_info.TOTAL_NUM_BOXES = this->list->total_num_boxes();
+    this->list->id = 0; // set id to 0 for preview lists
     this->list->datetime_created = QSharedPointer<QDateTime>::create(QDateTime().currentDateTime());
 
 
