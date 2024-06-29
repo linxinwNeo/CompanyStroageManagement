@@ -149,7 +149,7 @@ void MainWindow::setLanguage()
     this->ui->selected_model_NUM_SOLD_PIECES_label->setText(lan("已售个数", "Núm. piezas vend."));
 
     this->ui->selected_model_CONTAINER_label->setText(lan("集装箱号", "Número de contenedor"));
-    this->ui->selected_model_CONTAINER_LE->setText(none);
+    this->ui->selected_model_CONTAINER_LE->setPlaceholderText(none);
 
     this->ui->delete_model_btn->setText(lan("删除货物", "Eliminar"));
     this->ui->update_selected_model_btn->setText(lan("更新该货物", "Actualizar la mercancía"));
