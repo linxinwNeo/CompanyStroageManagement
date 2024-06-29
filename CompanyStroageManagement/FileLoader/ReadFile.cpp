@@ -96,6 +96,11 @@ bool ReadFile::read_Inventory_txt_File(const QString& path, const bool save_path
             if(inventory.contains_container(containerID)){
                 // this container already exists, we get reference from inventory
                 container = inventory.get_container(containerID);
+
+                //  we should never reach here
+                if(!container){
+                    write_error_file("Fails to retrice container instance. It may be caused by incorrect continer id number.");
+                }
             }
             else{
                 // this container does not exist, we need to create a new one and add it to inventory
@@ -162,13 +167,10 @@ bool ReadFile::read_Inventory_xlsx_File(const QString &path, const bool save_pat
 
         QSharedPointer<Model> m(new Model());
         m->MODEL_CODE = modelCode;
-        if(m->MODEL_CODE.isEmpty()) {
-            continue;
-        }
 
         QString containerID = xlsx.read(row, col++).toString().trimmed(); // 2. 集装箱号/CONTAINER_ID
         // check if this container with this ID exists
-        if(containerID.isEmpty()){
+        if(containerID.isEmpty() || containerID == "-1"){
             m->container = nullptr; // do nothing if this model does not have a container
         }
         else{
@@ -191,13 +193,13 @@ bool ReadFile::read_Inventory_xlsx_File(const QString &path, const bool save_pat
         m->DESCRIPTION_CN = xlsx.read(row, col++).toString().trimmed(); // 3. 品名（中文）/DESCRIPTION_CN
         m->DESCRIPTION_SPAN = xlsx.read(row, col++).toString().trimmed(); // 4. 品名（西语）/DESCRIPTION_SPAN
 
-        // because when we output data, we used unsigned long long
-        m->NUM_INIT_PIECES = xlsx.read(row, col++).toULongLong(); // 5. 进货个数/NUM_INITIAL_PIECES
-        m->NUM_SOLD_PIECES = xlsx.read(row, col++).toULongLong(); // 6. 已售个数/NUM_SOLD_PIECES
-        // m->NUM_LEFT_PIECES = xlsx.read(row, col++).toULongLong(); // 7. 剩余个数/NUM_LEFT_PIECES
+        /* because when we output data, we used unsigned long long
+         * we also need to handle the commas in the string */
+        m->NUM_INIT_PIECES = xlsx.read(row, col++).toString().remove(',').toULong(); // 5. 进货个数/NUM_INITIAL_PIECES
+        m->NUM_SOLD_PIECES = xlsx.read(row, col++).toString().remove(',').toULong(); // 6. 已售个数/NUM_SOLD_PIECES
         col++;
-        m->NUM_PIECES_PER_BOX = xlsx.read(row, col++).toULongLong(); // 8. 每箱个数/NUM_PIECES_PER_BOX
-        m->PRIZE = xlsx.read(row, col++).toDouble(); // 9. 单价/PRIZE_PER_PIECE
+        m->NUM_PIECES_PER_BOX = xlsx.read(row, col++).toString().remove(',').toULong(); // 8. 每箱个数/NUM_PIECES_PER_BOX
+        m->PRIZE = xlsx.read(row, col++).toString().remove(',').toDouble(); // 9. 单价/PRIZE_PER_PIECE
 
         // 10. 上次修改时间/TIME_MODIFIED
         m->last_time_modified = QSharedPointer<QDateTime>::create(

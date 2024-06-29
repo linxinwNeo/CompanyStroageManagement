@@ -157,7 +157,7 @@ void CreateListWin::set_GUI_Language()
 
     this->ui->previewList_btn->setText(lan("生成预览清单", "crear una vista previa de la lista"));
 
-    this->ui->generatePDF_btn->setText(lan("正式生成清单", "crear el inventario final"));
+    this->ui->generatePDF_btn->setText(lan("生成正式清单", "Genere una lista de verificación formal"));
 }
 
 
