@@ -1,3 +1,0 @@
-0 
-C:/Users/linxi/OneDrive/Desktop/库存管理/inventory.txt 
-lists.txt 
