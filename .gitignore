@@ -29,3 +29,6 @@
 build/
 *.pro.user
 database.xlsx
+
+# python cache
+__pycache__/
