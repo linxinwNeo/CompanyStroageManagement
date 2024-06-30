@@ -148,6 +148,16 @@ void AddNewModelWindow::on_add_new_model_btn_clicked()
         return;
     }
 
+    // 每箱个数不必须大于0！
+    if(this->ui->NUM_PIECES_PER_BOX_SB->value() <= 0){
+        QString msg = lan("每箱个数必须大于0，请检查数量！",
+                          "El número de piezas por caja debe ser superior a 0, ¡compruebe la cantidad!");
+
+        QSharedPointer<QMessageBox> msgBox = this->create_MessageBox(msg);
+        msgBox->exec();
+        return;
+    }
+
     const QString CONTAINER_ID = this->ui->container_ID_LE->text().trimmed();
 
 

@@ -377,8 +377,8 @@ void MainWindow::on_update_selected_model_btn_clicked()
     // it is possible that the number of sold pieces is greater than init pieces, which is not allowed
     if(ui->selected_model_NUM_SOLD_PIECES_SB->value() > ui->selected_model_NUM_INIT_PIECES_SB->value())
     {
-        msg.setText(lan("已售件数必须少于等于进货件数，请检查数量！",
-                        "El número de unidades vendidas debe ser menor o igual al número de unidades entrantes, ¡verifique la cantidad!"));
+        msg.setText(lan("已售个数必须少于等于进货个数，请检查数量！",
+                        "El número de unidades vendidas debe ser menor o igual al número de unidades compradas, ¡así que verifique la cantidad!"));
         msg.exec();
         return;
     }
@@ -386,8 +386,8 @@ void MainWindow::on_update_selected_model_btn_clicked()
     // it is possible that the number of initial pieces is 0, which is not allowed
     if(ui->selected_model_NUM_INIT_PIECES_SB->value() <= 0)
     {
-        msg.setText(lan("进货件数必须大于0，请检查数量！",
-                        "El número de piezas entrantes debe ser superior a 0, ¡verifique la cantidad!"));
+        msg.setText(lan("进货个数必须大于0，请检查数量！",
+                        "El número de mercancías entrantes debe ser superior a 0, ¡compruebe la cantidad!"));
         msg.exec();
         return;
     }
@@ -395,8 +395,8 @@ void MainWindow::on_update_selected_model_btn_clicked()
     // it is possible that the user enters a 0 or negative values for num of pieces per box, which is not allowed
     if(ui->selected_model_NUM_PIECES_PER_BOX_SB->value() <= 0)
     {
-        msg.setText(lan("每箱的件数必须大于0！",
-                        "¡El número de piezas por caja debe ser mayor que 0!"));
+        msg.setText(lan("每箱的个数必须大于0！",
+                        "¡El número de unidades en cada caja debe ser mayor que 0!"));
         msg.exec();
         return;
     }
