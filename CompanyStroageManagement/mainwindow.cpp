@@ -151,8 +151,8 @@ void MainWindow::setLanguage()
     this->ui->selected_model_CONTAINER_label->setText(lan("集装箱号", "Número de contenedor"));
     this->ui->selected_model_CONTAINER_LE->setPlaceholderText(none);
 
-    this->ui->delete_model_btn->setText(lan("删除货物", "Eliminar"));
-    this->ui->update_selected_model_btn->setText(lan("更新该货物", "Actualizar la mercancía"));
+    this->ui->delete_model_btn->setText(lan("删除该货物", "Eliminar el envío"));
+    this->ui->update_selected_model_btn->setText(lan("更新该货物的信息", "Actualizar la información del envío"));
 
     this->ui->search_CONTAINER_ID_label->setText(lan("集装箱号", "Número de contenedor"));
     this->ui->search_CONTAINER_ID_LE->setPlaceholderText(none);
@@ -374,6 +374,33 @@ void MainWindow::on_update_selected_model_btn_clicked()
         return;
     }
 
+    // it is possible that the number of sold pieces is greater than init pieces, which is not allowed
+    if(ui->selected_model_NUM_SOLD_PIECES_SB->value() > ui->selected_model_NUM_INIT_PIECES_SB->value())
+    {
+        msg.setText(lan("已售件数必须少于等于进货件数，请检查数量！",
+                        "El número de unidades vendidas debe ser menor o igual al número de unidades entrantes, ¡verifique la cantidad!"));
+        msg.exec();
+        return;
+    }
+
+    // it is possible that the number of initial pieces is 0, which is not allowed
+    if(ui->selected_model_NUM_INIT_PIECES_SB->value() <= 0)
+    {
+        msg.setText(lan("进货件数必须大于0，请检查数量！",
+                        "El número de piezas entrantes debe ser superior a 0, ¡verifique la cantidad!"));
+        msg.exec();
+        return;
+    }
+
+    // it is possible that the user enters a 0 or negative values for num of pieces per box, which is not allowed
+    if(ui->selected_model_NUM_PIECES_PER_BOX_SB->value() <= 0)
+    {
+        msg.setText(lan("每箱的件数必须大于0！",
+                        "¡El número de piezas por caja debe ser mayor que 0!"));
+        msg.exec();
+        return;
+    }
+
     // make sure user is indeed wanting to update the values
     msg.setText(lan(Are_You_Sure_to_Update_CN, Are_You_Sure_to_Update_SPAN));
     msg.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
@@ -388,6 +415,7 @@ void MainWindow::on_update_selected_model_btn_clicked()
     selected_model->DESCRIPTION_SPAN = ui->selected_model_DESCRIPTION_SPAN_lineEdit->text().replace("\n", "").trimmed(); // remove newline characters
     selected_model->NUM_INIT_PIECES = ui->selected_model_NUM_INIT_PIECES_SB->value();
     selected_model->NUM_SOLD_PIECES = ui->selected_model_NUM_SOLD_PIECES_SB->value();
+
     selected_model->PRIZE = ui->selected_model_PRIZE_SB->value();
     selected_model->NUM_PIECES_PER_BOX = ui->selected_model_NUM_PIECES_PER_BOX_SB->value();
 

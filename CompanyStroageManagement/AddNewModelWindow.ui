@@ -185,8 +185,11 @@
             </item>
             <item>
              <widget class="QDoubleSpinBox" name="PRIZE_SB">
+              <property name="prefix">
+               <string>$</string>
+              </property>
               <property name="maximum">
-               <double>100000000.000000000000000</double>
+               <double>9999999999999999438119489974413630815797154428513196965888.000000000000000</double>
               </property>
              </widget>
             </item>
@@ -222,7 +225,11 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="NUM_INIT_PIECES_SB"/>
+             <widget class="QSpinBox" name="NUM_INIT_PIECES_SB">
+              <property name="maximum">
+               <number>999999999</number>
+              </property>
+             </widget>
             </item>
            </layout>
           </widget>
@@ -260,6 +267,9 @@
               <property name="alignment">
                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
               </property>
+              <property name="maximum">
+               <number>999999999</number>
+              </property>
              </widget>
             </item>
            </layout>
@@ -296,7 +306,7 @@
             <item>
              <widget class="QSpinBox" name="NUM_PIECES_PER_BOX_SB">
               <property name="maximum">
-               <number>1000000000</number>
+               <number>999999999</number>
               </property>
              </widget>
             </item>

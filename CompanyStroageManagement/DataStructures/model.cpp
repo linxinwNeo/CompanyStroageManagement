@@ -22,7 +22,7 @@ Model::Model(const QString &MODEL_CODE, const QString &DESCRIPTION_SPAN, const Q
 
     this->NUM_PIECES_PER_BOX = NUM_PIECES_PER_BOX;
 
-    this->last_time_modified = nullptr;
+    this->last_time_modified = QSharedPointer<QDateTime>::create(QDateTime().currentDateTime());
     this->container = nullptr;
 }
 

@@ -128,6 +128,26 @@ void AddNewModelWindow::on_add_new_model_btn_clicked()
         return;
     }
 
+    // 进货个数必须大于0！
+    if(this->ui->NUM_INIT_PIECES_SB->value() <= 0){
+        QString msg = lan("进货个数必须大于0！",
+                          "¡El número de mercancías entrantes debe ser mayor que 0!");
+
+        QSharedPointer<QMessageBox> msgBox = this->create_MessageBox(msg);
+        msgBox->exec();
+        return;
+    }
+
+    // 进货个数必须大于等于已出售个数！
+    if(this->ui->NUM_INIT_PIECES_SB->value() < this->ui->NUM_SOLD_PIECES_SB->value()){
+        QString msg = lan("已出售个数不能比进货个数更多，请检查数量！",
+                          "El número de unidades vendidas no puede ser mayor que el número de unidades reabastecidas, ¡así que compruebe la cantidad!");
+
+        QSharedPointer<QMessageBox> msgBox = this->create_MessageBox(msg);
+        msgBox->exec();
+        return;
+    }
+
     const QString CONTAINER_ID = this->ui->container_ID_LE->text().trimmed();
 
 
@@ -207,5 +227,11 @@ void AddNewModelWindow::on_add_new_model_btn_clicked()
         msgBox->setStandardButtons(QMessageBox::Ok);
         msgBox->exec();
     }
+
+    // update the mainwindow
+    this->parentPtr->update_GUI();
+    // save the inventory and lists
+    WriteFile::SaveInventoryAuto(false);
+    WriteFile::Lists2txt(false);
 }
 

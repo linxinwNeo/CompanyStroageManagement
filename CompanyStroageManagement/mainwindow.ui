@@ -412,6 +412,54 @@
                   </widget>
                  </item>
                  <item>
+                  <widget class="QWidget" name="widget_13" native="true">
+                   <layout class="QHBoxLayout" name="horizontalLayout_8">
+                    <property name="spacing">
+                     <number>3</number>
+                    </property>
+                    <property name="leftMargin">
+                     <number>3</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>3</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>3</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>3</number>
+                    </property>
+                    <item>
+                     <widget class="QLabel" name="selected_model_NUM_SOLD_PIECES_label">
+                      <property name="text">
+                       <string>已售个数</string>
+                      </property>
+                      <property name="alignment">
+                       <set>Qt::AlignCenter</set>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QSpinBox" name="selected_model_NUM_SOLD_PIECES_SB">
+                      <property name="alignment">
+                       <set>Qt::AlignCenter</set>
+                      </property>
+                      <property name="maximum">
+                       <number>999999999</number>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="Line" name="line_3">
+                   <property name="orientation">
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
                   <widget class="QWidget" name="widget_11" native="true">
                    <layout class="QHBoxLayout" name="horizontalLayout_6">
                     <property name="spacing">
@@ -498,56 +546,11 @@
                       <property name="alignment">
                        <set>Qt::AlignCenter</set>
                       </property>
+                      <property name="prefix">
+                       <string notr="true">$</string>
+                      </property>
                       <property name="maximum">
                        <double>999999999999999.000000000000000</double>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="Line" name="line_3">
-                   <property name="orientation">
-                    <enum>Qt::Vertical</enum>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QWidget" name="widget_13" native="true">
-                   <layout class="QHBoxLayout" name="horizontalLayout_8">
-                    <property name="spacing">
-                     <number>3</number>
-                    </property>
-                    <property name="leftMargin">
-                     <number>3</number>
-                    </property>
-                    <property name="topMargin">
-                     <number>3</number>
-                    </property>
-                    <property name="rightMargin">
-                     <number>3</number>
-                    </property>
-                    <property name="bottomMargin">
-                     <number>3</number>
-                    </property>
-                    <item>
-                     <widget class="QLabel" name="selected_model_NUM_SOLD_PIECES_label">
-                      <property name="text">
-                       <string>已售个数</string>
-                      </property>
-                      <property name="alignment">
-                       <set>Qt::AlignCenter</set>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QSpinBox" name="selected_model_NUM_SOLD_PIECES_SB">
-                      <property name="alignment">
-                       <set>Qt::AlignCenter</set>
-                      </property>
-                      <property name="maximum">
-                       <number>999999999</number>
                       </property>
                      </widget>
                     </item>
@@ -613,7 +616,7 @@
                     </size>
                    </property>
                    <property name="text">
-                    <string>删除货物</string>
+                    <string>删除该货物</string>
                    </property>
                   </widget>
                  </item>
@@ -626,7 +629,7 @@
                     </size>
                    </property>
                    <property name="text">
-                    <string>更新货物</string>
+                    <string>更新该货物的信息</string>
                    </property>
                   </widget>
                  </item>
