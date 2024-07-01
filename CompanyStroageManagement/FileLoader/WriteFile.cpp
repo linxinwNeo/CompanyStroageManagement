@@ -251,7 +251,7 @@ bool WriteFile::update_BackUpDate()
 
         QDateTime currentDateTime = QDateTime::currentDateTime();
 
-        stream << currentDateTime.toString(DateTimeFormat);
+        stream << currentDateTime.toString(DateTimeFormat_for_backup_file);
 
         // Close the file when done
         file.close();

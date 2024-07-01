@@ -728,7 +728,7 @@ void MainWindow::on_read_inventory_from_new_file_btn_clicked()
 }
 
 
-// check if it has been a week since last back up
+// check if it has been sometime since last back up
 bool MainWindow::is_time_for_backup() const
 {
     // read datetime for last backup
