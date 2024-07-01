@@ -256,13 +256,12 @@ bool ReadFile::read_Lists_txt_File(const QString &path, const bool save_path)
 
         ListPtr new_list (new List());
 
-        // read id
         new_list->id = strList[0].toULong(); // 1. 清单号
 
         // read date and time for the list
         new_list->datetime_created = QSharedPointer<QDateTime>::create(
             QDateTime::fromString(strList[1], DateTimeFormat)
-            );      // 2. 创建时间
+            );      // 2. 读取创建时间
 
         // read client_info
         new_list->client_info.CLIENTE = strList[2]; // 2.

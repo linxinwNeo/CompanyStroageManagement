@@ -369,7 +369,7 @@
                    </size>
                   </property>
                   <property name="text">
-                   <string>折扣(%)</string>
+                   <string>折扣</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -378,6 +378,12 @@
                 </item>
                 <item>
                  <widget class="QDoubleSpinBox" name="discount_SB">
+                  <property name="prefix">
+                   <string notr="true"/>
+                  </property>
+                  <property name="suffix">
+                   <string notr="true">%</string>
+                  </property>
                   <property name="decimals">
                    <number>2</number>
                   </property>
@@ -414,7 +420,7 @@
               <number>3</number>
              </property>
              <item>
-              <widget class="QPushButton" name="reset_list_info_btn">
+              <widget class="QPushButton" name="reset_client_info_btn">
                <property name="maximumSize">
                 <size>
                  <width>200</width>

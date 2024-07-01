@@ -198,9 +198,9 @@ bool WriteFile::Lists2txt(const QString &path, const bool save_path)
     out << QString::number(lists.num_lists()) << "\n\n";
 
     for(const ListPtr& list : lists.lists){
-        // output list id first
-        out << list->id << split_item; // 0.
-        // 1. output list creation datatime
+        out << list->id << split_item;         // 输出清单号
+
+        // 1. 输出创建时间和日期
         if(list->datetime_created.isNull()){ // if no date time, put current time
             list->datetime_created = QSharedPointer<QDateTime>::create(QDateTime().currentDateTime());
         }
@@ -222,13 +222,12 @@ bool WriteFile::Lists2txt(const QString &path, const bool save_path)
         for(EntryPtr& entry : list->entryList.entries){
             out << entry->MODEL_CODE << split_item // 0. 货号
                 << entry->ContainerID << split_item // 1. 集装箱号
-                << entry->num_boxes() << split_item // 2. 箱数
-                << entry->NUM_PIECES << split_item // 3. 总个数
-                << entry->NUM_PIECES_PER_BOX << split_item // 4 每箱几个
-                << entry->Description_SPAN << split_item // 5 品名（西语）
-                << entry->Description_CN << split_item // 6 品名（中文）
-                << entry->PRICE_PER_PIECE << split_item // 7 单价
-                << entry->TOTAL // 8 总价
+                << entry->NUM_PIECES << split_item // 2. 总个数
+                << entry->NUM_PIECES_PER_BOX << split_item // 3. 每箱几个
+                << entry->Description_SPAN << split_item // 4. 品名（西语）
+                << entry->Description_CN << split_item // 5. 品名（中文）
+                << entry->PRICE_PER_PIECE << split_item // 6. 单价
+                << entry->TOTAL // 7. 总价
                 << "\n"; // 换行
         }
     }

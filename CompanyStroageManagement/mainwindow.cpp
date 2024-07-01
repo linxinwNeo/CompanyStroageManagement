@@ -321,7 +321,7 @@ void MainWindow::on_search_MODELCODE_LE_textChanged(const QString& new_str)
 
     this->clear_selected_model();
 
-    QString userInput = new_str.trimmed(); // remove useless empty spaces
+    QString userInput = new_str.trimmed().toUpper(); // remove useless empty spaces 货号基本大写
     QVector<ModelPtr> models; // will hold the models that has MODELCODE starts with new_str
 
     auto table = this->ui->search_model_result_Table;
@@ -503,7 +503,9 @@ void MainWindow::on_search_CONTAINER_ID_LE_textChanged(const QString &new_str)
     auto table = this->ui->search_container_result_Table;
     table->clearContents(); // clear the table contents but columns are reserved
     table->setRowCount(0);
-    if(new_str.isEmpty()){
+
+    QString processed_str = new_str.toUpper().trimmed();
+    if(processed_str.isEmpty()){
         // if input is empty, empty the table and return
         this->setEnabled(true);
         this->ui->search_CONTAINER_ID_LE->setFocus();
@@ -511,7 +513,7 @@ void MainWindow::on_search_CONTAINER_ID_LE_textChanged(const QString &new_str)
     }
 
     QVector<ContainerPtr> containers; // will hold the containers that their ID starts with <new_str>
-    inventory.searchContainer_starts_with(new_str, containers);
+    inventory.searchContainer_starts_with(processed_str, containers);
 
     // for each model, make a row for it
     for( unsigned long row = 0; row < containers.size(); row++ ){
@@ -588,6 +590,8 @@ void MainWindow::on_search_past_list_btn_clicked()
 {
     this->SearchListWinPtr.setWindow();
     this->SearchListWinPtr.set_GUI_Language();
+
+    this->SearchListWinPtr.update_search_result_Table();
 
     this->SearchListWinPtr.show();
 

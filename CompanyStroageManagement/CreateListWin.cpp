@@ -77,7 +77,7 @@ void CreateListWin::update_added_models_table()
         }
     }
 
-Finish:
+//Finish:
     this->setEnabled(true);
 }
 
@@ -114,9 +114,9 @@ void CreateListWin::set_GUI_Language()
     this->ui->CONDICIONES_label->setText(lan("付款方式", "CONDICIONES DE PAGO"));
     this->ui->CONDICIONES_LE->setPlaceholderText(enter_here);
 
-    this->ui->discount_label->setText(lan("折扣(%)", "DISCOUNT(%)"));
+    this->ui->discount_label->setText(lan("折扣", "DISCOUNT"));
 
-    this->ui->reset_list_info_btn->setText(lan("重置信息", "resetear la información"));
+    this->ui->reset_client_info_btn->setText(lan("重置信息", "resetear la información"));
 
     this->ui->searchModel_TW->setTabText(0, lan("使用货号搜索需要添加的货物", "buscar los productos a agregar utilizando el número de referencia"));
 
@@ -220,10 +220,6 @@ void CreateListWin::on_generatePDF_btn_clicked()
     // create PDF file
     create_pdf(filePath, this->list);
 
-    // display creation success
-    Msgbox.setText(lan(LIST_CREATED_MSG_CN, LIST_CREATED_MSG_SPAN));
-    Msgbox.exec();
-
     // now deduct the items from stroage
     inventory.deduct_models(this->list->entryList.entries);
 
@@ -241,6 +237,13 @@ Finish:
     // save the inventory and lists
     WriteFile::SaveInventoryAuto(false);
     WriteFile::Lists2txt(false);
+
+    // display creation success
+    Msgbox.setText(lan(LIST_CREATED_MSG_CN, LIST_CREATED_MSG_SPAN));
+    Msgbox.exec();
+
+    // reset client information
+    this->on_reset_client_info_btn_clicked();
 }
 
 
@@ -431,7 +434,7 @@ void CreateListWin::on_searched_models_table_cellClicked(int row, int column)
 
     this->selected_model_in_search_table = inventory.get_Model(MODELCODE, ContainerID);
 
-Finish:
+//Finish:
     this->setEnabled(true);
 }
 
@@ -566,4 +569,16 @@ void CreateListWin::on_added_models_table_cellDoubleClicked(int row, int column)
     adjust_list_item_win->show();
 }
 
+
+// clear client information
+void CreateListWin::on_reset_client_info_btn_clicked()
+{
+    this->ui->CLIENTE_LE->setText("");
+    this->ui->DOMICILIO_LE->setText("");
+    this->ui->CIUDAD_LE->setText("");
+    this->ui->RFC_LE->setText("");
+    this->ui->AGENTE_LE->setText("");
+    this->ui->CONDICIONES_LE->setText("");
+    this->ui->discount_SB->setValue(0.0);
+}
 

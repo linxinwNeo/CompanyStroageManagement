@@ -25,8 +25,10 @@ public:
 
     void view_selected_list();
 
-    void reset_list_info();
+    void reset_selected_list_info();
     
+    void update_search_result_Table();
+
     void set_GUI_Language();
     void setWindow();
 

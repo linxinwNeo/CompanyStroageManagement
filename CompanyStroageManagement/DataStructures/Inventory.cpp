@@ -187,7 +187,7 @@ void Inventory::searchModel_starts_with(const QString str, QVector<ModelPtr>& mo
     models.reserve(this->num_models());
 
     for(const ModelPtr& m : this->model_set){
-        if(m->MODEL_CODE.startsWith(str)){
+        if(m->MODEL_CODE.toUpper().startsWith(str)){
             models.push_back(m);
         }
     }
@@ -202,7 +202,7 @@ void Inventory::searchContainer_starts_with(const QString str, QVector< Containe
     containers.reserve(this->num_containers());
 
     for(const ContainerPtr& c : this->container_set){
-        if(c->ID.startsWith(str)){
+        if(c->ID.toUpper().startsWith(str)){
             containers.push_back(c);
         }
     }

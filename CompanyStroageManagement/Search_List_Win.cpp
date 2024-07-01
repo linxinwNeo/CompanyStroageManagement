@@ -71,7 +71,7 @@ void Search_List_Win::view_selected_list()
 }
 
 
-void Search_List_Win::reset_list_info()
+void Search_List_Win::reset_selected_list_info()
 {
     this->selected_list = nullptr;
 
@@ -85,6 +85,14 @@ void Search_List_Win::reset_list_info()
     this->ui->AGENTE_LE->clear();
     this->ui->CONDICIONES_LE->clear();
     this->ui->DISCOUNT_LE->clear();
+}
+
+
+// 更新 search_result_Table
+void Search_List_Win::update_search_result_Table()
+{
+    this->ui->list_id_2be_searched_LE->clear();
+    this->on_list_id_2be_searched_LE_textChanged(this->ui->list_id_2be_searched_LE->text());
 }
 
 
@@ -152,7 +160,7 @@ void Search_List_Win::set_GUI_Language()
         lan("单价", "PRECOP U."),
         lan("总价", "IMPORTE")
     };
-    selected_list_entries_Table->setHorizontalHeaderLabels(headers);
+    selected_list_entries_Table->setHorizontalHeaderLabels(headers2);
 }
 
 
@@ -187,6 +195,10 @@ void Search_List_Win::closeEvent (QCloseEvent *event)
             // since models can be modified, we need to update the parentWindow GUI as well
             this->parentWin->update_GUI();
             this->parentWin->show();
+
+            // we want to clear up the content we currently have in this window
+            this->reset_selected_list_info();
+            this->ui->list_id_2be_searched_LE->clear();
         }
         event->accept();
     }
@@ -227,7 +239,7 @@ void Search_List_Win::on_list_id_2be_searched_LE_textChanged(const QString & lis
     }
 
     // clear the selected list
-    this->reset_list_info();
+    this->reset_selected_list_info();
 
     this->setEnabled(true);
     this->ui->list_id_2be_searched_LE->setFocus();
@@ -240,7 +252,7 @@ void Search_List_Win::on_search_result_Table_cellClicked(int row, int column)
 
     this->setDisabled(true);
 
-    // clear content of <list_models_table>
+    // clear content of <selected_list_entries_Table>
     selected_list_entries_Table->clearContents();
     selected_list_entries_Table->setRowCount(0);
 
@@ -248,10 +260,10 @@ void Search_List_Win::on_search_result_Table_cellClicked(int row, int column)
     QList items = search_result_Table->selectedItems();
     QString list_id = items[searched_lists_table_list_id_idx]->text();
 
-    unsigned long int list_ID = list_id.toULong();
+    const unsigned long list_ID = list_id.toULong();
 
     ListPtr list = lists.get_list(list_ID);
-    if(list.isNull()){
+    if(list.isNull()){ // no such list exists...but this should not happen
         goto Finish;
     }
 
@@ -339,6 +351,10 @@ Finish:
     // save the inventory and lists
     WriteFile::SaveInventoryAuto(false);
     WriteFile::Lists2txt(false);
+
+    QMessageBox msg2;
+    msg2.setText(lan("退订单成功！", "¡El pedido se ha devuelto con éxito!"));
+    msg2.exec();
 
     this->selected_list = nullptr;
 }
