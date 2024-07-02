@@ -13,6 +13,7 @@ Adjust_List_Item_Win::Adjust_List_Item_Win(QWidget *parent) :
     this->model_2be_adjusted = nullptr;
     this->setWindow();
 
+    this->setWindowTitle(lan("调整数量", "Ajustar la cantidad"));
 }
 
 
@@ -33,8 +34,8 @@ void Adjust_List_Item_Win::setLanguage()
     this->ui->NUM_PIECES_PER_BOX_Label->setText(lan("每箱个数", "Piezas por caja"));
 
 
-    this->ui->PREZE_Label->setText(lan("单价", "Prec. por pieza"));
-    this->ui->TOTAL_Label->setText(lan("总价", "IMPORTE"));
+    this->ui->PREZE_Label->setText(lan("单价($)", "Prec. por pieza($)"));
+    this->ui->TOTAL_Label->setText(lan("总价($)", "IMPORTE($)"));
 }
 
 
@@ -77,9 +78,9 @@ void Adjust_List_Item_Win::set_GUI_values()
     }
 
     extern QLocale locale;
-    this->ui->MAX_NUM_BOXES_LineEdit->setText(locale.toString(this->model_2be_adjusted->num_left_boxes(), 'f', 2));
+    this->ui->MAX_NUM_BOXES_LineEdit->setText(locale.toString(this->model_2be_adjusted->NUM_LEFT_BOXES(), 'f', 2));
 
-    this->ui->NUM_BOXES_DoubleSpinBox->setMaximum(this->model_2be_adjusted->num_left_boxes());
+    this->ui->NUM_BOXES_DoubleSpinBox->setMaximum(this->model_2be_adjusted->NUM_LEFT_BOXES());
     this->ui->NUM_BOXES_DoubleSpinBox->setMinimum(0.);
     this->ui->NUM_BOXES_DoubleSpinBox->setValue(this->model_2be_adjusted->num_pieces_2_num_boxes(CURR_NUM_PIECES));
 
@@ -89,16 +90,16 @@ void Adjust_List_Item_Win::set_GUI_values()
     this->ui->NUM_PIECES_SpinBox->setMaximum(CURR_NUM_PIECES);
     this->ui->NUM_PIECES_SpinBox->setValue(CURR_NUM_PIECES);
 
-    this->ui->NUM_PIECES_PER_BOX_LineEdit->setText(QString::number(model_2be_adjusted->NUM_PIECES_PER_BOX));
+    this->ui->NUM_PIECES_PER_BOX_LineEdit->setText(QString::number(model_2be_adjusted->m_NUM_PIECES_PER_BOX));
 
-    this->ui->MODEL_CODE_LineEdit->setText(model_2be_adjusted->MODEL_CODE);
+    this->ui->MODEL_CODE_LineEdit->setText(model_2be_adjusted->m_MODEL_CODE);
 
-    this->ui->DESCRIPTION_CN_TextEdit->setText(model_2be_adjusted->DESCRIPTION_CN);
-    this->ui->DESCRIPTION_SPAN_TextEdit->setText(model_2be_adjusted->DESCRIPTION_SPAN);
+    this->ui->DESCRIPTION_CN_TextEdit->setText(model_2be_adjusted->m_DESCRIPTION_CN);
+    this->ui->DESCRIPTION_SPAN_TextEdit->setText(model_2be_adjusted->m_DESCRIPTION_SPAN);
 
-    this->ui->PREZE_LineEdit->setText(locale.toString(model_2be_adjusted->PRIZE, 'f', 2));
+    this->ui->PREZE_LineEdit->setText(locale.toString(model_2be_adjusted->m_PRIZE, 'f', 2));
 
-    this->ui->TOTAL_LineEdit->setText(locale.toString(model_2be_adjusted->PRIZE * entry_2be_adjusted->NUM_PIECES, 'f', 2));
+    this->ui->TOTAL_LineEdit->setText(locale.toString(model_2be_adjusted->m_PRIZE * entry_2be_adjusted->NUM_PIECES, 'f', 2));
 }
 
 
@@ -125,7 +126,8 @@ void Adjust_List_Item_Win::on_finish_btn_clicked()
     else{
         // we only need to update three information: num of pieces, total price of the entry
         entry_2be_adjusted->NUM_PIECES = this->ui->NUM_PIECES_SpinBox->value();
-        entry_2be_adjusted->TOTAL = this->ui->TOTAL_LineEdit->text().toDouble();
+        extern QLocale locale;
+        entry_2be_adjusted->TOTAL = locale.toDouble(this->ui->TOTAL_LineEdit->text());
     }
 
     // we need to update the entry of corresponding model
@@ -139,11 +141,11 @@ void Adjust_List_Item_Win::on_NUM_BOXES_DoubleSpinBox_valueChanged(double num_bo
     // block NUM_PIECES_LineEdit's signals to avoid infinite calls
     bool oldState = this->ui->NUM_PIECES_SpinBox->blockSignals(true);
 
-    unsigned long new_num_pieces = floor(num_boxes * (double)this->model_2be_adjusted->NUM_PIECES_PER_BOX);
+    unsigned long new_num_pieces = floor(num_boxes * (double)this->model_2be_adjusted->m_NUM_PIECES_PER_BOX);
     // set number of pieces
     this->ui->NUM_PIECES_SpinBox->setValue(new_num_pieces);
 
-    const double total = ((double)new_num_pieces) * this->model_2be_adjusted->PRIZE;
+    const double total = ((double)new_num_pieces) * this->model_2be_adjusted->m_PRIZE;
     this->ui->TOTAL_LineEdit->setText(QString::number(total, 'f', 2));
 
     // enable NUM_PIECES_LineEdit's signals
@@ -160,7 +162,7 @@ void Adjust_List_Item_Win::on_NUM_PIECES_SpinBox_valueChanged(int num_pieces)
     double num_boxes = this->model_2be_adjusted->num_pieces_2_num_boxes((unsigned long)num_pieces);
     this->ui->NUM_BOXES_DoubleSpinBox->setValue(num_boxes);
 
-    const double total = ((double)num_pieces) * this->model_2be_adjusted->PRIZE;
+    const double total = ((double)num_pieces) * this->model_2be_adjusted->m_PRIZE;
     this->ui->TOTAL_LineEdit->setText(QString::number(total, 'f', 2));
 
     // enable NUM_BOXES_DoubleSpinBox's signals

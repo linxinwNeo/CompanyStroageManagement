@@ -4,7 +4,7 @@
 void QuickSorts::QuickSort(QVector<ModelPtr>& arr)
 {
     std::sort(arr.begin(), arr.end(), [](const ModelPtr &a, const ModelPtr &b) {
-        return a->MODEL_CODE < b->MODEL_CODE;
+        return a->m_MODEL_CODE < b->m_MODEL_CODE;
     });
 }
 

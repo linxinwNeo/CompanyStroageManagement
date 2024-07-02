@@ -13,10 +13,16 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="locale">
+   <locale language="English" country="UnitedStates"/>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_3">
     <item>
      <widget class="QWidget" name="widget_2" native="true">
+      <property name="locale">
+       <locale language="English" country="UnitedStates"/>
+      </property>
       <layout class="QHBoxLayout" name="horizontalLayout_7">
        <item>
         <widget class="QWidget" name="widget_9" native="true">
@@ -25,6 +31,9 @@
            <width>500</width>
            <height>16777215</height>
           </size>
+         </property>
+         <property name="locale">
+          <locale language="English" country="UnitedStates"/>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
@@ -738,12 +747,12 @@
             </column>
             <column>
              <property name="text">
-              <string>单价</string>
+              <string>单价($)</string>
              </property>
             </column>
             <column>
              <property name="text">
-              <string>总价</string>
+              <string>总价($)</string>
              </property>
             </column>
            </widget>
@@ -754,6 +763,19 @@
        <item>
         <widget class="QWidget" name="widget_11" native="true">
          <layout class="QHBoxLayout" name="horizontalLayout_18">
+          <item>
+           <widget class="QWidget" name="widget_8" native="true">
+            <layout class="QHBoxLayout" name="horizontalLayout_10">
+             <item>
+              <widget class="QPushButton" name="pushButton_edit_selected_model">
+               <property name="text">
+                <string>修改选中的货物</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
           <item>
            <widget class="QWidget" name="widget_5" native="true">
             <layout class="QHBoxLayout" name="horizontalLayout_13">

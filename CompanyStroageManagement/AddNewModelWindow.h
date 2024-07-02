@@ -27,7 +27,7 @@ public:
 private:
     Ui::AddNewModelWindow *ui;
 
-    const float widthRatio = 0.6;
+    const float widthRatio = 0.4;
     const float heightRatio = 0.8;
 
 private slots:

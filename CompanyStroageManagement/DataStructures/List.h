@@ -51,7 +51,7 @@ public:
 
     ListPtr get_list(unsigned long id);
 
-    void get_list(QString id_prefix, QVector<ListPtr>& candidates, bool sorted);
+    void get_list(const QString id_prefix, QVector<ListPtr>& candidates, bool sorted);
 
     bool save_2_file(const bool save_path) const;
 

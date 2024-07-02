@@ -1,6 +1,5 @@
 #include "Search_List_Win.h"
-#include "CN_Strings.h"
-#include "SpanStrings.h"
+#include "LanguageStrings.h"
 #include "FileLoader/WriteFile.h"
 #include "GlobalVars.h"
 #include "ui_Search_List_Win.h"
@@ -118,28 +117,28 @@ void Search_List_Win::set_GUI_Language()
 
     this->ui->selected_list_info_GB->setTitle(lan("清单信息", "información de la lista"));
 
-    const QString enter_here = lan("在此输入", "ingresa aquí");
+    const QString none = lan("暂无", "ingresa aquí");
 
     this->ui->CLIENTE_label->setText(lan("客户", "CLIENTE"));
-    this->ui->CLIENTE_LE->setPlaceholderText(enter_here);
+    this->ui->CLIENTE_LE->setPlaceholderText(none);
 
     this->ui->DOMICILIO_label->setText(lan("地址", "DOMICILIO"));
-    this->ui->DOMICILIO_LE->setPlaceholderText(enter_here);
+    this->ui->DOMICILIO_LE->setPlaceholderText(none);
 
     this->ui->CIUDAD_label->setText(lan("城市", "CIUDAD"));
-    this->ui->CIUDAD_LE->setPlaceholderText(enter_here);
+    this->ui->CIUDAD_LE->setPlaceholderText(none);
 
     this->ui->RFC_label->setText("R.F.C");
-    this->ui->RFC_LE->setPlaceholderText(enter_here);
+    this->ui->RFC_LE->setPlaceholderText(none);
 
     this->ui->AGENTE_label->setText(lan("代理", "AGENTE"));
-    this->ui->AGENTE_LE->setPlaceholderText(enter_here);
+    this->ui->AGENTE_LE->setPlaceholderText(none);
 
     this->ui->CONDICIONES_label->setText(lan("付款方式", "CONDICIONES DE PAGO"));
-    this->ui->CONDICIONES_LE->setPlaceholderText(enter_here);
+    this->ui->CONDICIONES_LE->setPlaceholderText(none);
 
     this->ui->DISCOUNT_label->setText(lan("折扣", "DISCOUNT(%)"));
-    this->ui->DISCOUNT_LE->setPlaceholderText(enter_here);
+    this->ui->DISCOUNT_LE->setPlaceholderText(none);
 
     this->ui->list_items_GB->setTitle(lan("清单里的货物", "Mercancías en la lista"));
 

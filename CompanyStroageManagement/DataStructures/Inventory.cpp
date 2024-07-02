@@ -58,12 +58,12 @@ void Inventory::add_new_Model(ModelPtr &m)
     this->model_set.insert(m);
 
     // put this model to the map, but map may or may not have the entry defined, we need to check
-    if(this->model_map.contains(m->MODEL_CODE)){
-        this->model_map[m->MODEL_CODE].insert(m);
+    if(this->model_map.contains(m->m_MODEL_CODE)){
+        this->model_map[m->m_MODEL_CODE].insert(m);
     }
     else{ // make a set for the entry
         QSet<ModelPtr> set = {m};
-        this->model_map[m->MODEL_CODE] = set;
+        this->model_map[m->m_MODEL_CODE] = set;
     }
 
     return;
@@ -76,12 +76,12 @@ void Inventory::remove_Model(QSharedPointer<Model> &m)
     // remove this model from inventory
     this->model_set.remove(m);
 
-    QSet<ModelPtr>& set = this->model_map[m->MODEL_CODE];
+    QSet<ModelPtr>& set = this->model_map[m->m_MODEL_CODE];
     set.remove(m);
 
 
-    // remove this model from the container it belongs to
-    ContainerPtr container = m->container;
+    // remove this model from the m_Container it belongs to
+    ContainerPtr container = m->m_Container;
     if(container.isNull()) return;
     container->remove_model(m);
 }
@@ -100,16 +100,16 @@ QSet<ModelPtr> Inventory::get_Model(const QString &MODEL_CODE)
 }
 
 
-// get the model with the container
-// if the mode does not have a container, <Container_ID> is supposed to be an empty string
+// get the model with the m_Container
+// if the mode does not have a m_Container, <Container_ID> is supposed to be an empty string
 QSharedPointer<Model> Inventory::get_Model(const QString &MODEL_CODE, const QString &Container_ID)
 {
     QSet<ModelPtr> candidates = this->get_Model(MODEL_CODE);
     for(ModelPtr m : candidates){
-        if(m->container.isNull() && Container_ID.isEmpty()){
+        if(m->m_Container.isNull() && Container_ID.isEmpty()){
             return m;
         }
-        else if(!m->container.isNull() && m->container->ID == Container_ID){
+        else if(!m->m_Container.isNull() && m->m_Container->ID == Container_ID){
             return m;
         }
     }
@@ -186,8 +186,10 @@ void Inventory::searchModel_starts_with(const QString str, QVector<ModelPtr>& mo
 {
     models.reserve(this->num_models());
 
+    QString new_str = str.trimmed().toUpper();
+
     for(const ModelPtr& m : this->model_set){
-        if(m->MODEL_CODE.toUpper().startsWith(str)){
+        if(m->m_MODEL_CODE.toUpper().startsWith(new_str)){
             models.push_back(m);
         }
     }
@@ -201,8 +203,10 @@ void Inventory::searchContainer_starts_with(const QString str, QVector< Containe
 {
     containers.reserve(this->num_containers());
 
+    QString new_str = str.trimmed().toUpper();
+
     for(const ContainerPtr& c : this->container_set){
-        if(c->ID.toUpper().startsWith(str)){
+        if(c->ID.toUpper().startsWith(new_str)){
             containers.push_back(c);
         }
     }

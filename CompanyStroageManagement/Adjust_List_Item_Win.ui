@@ -6,12 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>411</width>
-    <height>383</height>
+    <width>391</width>
+    <height>382</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
+  </property>
+  <property name="locale">
+   <locale language="English" country="UnitedStates"/>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
@@ -54,7 +57,10 @@
          <item>
           <widget class="QLineEdit" name="MODEL_CODE_LineEdit">
            <property name="enabled">
-            <bool>false</bool>
+            <bool>true</bool>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;}</string>
            </property>
            <property name="readOnly">
             <bool>false</bool>
@@ -98,7 +104,16 @@
          <item>
           <widget class="QTextEdit" name="DESCRIPTION_CN_TextEdit">
            <property name="enabled">
-            <bool>false</bool>
+            <bool>true</bool>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QTextEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;}</string>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -142,10 +157,19 @@
          <item>
           <widget class="QTextEdit" name="DESCRIPTION_SPAN_TextEdit">
            <property name="enabled">
-            <bool>false</bool>
+            <bool>true</bool>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
            </property>
            <property name="autoFillBackground">
             <bool>false</bool>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QTextEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;}</string>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -188,6 +212,12 @@
          </item>
          <item>
           <widget class="QDoubleSpinBox" name="NUM_BOXES_DoubleSpinBox">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
              <width>100</width>
@@ -211,7 +241,19 @@
          <item>
           <widget class="QLineEdit" name="MAX_NUM_BOXES_LineEdit">
            <property name="enabled">
-            <bool>false</bool>
+            <bool>true</bool>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;}</string>
+           </property>
+           <property name="text">
+            <string>0</string>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -257,6 +299,12 @@
            <property name="enabled">
             <bool>true</bool>
            </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
              <width>100</width>
@@ -271,7 +319,19 @@
          <item>
           <widget class="QLineEdit" name="MAX_NUM_PIECES_LineEdit">
            <property name="enabled">
-            <bool>false</bool>
+            <bool>true</bool>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;}</string>
+           </property>
+           <property name="text">
+            <string>0</string>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -315,7 +375,13 @@
          <item>
           <widget class="QLineEdit" name="NUM_PIECES_PER_BOX_LineEdit">
            <property name="enabled">
-            <bool>false</bool>
+            <bool>true</bool>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;}</string>
+           </property>
+           <property name="text">
+            <string>0</string>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -352,14 +418,20 @@
             </size>
            </property>
            <property name="text">
-            <string>单价</string>
+            <string>单价($)</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QLineEdit" name="PREZE_LineEdit">
            <property name="enabled">
-            <bool>false</bool>
+            <bool>true</bool>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;}</string>
+           </property>
+           <property name="text">
+            <string>0</string>
            </property>
            <property name="readOnly">
             <bool>false</bool>
@@ -396,14 +468,20 @@
             </size>
            </property>
            <property name="text">
-            <string>总价</string>
+            <string>总价($)</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QLineEdit" name="TOTAL_LineEdit">
            <property name="enabled">
-            <bool>false</bool>
+            <bool>true</bool>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;}</string>
+           </property>
+           <property name="text">
+            <string>0</string>
            </property>
            <property name="readOnly">
             <bool>true</bool>

@@ -14,7 +14,7 @@ def write2txt(models, path) :
         
         # write the number of models
         file.write('% ' + str(len(models)) + split_item + ' \n')
-        file.write('% MODEL_CODE CONTAINER_ID DESCRIPTION_CN DESCRIPTION_SPAN NUM_INITIAL_PIECES NUM_SOLD_PIECES NUM_LEFT_PIECES NUM_PIECES_PER_BOX PRIZE_PER_PIECE TIME_MODIFIED \n')
+        file.write('% MODEL_CODE CONTAINER_ID DESCRIPTION_CN DESCRIPTION_SPAN NUM_INITIAL_PIECES NUM_SOLD_PIECES NUM_LEFT_PIECES NUM_PIECES_PER_BOX PRIZE_PER_PIECE TIME_MODIFIED TIME_CREATED \n')
         for key, value in models.items():
             file.write(value.MODEL_CODE + split_item)
             file.write( '-1' + split_item) # default container is -1
@@ -36,6 +36,8 @@ def write2txt(models, path) :
             file.write(str(value.NUM_ITEMS_PER_BOX) + split_item)
 
             file.write(str(value.PRIZE) + split_item)
+
+            file.write(current_time + split_item)
 
             file.write(current_time + split_item)
             

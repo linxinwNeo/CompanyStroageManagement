@@ -49,11 +49,7 @@ private slots:
     void on_delete_model_btn_clicked();
     void on_update_selected_model_btn_clicked();
 
-    void on_search_model_result_Table_cellClicked(int row, int column);
-
     void on_search_CONTAINER_ID_LE_textChanged(const QString& new_str);
-
-    void on_search_container_result_Table_cellClicked(int row, int column);
 
     void on_start_add_model_btn_clicked();
 
@@ -74,6 +70,10 @@ private slots:
 
     void on_action_Save_Inventory_triggered();
     void on_action_Save_Lists_triggered();
+
+
+    void on_search_model_result_Table_itemSelectionChanged();
+    void on_selected_container_models_Table_itemSelectionChanged();
 
 private:
     ModelPtr selected_model;

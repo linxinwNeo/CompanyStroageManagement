@@ -1,13 +1,13 @@
 #include <QCloseEvent>
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QTextEdit>
 #include <QStandardPaths>
 
-#include "CN_Strings.h"
+#include "LanguageStrings.h"
 #include "CreateListWin.h"
 #include "FileLoader/WriteFile.h"
 #include "Others/create_PDF.h"
-#include "SpanStrings.h"
 #include "mainwindow.h"
 #include "ui_CreateListWin.h"
 #include "GlobalVars.h"
@@ -25,6 +25,8 @@ CreateListWin::CreateListWin(QWidget *parent) :
     this->set_GUI_Language();
 
     this->setWindow();
+
+    this->setWindowTitle(lan("新清单", "Nueva lista"));
 }
 
 
@@ -68,12 +70,21 @@ void CreateListWin::update_added_models_table()
         auto rowValues = entry->view_values();
 
         for( unsigned long col = 0; col < rowValues.size(); col++ ){
-            QTableWidgetItem *tableWidgetItem = new QTableWidgetItem();
-            tableWidgetItem->setText( rowValues[col] );
+            if (col == 2 || col == 3) { // Replace with QTextEdit when col reaches 2 or 3
+                QTextEdit *textEdit = new QTextEdit();
+                textEdit->setPlainText(rowValues[col]);
+                textEdit->setReadOnly(true); // Optionally make it read-only
 
-            tableWidgetItem->setTextAlignment(Qt::AlignVCenter);
+                // Set QTextEdit as the cell widget
+                added_models_table->setCellWidget(row, col, textEdit);
+            } else {
+                QTableWidgetItem *tableWidgetItem = new QTableWidgetItem();
+                tableWidgetItem->setText( rowValues[col] );
 
-            added_models_table->setItem(row, col, tableWidgetItem);
+                tableWidgetItem->setTextAlignment(Qt::AlignVCenter);
+
+                added_models_table->setItem(row, col, tableWidgetItem);
+            }
         }
     }
 
@@ -158,6 +169,8 @@ void CreateListWin::set_GUI_Language()
     this->ui->previewList_btn->setText(lan("生成预览清单", "crear una vista previa de la lista"));
 
     this->ui->generatePDF_btn->setText(lan("生成正式清单", "Genere una lista de verificación formal"));
+
+    this->ui->pushButton_edit_selected_model->setText(lan("修改选中的货物", "Modificar los productos seleccionados"));
 }
 
 
@@ -243,9 +256,20 @@ Finish:
     Msgbox.exec();
 
     // reset client information
-    this->on_reset_client_info_btn_clicked();
+    this->clear_client_info();
 }
 
+
+void CreateListWin::clear_client_info()
+{
+    this->ui->CLIENTE_LE->setText("");
+    this->ui->DOMICILIO_LE->setText("");
+    this->ui->CIUDAD_LE->setText("");
+    this->ui->RFC_LE->setText("");
+    this->ui->AGENTE_LE->setText("");
+    this->ui->CONDICIONES_LE->setText("");
+    this->ui->discount_SB->setValue(0.0);
+}
 
 // create a pdf but do not deduct items from the stroage
 void CreateListWin::on_previewList_btn_clicked()
@@ -364,12 +388,20 @@ void CreateListWin::on_model_code_for_search_LE_textChanged(const QString &new_s
         model->searchResult_Regular(items);
 
         for( unsigned long col = 0; col < items.size(); col++ ){
-            QTableWidgetItem *tableWidgetItem = new QTableWidgetItem();
-            tableWidgetItem->setText( items[col] );
+            if (col == 2 || col == 3) { // Replace with QTextEdit when col reaches 2 or 3
+                QTextEdit *textEdit = new QTextEdit();
+                textEdit->setPlainText(items[col]);
+                textEdit->setReadOnly(true); // Optionally make it read-only
 
-            tableWidgetItem->setTextAlignment(Qt::AlignVCenter);
+                table->setCellWidget(row, col, textEdit);
+            } else {
+                QTableWidgetItem *tableWidgetItem = new QTableWidgetItem();
+                tableWidgetItem->setText( items[col] );
 
-            table->setItem(row, col, tableWidgetItem);
+                tableWidgetItem->setTextAlignment(Qt::AlignVCenter);
+
+                table->setItem(row, col, tableWidgetItem);
+            }
         }
     }
 
@@ -467,10 +499,10 @@ void CreateListWin::on_add_selected_model_btn_clicked()
     this->setDisabled(true);
 
     model_2be_added = this->selected_model_in_search_table;
-    MODELCODE_2be_Added = model_2be_added->MODEL_CODE;
+    MODELCODE_2be_Added = model_2be_added->m_MODEL_CODE;
 
-    if(this->selected_model_in_search_table->container.isNull()) ContainerID_2be_Added.clear();
-    else ContainerID_2be_Added = model_2be_added->container->ID;
+    if(this->selected_model_in_search_table->m_Container.isNull()) ContainerID_2be_Added.clear();
+    else ContainerID_2be_Added = model_2be_added->m_Container->ID;
 
     // check if this model has been added to <selected_list_entries_Table> already
     if(cur_list_entries.has_Model(MODELCODE_2be_Added, ContainerID_2be_Added)){
@@ -482,12 +514,12 @@ void CreateListWin::on_add_selected_model_btn_clicked()
     // create a new entry and add it to <cur_list_entries>
     NUM_LEFT_PIECES = model_2be_added->NUM_LEFT_PIECES(); // CANTIDAD
 
-    NUM_PIECES_PER_BOX = model_2be_added->NUM_PIECES_PER_BOX;
+    NUM_PIECES_PER_BOX = model_2be_added->m_NUM_PIECES_PER_BOX;
     // compute number of avaliable boxes
 
-    DESCRIPTION_SPAN = model_2be_added->DESCRIPTION_SPAN;
-    DESCRIPTION_CN = model_2be_added->DESCRIPTION_CN;
-    PRIZE = model_2be_added->PRIZE;
+    DESCRIPTION_SPAN = model_2be_added->m_DESCRIPTION_SPAN;
+    DESCRIPTION_CN = model_2be_added->m_DESCRIPTION_CN;
+    PRIZE = model_2be_added->m_PRIZE;
 
     new_entry = EntryPtr (new Entry( NUM_LEFT_PIECES, NUM_PIECES_PER_BOX,
                                      MODELCODE_2be_Added, ContainerID_2be_Added,
@@ -567,18 +599,61 @@ void CreateListWin::on_added_models_table_cellDoubleClicked(int row, int column)
     adjust_list_item_win->set_GUI_values();
 
     adjust_list_item_win->show();
+
+    this->setEnabled(true);
 }
 
 
 // clear client information
 void CreateListWin::on_reset_client_info_btn_clicked()
 {
-    this->ui->CLIENTE_LE->setText("");
-    this->ui->DOMICILIO_LE->setText("");
-    this->ui->CIUDAD_LE->setText("");
-    this->ui->RFC_LE->setText("");
-    this->ui->AGENTE_LE->setText("");
-    this->ui->CONDICIONES_LE->setText("");
-    this->ui->discount_SB->setValue(0.0);
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(nullptr,
+                                  lan("确认操作", "Confirme la acción"),
+                                  lan("你确定要清除客户信息吗？", "¿Estás seguro de que quieres purgar la información de los clientes?"),
+                                  QMessageBox::Yes|QMessageBox::No);
+
+    // Process the user's response
+    if (reply == QMessageBox::Yes) {
+        this->clear_client_info();
+    }
 }
 
+
+// 当这个被点击后，尝试删除目前选中的 model
+void CreateListWin::on_pushButton_edit_selected_model_clicked()
+{
+    this->setDisabled(true); // disable this win when adjust win is shown
+
+    // get the row number of the current selected model
+    auto selectedItems = added_models_table->selectedItems();
+    if(selectedItems.size() == 0){
+        // warn user that none is selected
+        QMessageBox Msgbox(this);
+        Msgbox.setText(lan("没有选中任何货物！", "¡No se seleccionaron productos!"));
+        Msgbox.exec();
+
+        this->setEnabled(true);
+        return;
+    }
+
+    int row = selectedItems[0]->row();
+
+    adjust_list_item_win = QSharedPointer<Adjust_List_Item_Win> (new Adjust_List_Item_Win);
+
+    EntryPtr entry = cur_list_entries.entries[row];
+    ModelPtr model = entry->get_corresponding_model();
+    if(model.isNull()){
+        write_error_file("CreateListWin::on_pushButton_edit_selected_model_clicked: no model is selected!");
+        this->setEnabled(true);
+        return;
+    }
+
+    adjust_list_item_win->parent_win = this;
+    adjust_list_item_win->set_model_and_entry(model, entry, row);
+    adjust_list_item_win->set_GUI_values();
+
+    adjust_list_item_win->show();
+
+    this->setEnabled(true);
+}

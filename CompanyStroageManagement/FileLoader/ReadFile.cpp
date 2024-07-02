@@ -1,9 +1,12 @@
+#include "ReadFile.h"
+
 #include <QVector>
 #include <QTime>
 #include <QDateTime>
 #include <QFileDialog>
-#include "ReadFile.h"
 #include <QStandardPaths>
+
+
 #include "GlobalVars.h"
 #include "header/xlsxdocument.h"
 #include "IO_Base.h"
@@ -48,7 +51,7 @@ bool ReadFile::read_Inventory_File_Auto(const QString &path, const bool save_pat
 }
 
 
-/* read models file, while reading models, we also build container instances */
+/* read models file, while reading models, we also build m_Container instances */
 bool ReadFile::read_Inventory_txt_File(const QString& path, const bool save_path)
 {
     QFile file(path);
@@ -78,16 +81,16 @@ bool ReadFile::read_Inventory_txt_File(const QString& path, const bool save_path
 
         QStringList strList = line.split(split_item);
         QSharedPointer<Model> m(new Model());
-        m->MODEL_CODE = strList[0]; // 1. 货号/MODEL_CODE
-        if(m->MODEL_CODE.isEmpty()) {
+        m->m_MODEL_CODE = strList[0]; // 0. 货号/MODEL_CODE
+        if(m->m_MODEL_CODE.isEmpty()) {
             write_error_file("Encounter an empty Model CODE");
             continue;
         }
 
-        QString containerID = strList[1].trimmed(); // 2. 集装箱号/CONTAINER_ID
+        QString containerID = strList[1].trimmed(); // 1. 集装箱号/CONTAINER_ID
         // check if the container exists
         if(containerID.startsWith("-1")){
-            m->container = nullptr; // do nothing if this model does not have a container
+            m->m_Container = nullptr; // do nothing if this model does not have a container
         }
         else{
             /* this model has a container, we need to check if this container has been created already
@@ -108,20 +111,24 @@ bool ReadFile::read_Inventory_txt_File(const QString& path, const bool save_path
                 inventory.add_Container(container);
             }
             container->add_model(m); // add this model to the container
-            m->container = container;// add container to this model
+            m->m_Container = container;// add container to this model
         }
 
-        m->DESCRIPTION_CN = strList[2]; // 3. 品名（中文）/DESCRIPTION_CN
-        m->DESCRIPTION_SPAN = strList[3]; // 4. 品名（西语）/DESCRIPTION_SPAN
+        m->m_DESCRIPTION_CN = strList[2]; // 2. 品名（中文）/DESCRIPTION_CN
+        m->m_DESCRIPTION_SPAN = strList[3]; // 3. 品名（西语）/DESCRIPTION_SPAN
 
-        m->NUM_INIT_PIECES = strList[4].toULong(); // 5. 进货个数/NUM_INITIAL_PIECES
-        m->NUM_SOLD_PIECES = strList[5].toULong(); // 6. 已售个数/NUM_SOLD_PIECES
-        // m->NUM_LEFT_PIECES = strList[6].toULong(); // 7. 剩余个数/NUM_LEFT_PIECES
-        m->NUM_PIECES_PER_BOX = strList[7].toULong(); // 8.每箱个数/NUM_PIECES_PER_BOX
-        m->PRIZE = strList[8].toDouble(); // 9. 单价/PRIZE_PER_PIECE
-        // 10. 上次修改时间/TIME_MODIFIED
-        m->last_time_modified = QSharedPointer<QDateTime>::create(
+        m->m_NUM_INIT_PIECES = strList[4].toULong(); // 4. 进货个数/NUM_INITIAL_PIECES
+        m->m_NUM_SOLD_PIECES = strList[5].toULong(); // 5. 已售个数/NUM_SOLD_PIECES
+        m->m_NUM_PIECES_PER_BOX = strList[7].toULong(); // 6.每箱个数/NUM_PIECES_PER_BOX
+        m->m_PRIZE = strList[8].toDouble(); // 7. 单价/PRIZE_PER_PIECE
+        // 8. 上次修改时间/TIME_MODIFIED
+        m->m_last_time_modified = QSharedPointer<QDateTime>::create(
             QDateTime::fromString(strList[9], DateTimeFormat)
+            );
+
+        // 9. 创建时间
+        m->m_time_created = QSharedPointer<QDateTime>::create(
+            QDateTime::fromString(strList[10], DateTimeFormat)
             );
 
         inventory.add_new_Model(m);
@@ -162,16 +169,16 @@ bool ReadFile::read_Inventory_xlsx_File(const QString &path, const bool save_pat
     // read file
     for(row = 2; row < rowCount + 2; row++){
         col = 1;
-        QString modelCode = xlsx.read(row, col++).toString().trimmed(); // 1. 货号/MODEL_CODE
+        QString modelCode = xlsx.read(row, col++).toString().trimmed(); // 0. 货号/MODEL_CODE
         if(modelCode.isEmpty()) continue; // skip empty rows
 
         QSharedPointer<Model> m(new Model());
-        m->MODEL_CODE = modelCode;
+        m->m_MODEL_CODE = modelCode;
 
-        QString containerID = xlsx.read(row, col++).toString().trimmed(); // 2. 集装箱号/CONTAINER_ID
+        QString containerID = xlsx.read(row, col++).toString().trimmed(); // 1. 集装箱号/CONTAINER_ID
         // check if this container with this ID exists
         if(containerID.isEmpty() || containerID == "-1"){
-            m->container = nullptr; // do nothing if this model does not have a container
+            m->m_Container = nullptr; // do nothing if this model does not have a container
         }
         else{
             /* this model has a container, we need to check if this container has been created already
@@ -187,22 +194,27 @@ bool ReadFile::read_Inventory_xlsx_File(const QString &path, const bool save_pat
                 inventory.add_Container(container);
             }
             container->add_model(m); // add this model to the container
-            m->container = container;// add container to this model
+            m->m_Container = container;// add container to this model
         }
 
-        m->DESCRIPTION_CN = xlsx.read(row, col++).toString().trimmed(); // 3. 品名（中文）/DESCRIPTION_CN
-        m->DESCRIPTION_SPAN = xlsx.read(row, col++).toString().trimmed(); // 4. 品名（西语）/DESCRIPTION_SPAN
+        m->m_DESCRIPTION_CN = xlsx.read(row, col++).toString().trimmed(); // 2. 品名（中文）/DESCRIPTION_CN
+        m->m_DESCRIPTION_SPAN = xlsx.read(row, col++).toString().trimmed(); // 3. 品名（西语）/DESCRIPTION_SPAN
 
         /* because when we output data, we used unsigned long long
          * we also need to handle the commas in the string */
-        m->NUM_INIT_PIECES = xlsx.read(row, col++).toString().remove(',').toULong(); // 5. 进货个数/NUM_INITIAL_PIECES
-        m->NUM_SOLD_PIECES = xlsx.read(row, col++).toString().remove(',').toULong(); // 6. 已售个数/NUM_SOLD_PIECES
+        m->m_NUM_INIT_PIECES = xlsx.read(row, col++).toString().remove(',').toULong(); // 4. 进货个数/NUM_INITIAL_PIECES
+        m->m_NUM_SOLD_PIECES = xlsx.read(row, col++).toString().remove(',').toULong(); // 5. 已售个数/NUM_SOLD_PIECES
         col++;
-        m->NUM_PIECES_PER_BOX = xlsx.read(row, col++).toString().remove(',').toULong(); // 8. 每箱个数/NUM_PIECES_PER_BOX
-        m->PRIZE = xlsx.read(row, col++).toString().remove(',').toDouble(); // 9. 单价/PRIZE_PER_PIECE
+        m->m_NUM_PIECES_PER_BOX = xlsx.read(row, col++).toString().remove(',').toULong(); // 6. 每箱个数/NUM_PIECES_PER_BOX
+        m->m_PRIZE = xlsx.read(row, col++).toString().remove(',').toDouble(); // 7. 单价/PRIZE_PER_PIECE
 
-        // 10. 上次修改时间/TIME_MODIFIED
-        m->last_time_modified = QSharedPointer<QDateTime>::create(
+        // 8. 上次修改时间/TIME_MODIFIED
+        m->m_last_time_modified = QSharedPointer<QDateTime>::create(
+            QDateTime::fromString(xlsx.read(row, col++).toString(), DateTimeFormat)
+            );
+
+        // 9. 创建时间
+        m->m_time_created = QSharedPointer<QDateTime>::create(
             QDateTime::fromString(xlsx.read(row, col++).toString(), DateTimeFormat)
             );
 

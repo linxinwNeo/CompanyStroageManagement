@@ -13,7 +13,6 @@ SOURCES += \
     AddNewModelWindow.cpp \
     Adjust_List_Item_Win.cpp \
     Algorithm/QuickSort.cpp \
-    CN_Strings.cpp \
     CreateListWin.cpp \
     DataStructures/Container.cpp \
     DataStructures/Entry.cpp \
@@ -26,10 +25,10 @@ SOURCES += \
     FileLoader/ReadFile.cpp \
     FileLoader/WriteFile.cpp \
     GlobalVars.cpp \
+    LanguageStrings.cpp \
     Menu/MainWindow_Actions.cpp \
     Others/create_pdf.cpp \
     Search_List_Win.cpp \
-    SpanStrings.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -37,8 +36,9 @@ HEADERS += \
     AddNewModelWindow.h \
     Adjust_List_Item_Win.h \
     Algorithm/QuickSort.h \
-    CN_Strings.h \
     CreateListWin.h \
+    CustomWidgets/EnglishDoubleSpinBox.h \
+    CustomWidgets/EnglishSpinBox.h \
     DataStructures/Container.h \
     DataStructures/Entry.h \
     DataStructures/Entrylist.h \
@@ -50,11 +50,11 @@ HEADERS += \
     FileLoader/ReadFile.h \
     FileLoader/WriteFile.h \
     GlobalVars.h \
+    LanguageStrings.h \
     Others/create_pdf.h \
     Others/is_int_float.h \
     Others/write_error_file.h \
     Search_List_Win.h \
-    SpanStrings.h \
     helper_functions.h \
     mainwindow.h
 

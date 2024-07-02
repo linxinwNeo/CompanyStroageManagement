@@ -1,8 +1,7 @@
 #include "AddNewModelWindow.h"
 #include <QCloseEvent>
-#include "CN_Strings.h"
+#include "LanguageStrings.h"
 #include "FileLoader/WriteFile.h"
-#include "SpanStrings.h"
 #include "mainwindow.h"
 #include "ui_AddNewModelWindow.h"
 #include "GlobalVars.h"
@@ -49,7 +48,7 @@ void AddNewModelWindow::set_GUI_Language()
     this->ui->DESCRIPTION_SPAN_label->setText(lan("品名（西语）", "Nombre del producto (en español)"));
     this->ui->DESCRIPTION_SPAN_LE->setPlaceholderText(none);
 
-    this->ui->PRIZE_label->setText(lan("单价", "Prec. por pieza"));
+    this->ui->PRIZE_label->setText(lan("单价", "PRECIO"));
     this->ui->NUM_INIT_PIECES_label->setText(lan("进货个数", "Núm. piezas adq."));
     this->ui->NUM_SOLD_PIECES_label->setText(lan("已售个数", "Núm. piezas vend."));
     this->ui->NUM_PIECES_PER_BOX_label->setText(lan("每箱个数", "Piezas por caja"));
@@ -216,7 +215,7 @@ void AddNewModelWindow::on_add_new_model_btn_clicked()
         }
     }
 
-    new_model->container = container;
+    new_model->m_Container = container;
     inventory.add_new_Model(new_model);
 
 

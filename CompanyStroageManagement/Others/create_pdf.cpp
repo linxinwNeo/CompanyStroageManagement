@@ -1,6 +1,7 @@
 
 #include "create_pdf.h"
 
+int number_of_characters_of_description = 26;
 
 QString currDate(QSharedPointer<QDateTime> date)
 {
@@ -97,7 +98,15 @@ void create_pdf(QString filename, ListPtr list)
         x += width * 0.122;
 
         // DESCRIPTION
-        painter.drawText(QPointF(x, y), entry->Description_SPAN);
+        if(entry->Description_SPAN.size() <= number_of_characters_of_description){
+            painter.drawText(QPointF(x, y), entry->Description_SPAN);
+        }
+        else{
+            // 字符串太长了，需要取前一部分，并留 "..." 在末尾
+            painter.drawText(QPointF(x, y),
+                             entry->Description_SPAN.left( number_of_characters_of_description ) + "..."
+                             );
+        }
         x += width * 0.273;
 
         // PRECIO U.

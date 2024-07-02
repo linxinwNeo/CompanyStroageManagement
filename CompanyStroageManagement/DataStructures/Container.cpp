@@ -55,7 +55,7 @@ double Container::total_num_init_boxes() const
 {
     double sum = 0;
     for(const auto& m : this->models_set){
-        sum += m->num_init_boxes();
+        sum += m->NUM_INIT_BOXES();
     }
     return sum;
 }
@@ -65,7 +65,7 @@ double Container::total_num_left_boxes() const
 {
     double sum = 0;
     for(const auto& m : this->models_set){
-        sum += m->num_left_boxes();
+        sum += m->NUM_LEFT_BOXES();
     }
     return sum;
 }
@@ -76,7 +76,7 @@ unsigned long long Container::total_num_init_pieces() const
 {
     unsigned long long sum = 0;
     for(const auto& m : this->models_set){
-        sum += m->NUM_INIT_PIECES;
+        sum += m->m_NUM_INIT_PIECES;
     }
 
     return sum;
@@ -98,25 +98,28 @@ unsigned long long Container::total_num_left_pieces() const
 // return a list of string that describes this item in the search_container_table
 void Container::searchResult(QVector<QString> &items) const
 {
+    extern QLocale locale;
+
     items.clear();
     items.reserve(6);
 
     items.push_back(this->ID); // 集装箱号
-    items.push_back(QString::number(this->num_models())); // 货物种类数量
-    items.push_back(QString::number(this->total_num_init_boxes(), 'f', 2)); // 初始总箱数
-    items.push_back(QString::number(this->total_num_left_boxes(), 'f', 2)); // 剩余总箱数
+    items.push_back(locale.toString(this->num_models())); // 货物种类数量
 
-    items.push_back(QString::number(this->total_num_init_pieces(), 'f', 2)); // 初始总个数
-    items.push_back(QString::number(this->total_num_left_pieces(), 'f', 2)); // 剩余总个数
+    items.push_back(locale.toString(this->total_num_init_boxes(), 'f', 2)); // 初始总箱数
+    items.push_back(locale.toString(this->total_num_left_boxes(), 'f', 2)); // 剩余总箱数
+
+    items.push_back(locale.toString(this->total_num_init_pieces())); // 初始总个数
+    items.push_back(locale.toString(this->total_num_left_pieces())); // 剩余总个数
 }
 
 
 // return vector of models
-void Container::models_Set2Vec(QVector<QSharedPointer<Model> >& output, const bool sort)
+void Container::models_Set2Vec(QVector< QSharedPointer<Model> >& output, const bool sort)
 {
     output.clear();
     output.reserve(this->num_models());
-    for(auto& model : this->models_set){
+    for(const QSharedPointer< Model >& model : this->models_set){
         output.push_back(model);
     }
 

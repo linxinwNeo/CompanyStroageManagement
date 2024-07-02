@@ -62,7 +62,7 @@ void List::AddBack_Models() const
                 container = ContainerPtr (new Container(entry->ContainerID));
                 container->add_model(model);
                 inventory.add_Container(container);
-                model->container = container;
+                model->m_Container = container;
             }
 
             continue;
@@ -151,13 +151,15 @@ ListPtr Lists::get_list(unsigned long id)
 
 // get the lists with their id begin with id_prefix
 // if prefix is empty, we return all lists
-void Lists::get_list(QString id_prefix, QVector<ListPtr>& candidates, bool sorted)
+void Lists::get_list(const QString id_prefix, QVector<ListPtr>& candidates, bool sorted)
 {
+    const QString new_str = id_prefix.toUpper().trimmed();
+
     candidates.clear();
     candidates.reserve(this->num_lists()/9. + 10);
 
     // return if id_prefix is empty
-    if(id_prefix.isEmpty()){
+    if(new_str.isEmpty()){
         for(ListPtr& list : this->lists){
             candidates.push_back(list);
         }
@@ -165,8 +167,8 @@ void Lists::get_list(QString id_prefix, QVector<ListPtr>& candidates, bool sorte
     else{
         // for each list in the database, we convert it to a string and testing
         for(ListPtr& list : this->lists){
-            QString cur_id = QString::number(list->id);
-            if(cur_id.startsWith(id_prefix)){
+            QString cur_id = QString::number(list->id).toUpper();
+            if(cur_id.startsWith(new_str)){
                 candidates.push_back(list);
             }
         }

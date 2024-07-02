@@ -12,7 +12,9 @@ class Inventory inventory; // holds all models, containers
 class Lists lists; // holds all past list
 
 const QString EXCEL_FILTER = "Microsoft Excel Open XML Spreadsheet (*.xlsx)";
-const QString table_stylesheet = "QHeaderView::section { background-color:#F0F0F0; }";
+const QString table_stylesheet = "QTableWidget::item { border: 1px solid black; }"
+                                 "QTableWidget::item:selected { background-color: lightblue; }"
+                                 "QHeaderView::section { border: 1px solid black; }";
 
 const QString DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
 const QString DateTimeFormat_for_backup_file = "yyyy-MM-dd-HH-mm-ss";
@@ -21,3 +23,4 @@ unsigned int language_option = 0; // 0 for chinese, 1 for Spanish
 
 
 QLocale locale(QLocale::English, QLocale::UnitedStates);
+

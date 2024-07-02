@@ -42,7 +42,7 @@ private:
     EntryPtr entry_2be_adjusted = nullptr;
     unsigned int entry_idx = -1;
 
-    const float widthRatio = 0.6;
+    const float widthRatio = 0.3;
     const float heightRatio = 0.8;
 };
 

@@ -13,12 +13,21 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="locale">
+   <locale language="English" country="UnitedStates"/>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QTabWidget" name="tabWidget">
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>16777215</height>
+       </size>
+      </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="search_model_tab">
        <attribute name="title">
@@ -178,6 +187,11 @@
                   <string>上次修改时间</string>
                  </property>
                 </column>
+                <column>
+                 <property name="text">
+                  <string>进货时间</string>
+                 </property>
+                </column>
                </widget>
               </item>
              </layout>
@@ -185,6 +199,9 @@
            </item>
            <item>
             <widget class="QGroupBox" name="selected_model_GB">
+             <property name="locale">
+              <locale language="English" country="UnitedStates"/>
+             </property>
              <property name="title">
               <string>选中的货物</string>
              </property>
@@ -314,6 +331,9 @@
                       <property name="focusPolicy">
                        <enum>Qt::NoFocus</enum>
                       </property>
+                      <property name="styleSheet">
+                       <string notr="true">QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;}</string>
+                      </property>
                       <property name="readOnly">
                        <bool>true</bool>
                       </property>
@@ -379,12 +399,12 @@
                      <number>3</number>
                     </property>
                     <item>
-                     <widget class="QLabel" name="selected_model_NUM_INIT_PIECES_label">
+                     <widget class="QLabel" name="selected_model_NUM_INIT_BOXES_label">
                       <property name="enabled">
                        <bool>true</bool>
                       </property>
                       <property name="text">
-                       <string>进货个数</string>
+                       <string>进货箱数</string>
                       </property>
                       <property name="alignment">
                        <set>Qt::AlignCenter</set>
@@ -392,12 +412,12 @@
                      </widget>
                     </item>
                     <item>
-                     <widget class="QSpinBox" name="selected_model_NUM_INIT_PIECES_SB">
+                     <widget class="EnglishDoubleSpinBox" name="selected_model_NUM_INIT_BOXES_SB">
                       <property name="alignment">
                        <set>Qt::AlignCenter</set>
                       </property>
                       <property name="maximum">
-                       <number>999999999</number>
+                       <double>10000000000000000905969664.000000000000000</double>
                       </property>
                      </widget>
                     </item>
@@ -430,9 +450,9 @@
                      <number>3</number>
                     </property>
                     <item>
-                     <widget class="QLabel" name="selected_model_NUM_SOLD_PIECES_label">
+                     <widget class="QLabel" name="selected_model_NUM_SOLD_BOXES_label">
                       <property name="text">
-                       <string>已售个数</string>
+                       <string>已售箱数</string>
                       </property>
                       <property name="alignment">
                        <set>Qt::AlignCenter</set>
@@ -440,12 +460,12 @@
                      </widget>
                     </item>
                     <item>
-                     <widget class="QSpinBox" name="selected_model_NUM_SOLD_PIECES_SB">
+                     <widget class="QDoubleSpinBox" name="selected_model_NUM_SOLD_BOXES_SB">
                       <property name="alignment">
                        <set>Qt::AlignCenter</set>
                       </property>
                       <property name="maximum">
-                       <number>999999999</number>
+                       <double>10000000000000000000.000000000000000</double>
                       </property>
                      </widget>
                     </item>
@@ -491,7 +511,10 @@
                      </widget>
                     </item>
                     <item>
-                     <widget class="QSpinBox" name="selected_model_NUM_PIECES_PER_BOX_SB">
+                     <widget class="EnglishSpinBox" name="selected_model_NUM_PIECES_PER_BOX_SB">
+                      <property name="locale">
+                       <locale language="English" country="UnitedStates"/>
+                      </property>
                       <property name="alignment">
                        <set>Qt::AlignCenter</set>
                       </property>
@@ -534,7 +557,7 @@
                        <bool>true</bool>
                       </property>
                       <property name="text">
-                       <string>单价</string>
+                       <string>单价($)</string>
                       </property>
                       <property name="alignment">
                        <set>Qt::AlignCenter</set>
@@ -542,12 +565,12 @@
                      </widget>
                     </item>
                     <item>
-                     <widget class="QDoubleSpinBox" name="selected_model_PRIZE_SB">
+                     <widget class="EnglishDoubleSpinBox" name="selected_model_PRIZE_SB">
                       <property name="alignment">
                        <set>Qt::AlignCenter</set>
                       </property>
                       <property name="prefix">
-                       <string notr="true">$</string>
+                       <string notr="true"/>
                       </property>
                       <property name="maximum">
                        <double>999999999999999.000000000000000</double>
@@ -828,12 +851,17 @@
              </column>
              <column>
               <property name="text">
-               <string>单价</string>
+               <string>单价($)</string>
               </property>
              </column>
              <column>
               <property name="text">
                <string>上次修改时间</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>进货时间</string>
               </property>
              </column>
             </widget>
@@ -1024,223 +1052,267 @@
        </layout>
       </widget>
       <widget class="QWidget" name="save_file_tab">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <attribute name="title">
         <string>保存或者读取文件</string>
        </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <spacer name="verticalSpacer_6">
+         <spacer name="horizontalSpacer">
           <property name="orientation">
-           <enum>Qt::Vertical</enum>
+           <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>20</width>
-            <height>40</height>
+            <width>40</width>
+            <height>20</height>
            </size>
           </property>
          </spacer>
         </item>
         <item>
-         <widget class="QWidget" name="widget_21" native="true">
-          <layout class="QHBoxLayout" name="horizontalLayout_17">
-           <property name="spacing">
-            <number>3</number>
-           </property>
-           <property name="leftMargin">
-            <number>3</number>
-           </property>
-           <property name="topMargin">
-            <number>3</number>
-           </property>
-           <property name="rightMargin">
-            <number>3</number>
-           </property>
-           <property name="bottomMargin">
-            <number>3</number>
-           </property>
+         <widget class="QWidget" name="widget_6" native="true">
+          <layout class="QVBoxLayout" name="verticalLayout_3">
            <item>
-            <widget class="QPushButton" name="save_inventory_2_new_file_btn">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
+            <spacer name="verticalSpacer_6">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
              </property>
-             <property name="minimumSize">
+             <property name="sizeHint" stdset="0">
               <size>
-               <width>200</width>
-               <height>0</height>
+               <width>20</width>
+               <height>40</height>
               </size>
              </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QWidget" name="widget_21" native="true">
+             <layout class="QHBoxLayout" name="horizontalLayout_17">
+              <property name="spacing">
+               <number>3</number>
+              </property>
+              <property name="leftMargin">
+               <number>3</number>
+              </property>
+              <property name="topMargin">
+               <number>3</number>
+              </property>
+              <property name="rightMargin">
+               <number>3</number>
+              </property>
+              <property name="bottomMargin">
+               <number>3</number>
+              </property>
+              <item>
+               <widget class="QPushButton" name="save_inventory_2_new_file_btn">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>200</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>将库存保存至另一个文件</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QWidget" name="widget_22" native="true">
+             <layout class="QHBoxLayout" name="horizontalLayout_19">
+              <property name="spacing">
+               <number>3</number>
+              </property>
+              <property name="leftMargin">
+               <number>3</number>
+              </property>
+              <property name="topMargin">
+               <number>3</number>
+              </property>
+              <property name="rightMargin">
+               <number>3</number>
+              </property>
+              <property name="bottomMargin">
+               <number>3</number>
+              </property>
+              <item>
+               <widget class="QPushButton" name="read_inventory_from_new_file_btn">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>200</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>从另一个文件中读取库存</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="Line" name="line_4">
              <property name="maximumSize">
               <size>
                <width>16777215</width>
                <height>16777215</height>
               </size>
              </property>
-             <property name="text">
-              <string>将库存保存至另一个文件</string>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
              </property>
             </widget>
            </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <widget class="QWidget" name="widget_22" native="true">
-          <layout class="QHBoxLayout" name="horizontalLayout_19">
-           <property name="spacing">
-            <number>3</number>
-           </property>
-           <property name="leftMargin">
-            <number>3</number>
-           </property>
-           <property name="topMargin">
-            <number>3</number>
-           </property>
-           <property name="rightMargin">
-            <number>3</number>
-           </property>
-           <property name="bottomMargin">
-            <number>3</number>
-           </property>
            <item>
-            <widget class="QPushButton" name="read_inventory_from_new_file_btn">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>200</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>从另一个文件中读取库存</string>
-             </property>
+            <widget class="QWidget" name="widget_23" native="true">
+             <layout class="QHBoxLayout" name="horizontalLayout_20">
+              <property name="spacing">
+               <number>3</number>
+              </property>
+              <property name="leftMargin">
+               <number>3</number>
+              </property>
+              <property name="topMargin">
+               <number>3</number>
+              </property>
+              <property name="rightMargin">
+               <number>3</number>
+              </property>
+              <property name="bottomMargin">
+               <number>3</number>
+              </property>
+              <item>
+               <widget class="QPushButton" name="save_lists_2_new_file_btn">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>200</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>将清单历史纪录文件保存至另一个文件</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </widget>
+           </item>
+           <item>
+            <widget class="QWidget" name="widget_24" native="true">
+             <layout class="QHBoxLayout" name="horizontalLayout_21">
+              <property name="spacing">
+               <number>3</number>
+              </property>
+              <property name="leftMargin">
+               <number>3</number>
+              </property>
+              <property name="topMargin">
+               <number>3</number>
+              </property>
+              <property name="rightMargin">
+               <number>3</number>
+              </property>
+              <property name="bottomMargin">
+               <number>3</number>
+              </property>
+              <item>
+               <widget class="QPushButton" name="read_lists_from_new_file_btn">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>200</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>从另一个文件中读取清单历史</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_3">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
            </item>
           </layout>
          </widget>
         </item>
         <item>
-         <widget class="Line" name="line_4">
+         <spacer name="horizontalSpacer_2">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QWidget" name="widget_23" native="true">
-          <layout class="QHBoxLayout" name="horizontalLayout_20">
-           <property name="spacing">
-            <number>3</number>
-           </property>
-           <property name="leftMargin">
-            <number>3</number>
-           </property>
-           <property name="topMargin">
-            <number>3</number>
-           </property>
-           <property name="rightMargin">
-            <number>3</number>
-           </property>
-           <property name="bottomMargin">
-            <number>3</number>
-           </property>
-           <item>
-            <widget class="QPushButton" name="save_lists_2_new_file_btn">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>200</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>将清单历史纪录文件保存至另一个文件</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <widget class="QWidget" name="widget_24" native="true">
-          <layout class="QHBoxLayout" name="horizontalLayout_21">
-           <property name="spacing">
-            <number>3</number>
-           </property>
-           <property name="leftMargin">
-            <number>3</number>
-           </property>
-           <property name="topMargin">
-            <number>3</number>
-           </property>
-           <property name="rightMargin">
-            <number>3</number>
-           </property>
-           <property name="bottomMargin">
-            <number>3</number>
-           </property>
-           <item>
-            <widget class="QPushButton" name="read_lists_from_new_file_btn">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>200</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>从另一个文件中读取清单历史</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <spacer name="verticalSpacer_3">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>20</width>
-            <height>40</height>
+            <width>40</width>
+            <height>20</height>
            </size>
           </property>
          </spacer>
@@ -1299,6 +1371,18 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>EnglishSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>CustomWidgets/EnglishSpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>EnglishDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>CustomWidgets/EnglishDoubleSpinBox.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

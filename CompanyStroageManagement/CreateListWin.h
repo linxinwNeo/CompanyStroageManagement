@@ -38,6 +38,8 @@ public:
 
     void setWindow();
 
+    void clear_client_info();
+
 private slots:
     void closeEvent (QCloseEvent *event);
 
@@ -59,6 +61,8 @@ private slots:
     void on_added_models_table_cellDoubleClicked(int row, int column);
 
     void on_reset_client_info_btn_clicked();
+
+    void on_pushButton_edit_selected_model_clicked();
 
 private:
     void init();

@@ -3,8 +3,7 @@
 #include <QApplication>
 #include "GlobalVars.h"
 #include <QMessageBox>
-#include "CN_Strings.h"
-#include "SpanStrings.h"
+#include "LanguageStrings.h"
 
 void readfile();
 
