@@ -48,8 +48,6 @@ private slots:
 
     void on_model_code_for_search_LE_textChanged(const QString &arg1);
 
-    void on_searched_models_table_cellClicked(int row, int column);
-
     void on_add_selected_model_btn_clicked();
 
     void on_added_models_table_cellClicked(int row, int column);

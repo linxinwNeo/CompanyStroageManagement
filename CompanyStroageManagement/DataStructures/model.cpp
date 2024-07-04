@@ -16,7 +16,7 @@ Model::Model(const QString &MODEL_CODE, const QString &DESCRIPTION_SPAN, const Q
     m_MODEL_CODE = MODEL_CODE;
     m_DESCRIPTION_SPAN = DESCRIPTION_SPAN;
     m_DESCRIPTION_CN = DESCRIPTION_CN;
-    m_PRIZE = PRIZE;
+    m_PRICE = PRIZE;
 
     m_NUM_INIT_PIECES = NUM_INIT_PIECES;
     m_NUM_SOLD_PIECES = NUM_SOLD_PIECES;
@@ -40,7 +40,7 @@ void Model::reset()
     m_MODEL_CODE = "";
     m_DESCRIPTION_CN = "";
     m_DESCRIPTION_SPAN = "";
-    m_PRIZE = 0.;
+    m_PRICE = 0.;
     m_NUM_INIT_PIECES = 0;
     m_NUM_SOLD_PIECES = 0;
     m_NUM_PIECES_PER_BOX = 0;
@@ -95,7 +95,7 @@ double Model::num_pieces_2_num_boxes(unsigned long n) const
 // return the prize of the corresponding number of pieces
 double Model::TOTAL_PRIZE(unsigned long num_pieces) const {
     const double num_items_temp = num_pieces;
-    return this->m_PRIZE * num_items_temp;
+    return this->m_PRICE * num_items_temp;
 }
 
 
@@ -141,27 +141,27 @@ void Model::searchResult_Regular(QVector<QString> &items) const
 
     items.push_back(this->m_DESCRIPTION_CN); // 3.品名中文
     items.push_back(this->m_DESCRIPTION_SPAN); // 4.品名西语
-    items.push_back(locale.toString(this->num_pieces_2_num_boxes(this->m_NUM_INIT_PIECES), 'f', 2)); // 5.进货箱数
-    items.push_back(locale.toString(this->num_pieces_2_num_boxes(this->m_NUM_SOLD_PIECES), 'f', 2)); // 6.已售箱数
-    items.push_back(locale.toString(this->num_pieces_2_num_boxes(this->NUM_LEFT_PIECES()), 'f', 2)); // 7.剩余箱数
+    items.push_back(GlobalVars::locale.toString(this->num_pieces_2_num_boxes(this->m_NUM_INIT_PIECES), 'f', 2)); // 5.进货箱数
+    items.push_back(GlobalVars::locale.toString(this->num_pieces_2_num_boxes(this->m_NUM_SOLD_PIECES), 'f', 2)); // 6.已售箱数
+    items.push_back(GlobalVars::locale.toString(this->num_pieces_2_num_boxes(this->NUM_LEFT_PIECES()), 'f', 2)); // 7.剩余箱数
 
-    items.push_back(locale.toString(this->m_NUM_PIECES_PER_BOX)); // 8.每箱几个
+    items.push_back(GlobalVars::locale.toString(this->m_NUM_PIECES_PER_BOX)); // 8.每箱几个
 
-    items.push_back(locale.toString(this->m_NUM_INIT_PIECES)); // 9.进货个数
-    items.push_back(locale.toString(this->m_NUM_SOLD_PIECES)); // 10.已售个数
-    items.push_back(locale.toString(this->NUM_LEFT_PIECES())); // 11.剩余个数
+    items.push_back(GlobalVars::locale.toString(this->m_NUM_INIT_PIECES)); // 9.进货个数
+    items.push_back(GlobalVars::locale.toString(this->m_NUM_SOLD_PIECES)); // 10.已售个数
+    items.push_back(GlobalVars::locale.toString(this->NUM_LEFT_PIECES())); // 11.剩余个数
 
-    items.push_back(locale.toString(this->m_PRIZE, 'f', 2)); // 12.单价
+    items.push_back(GlobalVars::locale.toString(this->m_PRICE, 'f', 2)); // 12.单价
 
     if(this->m_last_time_modified.isNull()){
         write_error_file("m_last_time_modified is NULL");
     }
-    else items.push_back(this->m_last_time_modified->toString(DateTimeFormat)); // 13. 修改时间
+    else items.push_back(this->m_last_time_modified->toString(GlobalVars::DateTimeFormat)); // 13. 修改时间
 
     if(this->m_last_time_modified.isNull()){
         write_error_file("m_time_created is NULL");
     }
-    else items.push_back(this->m_time_created->toString(DateTimeFormat)); // 13. 创建时间/进货时间
+    else items.push_back(this->m_time_created->toString(GlobalVars::DateTimeFormat)); // 13. 创建时间/进货时间
 
 }
 
@@ -172,16 +172,16 @@ QString Model::describe_this_model() const
     QString ret = this->m_MODEL_CODE + "\n"
                   + this->m_DESCRIPTION_CN + "/n"
                   + this->m_DESCRIPTION_SPAN + "\n"
-                  + QString::number(this->m_PRIZE) + "\n"
+                  + QString::number(this->m_PRICE) + "\n"
                   + QString::number(this->m_NUM_INIT_PIECES) + "\n"
                   + QString::number(this->m_NUM_SOLD_PIECES) + "\n"
                   + QString::number(this->NUM_LEFT_PIECES()) + "\n"
                   + QString::number(this->m_NUM_PIECES_PER_BOX) + "\n";
     if(!this->m_last_time_modified.isNull()){
-        ret += this->m_last_time_modified->toString(DateTimeFormat);
+        ret += this->m_last_time_modified->toString(GlobalVars::DateTimeFormat);
     }
     if(!this->m_time_created.isNull()){
-        ret += this->m_time_created->toString(DateTimeFormat);
+        ret += this->m_time_created->toString(GlobalVars::DateTimeFormat);
     }
 
     return ret;

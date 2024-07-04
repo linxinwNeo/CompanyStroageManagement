@@ -36,7 +36,7 @@ void Adjust_List_Item_Win::setLanguage()
     this->ui->label_NUM_PIECES_PER_BOX->setText(lan("每箱个数", "Piezas por caja"));
 
 
-    this->ui->label_PREZE->setText(lan("单价($)", "PRECIO($)"));
+    this->ui->label_PRECE->setText(lan("单价($)", "PRECIO($)"));
     this->ui->label_TOTAL->setText(lan("总价($)", "IMPORTE($)"));
 }
 
@@ -79,15 +79,15 @@ void Adjust_List_Item_Win::set_GUI_values()
         CURR_NUM_PIECES = this->model_2be_adjusted->NUM_LEFT_PIECES();
     }
 
-    extern QLocale locale;
-    this->ui->lineEdit_MAX_NUM_BOXES->setText(locale.toString(this->model_2be_adjusted->NUM_LEFT_BOXES(), 'f', 2));
+
+    this->ui->lineEdit_MAX_NUM_BOXES->setText(GlobalVars::locale.toString(this->model_2be_adjusted->NUM_LEFT_BOXES(), 'f', 2));
 
     this->ui->doubleSpinBox_NUM_BOXES->setMaximum(this->model_2be_adjusted->NUM_LEFT_BOXES());
     this->ui->doubleSpinBox_NUM_BOXES->setMinimum(0.);
     this->ui->doubleSpinBox_NUM_BOXES->setValue(this->model_2be_adjusted->num_pieces_2_num_boxes(CURR_NUM_PIECES));
 
 
-    this->ui->lineEdit_MAX_NUM_PIECES->setText(locale.toString(model_2be_adjusted->NUM_LEFT_PIECES()));
+    this->ui->lineEdit_MAX_NUM_PIECES->setText(GlobalVars::locale.toString(model_2be_adjusted->NUM_LEFT_PIECES()));
     this->ui->spinBox_NUM_PIECES->setMinimum(0.);
     this->ui->spinBox_NUM_PIECES->setMaximum(CURR_NUM_PIECES);
     this->ui->spinBox_NUM_PIECES->setValue(CURR_NUM_PIECES);
@@ -99,9 +99,9 @@ void Adjust_List_Item_Win::set_GUI_values()
     this->ui->textEdit_DESCRIPTION_CN->setText(model_2be_adjusted->m_DESCRIPTION_CN);
     this->ui->textEdit_DESCRIPTION_SPAN->setText(model_2be_adjusted->m_DESCRIPTION_SPAN);
 
-    this->ui->doubleSpinBox_PREZE->setValue(model_2be_adjusted->m_PRIZE);
+    this->ui->doubleSpinBox_PRECE->setValue(model_2be_adjusted->m_PRICE);
 
-    this->ui->lineEdit_TOTAL->setText(locale.toString(model_2be_adjusted->m_PRIZE * entry_2be_adjusted->NUM_PIECES, 'f', 2));
+    this->ui->lineEdit_TOTAL->setText(GlobalVars::locale.toString(model_2be_adjusted->m_PRICE * entry_2be_adjusted->NUM_PIECES, 'f', 2));
 }
 
 
@@ -126,10 +126,11 @@ void Adjust_List_Item_Win::on_finish_btn_clicked()
         this->parent_win->remove_entry(this->entry_idx);
     }
     else{
-        // we only need to update three information: num of pieces, total price of the entry
+        // we only need to update three information: num of pieces, single price, and  total price of the entry
         entry_2be_adjusted->NUM_PIECES = this->ui->spinBox_NUM_PIECES->value();
-        extern QLocale locale;
-        entry_2be_adjusted->TOTAL = locale.toDouble(this->ui->lineEdit_TOTAL->text());
+
+        entry_2be_adjusted->PRICE_PER_PIECE = GlobalVars::locale.toDouble(this->ui->doubleSpinBox_PRECE->text());
+        entry_2be_adjusted->TOTAL = GlobalVars::locale.toDouble(this->ui->lineEdit_TOTAL->text());
     }
 
     // we need to update the entry of corresponding model
@@ -147,7 +148,7 @@ void Adjust_List_Item_Win::on_doubleSpinBox_NUM_BOXES_valueChanged(double num_bo
     // set number of pieces
     this->ui->spinBox_NUM_PIECES->setValue(new_num_pieces);
 
-    const double total = ((double)new_num_pieces) * this->model_2be_adjusted->m_PRIZE;
+    const double total = ((double)new_num_pieces) * this->model_2be_adjusted->m_PRICE;
     this->ui->lineEdit_TOTAL->setText(QString::number(total, 'f', 2));
 
     // enable NUM_PIECES_LineEdit's signals
@@ -164,7 +165,7 @@ void Adjust_List_Item_Win::on_spinBox_NUM_PIECES_valueChanged(int num_pieces)
     double num_boxes = this->model_2be_adjusted->num_pieces_2_num_boxes((unsigned long)num_pieces);
     this->ui->doubleSpinBox_NUM_BOXES->setValue(num_boxes);
 
-    const double total = ((double)num_pieces) * this->model_2be_adjusted->m_PRIZE;
+    const double total = ((double)num_pieces) * this->model_2be_adjusted->m_PRICE;
     this->ui->lineEdit_TOTAL->setText(QString::number(total, 'f', 2));
 
     // enable NUM_BOXES_DoubleSpinBox's signals

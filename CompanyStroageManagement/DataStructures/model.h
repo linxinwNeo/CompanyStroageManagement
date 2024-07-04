@@ -20,7 +20,7 @@ public:
     QString m_MODEL_CODE; // multiple models may have the same model_code but they do not have the same container
     QString m_DESCRIPTION_SPAN; // 西班牙语品名
     QString m_DESCRIPTION_CN; // 中文品名
-    double m_PRIZE; // 每个单价
+    double m_PRICE; // 每个单价
     unsigned long m_NUM_INIT_PIECES; // 初始个数
     unsigned long m_NUM_SOLD_PIECES; // 卖出个数
     unsigned long m_NUM_PIECES_PER_BOX; //每箱多少个

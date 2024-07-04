@@ -384,7 +384,7 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
                    </size>
                   </property>
                   <property name="text">
-                   <string>折扣</string>
+                   <string>折扣(%)</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -392,12 +392,12 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
                  </widget>
                 </item>
                 <item>
-                 <widget class="QDoubleSpinBox" name="discount_SB">
+                 <widget class="EnglishDoubleSpinBox" name="discount_SB">
                   <property name="prefix">
                    <string notr="true"/>
                   </property>
                   <property name="suffix">
-                   <string notr="true">%</string>
+                   <string notr="true"/>
                   </property>
                   <property name="decimals">
                    <number>2</number>
@@ -954,6 +954,13 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>EnglishDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>CustomWidgets/EnglishDoubleSpinBox.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

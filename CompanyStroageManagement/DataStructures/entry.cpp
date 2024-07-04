@@ -38,11 +38,11 @@ QVector<QString> Entry::view_values() const
         Description_CN,
         Description_SPAN,
 
-        locale.toString(this->num_boxes(), 'f', 2),
-        locale.toString(this->NUM_PIECES_PER_BOX),
-        locale.toString(NUM_PIECES),
-        locale.toString(this->PRICE_PER_PIECE, 'f', 2),
-        locale.toString(this->TOTAL, 'f', 2),
+        GlobalVars::locale.toString(this->num_boxes(), 'f', 2),
+        GlobalVars::locale.toString(this->NUM_PIECES_PER_BOX),
+        GlobalVars::locale.toString(NUM_PIECES),
+        GlobalVars::locale.toString(this->PRICE_PER_PIECE, 'f', 2),
+        GlobalVars::locale.toString(this->TOTAL, 'f', 2),
     };
 }
 

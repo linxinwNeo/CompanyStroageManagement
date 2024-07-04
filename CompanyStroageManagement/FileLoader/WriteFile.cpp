@@ -84,22 +84,22 @@ bool WriteFile::Inventory2Txt(const QString &path, const bool save_path)
         out << QString::number(m->m_NUM_INIT_PIECES) + split_item; // 4. 进货个数/NUM_INITIAL_PIECES
         out << QString::number(m->m_NUM_SOLD_PIECES) + split_item; // 5. 已售个数/NUM_SOLD_PIECES
         out << QString::number(m->m_NUM_PIECES_PER_BOX) + split_item;  // 7. 每箱个数/NUM_PIECES_PER_BOX
-        out << QString::number(m->m_PRIZE) + split_item; // 8. 单价/PRIZE_PER_PIECE
+        out << QString::number(m->m_PRICE) + split_item; // 8. 单价/PRIZE_PER_PIECE
 
         if(m->m_last_time_modified.isNull()){ // 9. 上次修改时间/TIME_MODIFIED
             const QDateTime currentDateTime = QDateTime::currentDateTime();
-            out << currentDateTime.toString(DateTimeFormat) + split_item;
+            out << currentDateTime.toString(GlobalVars::DateTimeFormat) + split_item;
         }
         else{
-            out << m->m_last_time_modified->toString(DateTimeFormat) + split_item;
+            out << m->m_last_time_modified->toString(GlobalVars::DateTimeFormat) + split_item;
         }
 
         if(m->m_time_created.isNull()){ // 10. 创建时间
             const QDateTime currentDateTime = QDateTime::currentDateTime();
-            out << currentDateTime.toString(DateTimeFormat) + split_item + "\n";
+            out << currentDateTime.toString(GlobalVars::DateTimeFormat) + split_item + "\n";
         }
         else{
-            out << m->m_time_created->toString(DateTimeFormat) + split_item + "\n";
+            out << m->m_time_created->toString(GlobalVars::DateTimeFormat) + split_item + "\n";
         }
     }
     file.close();
@@ -153,26 +153,26 @@ bool WriteFile::Inventory2Xlsx(const QString &path, const bool save_path)
         xlsx.write(row, col++, model->m_DESCRIPTION_CN); // 2. 品名（中文）/DESCRIPTION_CN
         xlsx.write(row, col++, model->m_DESCRIPTION_SPAN); // 3. 品名（西语）/DESCRIPTION_SPAN
 
-        xlsx.write(row, col++, locale.toString(model->m_NUM_INIT_PIECES)); // 4. 进货个数/NUM_INITIAL_PIECES
-        xlsx.write(row, col++, locale.toString(model->m_NUM_SOLD_PIECES)); // 5. 已售个数/NUM_SOLD_PIECES
+        xlsx.write(row, col++, GlobalVars::locale.toString(model->m_NUM_INIT_PIECES)); // 4. 进货个数/NUM_INITIAL_PIECES
+        xlsx.write(row, col++, GlobalVars::locale.toString(model->m_NUM_SOLD_PIECES)); // 5. 已售个数/NUM_SOLD_PIECES
 
-        xlsx.write(row, col++, locale.toString(model->m_NUM_PIECES_PER_BOX)); // 6. 每箱个数/NUM_PIECES_PER_BOX
-        xlsx.write(row, col++, locale.toString(model->m_PRIZE, 'f', 2)); // 7. 单价/PRIZE_PER_PIECE
+        xlsx.write(row, col++, GlobalVars::locale.toString(model->m_NUM_PIECES_PER_BOX)); // 6. 每箱个数/NUM_PIECES_PER_BOX
+        xlsx.write(row, col++, GlobalVars::locale.toString(model->m_PRICE, 'f', 2)); // 7. 单价/PRIZE_PER_PIECE
 
         if(model->m_last_time_modified.isNull()){ // 8. 上次修改时间
             QDateTime currentDateTime = QDateTime::currentDateTime();
-            xlsx.write(row, col++, currentDateTime.toString(DateTimeFormat));
+            xlsx.write(row, col++, currentDateTime.toString(GlobalVars::DateTimeFormat));
         }
         else{
-            xlsx.write(row, col++, model->m_last_time_modified->toString(DateTimeFormat));
+            xlsx.write(row, col++, model->m_last_time_modified->toString(GlobalVars::DateTimeFormat));
         }
 
         if(model->m_time_created.isNull()){ // 9. 创建时间
             QDateTime currentDateTime = QDateTime::currentDateTime();
-            xlsx.write(row, col++, currentDateTime.toString(DateTimeFormat));
+            xlsx.write(row, col++, currentDateTime.toString(GlobalVars::DateTimeFormat));
         }
         else{
-            xlsx.write(row, col++, model->m_time_created->toString(DateTimeFormat));
+            xlsx.write(row, col++, model->m_time_created->toString(GlobalVars::DateTimeFormat));
         }
 
         row++;
@@ -217,7 +217,7 @@ bool WriteFile::Lists2txt(const QString &path, const bool save_path)
         if(list->datetime_created.isNull()){ // if no date time, put current time
             list->datetime_created = QSharedPointer<QDateTime>::create(QDateTime().currentDateTime());
         }
-        out << list->datetime_created->toString(DateTimeFormat) << split_item;
+        out << list->datetime_created->toString(GlobalVars::DateTimeFormat) << split_item;
 
         // output client_info
         out << list->client_info.CLIENTE << split_item // 2
@@ -258,13 +258,13 @@ bool WriteFile::Lists2txt(const QString &path, const bool save_path)
 // we update the BackUpDate
 bool WriteFile::update_BackUpDate()
 {
-    QFile file(BackUP_FileName);
+    QFile file(GlobalVars::BackUP_FileName);
     if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         QTextStream stream(&file);
 
         QDateTime currentDateTime = QDateTime::currentDateTime();
 
-        stream << currentDateTime.toString(DateTimeFormat_for_backup_file);
+        stream << currentDateTime.toString(GlobalVars::DateTimeFormat_for_backup_file);
 
         // Close the file when done
         file.close();
@@ -283,22 +283,22 @@ bool WriteFile::update_BackUpDate()
 bool WriteFile::save_BackUp_files(const bool save_path)
 {
     QDateTime currentDateTime = QDateTime::currentDateTime();
-    QString folderName = currentDateTime.toString(DateTimeFormat_for_backup_file);
+    QString folderName = currentDateTime.toString(GlobalVars::DateTimeFormat_for_backup_file);
     QDir timeDir;
 
     // Create the subfolder named by datetime
-    QString path = BackUP_DirName + "/" + folderName;
+    QString path = GlobalVars::BackUP_DirName + "/" + folderName;
     bool success = timeDir.mkpath(path);
     if(!success){
         write_error_file("WriteFile::save_BackUp_files: couldn't create the path: " + path);
         return false;
     }
 
-    QString path_to_list_file = BackUP_DirName + "/" + folderName + "/lists.txt";
+    QString path_to_list_file = GlobalVars::BackUP_DirName + "/" + folderName + "/lists.txt";
     if( !Lists2txt(path_to_list_file, save_path) )
         return false;
 
-    QString path_to_inventory_file = BackUP_DirName + "/" + folderName + "/inventory.xlsx";
+    QString path_to_inventory_file = GlobalVars::BackUP_DirName + "/" + folderName + "/inventory.xlsx";
     if( !SaveInventoryAuto(path_to_inventory_file, save_path) )
         return false;
 
@@ -309,16 +309,16 @@ bool WriteFile::save_BackUp_files(const bool save_path)
 // save the settings to the file
 bool WriteFile::save_settings_file()
 {
-    QFile file(Settings_FileName);
+    QFile file(GlobalVars::Settings_FileName);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)){
-        write_error_file("WriteFile::save_settings_file: couldn't create the file: " + Settings_FileName);
+        write_error_file("WriteFile::save_settings_file: couldn't create the file: " + GlobalVars::Settings_FileName);
         return false;
     }
 
     QTextStream out(&file);
 
     // write language option
-    out << language_option << " \n"; // output language setting
+    out << GlobalVars::language_option << " \n"; // output language setting
 
     // write last time opened inventory file path
     out << last_inventory_path << " \n"; // output inventory path

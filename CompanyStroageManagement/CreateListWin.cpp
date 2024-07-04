@@ -125,7 +125,7 @@ void CreateListWin::set_GUI_Language()
     this->ui->CONDICIONES_label->setText(lan("付款方式", "CONDICIONES DE PAGO"));
     this->ui->CONDICIONES_LE->setPlaceholderText(enter_here);
 
-    this->ui->discount_label->setText(lan("折扣", "DISCOUNT"));
+    this->ui->discount_label->setText(lan("折扣(%)", "DISCOUNT(%)"));
 
     this->ui->reset_client_info_btn->setText(lan("重置信息", "resetear la información"));
 
@@ -134,27 +134,7 @@ void CreateListWin::set_GUI_Language()
     this->ui->model_code_for_search_label->setText(lan("货号", "MODELO"));
     this->ui->model_code_for_search_LE->setPlaceholderText(lan("在此输入需要搜索的货号 比如 TA-0001", "Introduce el número de referencia que deseas buscar aquí, por ejemplo, TA-0001"));
 
-    QStringList headers = {
-        lan("货号", "MODELO"),
-        lan("集装箱号", "Número de contenedor"),
-        lan("品名(中文)", "Nombre del producto (en chino)"),
-        lan("品名(西语)", "Nombre del producto (en español)"),
-
-        lan("进货箱数", "Núm. cajas adq."),
-        lan("已售箱数", "Núm. cajas vend."),
-        lan("剩余箱数", "Núm. cajas rest."),
-
-        lan("每箱个数", "Piezas por caja"),
-
-        lan("进货个数", "Núm. piezas adq."),
-        lan("已售个数", "Núm. piezas vend."),
-        lan("剩余个数", "Núm. unidades rest."),
-
-        lan("单价", "Prec. por pieza"),
-        lan("上次修改时间", "Fecha últ. modif."),
-    };
-
-    this->ui->searched_models_table->setHorizontalHeaderLabels(headers);
+    this->ui->searched_models_table->setHorizontalHeaderLabels(GlobalVars::table_headers_model);
 
     this->ui->add_selected_model_btn->setText(lan("添加选中的货物", "añadir los productos seleccionados"));
 
@@ -447,30 +427,6 @@ void CreateListWin::clear_added_models_table()
 }
 
 
-/* 用户点击了一个cell，我们要选中整行, 查找被选中的货 */
-void CreateListWin::on_searched_models_table_cellClicked(int row, int column)
-{
-//     Q_UNUSED(column);
-//     this->setDisabled(true);
-
-//     const auto& table = this->searched_models_table;
-//     table->selectRow(row);
-
-//     QString MODELCODE;
-//     QString ContainerID;
-
-//     QList items = table->selectedItems();
-
-//     MODELCODE = items[0]->text(); // index 0 is the MODEL_CODE
-//     ContainerID = items[1]->text().trimmed();
-
-//     this->selected_model_in_search_table = inventory.get_Model(MODELCODE, ContainerID);
-
-// //Finish:
-//     this->setEnabled(true);
-}
-
-
 /* try to add selected model in to the <added_models_table>, but we need to check if it has been added already */
 void CreateListWin::on_add_selected_model_btn_clicked()
 {
@@ -519,7 +475,7 @@ void CreateListWin::on_add_selected_model_btn_clicked()
 
     DESCRIPTION_SPAN = model_2be_added->m_DESCRIPTION_SPAN;
     DESCRIPTION_CN = model_2be_added->m_DESCRIPTION_CN;
-    PRIZE = model_2be_added->m_PRIZE;
+    PRIZE = model_2be_added->m_PRICE;
 
     new_entry = EntryPtr (new Entry( NUM_LEFT_PIECES, NUM_PIECES_PER_BOX,
                                      MODELCODE_2be_Added, ContainerID_2be_Added,

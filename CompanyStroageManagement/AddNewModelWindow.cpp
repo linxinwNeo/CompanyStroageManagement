@@ -181,13 +181,12 @@ void AddNewModelWindow::on_button_add_new_model_clicked()
     }
 
     // 提取其他参数
-    extern QLocale locale;
 
     const QString DESCRIPTION_CN = this->ui->lineEdit_DESCRIPTION_CN->text().trimmed();
     const QString DESCRIPTION_SPAN = this->ui->lineEdit_DESCRIPTION_SPAN->text().trimmed();
     const double PRIZE = this->ui->doubleSpinBox_PRIZE->value();
-    const unsigned long NUM_INIT_PIECES = locale.toULong(this->ui->lineEdit_NUM_INIT_PIECES->text());
-    const unsigned long NUM_SOLD_PIECES = locale.toULong(this->ui->lineEdit_NUM_SOLD_PIECES->text());
+    const unsigned long NUM_INIT_PIECES = GlobalVars::locale.toULong(this->ui->lineEdit_NUM_INIT_PIECES->text());
+    const unsigned long NUM_SOLD_PIECES = GlobalVars::locale.toULong(this->ui->lineEdit_NUM_SOLD_PIECES->text());
     const unsigned long NUM_PIECES_PER_BOX = this->ui->spinBox_NUM_PIECES_PER_BOX->value();
 
     // 创建新的货物
@@ -255,8 +254,7 @@ void AddNewModelWindow::on_doubleSpinBox_NUM_INIT_BOXES_valueChanged(double val)
     double num_pieces_per_box = this->ui->spinBox_NUM_PIECES_PER_BOX->value();
     int num_init_pieces = floor(val * num_pieces_per_box);
 
-    extern QLocale locale;
-    this->ui->lineEdit_NUM_INIT_PIECES->setText(locale.toString(num_init_pieces));
+    this->ui->lineEdit_NUM_INIT_PIECES->setText(GlobalVars::locale.toString(num_init_pieces));
 }
 
 
@@ -266,8 +264,7 @@ void AddNewModelWindow::on_doubleSpinBox_NUM_SOLD_BOXES_valueChanged(double val)
     double num_pieces_per_box = this->ui->spinBox_NUM_PIECES_PER_BOX->value();
     int num_sold_pieces = floor(val * num_pieces_per_box);
 
-    extern QLocale locale;
-    this->ui->lineEdit_NUM_SOLD_PIECES->setText(locale.toString(num_sold_pieces));
+    this->ui->lineEdit_NUM_SOLD_PIECES->setText(GlobalVars::locale.toString(num_sold_pieces));
 }
 
 
@@ -280,9 +277,8 @@ void AddNewModelWindow::on_spinBox_NUM_PIECES_PER_BOX_valueChanged(int val)
     int num_init_pieces = floor(((double)val) * num_init_boxes);
     int num_sold_pieces = floor(((double)val) * num_sold_boxes);
 
-    extern QLocale locale;
 
-    this->ui->lineEdit_NUM_INIT_PIECES->setText(locale.toString(num_init_pieces));
-    this->ui->lineEdit_NUM_SOLD_PIECES->setText(locale.toString(num_sold_pieces));
+    this->ui->lineEdit_NUM_INIT_PIECES->setText(GlobalVars::locale.toString(num_init_pieces));
+    this->ui->lineEdit_NUM_SOLD_PIECES->setText(GlobalVars::locale.toString(num_sold_pieces));
 }
 

@@ -15,13 +15,11 @@ public:
 
 protected:
     QString textFromValue(int value) const override {
-        extern QLocale locale;
-        return locale.toString(value);
+        return GlobalVars::locale.toString(value);
     }
 
     int valueFromText(const QString &text) const override {
-        extern QLocale locale;
-        return locale.toInt(text);
+        return GlobalVars::locale.toInt(text);
     }
 };
 

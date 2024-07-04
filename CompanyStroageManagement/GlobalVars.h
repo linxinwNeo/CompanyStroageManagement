@@ -3,38 +3,49 @@
 
 #include <QString>
 #include <QSharedPointer>
-#include "DataStructures/Inventory.h"
-#include "DataStructures/List.h"
 #include <QLocale>
 
-extern const QString APP_NAME;
+#include "DataStructures/Inventory.h"
+#include "DataStructures/List.h"
 
-extern const QString BackUP_DirName;
-extern const QString BackUP_FileName;
-extern const unsigned int backup_every_n_days;
+inline QString lan(const QString& CN_Str, const QString& Span_Str);
 
-extern const QString Settings_FileName;
+extern Inventory inventory; // holds all models, containers
+extern Lists lists; // holds all past list
 
-extern Inventory inventory;
-extern Lists lists;
+class GlobalVars{
+public:
+    static QString APP_NAME;
 
-extern const QString APP_NAME;
+    static QString BackUP_DirName;
+    static QString BackUP_FileName;
+    static unsigned int backup_every_n_days;
 
-extern const QString EXCEL_FILTER;
-extern const QString EXCEL_DEFAULT_DIR;
+    static QString Settings_FileName;
 
-extern unsigned int language_option;
+    static QString EXCEL_FILTER;
 
-extern const QString DateTimeFormat;
-extern const QString DateTimeFormat_for_backup_file;
+    static QString DateTimeFormat;
+    static QString DateTimeFormat_for_backup_file;
+
+    static unsigned int language_option; // 0 for chinese, 1 for Spanish
+
+
+    static QLocale locale;
+
+
+    static QStringList table_headers_model;
+    static QStringList table_headers_container;
+
+};
+
+
 
 inline QString lan(const QString& CN_Str, const QString& Span_Str)
 {
-    if(language_option == 0) return CN_Str;
-    else if(language_option == 1) return Span_Str;
+    if(GlobalVars::language_option == 0) return CN_Str;
+    else if(GlobalVars::language_option == 1) return Span_Str;
     else return CN_Str;
 }
-
-extern QLocale locale;
 
 #endif // GLOBALVARS_H

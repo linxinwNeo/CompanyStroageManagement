@@ -101,27 +101,8 @@ void MainWindow::setLanguage()
     this->ui->search_MODELCODE_label->setText(lan("货号", "MODELO"));
     this->ui->search_MODELCODE_LE->setPlaceholderText(lan("在此输入需要查询的货号", "Introduzca aquí el número de artículo sobre el que desea realizar la consulta"));
     this->ui->search_model_result_GB->setTitle(lan("货物查询结果", "Resultados de la consulta sobre cargas"));
-    const QStringList headers = {
-        lan("货号", "MODELO"),
-        lan("集装箱号", "Número de contenedor"),
-        lan("品名(中文)", "Nombre del producto (en chino)"),
-        lan("品名(西语)", "Nombre del producto (en español)"),
 
-        lan("进货箱数", "ENTRADAS"),
-        lan("已售箱数", "SALIDAS"),
-        lan("剩余箱数", "CAJA"),
-
-        lan("每箱个数", "EMPAQUE"),
-
-        lan("进货个数", "Núm. piezas adq."),
-        lan("已售个数", "Núm. piezas vend."),
-        lan("剩余个数", "EXISTENCIA"),
-
-        lan("单价", "PRECIO"),
-        lan("上次修改时间", "Fecha últ. modif."),
-        lan("进货时间", "Tiempo de stock")
-    };
-    this->ui->search_model_result_Table->setHorizontalHeaderLabels(headers);
+    this->ui->search_model_result_Table->setHorizontalHeaderLabels(GlobalVars::table_headers_model);
 
     this->ui->selected_model_GB->setTitle(lan("选中的货物", "las mercancías seleccionadas"));
 
@@ -151,20 +132,11 @@ void MainWindow::setLanguage()
     this->ui->search_CONTAINER_ID_LE->setPlaceholderText(none);
     this->ui->search_container_result_GB->setTitle(lan("搜索结果", "resultados de búsqueda"));
 
-    QStringList headers2 = {
-        lan("集装箱号", "Número de contenedor"),
-        lan("货物种类数量", "Núm. categorías merc."),
-        lan("进货箱数", "Núm. cajas adq."),
-        lan("剩余箱数", "Núm. cajas rest."),
-        lan("进货个数", "Núm. piezas adq."),
-        lan("剩余个数", "Núm. piezas rest."),
-    };
-
-    this->ui->search_container_result_Table->setHorizontalHeaderLabels(headers2);
+    this->ui->search_container_result_Table->setHorizontalHeaderLabels(GlobalVars::table_headers_container);
 
     this->ui->selected_container_GB->setTitle(lan("该集装箱的货物", "la mercancía en este contenedor"));
 
-    this->ui->selected_container_models_Table->setHorizontalHeaderLabels(headers);
+    this->ui->selected_container_models_Table->setHorizontalHeaderLabels(GlobalVars::table_headers_model);
 
     this->ui->start_add_model_btn->setText(lan("添加新货物", "añadir nueva mercancía"));
 
@@ -202,7 +174,7 @@ void MainWindow::show_selected_model()
     ui->selected_model_NUM_INIT_BOXES_SB->setValue(this->selected_model->NUM_INIT_BOXES());
     ui->selected_model_NUM_SOLD_BOXES_SB->setValue(this->selected_model->NUM_SOLD_BOXES());
     ui->selected_model_NUM_PIECES_PER_BOX_SB->setValue(this->selected_model->m_NUM_PIECES_PER_BOX);
-    ui->selected_model_PRIZE_SB->setValue(this->selected_model->m_PRIZE);
+    ui->selected_model_PRIZE_SB->setValue(this->selected_model->m_PRICE);
 
     if(this->selected_model->m_Container.isNull()) ui->selected_model_CONTAINER_LE->setText("");
     else ui->selected_model_CONTAINER_LE->setText(this->selected_model->m_Container->ID);
@@ -431,7 +403,7 @@ void MainWindow::on_update_selected_model_btn_clicked()
     selected_model->m_NUM_INIT_PIECES = floor(ui->selected_model_NUM_INIT_BOXES_SB->value() * (double)selected_model->m_NUM_PIECES_PER_BOX);
     selected_model->m_NUM_SOLD_PIECES = floor(ui->selected_model_NUM_SOLD_BOXES_SB->value() * (double)selected_model->m_NUM_PIECES_PER_BOX);
 
-    selected_model->m_PRIZE = ui->selected_model_PRIZE_SB->value();
+    selected_model->m_PRICE = ui->selected_model_PRIZE_SB->value();
 
 
     const QString container_ID = ui->selected_model_CONTAINER_LE->text().trimmed();
@@ -707,17 +679,17 @@ void MainWindow::on_read_inventory_from_new_file_btn_clicked()
 bool MainWindow::is_time_for_backup() const
 {
     // read datetime for last backup
-    QFile file(BackUP_FileName);
+    QFile file(GlobalVars::BackUP_FileName);
     if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QTextStream stream(&file);
 
         QString line = stream.readLine();
 
-        QDateTime prev_DateTime = QDateTime::fromString(line, DateTimeFormat_for_backup_file);
+        QDateTime prev_DateTime = QDateTime::fromString(line, GlobalVars::DateTimeFormat_for_backup_file);
         if(prev_DateTime.isValid()){
             QDateTime curDateTime = QDateTime::currentDateTime();
             unsigned int days = prev_DateTime.daysTo(curDateTime);
-            if(days > backup_every_n_days){
+            if(days > GlobalVars::backup_every_n_days){
                 return true;
             }
             else

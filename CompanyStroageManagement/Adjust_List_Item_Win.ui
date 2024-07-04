@@ -232,7 +232,7 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
           </widget>
          </item>
          <item>
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_NUM_BOXES">
+          <widget class="EnglishDoubleSpinBox" name="doubleSpinBox_NUM_BOXES">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -325,7 +325,7 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="spinBox_NUM_PIECES">
+          <widget class="EnglishSpinBox" name="spinBox_NUM_PIECES">
            <property name="enabled">
             <bool>true</bool>
            </property>
@@ -452,7 +452,7 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
           <number>3</number>
          </property>
          <item>
-          <widget class="QLabel" name="label_PREZE">
+          <widget class="QLabel" name="label_PRECE">
            <property name="minimumSize">
             <size>
              <width>200</width>
@@ -468,7 +468,7 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
           </widget>
          </item>
          <item>
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_PREZE">
+          <widget class="EnglishDoubleSpinBox" name="doubleSpinBox_PRECE">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -581,6 +581,18 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>EnglishDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>CustomWidgets/EnglishDoubleSpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>EnglishSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>CustomWidgets/EnglishSpinBox.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

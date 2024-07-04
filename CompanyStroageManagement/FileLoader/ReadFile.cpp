@@ -120,15 +120,15 @@ bool ReadFile::read_Inventory_txt_File(const QString& path, const bool save_path
         m->m_NUM_INIT_PIECES = strList[4].toULong(); // 4. 进货个数/NUM_INITIAL_PIECES
         m->m_NUM_SOLD_PIECES = strList[5].toULong(); // 5. 已售个数/NUM_SOLD_PIECES
         m->m_NUM_PIECES_PER_BOX = strList[6].toULong(); // 6.每箱个数/NUM_PIECES_PER_BOX
-        m->m_PRIZE = strList[7].toDouble(); // 7. 单价/PRIZE_PER_PIECE
+        m->m_PRICE = strList[7].toDouble(); // 7. 单价/PRIZE_PER_PIECE
         // 8. 上次修改时间/TIME_MODIFIED
         m->m_last_time_modified = QSharedPointer<QDateTime>::create(
-            QDateTime::fromString(strList[8], DateTimeFormat)
+            QDateTime::fromString(strList[8], GlobalVars::DateTimeFormat)
             );
 
         // 9. 创建时间
         m->m_time_created = QSharedPointer<QDateTime>::create(
-            QDateTime::fromString(strList[9], DateTimeFormat)
+            QDateTime::fromString(strList[9], GlobalVars::DateTimeFormat)
             );
 
         inventory.add_new_Model(m);
@@ -205,16 +205,16 @@ bool ReadFile::read_Inventory_xlsx_File(const QString &path, const bool save_pat
         m->m_NUM_INIT_PIECES = xlsx.read(row, col++).toString().remove(',').toULong(); // 4. 进货个数/NUM_INITIAL_PIECES
         m->m_NUM_SOLD_PIECES = xlsx.read(row, col++).toString().remove(',').toULong(); // 5. 已售个数/NUM_SOLD_PIECES
         m->m_NUM_PIECES_PER_BOX = xlsx.read(row, col++).toString().remove(',').toULong(); // 6. 每箱个数/NUM_PIECES_PER_BOX
-        m->m_PRIZE = xlsx.read(row, col++).toString().remove(',').toDouble(); // 7. 单价/PRIZE_PER_PIECE
+        m->m_PRICE = xlsx.read(row, col++).toString().remove(',').toDouble(); // 7. 单价/PRIZE_PER_PIECE
 
         // 8. 上次修改时间/TIME_MODIFIED
         m->m_last_time_modified = QSharedPointer<QDateTime>::create(
-            QDateTime::fromString(xlsx.read(row, col++).toString(), DateTimeFormat)
+            QDateTime::fromString(xlsx.read(row, col++).toString(), GlobalVars::DateTimeFormat)
             );
 
         // 9. 创建时间
         m->m_time_created = QSharedPointer<QDateTime>::create(
-            QDateTime::fromString(xlsx.read(row, col++).toString(), DateTimeFormat)
+            QDateTime::fromString(xlsx.read(row, col++).toString(), GlobalVars::DateTimeFormat)
             );
 
         inventory.add_new_Model(m);
@@ -271,7 +271,7 @@ bool ReadFile::read_Lists_txt_File(const QString &path, const bool save_path)
 
         // read date and time for the list
         new_list->datetime_created = QSharedPointer<QDateTime>::create(
-            QDateTime::fromString(strList[1], DateTimeFormat)
+            QDateTime::fromString(strList[1], GlobalVars::DateTimeFormat)
             );      // 2. 读取创建时间
 
         // read client_info
@@ -320,9 +320,9 @@ bool ReadFile::read_Lists_txt_File(const QString &path, const bool save_path)
 // save the settings to the file
 bool ReadFile::read_settings_file()
 {
-    QFile file(Settings_FileName);
+    QFile file(GlobalVars::Settings_FileName);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)){
-        qDebug() << "Couldn't open the file" << Settings_FileName;
+        qDebug() << "Couldn't open the file" << GlobalVars::Settings_FileName;
 
         return false;
     }
@@ -332,9 +332,9 @@ bool ReadFile::read_settings_file()
 
     // read language option
     QString line = in.readLine();
-    language_option = line.toUInt();
-    if(language_option > 1){
-        language_option = 0;
+    GlobalVars::language_option = line.toUInt();
+    if(GlobalVars::language_option > 1){
+        GlobalVars::language_option = 0;
     }
 
     if( in.atEnd() ){

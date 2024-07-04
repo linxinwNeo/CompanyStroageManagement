@@ -5,7 +5,7 @@
 // change language to Spanish
 void MainWindow::on_actionSpanish_triggered()
 {
-    language_option = 1; // spanish is 1
+    GlobalVars::language_option = 1; // spanish is 1
     this->setLanguage();
 }
 
@@ -13,7 +13,7 @@ void MainWindow::on_actionSpanish_triggered()
 // change language to Chinese
 void MainWindow::on_actionChinese_triggered()
 {
-    language_option = 0; // chinese is 0
+    GlobalVars::language_option = 0; // chinese is 0
     this->setLanguage();
 }
 

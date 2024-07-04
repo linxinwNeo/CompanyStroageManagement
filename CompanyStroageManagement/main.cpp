@@ -1,8 +1,9 @@
+#include <QApplication>
+#include <QMessageBox>
+
 #include "FileLoader/ReadFile.h"
 #include "mainwindow.h"
-#include <QApplication>
 #include "GlobalVars.h"
-#include <QMessageBox>
 #include "LanguageStrings.h"
 
 void readfile();
@@ -17,7 +18,7 @@ int main(int argc, char *argv[])
     MainWindow w;
 
     // setting up the window
-    w.setWindowTitle(APP_NAME);
+    w.setWindowTitle(GlobalVars::APP_NAME);
 
     w.show();
 
