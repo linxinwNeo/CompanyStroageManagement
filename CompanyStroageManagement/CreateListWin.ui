@@ -13,6 +13,12 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QTableWidget::item { border: 1px solid black; }
+QTableWidget::item:selected { background-color: lightblue; }
+QHeaderView::section { border: 1px solid black; }
+QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;}</string>
+  </property>
   <property name="locale">
    <locale language="English" country="UnitedStates"/>
   </property>

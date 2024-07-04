@@ -37,28 +37,35 @@ void AddNewModelWindow::set_GUI_Language()
 {
     const QString none = lan("暂无", "ninguno");
 
-    this->ui->newModel_info_GB->setTitle(lan("新货物的信息", "información de los nuevos productos"));
+    this->ui->newModel_info_GB->setTitle(lan("新货物的信息",
+                                             "información de los nuevos productos"));
 
-    this->ui->MODELCODE_label->setText(lan("货号", "MODELO"));
-    this->ui->MODELCODE_LE->setPlaceholderText(none);
+    this->ui->label_MODELCODE->setText(lan("货号", "MODELO"));
+    this->ui->lineEdit_MODELCODE->setPlaceholderText(none);
 
-    this->ui->DESCRIPTION_CN_label->setText(lan("品名（中文）", "Nombre del producto (en chino)"));
-    this->ui->DESCRIPTION_CN_LE->setPlaceholderText(none);
+    this->ui->label_DESCRIPTION_CN->setText(lan("品名（中文）",
+                                                "Nombre del producto (en chino)"));
+    this->ui->lineEdit_DESCRIPTION_CN->setPlaceholderText(none);
 
-    this->ui->DESCRIPTION_SPAN_label->setText(lan("品名（西语）", "Nombre del producto (en español)"));
-    this->ui->DESCRIPTION_SPAN_LE->setPlaceholderText(none);
+    this->ui->label_DESCRIPTION_SPAN->setText(lan("品名（西语）",
+                                                  "Nombre del producto (en español)"));
+    this->ui->lineEdit_DESCRIPTION_SPAN->setPlaceholderText(none);
 
-    this->ui->PRIZE_label->setText(lan("单价", "PRECIO"));
-    this->ui->NUM_INIT_PIECES_label->setText(lan("进货个数", "Núm. piezas adq."));
-    this->ui->NUM_SOLD_PIECES_label->setText(lan("已售个数", "Núm. piezas vend."));
-    this->ui->NUM_PIECES_PER_BOX_label->setText(lan("每箱个数", "Piezas por caja"));
+    this->ui->label_PRIZE->setText(lan("单价", "PRECIO"));
 
-    this->ui->container_ID_label->setText(lan("集装箱号", "Número de contenedor"));
+    this->ui->label_NUM_INIT_BOXES->setText(lan("进货箱数", "ENTRADAS"));
+    this->ui->label_NUM_SOLD_BOXES->setText(lan("已售箱数", "SALIDAS"));
 
-    this->ui->container_ID_LE->setPlaceholderText(lan("在此输入集装箱号，如果没有的话空着",
+    this->ui->label_NUM_INIT_PIECES->setText(lan("进货个数", "Núm. piezas adq."));
+    this->ui->label_NUM_SOLD_PIECES->setText(lan("已售个数", "Núm. piezas vend."));
+    this->ui->label_NUM_PIECES_PER_BOX->setText(lan("每箱个数", "EMPAQUE"));
+
+    this->ui->label_container_ID->setText(lan("集装箱号", "Número de contenedor"));
+
+    this->ui->lineEdit_container_ID->setPlaceholderText(lan("在此输入集装箱号，如果没有的话空着",
                                                       "Ingrese el número de contenedor aquí, si no tiene uno, deje este espacio en blanco"));
 
-    this->ui->add_new_model_btn->setText(lan("添加", "Añadir"));
+    this->ui->button_add_new_model->setText(lan("添加", "Añadir"));
 }
 
 
@@ -68,19 +75,22 @@ AddNewModelWindow::~AddNewModelWindow()
 }
 
 
-// clear the contents of user inputs
+// clear the contents of ui (values...)
 void AddNewModelWindow::clear_content()
 {
-    this->ui->MODELCODE_LE->clear();
-    this->ui->DESCRIPTION_CN_LE->clear();
-    this->ui->DESCRIPTION_SPAN_LE->clear();
-    this->ui->PRIZE_SB->setValue(0.);
+    this->ui->lineEdit_MODELCODE->clear();
+    this->ui->lineEdit_DESCRIPTION_CN->clear();
+    this->ui->lineEdit_DESCRIPTION_SPAN->clear();
+    this->ui->lineEdit_container_ID->clear();
 
-    this->ui->NUM_INIT_PIECES_SB->setValue(0);
-    this->ui->NUM_SOLD_PIECES_SB->setValue(0);
-    this->ui->NUM_PIECES_PER_BOX_SB->setValue(0);
 
-    this->ui->container_ID_LE->clear();
+    this->ui->lineEdit_NUM_INIT_PIECES->setText("1.");
+    this->ui->lineEdit_NUM_SOLD_PIECES->setText("0");
+
+    this->ui->spinBox_NUM_PIECES_PER_BOX->setValue(1);
+    this->ui->doubleSpinBox_NUM_INIT_BOXES->setValue(1.);
+    this->ui->doubleSpinBox_NUM_SOLD_BOXES->setValue(0);
+    this->ui->doubleSpinBox_PRIZE->setValue(1.);
 }
 
 
@@ -113,11 +123,11 @@ void AddNewModelWindow::closeEvent(QCloseEvent *event)
 
 /* 先对输入的数据进行查错，没有问题的话就创建一个新的货物
  * 可能还有一个新的集装箱 */
-void AddNewModelWindow::on_add_new_model_btn_clicked()
+void AddNewModelWindow::on_button_add_new_model_clicked()
 {
 
     // 检查货号是否是空
-    const QString MODELCODE = this->ui->MODELCODE_LE->text().trimmed();
+    const QString MODELCODE = this->ui->lineEdit_MODELCODE->text().trimmed();
 
     if(MODELCODE.isEmpty()) {
         QString msg = lan(ADD_NEW_MODEL_FAIL_MSG_CN, ADD_NEW_MODEL_FAIL_MSG_SPAN) + lan(MODELCODE_EMPTY_ERROR_CN, MODELCODE_EMPTY_ERROR_SPAN);
@@ -127,20 +137,20 @@ void AddNewModelWindow::on_add_new_model_btn_clicked()
         return;
     }
 
-    // 进货个数必须大于0！
-    if(this->ui->NUM_INIT_PIECES_SB->value() <= 0){
-        QString msg = lan("进货个数必须大于0！",
-                          "¡El número de mercancías entrantes debe ser mayor que 0!");
+    // 进货箱数必须大于0！
+    if(this->ui->doubleSpinBox_NUM_INIT_BOXES->value() <= 0.){
+        QString msg = lan("进货箱数必须大于0！",
+                          "¡El número de cajas entrantes debe ser mayor que 0!");
 
         QSharedPointer<QMessageBox> msgBox = this->create_MessageBox(msg);
         msgBox->exec();
         return;
     }
 
-    // 进货个数必须大于等于已出售个数！
-    if(this->ui->NUM_INIT_PIECES_SB->value() < this->ui->NUM_SOLD_PIECES_SB->value()){
-        QString msg = lan("已出售个数不能比进货个数更多，请检查数量！",
-                          "El número de unidades vendidas no puede ser mayor que el número de unidades reabastecidas, ¡así que compruebe la cantidad!");
+    // 进货箱数必须大于等于已出售箱数！
+    if(this->ui->doubleSpinBox_NUM_INIT_BOXES->value() < this->ui->doubleSpinBox_NUM_SOLD_BOXES->value()){
+        QString msg = lan("已出售箱数不能比进货箱数更多，请检查数量！",
+                          "El número de cajas vendidas no puede ser mayor que el número de cajas entrantes, ¡así que verifique la cantidad!");
 
         QSharedPointer<QMessageBox> msgBox = this->create_MessageBox(msg);
         msgBox->exec();
@@ -148,7 +158,7 @@ void AddNewModelWindow::on_add_new_model_btn_clicked()
     }
 
     // 每箱个数不必须大于0！
-    if(this->ui->NUM_PIECES_PER_BOX_SB->value() <= 0){
+    if(this->ui->spinBox_NUM_PIECES_PER_BOX->value() <= 0){
         QString msg = lan("每箱个数必须大于0，请检查数量！",
                           "El número de piezas por caja debe ser superior a 0, ¡compruebe la cantidad!");
 
@@ -157,7 +167,7 @@ void AddNewModelWindow::on_add_new_model_btn_clicked()
         return;
     }
 
-    const QString CONTAINER_ID = this->ui->container_ID_LE->text().trimmed();
+    const QString CONTAINER_ID = this->ui->lineEdit_container_ID->text().trimmed();
 
 
     // 检查货号和对应的集装箱组合是否已经存在
@@ -171,20 +181,14 @@ void AddNewModelWindow::on_add_new_model_btn_clicked()
     }
 
     // 提取其他参数
-    const QString DESCRIPTION_CN = this->ui->DESCRIPTION_CN_LE->text().trimmed();
-    const QString DESCRIPTION_SPAN = this->ui->DESCRIPTION_SPAN_LE->text().trimmed();
-    const double PRIZE = this->ui->PRIZE_SB->value();
-    const unsigned long NUM_INIT_PIECES = this->ui->NUM_INIT_PIECES_SB->value();
-    const unsigned long NUM_SOLD_PIECES = this->ui->NUM_SOLD_PIECES_SB->value();
-    const unsigned long NUM_PIECES_PER_BOX = this->ui->NUM_PIECES_PER_BOX_SB->value();
+    extern QLocale locale;
 
-    // 初始箱数不能少于已售箱数
-    if(NUM_SOLD_PIECES > NUM_INIT_PIECES){
-        QString msg = lan(ADD_NEW_MODEL_FAIL_MSG_CN, ADD_NEW_MODEL_FAIL_MSG_SPAN) + lan(SOLD_MORETHAN_INIT_BOXES_ERROR_MSG_CN, SOLD_MORETHAN_INIT_BOXES_ERROR_MSG_SPAN);
-        QSharedPointer<QMessageBox> msgBox = this->create_MessageBox(msg);
-        msgBox->exec();
-        return;
-    }
+    const QString DESCRIPTION_CN = this->ui->lineEdit_DESCRIPTION_CN->text().trimmed();
+    const QString DESCRIPTION_SPAN = this->ui->lineEdit_DESCRIPTION_SPAN->text().trimmed();
+    const double PRIZE = this->ui->doubleSpinBox_PRIZE->value();
+    const unsigned long NUM_INIT_PIECES = locale.toULong(this->ui->lineEdit_NUM_INIT_PIECES->text());
+    const unsigned long NUM_SOLD_PIECES = locale.toULong(this->ui->lineEdit_NUM_SOLD_PIECES->text());
+    const unsigned long NUM_PIECES_PER_BOX = this->ui->spinBox_NUM_PIECES_PER_BOX->value();
 
     // 创建新的货物
     ModelPtr new_model (new Model( MODELCODE,
@@ -205,12 +209,12 @@ void AddNewModelWindow::on_add_new_model_btn_clicked()
     }
     else{ // 这个货有集装箱信息
         container = inventory.get_container(CONTAINER_ID);
-        if(container.isNull()){ // 这个集装箱是新的，我们要创建一个
+        if(container.isNull()){ // 这个集装箱是不存在的，我们要创建一个
             container = ContainerPtr (new Container(CONTAINER_ID));
             container->add_model(new_model);
             inventory.add_Container(container);
         }
-        else{ // 这个集装箱不是新的，我们要创建一个
+        else{ // 这个集装箱是新的，我们直接加入这个货
             container->add_model(new_model);
         }
     }
@@ -242,5 +246,43 @@ void AddNewModelWindow::on_add_new_model_btn_clicked()
     // save the inventory and lists
     WriteFile::SaveInventoryAuto(false);
     WriteFile::Lists2txt(false);
+}
+
+
+// 当这个值改变后，我们需要更新 NUM_INIT_PIECES 的数值
+void AddNewModelWindow::on_doubleSpinBox_NUM_INIT_BOXES_valueChanged(double val)
+{
+    double num_pieces_per_box = this->ui->spinBox_NUM_PIECES_PER_BOX->value();
+    int num_init_pieces = floor(val * num_pieces_per_box);
+
+    extern QLocale locale;
+    this->ui->lineEdit_NUM_INIT_PIECES->setText(locale.toString(num_init_pieces));
+}
+
+
+// 当这个值改变后，我们需要更新 NUM_SOLD_PIECES 的数值
+void AddNewModelWindow::on_doubleSpinBox_NUM_SOLD_BOXES_valueChanged(double val)
+{
+    double num_pieces_per_box = this->ui->spinBox_NUM_PIECES_PER_BOX->value();
+    int num_sold_pieces = floor(val * num_pieces_per_box);
+
+    extern QLocale locale;
+    this->ui->lineEdit_NUM_SOLD_PIECES->setText(locale.toString(num_sold_pieces));
+}
+
+
+// 当这个值改变后，我们需要更新 NUM_INIT_PIECES 和 NUM_SOLD_PIECES 的数值
+void AddNewModelWindow::on_spinBox_NUM_PIECES_PER_BOX_valueChanged(int val)
+{
+    const double num_init_boxes = this->ui->doubleSpinBox_NUM_INIT_BOXES->value();
+    const double num_sold_boxes = this->ui->doubleSpinBox_NUM_SOLD_BOXES->value();
+
+    int num_init_pieces = floor(((double)val) * num_init_boxes);
+    int num_sold_pieces = floor(((double)val) * num_sold_boxes);
+
+    extern QLocale locale;
+
+    this->ui->lineEdit_NUM_INIT_PIECES->setText(locale.toString(num_init_pieces));
+    this->ui->lineEdit_NUM_SOLD_PIECES->setText(locale.toString(num_sold_pieces));
 }
 

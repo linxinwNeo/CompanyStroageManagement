@@ -422,10 +422,10 @@ void CreateListWin::init()
 
     //设置表格 style
 //    searched_models_table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-    searched_models_table->setStyleSheet(table_stylesheet);
+    //searched_models_table->setStyleSheet(table_stylesheet);
 
 //    added_models_table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-    added_models_table->setStyleSheet(table_stylesheet);
+    // added_models_table->setStyleSheet(table_stylesheet);
 }
 
 
@@ -450,24 +450,24 @@ void CreateListWin::clear_added_models_table()
 /* 用户点击了一个cell，我们要选中整行, 查找被选中的货 */
 void CreateListWin::on_searched_models_table_cellClicked(int row, int column)
 {
-    Q_UNUSED(column);
-    this->setDisabled(true);
+//     Q_UNUSED(column);
+//     this->setDisabled(true);
 
-    const auto& table = this->searched_models_table;
-    table->selectRow(row);
+//     const auto& table = this->searched_models_table;
+//     table->selectRow(row);
 
-    QString MODELCODE;
-    QString ContainerID;
+//     QString MODELCODE;
+//     QString ContainerID;
 
-    QList items = table->selectedItems();
+//     QList items = table->selectedItems();
 
-    MODELCODE = items[0]->text(); // index 0 is the MODEL_CODE
-    ContainerID = items[1]->text().trimmed();
+//     MODELCODE = items[0]->text(); // index 0 is the MODEL_CODE
+//     ContainerID = items[1]->text().trimmed();
 
-    this->selected_model_in_search_table = inventory.get_Model(MODELCODE, ContainerID);
+//     this->selected_model_in_search_table = inventory.get_Model(MODELCODE, ContainerID);
 
-//Finish:
-    this->setEnabled(true);
+// //Finish:
+//     this->setEnabled(true);
 }
 
 
@@ -657,3 +657,28 @@ void CreateListWin::on_pushButton_edit_selected_model_clicked()
 
     this->setEnabled(true);
 }
+
+void CreateListWin::on_searched_models_table_itemSelectionChanged()
+{
+    this->setDisabled(true);
+
+    const auto& table = this->searched_models_table;
+
+    QString MODELCODE;
+    QString ContainerID;
+
+    QList items = table->selectedItems();
+
+    if(items.size() <= 0){
+        return; // do nothing
+    }
+
+    MODELCODE = items[0]->text(); // index 0 is the MODEL_CODE
+    ContainerID = items[1]->text().trimmed();
+
+    this->selected_model_in_search_table = inventory.get_Model(MODELCODE, ContainerID);
+
+    //Finish:
+    this->setEnabled(true);
+}
+

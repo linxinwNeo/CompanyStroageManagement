@@ -73,7 +73,7 @@ private slots:
 
 
     void on_search_model_result_Table_itemSelectionChanged();
-    void on_selected_container_models_Table_itemSelectionChanged();
+    void on_search_container_result_Table_itemSelectionChanged();
 
 private:
     ModelPtr selected_model;

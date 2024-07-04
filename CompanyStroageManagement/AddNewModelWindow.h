@@ -27,12 +27,15 @@ public:
 private:
     Ui::AddNewModelWindow *ui;
 
-    const float widthRatio = 0.4;
+    const float widthRatio = 0.3;
     const float heightRatio = 0.8;
 
 private slots:
     void closeEvent (QCloseEvent *event);
-    void on_add_new_model_btn_clicked();
+    void on_button_add_new_model_clicked();
+    void on_doubleSpinBox_NUM_INIT_BOXES_valueChanged(double val);
+    void on_doubleSpinBox_NUM_SOLD_BOXES_valueChanged(double val);
+    void on_spinBox_NUM_PIECES_PER_BOX_valueChanged(int val);
 };
 
 #endif // ADDNEWMODELWINDOW_H

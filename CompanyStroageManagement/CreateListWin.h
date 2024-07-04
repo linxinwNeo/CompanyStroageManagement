@@ -64,6 +64,8 @@ private slots:
 
     void on_pushButton_edit_selected_model_clicked();
 
+    void on_searched_models_table_itemSelectionChanged();
+
 private:
     void init();
 

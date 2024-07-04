@@ -119,16 +119,16 @@ bool ReadFile::read_Inventory_txt_File(const QString& path, const bool save_path
 
         m->m_NUM_INIT_PIECES = strList[4].toULong(); // 4. 进货个数/NUM_INITIAL_PIECES
         m->m_NUM_SOLD_PIECES = strList[5].toULong(); // 5. 已售个数/NUM_SOLD_PIECES
-        m->m_NUM_PIECES_PER_BOX = strList[7].toULong(); // 6.每箱个数/NUM_PIECES_PER_BOX
-        m->m_PRIZE = strList[8].toDouble(); // 7. 单价/PRIZE_PER_PIECE
+        m->m_NUM_PIECES_PER_BOX = strList[6].toULong(); // 6.每箱个数/NUM_PIECES_PER_BOX
+        m->m_PRIZE = strList[7].toDouble(); // 7. 单价/PRIZE_PER_PIECE
         // 8. 上次修改时间/TIME_MODIFIED
         m->m_last_time_modified = QSharedPointer<QDateTime>::create(
-            QDateTime::fromString(strList[9], DateTimeFormat)
+            QDateTime::fromString(strList[8], DateTimeFormat)
             );
 
         // 9. 创建时间
         m->m_time_created = QSharedPointer<QDateTime>::create(
-            QDateTime::fromString(strList[10], DateTimeFormat)
+            QDateTime::fromString(strList[9], DateTimeFormat)
             );
 
         inventory.add_new_Model(m);
@@ -204,7 +204,6 @@ bool ReadFile::read_Inventory_xlsx_File(const QString &path, const bool save_pat
          * we also need to handle the commas in the string */
         m->m_NUM_INIT_PIECES = xlsx.read(row, col++).toString().remove(',').toULong(); // 4. 进货个数/NUM_INITIAL_PIECES
         m->m_NUM_SOLD_PIECES = xlsx.read(row, col++).toString().remove(',').toULong(); // 5. 已售个数/NUM_SOLD_PIECES
-        col++;
         m->m_NUM_PIECES_PER_BOX = xlsx.read(row, col++).toString().remove(',').toULong(); // 6. 每箱个数/NUM_PIECES_PER_BOX
         m->m_PRIZE = xlsx.read(row, col++).toString().remove(',').toDouble(); // 7. 单价/PRIZE_PER_PIECE
 

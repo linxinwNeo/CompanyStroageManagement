@@ -64,10 +64,10 @@ bool WriteFile::Inventory2Txt(const QString &path, const bool save_path)
             "品名（西语）/DESCRIPTION_SPAN " +
             "进货个数/NUM_INITIAL_PIECES " +
             "已售个数/NUM_SOLD_PIECES " +
-            "剩余个数/NUM_LEFT_PIECES " +
             "每箱个数/NUM_PIECES_PER_BOX " +
             "单价/PRIZE_PER_PIECE " +
-            "上次修改时间/TIME_MODIFIED \n";
+            "上次修改时间/TIME_MODIFIED" +
+            "创建时间/TIME_CREATED \n";
 
     for(const QSharedPointer<Model>& m : inventory.model_set){
         out << m->m_MODEL_CODE + split_item; // 0. 货号/MODEL_CODE
@@ -88,10 +88,10 @@ bool WriteFile::Inventory2Txt(const QString &path, const bool save_path)
 
         if(m->m_last_time_modified.isNull()){ // 9. 上次修改时间/TIME_MODIFIED
             const QDateTime currentDateTime = QDateTime::currentDateTime();
-            out << currentDateTime.toString(DateTimeFormat) + split_item + "\n";
+            out << currentDateTime.toString(DateTimeFormat) + split_item;
         }
         else{
-            out << m->m_last_time_modified->toString(DateTimeFormat) + split_item + "\n";
+            out << m->m_last_time_modified->toString(DateTimeFormat) + split_item;
         }
 
         if(m->m_time_created.isNull()){ // 10. 创建时间
@@ -131,11 +131,11 @@ bool WriteFile::Inventory2Xlsx(const QString &path, const bool save_path)
 
     xlsx.write(row, col++, "进货个数/NUM_INITIAL_PIECES");
     xlsx.write(row, col++, "已售个数/NUM_SOLD_PIECES");
-    xlsx.write(row, col++, "剩余个数/NUM_LEFT_PIECES");
 
     xlsx.write(row, col++, "每箱个数/NUM_PIECES_PER_BOX");
     xlsx.write(row, col++, "单价/PRIZE_PER_PIECE");
     xlsx.write(row, col++, "上次修改时间/TIME_MODIFIED");
+    xlsx.write(row, col++, "创建时间/TIME_CREATED");
 
     row ++;
 

@@ -6,12 +6,18 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>842</width>
-    <height>582</height>
+    <width>1336</width>
+    <height>443</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QTableWidget::item { border: 1px solid black; }
+QTableWidget::item:selected { background-color: lightblue; }
+QHeaderView::section { border: 1px solid black; }
+QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;}</string>
   </property>
   <property name="locale">
    <locale language="English" country="UnitedStates"/>
@@ -27,7 +33,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="search_model_tab">
        <attribute name="title">
@@ -330,9 +336,6 @@
                       </property>
                       <property name="focusPolicy">
                        <enum>Qt::NoFocus</enum>
-                      </property>
-                      <property name="styleSheet">
-                       <string notr="true">QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;}</string>
                       </property>
                       <property name="readOnly">
                        <bool>true</bool>
@@ -1328,7 +1331,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>842</width>
+     <width>1336</width>
      <height>17</height>
     </rect>
    </property>

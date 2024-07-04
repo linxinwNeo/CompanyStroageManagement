@@ -15,10 +15,10 @@ Search_List_Win::Search_List_Win(QWidget *parent) :
     ui->setupUi(this);
     
     search_result_Table = ui->search_result_Table;
-    search_result_Table->setStyleSheet(table_stylesheet);
+    //search_result_Table->setStyleSheet(table_stylesheet);
 
     selected_list_entries_Table = ui->selected_list_entries_Table;
-    selected_list_entries_Table->setStyleSheet(table_stylesheet);
+    //selected_list_entries_Table->setStyleSheet(table_stylesheet);
 
     this->on_list_id_2be_searched_LE_textChanged( this->ui->list_id_2be_searched_LE->text() );
 

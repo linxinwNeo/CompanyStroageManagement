@@ -32,7 +32,6 @@ def write2txt(models, path) :
             num_sold_pieces = math.floor(value.NUM_SOLD_BOXES * value.NUM_ITEMS_PER_BOX)
             file.write(str(num_sold_pieces) + split_item)
 
-            file.write(str(num_init_pieces - num_sold_pieces) + split_item)
             file.write(str(value.NUM_ITEMS_PER_BOX) + split_item)
 
             file.write(str(value.PRIZE) + split_item)

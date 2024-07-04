@@ -52,16 +52,6 @@ void MainWindow::init()
 {
     // select the first tab initially
     this->ui->tabWidget->setCurrentIndex(0);
-
-    // setting up tables
-    auto model_table = ui->search_model_result_Table;
-    model_table->setStyleSheet(table_stylesheet);
-
-    auto container_table = ui->search_container_result_Table;
-    container_table->setStyleSheet(table_stylesheet);
-
-    auto selected_container_table = ui->selected_container_models_Table;
-    selected_container_table->setStyleSheet(table_stylesheet);
 }
 
 void MainWindow::setWindow()
@@ -827,6 +817,8 @@ void MainWindow::on_search_model_result_Table_itemSelectionChanged()
     const auto& table = this->ui->search_model_result_Table;
 
     QList selectedItems = table->selectedItems();
+    if(selectedItems.size() == 0) return; // do nothing
+
     auto firstItem = selectedItems[0];
     auto secItem = selectedItems[1];
 
@@ -841,11 +833,13 @@ void MainWindow::on_search_model_result_Table_itemSelectionChanged()
 }
 
 
-void MainWindow::on_selected_container_models_Table_itemSelectionChanged()
+void MainWindow::on_search_container_result_Table_itemSelectionChanged()
 {
     const auto& table = this->ui->search_container_result_Table;
 
     QList selectedItems = table->selectedItems();
+    if(selectedItems.size() == 0) return; // do nothing
+
     auto firstItem = selectedItems[0];
 
     QString Container_ID = firstItem->text().trimmed(); // idx 0 is the container id

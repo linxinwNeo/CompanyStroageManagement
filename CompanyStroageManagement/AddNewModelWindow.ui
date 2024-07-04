@@ -13,6 +13,12 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QTableWidget::item { border: 1px solid black; }
+QTableWidget::item:selected { background-color: lightblue; }
+QHeaderView::section { border: 1px solid black; }
+QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;}</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
     <widget class="QWidget" name="widget" native="true">
@@ -51,7 +57,7 @@
              <number>3</number>
             </property>
             <item>
-             <widget class="QLabel" name="MODELCODE_label">
+             <widget class="QLabel" name="label_MODELCODE">
               <property name="minimumSize">
                <size>
                 <width>100</width>
@@ -67,9 +73,53 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="MODELCODE_LE">
+             <widget class="QLineEdit" name="lineEdit_MODELCODE">
               <property name="placeholderText">
                <string>暂无</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QWidget" name="widget_10" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_8">
+            <property name="spacing">
+             <number>3</number>
+            </property>
+            <property name="leftMargin">
+             <number>3</number>
+            </property>
+            <property name="topMargin">
+             <number>3</number>
+            </property>
+            <property name="rightMargin">
+             <number>3</number>
+            </property>
+            <property name="bottomMargin">
+             <number>3</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="label_container_ID">
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>集装箱号</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="lineEdit_container_ID">
+              <property name="placeholderText">
+               <string>在此输入集装箱号，如果没有的话空着</string>
               </property>
              </widget>
             </item>
@@ -95,7 +145,7 @@
              <number>3</number>
             </property>
             <item>
-             <widget class="QLabel" name="DESCRIPTION_CN_label">
+             <widget class="QLabel" name="label_DESCRIPTION_CN">
               <property name="minimumSize">
                <size>
                 <width>100</width>
@@ -111,7 +161,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="DESCRIPTION_CN_LE">
+             <widget class="QLineEdit" name="lineEdit_DESCRIPTION_CN">
               <property name="placeholderText">
                <string>暂无</string>
               </property>
@@ -139,7 +189,7 @@
              <number>3</number>
             </property>
             <item>
-             <widget class="QLabel" name="DESCRIPTION_SPAN_label">
+             <widget class="QLabel" name="label_DESCRIPTION_SPAN">
               <property name="minimumSize">
                <size>
                 <width>100</width>
@@ -155,53 +205,9 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="DESCRIPTION_SPAN_LE">
+             <widget class="QLineEdit" name="lineEdit_DESCRIPTION_SPAN">
               <property name="placeholderText">
                <string>暂无</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QWidget" name="widget_6" native="true">
-           <layout class="QHBoxLayout" name="horizontalLayout_4">
-            <property name="spacing">
-             <number>3</number>
-            </property>
-            <property name="leftMargin">
-             <number>3</number>
-            </property>
-            <property name="topMargin">
-             <number>3</number>
-            </property>
-            <property name="rightMargin">
-             <number>3</number>
-            </property>
-            <property name="bottomMargin">
-             <number>3</number>
-            </property>
-            <item>
-             <widget class="QLabel" name="PRIZE_label">
-              <property name="text">
-               <string>单价($)</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QDoubleSpinBox" name="PRIZE_SB">
-              <property name="cursor">
-               <cursorShape>IBeamCursor</cursorShape>
-              </property>
-              <property name="prefix">
-               <string/>
-              </property>
-              <property name="maximum">
-               <double>9999999999999999438119489974413630815797154428513196965888.000000000000000</double>
               </property>
              </widget>
             </item>
@@ -227,7 +233,7 @@
              <number>3</number>
             </property>
             <item>
-             <widget class="QLabel" name="NUM_INIT_PIECES_label">
+             <widget class="QLabel" name="label_NUM_INIT_BOXES">
               <property name="text">
                <string>进货箱数</string>
               </property>
@@ -237,12 +243,15 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="NUM_INIT_PIECES_SB">
+             <widget class="EnglishDoubleSpinBox" name="doubleSpinBox_NUM_INIT_BOXES">
               <property name="cursor">
                <cursorShape>IBeamCursor</cursorShape>
               </property>
+              <property name="minimum">
+               <double>1.000000000000000</double>
+              </property>
               <property name="maximum">
-               <number>999999999</number>
+               <double>10000000000000000000000.000000000000000</double>
               </property>
              </widget>
             </item>
@@ -268,7 +277,7 @@
              <number>3</number>
             </property>
             <item>
-             <widget class="QLabel" name="NUM_SOLD_PIECES_label">
+             <widget class="QLabel" name="label_NUM_SOLD_BOXES">
               <property name="text">
                <string>已售箱数</string>
               </property>
@@ -278,15 +287,15 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="NUM_SOLD_PIECES_SB">
+             <widget class="EnglishDoubleSpinBox" name="doubleSpinBox_NUM_SOLD_BOXES">
               <property name="cursor">
                <cursorShape>IBeamCursor</cursorShape>
               </property>
-              <property name="alignment">
-               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+              <property name="focusPolicy">
+               <enum>Qt::WheelFocus</enum>
               </property>
               <property name="maximum">
-               <number>999999999</number>
+               <double>9999999999999999635896294965248.000000000000000</double>
               </property>
              </widget>
             </item>
@@ -312,7 +321,7 @@
              <number>3</number>
             </property>
             <item>
-             <widget class="QLabel" name="NUM_PIECES_PER_BOX_label">
+             <widget class="QLabel" name="label_NUM_PIECES_PER_BOX">
               <property name="text">
                <string>每箱个数</string>
               </property>
@@ -322,9 +331,15 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="NUM_PIECES_PER_BOX_SB">
+             <widget class="QSpinBox" name="spinBox_NUM_PIECES_PER_BOX">
               <property name="cursor">
                <cursorShape>IBeamCursor</cursorShape>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::WheelFocus</enum>
+              </property>
+              <property name="minimum">
+               <number>1</number>
               </property>
               <property name="maximum">
                <number>999999999</number>
@@ -353,7 +368,7 @@
              <number>3</number>
             </property>
             <item>
-             <widget class="QLabel" name="label">
+             <widget class="QLabel" name="label_NUM_INIT_PIECES">
               <property name="text">
                <string>进货个数</string>
               </property>
@@ -363,7 +378,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit">
+             <widget class="QLineEdit" name="lineEdit_NUM_INIT_PIECES">
               <property name="enabled">
                <bool>true</bool>
               </property>
@@ -373,8 +388,14 @@
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="mouseTracking">
+               <bool>false</bool>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::NoFocus</enum>
+              </property>
               <property name="text">
-               <string>0</string>
+               <string>1</string>
               </property>
               <property name="readOnly">
                <bool>true</bool>
@@ -403,7 +424,7 @@
              <number>3</number>
             </property>
             <item>
-             <widget class="QLabel" name="label_2">
+             <widget class="QLabel" name="label_NUM_SOLD_PIECES">
               <property name="text">
                <string>已售个数</string>
               </property>
@@ -413,12 +434,18 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit_2">
+             <widget class="QLineEdit" name="lineEdit_NUM_SOLD_PIECES">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="mouseTracking">
+               <bool>false</bool>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::NoFocus</enum>
               </property>
               <property name="text">
                <string>0</string>
@@ -432,8 +459,8 @@
           </widget>
          </item>
          <item>
-          <widget class="QWidget" name="widget_10" native="true">
-           <layout class="QHBoxLayout" name="horizontalLayout_8">
+          <widget class="QWidget" name="widget_6" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
             <property name="spacing">
              <number>3</number>
             </property>
@@ -450,15 +477,9 @@
              <number>3</number>
             </property>
             <item>
-             <widget class="QLabel" name="container_ID_label">
-              <property name="minimumSize">
-               <size>
-                <width>100</width>
-                <height>0</height>
-               </size>
-              </property>
+             <widget class="QLabel" name="label_PRIZE">
               <property name="text">
-               <string>集装箱号</string>
+               <string>单价($)</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -466,9 +487,18 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="container_ID_LE">
-              <property name="placeholderText">
-               <string>在此输入集装箱号，如果没有的话空着</string>
+             <widget class="EnglishDoubleSpinBox" name="doubleSpinBox_PRIZE">
+              <property name="cursor">
+               <cursorShape>IBeamCursor</cursorShape>
+              </property>
+              <property name="prefix">
+               <string/>
+              </property>
+              <property name="minimum">
+               <double>1.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>9999999999999999438119489974413630815797154428513196965888.000000000000000</double>
               </property>
              </widget>
             </item>
@@ -497,7 +527,7 @@
           <number>3</number>
          </property>
          <item>
-          <widget class="QPushButton" name="add_new_model_btn">
+          <widget class="QPushButton" name="button_add_new_model">
            <property name="maximumSize">
             <size>
              <width>300</width>
@@ -517,6 +547,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>EnglishDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>CustomWidgets/EnglishDoubleSpinBox.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

@@ -23,8 +23,6 @@ extern const QString APP_NAME;
 extern const QString EXCEL_FILTER;
 extern const QString EXCEL_DEFAULT_DIR;
 
-extern const QString table_stylesheet;
-
 extern unsigned int language_option;
 
 extern const QString DateTimeFormat;

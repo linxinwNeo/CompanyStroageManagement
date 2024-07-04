@@ -13,6 +13,12 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QTableWidget::item { border: 1px solid black; }
+QTableWidget::item:selected { background-color: lightblue; }
+QHeaderView::section { border: 1px solid black; }
+QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;}</string>
+  </property>
   <property name="locale">
    <locale language="English" country="UnitedStates"/>
   </property>
@@ -42,7 +48,7 @@
           <number>3</number>
          </property>
          <item>
-          <widget class="QLabel" name="MODEL_CODE_Label">
+          <widget class="QLabel" name="label_MODEL_CODE">
            <property name="minimumSize">
             <size>
              <width>200</width>
@@ -52,12 +58,18 @@
            <property name="text">
             <string>货号</string>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="MODEL_CODE_LineEdit">
+          <widget class="QLineEdit" name="lineEdit_MODEL_CODE">
            <property name="enabled">
             <bool>true</bool>
+           </property>
+           <property name="cursor">
+            <cursorShape>ArrowCursor</cursorShape>
            </property>
            <property name="styleSheet">
             <string notr="true">QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;}</string>
@@ -89,7 +101,7 @@
           <number>3</number>
          </property>
          <item>
-          <widget class="QLabel" name="DESCRIPTION_CN_Label">
+          <widget class="QLabel" name="label_DESCRIPTION_CN">
            <property name="minimumSize">
             <size>
              <width>200</width>
@@ -99,10 +111,13 @@
            <property name="text">
             <string>品名(中文)</string>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
           </widget>
          </item>
          <item>
-          <widget class="QTextEdit" name="DESCRIPTION_CN_TextEdit">
+          <widget class="QTextEdit" name="textEdit_DESCRIPTION_CN">
            <property name="enabled">
             <bool>true</bool>
            </property>
@@ -142,7 +157,7 @@
           <number>3</number>
          </property>
          <item>
-          <widget class="QLabel" name="DESCRIPTION_SPAN_Label">
+          <widget class="QLabel" name="label_DESCRIPTION_SPAN">
            <property name="minimumSize">
             <size>
              <width>200</width>
@@ -152,10 +167,13 @@
            <property name="text">
             <string>品名(西语)</string>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
           </widget>
          </item>
          <item>
-          <widget class="QTextEdit" name="DESCRIPTION_SPAN_TextEdit">
+          <widget class="QTextEdit" name="textEdit_DESCRIPTION_SPAN">
            <property name="enabled">
             <bool>true</bool>
            </property>
@@ -198,7 +216,7 @@
           <number>3</number>
          </property>
          <item>
-          <widget class="QLabel" name="NUM_BOXES_Label">
+          <widget class="QLabel" name="label_NUM_BOXES">
            <property name="minimumSize">
             <size>
              <width>200</width>
@@ -208,10 +226,13 @@
            <property name="text">
             <string>箱数</string>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
           </widget>
          </item>
          <item>
-          <widget class="QDoubleSpinBox" name="NUM_BOXES_DoubleSpinBox">
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_NUM_BOXES">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -230,6 +251,9 @@
              <height>16777215</height>
             </size>
            </property>
+           <property name="cursor">
+            <cursorShape>IBeamCursor</cursorShape>
+           </property>
            <property name="prefix">
             <string/>
            </property>
@@ -239,7 +263,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="MAX_NUM_BOXES_LineEdit">
+          <widget class="QLineEdit" name="lineEdit_MAX_NUM_BOXES">
            <property name="enabled">
             <bool>true</bool>
            </property>
@@ -248,6 +272,9 @@
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="cursor">
+            <cursorShape>ArrowCursor</cursorShape>
            </property>
            <property name="styleSheet">
             <string notr="true">QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;}</string>
@@ -282,7 +309,7 @@
           <number>3</number>
          </property>
          <item>
-          <widget class="QLabel" name="NUM_PIECES_Label">
+          <widget class="QLabel" name="label_NUM_PIECES">
            <property name="minimumSize">
             <size>
              <width>200</width>
@@ -292,10 +319,13 @@
            <property name="text">
             <string>个数</string>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="NUM_PIECES_SpinBox">
+          <widget class="QSpinBox" name="spinBox_NUM_PIECES">
            <property name="enabled">
             <bool>true</bool>
            </property>
@@ -311,13 +341,16 @@
              <height>0</height>
             </size>
            </property>
+           <property name="cursor">
+            <cursorShape>IBeamCursor</cursorShape>
+           </property>
            <property name="maximum">
             <number>999999999</number>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="MAX_NUM_PIECES_LineEdit">
+          <widget class="QLineEdit" name="lineEdit_MAX_NUM_PIECES">
            <property name="enabled">
             <bool>true</bool>
            </property>
@@ -326,6 +359,9 @@
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="cursor">
+            <cursorShape>ArrowCursor</cursorShape>
            </property>
            <property name="styleSheet">
             <string notr="true">QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;}</string>
@@ -360,7 +396,7 @@
           <number>3</number>
          </property>
          <item>
-          <widget class="QLabel" name="NUM_PIECES_PER_BOX_Label">
+          <widget class="QLabel" name="label_NUM_PIECES_PER_BOX">
            <property name="minimumSize">
             <size>
              <width>200</width>
@@ -370,12 +406,18 @@
            <property name="text">
             <string>每箱个数</string>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
           </widget>
          </item>
          <item>
           <widget class="QLineEdit" name="NUM_PIECES_PER_BOX_LineEdit">
            <property name="enabled">
             <bool>true</bool>
+           </property>
+           <property name="cursor">
+            <cursorShape>ArrowCursor</cursorShape>
            </property>
            <property name="styleSheet">
             <string notr="true">QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;}</string>
@@ -410,7 +452,7 @@
           <number>3</number>
          </property>
          <item>
-          <widget class="QLabel" name="PREZE_Label">
+          <widget class="QLabel" name="label_PREZE">
            <property name="minimumSize">
             <size>
              <width>200</width>
@@ -420,21 +462,24 @@
            <property name="text">
             <string>单价($)</string>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="PREZE_LineEdit">
-           <property name="enabled">
-            <bool>true</bool>
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_PREZE">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
            </property>
-           <property name="styleSheet">
-            <string notr="true">QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;}</string>
+           <property name="cursor">
+            <cursorShape>IBeamCursor</cursorShape>
            </property>
-           <property name="text">
-            <string>0</string>
-           </property>
-           <property name="readOnly">
-            <bool>false</bool>
+           <property name="maximum">
+            <double>9999999999999999583119736832.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -460,7 +505,7 @@
           <number>3</number>
          </property>
          <item>
-          <widget class="QLabel" name="TOTAL_Label">
+          <widget class="QLabel" name="label_TOTAL">
            <property name="minimumSize">
             <size>
              <width>200</width>
@@ -470,12 +515,18 @@
            <property name="text">
             <string>总价($)</string>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="TOTAL_LineEdit">
+          <widget class="QLineEdit" name="lineEdit_TOTAL">
            <property name="enabled">
             <bool>true</bool>
+           </property>
+           <property name="cursor">
+            <cursorShape>ArrowCursor</cursorShape>
            </property>
            <property name="styleSheet">
             <string notr="true">QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;}</string>
