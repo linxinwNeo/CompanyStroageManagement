@@ -1,14 +1,17 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QTableWidget>
+#include <QMainWindow>
+#include <QVector2D>
+
+#include "ChangePasswordWin.h"
 #include "AddNewModelWindow.h"
 #include "CreateListWin.h"
 #include "DataStructures/Model.h"
 #include "DataStructures/Container.h"
 #include "Search_List_Win.h"
-#include <QTableWidget>
-#include <QMainWindow>
-#include <QVector2D>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -75,6 +78,8 @@ private slots:
     void on_search_model_result_Table_itemSelectionChanged();
     void on_search_container_result_Table_itemSelectionChanged();
 
+    void on_actionChangePassword_triggered();
+
 private:
     ModelPtr selected_model;
     ContainerPtr selected_container;
@@ -83,6 +88,7 @@ private:
     AddNewModelWindow AddNewModelWinPtr;
     CreateListWin CreateListWinPtr;
     Search_List_Win SearchListWinPtr;
+    ChangePasswordWin ChangePasswordWinPtr;
 
     bool is_time_for_backup() const;
 

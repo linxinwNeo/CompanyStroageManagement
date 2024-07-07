@@ -326,6 +326,9 @@ bool WriteFile::save_settings_file()
     // write last time opened lists file path
     out << last_lists_path << " \n"; // output lists path
 
+    // write current password
+    out << GlobalVars::cur_password << " \n"; // output password
+
     file.close();
     return true;
 }

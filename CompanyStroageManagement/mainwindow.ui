@@ -1349,8 +1349,15 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
     <addaction name="action_Save_Inventory"/>
     <addaction name="action_Save_Lists"/>
    </widget>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>其他</string>
+    </property>
+    <addaction name="actionChangePassword"/>
+   </widget>
    <addaction name="LanguageMenu"/>
    <addaction name="FileMenu"/>
+   <addaction name="menu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionChinese">
@@ -1371,6 +1378,11 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
   <action name="action_Save_Lists">
    <property name="text">
     <string>保存清单历史</string>
+   </property>
+  </action>
+  <action name="actionChangePassword">
+   <property name="text">
+    <string>改密码</string>
    </property>
   </action>
  </widget>

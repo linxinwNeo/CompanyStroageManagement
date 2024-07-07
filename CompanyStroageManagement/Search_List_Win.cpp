@@ -343,18 +343,20 @@ void Search_List_Win::on_put_back_list_btn_clicked()
         //更新 lists存储文件
         lists.save_2_file(false);
 
+        // save the inventory and lists
+        WriteFile::SaveInventoryAuto(false);
+
+        QMessageBox msg2;
+        msg2.setText(lan("退订单成功！", "¡El pedido se ha devuelto con éxito!"));
+        msg2.exec();
+
+        goto Finish;
+    }
+    else{
         goto Finish;
     }
 
 Finish:
-    // save the inventory and lists
-    WriteFile::SaveInventoryAuto(false);
-    WriteFile::Lists2txt(false);
-
-    QMessageBox msg2;
-    msg2.setText(lan("退订单成功！", "¡El pedido se ha devuelto con éxito!"));
-    msg2.exec();
-
     this->selected_list = nullptr;
 }
 

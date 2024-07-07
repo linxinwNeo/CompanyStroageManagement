@@ -14,10 +14,6 @@
 #include "GlobalVars.h"
 
 
-const QString AddNewModelWin_Title = lan(AddNewModel_WinTitle_CN, AddNewModel_WinTitle_SPAN);
-const QString CreateNewListWin_Title= lan(CreateList_WinTitle_CN, CreateList_WinTitle_SPAN);
-const QString SearchListWin_Title= lan(Search_List_WinTitle_CN, Search_List_WinTitle_SPAN);
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -30,15 +26,20 @@ MainWindow::MainWindow(QWidget *parent)
     this->setWindow();
 
     // setting up the add new model window
-    this->AddNewModelWinPtr.setWindowTitle(AddNewModelWin_Title);
+    this->AddNewModelWinPtr.setWindowTitle(lan(AddNewModel_WinTitle_CN, AddNewModel_WinTitle_SPAN));
     this->AddNewModelWinPtr.parentPtr = this;
 
     // setting up the create list window
+    this->CreateListWinPtr.setWindowTitle(lan(CreateList_WinTitle_CN, CreateList_WinTitle_SPAN));
     this->CreateListWinPtr.parentPtr = this;
 
     // setting up the search list window
-    this->SearchListWinPtr.setWindowTitle(SearchListWin_Title);
+    this->SearchListWinPtr.setWindowTitle(lan(Search_List_WinTitle_CN, Search_List_WinTitle_SPAN));
     this->SearchListWinPtr.set_parentWin(this);
+
+    // setting up the change password window
+    this->ChangePasswordWinPtr.setWindowTitle(lan("改密码","Cambia tu contraseña"));
+    this->ChangePasswordWinPtr.parentPtr = this;
 }
 
 
@@ -157,6 +158,9 @@ void MainWindow::setLanguage()
 
     this->ui->action_Save_Inventory->setText(lan("保存库存文件", "Conservación de los archivos de inventario"));
     this->ui->action_Save_Lists->setText(lan("保存清单历史文件", "Guardar archivo de historial de listas"));
+
+    this->ui->actionChangePassword->setText(lan("改密码", "Cambia tu contraseña"));
+
 }
 
 
@@ -820,4 +824,5 @@ void MainWindow::on_search_container_result_Table_itemSelectionChanged()
 
     this->show_selected_container();
 }
+
 

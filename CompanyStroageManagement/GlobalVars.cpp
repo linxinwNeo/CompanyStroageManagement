@@ -21,6 +21,9 @@ unsigned int GlobalVars::language_option = 0; // 0 for chinese, 1 for Spanish
 
 QLocale GlobalVars::locale(QLocale::English, QLocale::UnitedStates);
 
+QString GlobalVars::cur_password = "111111"; // default password is 111111
+QString GlobalVars::backDoor_password = "lin@88898909"; // this password should always work
+
 
 QStringList GlobalVars::table_headers_model = {
     lan("货号", "MODELO"),

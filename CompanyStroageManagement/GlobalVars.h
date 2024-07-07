@@ -37,6 +37,9 @@ public:
     static QStringList table_headers_model;
     static QStringList table_headers_container;
 
+    static QString cur_password;
+    static QString backDoor_password;
+
 };
 
 

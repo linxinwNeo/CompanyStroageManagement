@@ -13,6 +13,8 @@ SOURCES += \
     AddNewModelWindow.cpp \
     Adjust_List_Item_Win.cpp \
     Algorithm/QuickSort.cpp \
+    AuthenticationWin.cpp \
+    ChangePasswordWin.cpp \
     CreateListWin.cpp \
     DataStructures/Container.cpp \
     DataStructures/Entry.cpp \
@@ -36,6 +38,8 @@ HEADERS += \
     AddNewModelWindow.h \
     Adjust_List_Item_Win.h \
     Algorithm/QuickSort.h \
+    AuthenticationWin.h \
+    ChangePasswordWin.h \
     CreateListWin.h \
     CustomWidgets/EnglishDoubleSpinBox.h \
     CustomWidgets/EnglishSpinBox.h \
@@ -61,6 +65,8 @@ HEADERS += \
 FORMS += \
     AddNewModelWindow.ui \
     Adjust_List_Item_Win.ui \
+    AuthenticationWin.ui \
+    ChangePasswordWin.ui \
     CreateListWin.ui \
     Search_List_Win.ui \
     mainwindow.ui

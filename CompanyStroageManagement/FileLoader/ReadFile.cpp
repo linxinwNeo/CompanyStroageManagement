@@ -361,6 +361,10 @@ bool ReadFile::read_settings_file()
         last_lists_path = line;
     }
 
+    // read password
+    line = in.readLine().trimmed();
+    GlobalVars::cur_password = line;
+
     file.close();
     return true;
 }

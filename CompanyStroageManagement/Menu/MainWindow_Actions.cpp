@@ -64,3 +64,12 @@ void MainWindow::on_action_Save_Lists_triggered()
 }
 
 
+// 改密码
+void MainWindow::on_actionChangePassword_triggered()
+{
+    this->ChangePasswordWinPtr.setWindowTitle(lan("改密码","Cambia tu contraseña"));
+    this->ChangePasswordWinPtr.show();
+    this->hide();
+}
+
+
