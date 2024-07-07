@@ -353,7 +353,7 @@ void Search_List_Win::on_put_back_list_btn_clicked()
         goto Finish;
     }
     else{
-        goto Finish;
+        return;
     }
 
 Finish:

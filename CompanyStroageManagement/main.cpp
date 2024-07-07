@@ -7,8 +7,6 @@
 #include "LanguageStrings.h"
 #include "AuthenticationWin.h"
 
-
-
 void read_stroage();
 
 int main(int argc, char *argv[])

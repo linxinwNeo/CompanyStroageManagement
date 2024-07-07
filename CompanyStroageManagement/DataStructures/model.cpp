@@ -106,6 +106,9 @@ bool Model::Sell(unsigned long num_pieces_to_sell)
     // we make sure we have enough left piece to sell
     if(this->NUM_LEFT_PIECES() >= num_pieces_to_sell){
         this->m_NUM_SOLD_PIECES += num_pieces_to_sell;
+
+        // UPDATE TIME
+        this->m_last_time_modified = QSharedPointer<QDateTime>::create(QDateTime().currentDateTime());
         return true;
     }
 
@@ -119,8 +122,12 @@ bool Model::AddBack(unsigned long num_pieces_to_addBack)
 {
     if(num_pieces_to_addBack <= this->m_NUM_SOLD_PIECES){
         this->m_NUM_SOLD_PIECES -= num_pieces_to_addBack;
+
+        // UPDATE TIME
+        this->m_last_time_modified = QSharedPointer<QDateTime>::create(QDateTime().currentDateTime());
         return true;
     }
+
 
     return false;
 }

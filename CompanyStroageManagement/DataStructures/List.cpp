@@ -97,18 +97,18 @@ QVector<QString> List::describe_this_list() const
 }
 
 
-// return a unique id that is not used by any list so far
 unsigned long int Lists::get_unique_id() const
 {
-    // we test integers from 1 to ULONG_MAX, 0 is intentionally left blank
-    for(unsigned long long i = 1; i < ULONG_LONG_MAX; i++){
-        if(lists.contains(i)) continue;
-        return i;
+    // we go through all lists and find the one with largest id
+    unsigned long long id = 0;
+
+    for(auto& list : lists){
+        if(list->id > id){
+            id = list->id;
+        }
     }
 
-
-    write_error_file("Lists::get_unique_id() couldn't get a valid id");
-    exit(-1);
+    return id + 1; // add one more to it
 }
 
 
