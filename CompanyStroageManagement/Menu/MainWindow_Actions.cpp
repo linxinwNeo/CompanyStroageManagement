@@ -41,29 +41,6 @@ void MainWindow::on_action_Save_Inventory_triggered()
 }
 
 
-/* 2/24/2024
- * Save Lists file to the path that we opened it last time.
- */
-void MainWindow::on_action_Save_Lists_triggered()
-{
-    if( WriteFile::Lists2txt(false) )
-    {
-        QMessageBox msg(this);
-        msg.setText(lan("保存成功", "Salvar con éxito"));
-        msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-        msg.exec();
-        return;
-    }
-    else{
-        QMessageBox msg(this);
-        msg.setText(lan("保存失败", "no salvar"));
-        msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-        msg.exec();
-        return;
-    }
-}
-
-
 // 改密码
 void MainWindow::on_actionChangePassword_triggered()
 {

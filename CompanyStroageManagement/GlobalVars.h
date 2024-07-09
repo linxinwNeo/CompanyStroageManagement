@@ -6,12 +6,12 @@
 #include <QLocale>
 
 #include "DataStructures/Inventory.h"
-#include "DataStructures/List.h"
+#include "DataStructures/ListManager.h"
 
 inline QString lan(const QString& CN_Str, const QString& Span_Str);
 
 extern Inventory inventory; // holds all models, containers
-extern Lists lists; // holds all past list
+extern ListManager listManager; // holds all past list ids
 
 class GlobalVars{
 public:
@@ -20,6 +20,8 @@ public:
     static QString BackUP_DirName;
     static QString BackUP_FileName;
     static unsigned int backup_every_n_days;
+
+    static QString Lists_DirName;
 
     static QString Settings_FileName;
 

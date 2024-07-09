@@ -51,16 +51,6 @@ void read_stroage()
         msgBox->setStandardButtons(QMessageBox::Ok);
         msgBox->exec();
     }
-
-    // try to read lists file
-    if( !ReadFile::read_Lists_txt_File(false) ){
-        QMessageBox* msgBox = new QMessageBox;
-        msgBox->setAttribute(Qt::WA_DeleteOnClose);
-        msgBox->setIcon(QMessageBox::Warning);
-        msgBox->setText(lan(UNABLE_OPEN_LISTS_FILE_MSG_CN, UNABLE_OPEN_LISTS_FILE_MSG_SPAN));
-        msgBox->setStandardButtons(QMessageBox::Ok);
-        msgBox->exec();
-    }
 }
 
 

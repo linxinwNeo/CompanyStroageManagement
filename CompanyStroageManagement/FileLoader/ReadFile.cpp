@@ -230,93 +230,6 @@ bool ReadFile::read_Inventory_xlsx_File(const QString &path, const bool save_pat
 }
 
 
-bool ReadFile::read_Lists_txt_File(const bool save_path)
-{
-    return read_Lists_txt_File(last_lists_path, save_path);
-}
-
-
-// read past lists from txt file
-bool ReadFile::read_Lists_txt_File(const QString &path, const bool save_path)
-{
-    lists.clear();
-
-    QFile file(path);
-    QTextStream in(&file);
-    qDebug() << "Start Reading" << path;
-
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)){
-        return false;
-    }
-
-    QString line;
-    { // read first two lines
-        line = in.readLine(); // read the first line, which contains the number of lists
-        QStringList strList = line.split(split_item);
-        unsigned int num_lists = strList[0].toUInt() + 1;
-        if(num_lists == 0) return false;
-        lists.lists.reserve(num_lists);
-
-        line = in.readLine(); // read the second line, which contains nothing
-    }
-
-
-    while (!in.atEnd()) {
-        line = in.readLine();
-        QStringList strList = line.split(split_item);
-
-        ListPtr new_list (new List());
-
-        new_list->id = strList[0].toULong(); // 1. 清单号
-
-        // read date and time for the list
-        new_list->datetime_created = QSharedPointer<QDateTime>::create(
-            QDateTime::fromString(strList[1], GlobalVars::DateTimeFormat)
-            );      // 2. 读取创建时间
-
-        // read client_info
-        new_list->client_info.CLIENTE = strList[2]; // 2.
-        new_list->client_info.DOMICILIO = strList[3]; // 3.
-        new_list->client_info.CIUDAD = strList[4]; // 4.
-        new_list->client_info.RFC = strList[5]; // 5.
-        new_list->client_info.AGENTE = strList[6]; // 6.
-        new_list->client_info.CONDICIONES = strList[7]; // 7.
-        new_list->client_info.TOTAL_NUM_BOXES = strList[8].toDouble(); // 8.
-        new_list->client_info.DISCOUNT = strList[9].toDouble(); // 9.
-
-        // reading entries
-        unsigned long num_items = strList[10].toUInt(); // 10.
-        for(unsigned long i = 0; i < num_items; i++){
-            line = in.readLine();
-            QStringList entryRawData = line.split(split_item);
-
-            EntryPtr newEntry(new Entry());
-
-            newEntry->MODEL_CODE = entryRawData[0];
-            newEntry->ContainerID = entryRawData[1];
-            newEntry->NUM_PIECES = entryRawData[2].toULong();
-            newEntry->NUM_PIECES_PER_BOX = entryRawData[3].toULong();
-            newEntry->Description_SPAN = entryRawData[4];
-            newEntry->Description_CN = entryRawData[5];
-            newEntry->PRICE_PER_PIECE = entryRawData[6].toDouble();
-            newEntry->TOTAL = entryRawData[7].toDouble();
-
-            new_list->add_item(newEntry);
-        }
-
-        lists.add_list(new_list);
-    }
-
-    file.close();
-    qDebug() << "Reading" << path << "done, it has" << lists.num_lists() << "lists";
-
-    if(save_path)
-        last_lists_path = path;
-
-    return true;
-}
-
-
 // save the settings to the file
 bool ReadFile::read_settings_file()
 {
@@ -354,16 +267,61 @@ bool ReadFile::read_settings_file()
         return false;
     }
 
-    // read last lists path
-    line = in.readLine().trimmed();
-    if(!line.isEmpty() && line.endsWith(".txt")){
-        // save the path if it is not empty
-        last_lists_path = line;
-    }
 
     // read password
     line = in.readLine().trimmed();
     GlobalVars::cur_password = line;
+
+    file.close();
+    return true;
+}
+
+
+bool ReadFile::Read_list(const unsigned long & list_id, ListPtr& list){
+    QString path_to_list_file = GlobalVars::Lists_DirName + "/" +
+                                QString::number(list_id) + ".txt";
+
+    QFile file(path_to_list_file);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)){
+        write_error_file("ReadFile::Read_list: couldn't create the file: " + path_to_list_file + " \n");
+        return false;
+    }
+
+    QTextStream in(&file);
+
+    QStringList items = in.readLine().trimmed().split(split_item);
+    // read list id
+    list = ListPtr (new List());
+    list->id = items[0].toULong();
+    list->datetime_created = QSharedPointer<QDateTime>::create(
+        QDateTime::fromString(items[1], GlobalVars::DateTimeFormat)
+        );
+
+    list->client_info.CLIENTE = items[2];
+    list->client_info.DOMICILIO = items[3];
+    list->client_info.CIUDAD = items[4];
+    list->client_info.RFC = items[5];
+    list->client_info.AGENTE = items[6];
+    list->client_info.CONDICIONES = items[7];
+    list->client_info.TOTAL_NUM_BOXES = items[8].toDouble();
+    list->client_info.DISCOUNT = items[9].toDouble();
+    unsigned long num_model_types = items[10].toDouble();
+
+    list->entryList.entries.reserve(num_model_types);
+
+    for(unsigned long i = 0; i < num_model_types; i++){
+        EntryPtr entry(new Entry());
+        QStringList entryItems = in.readLine().trimmed().split(split_item);
+        entry->MODEL_CODE = entryItems[0];
+        entry->ContainerID = entryItems[1];
+        entry->NUM_PIECES = entryItems[2].toULong();
+        entry->NUM_PIECES_PER_BOX = entryItems[3].toULong();
+        entry->Description_SPAN = entryItems[4];
+        entry->Description_CN = entryItems[5];
+        entry->PRICE_PER_PIECE = entryItems[6].toDouble();
+        entry->TOTAL = entryItems[7].toDouble();
+        list->add_item(entry);
+    }
 
     file.close();
     return true;

@@ -169,7 +169,7 @@ void CreateListWin::on_generatePDF_btn_clicked()
         return;
     }
 
-    const unsigned long int unused_unique_id = lists.get_unique_id();
+    const unsigned long int unused_unique_id = listManager.get_unique_id();
 
     QString PDF_MSG_1 = lan(PDF_MESSAGE_1_CN, PDF_MESSAGE_1_SPAN);
     QString PDF_MSG_2 = lan(PDF_MESSAGE_2_CN, PDF_MESSAGE_2_SPAN);
@@ -217,8 +217,8 @@ void CreateListWin::on_generatePDF_btn_clicked()
     inventory.deduct_models(this->list->entryList.entries);
 
     // save the list to a txt file
-    lists.add_list(this->list);
-    lists.save_2_file(false);
+    listManager.create_list(this->list);
+
 
     cur_list_entries.clear_memory();
     this->added_models_table->clearContents();
@@ -229,7 +229,6 @@ void CreateListWin::on_generatePDF_btn_clicked()
 Finish:
     // save the inventory and lists
     WriteFile::SaveInventoryAuto(false);
-    WriteFile::Lists2txt(false);
 
     // display creation success
     Msgbox.setText(lan(LIST_CREATED_MSG_CN, LIST_CREATED_MSG_SPAN));

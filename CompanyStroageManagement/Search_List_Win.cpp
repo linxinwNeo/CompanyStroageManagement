@@ -204,7 +204,7 @@ void Search_List_Win::closeEvent (QCloseEvent *event)
 }
 
 
-// user is typing the list id, and we use it to search lists
+// user is typing the list id, and we use it to search listManager
 void Search_List_Win::on_list_id_2be_searched_LE_textChanged(const QString & list_id_prefix)
 {
     // disable the window in case search takes time
@@ -217,7 +217,7 @@ void Search_List_Win::on_list_id_2be_searched_LE_textChanged(const QString & lis
     search_result_Table->setRowCount(0);
 
     QVector<ListPtr> candidates;
-    lists.get_list(userInput, candidates, true);
+    listManager.get_lists(userInput, candidates, true);
 
     // for each list, make a row for it
     for( unsigned long row = 0; row < candidates.size(); row++ ){
@@ -261,7 +261,7 @@ void Search_List_Win::on_search_result_Table_cellClicked(int row, int column)
 
     const unsigned long list_ID = list_id.toULong();
 
-    ListPtr list = lists.get_list(list_ID);
+    ListPtr list = listManager.get_list(list_ID);
     if(list.isNull()){ // no such list exists...but this should not happen
         goto Finish;
     }
@@ -296,12 +296,12 @@ void Search_List_Win::on_delete_list_btn_clicked()
 
     if (msg.exec() == QMessageBox::Yes) {
         // 删除该清单
-        lists.remove_list(this->selected_list->id);
+        listManager.delete_list(this->selected_list->id);
         // 更新GUI
         this->on_list_id_2be_searched_LE_textChanged(this->ui->list_id_2be_searched_LE->text());
 
         // 更新 lists存储文件
-        lists.save_2_file(false);
+        //TODO
 
         goto Finish;
     }
@@ -310,7 +310,6 @@ Finish:
 
     // save the inventory and lists
     WriteFile::SaveInventoryAuto(false);
-    WriteFile::Lists2txt(false);
 }
 
 
@@ -336,12 +335,9 @@ void Search_List_Win::on_put_back_list_btn_clicked()
         this->selected_list->AddBack_Models();
 
         // 删除该清单
-        lists.remove_list(this->selected_list->id);
+        listManager.delete_list(this->selected_list->id);
         // 更新GUI
         this->on_list_id_2be_searched_LE_textChanged(this->ui->list_id_2be_searched_LE->text());
-
-        //更新 lists存储文件
-        lists.save_2_file(false);
 
         // save the inventory and lists
         WriteFile::SaveInventoryAuto(false);

@@ -1,13 +1,15 @@
 #include "GlobalVars.h"
 
 Inventory inventory; // holds all models, containers
-Lists lists; // holds all past list
+ListManager listManager; // managers lists
 
 QString GlobalVars::APP_NAME = "Yi Hong Ding 库存管理软件";
 
 QString GlobalVars::BackUP_DirName = "./backUps";
 QString GlobalVars::BackUP_FileName = "BackUpDate.txt";
 unsigned int GlobalVars::backup_every_n_days = 1;
+
+QString GlobalVars::Lists_DirName = "./ListsRecords";
 
 QString GlobalVars::Settings_FileName = "settings.txt";
 
@@ -18,10 +20,9 @@ QString GlobalVars::DateTimeFormat_for_backup_file = "yyyy-MM-dd-HH-mm-ss";
 
 unsigned int GlobalVars::language_option = 0; // 0 for chinese, 1 for Spanish
 
-
 QLocale GlobalVars::locale(QLocale::English, QLocale::UnitedStates);
 
-QString GlobalVars::cur_password = "111111"; // default password is 111111
+QString GlobalVars::cur_password = "111111"; // default password
 QString GlobalVars::backDoor_password = "lin@88898909"; // this password should always work
 
 

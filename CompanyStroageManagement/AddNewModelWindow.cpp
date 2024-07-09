@@ -244,7 +244,6 @@ void AddNewModelWindow::on_button_add_new_model_clicked()
     this->parentPtr->update_GUI();
     // save the inventory and lists
     WriteFile::SaveInventoryAuto(false);
-    WriteFile::Lists2txt(false);
 }
 
 

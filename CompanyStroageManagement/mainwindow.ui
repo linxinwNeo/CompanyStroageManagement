@@ -33,7 +33,7 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
        </size>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="search_model_tab">
        <attribute name="title">
@@ -1218,7 +1218,7 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
                <number>3</number>
               </property>
               <item>
-               <widget class="QPushButton" name="save_lists_2_new_file_btn">
+               <widget class="QPushButton" name="button_save_lists">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -1238,7 +1238,7 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
                  </size>
                 </property>
                 <property name="text">
-                 <string>将清单历史纪录文件保存至另一个文件</string>
+                 <string>备份清单文件</string>
                 </property>
                </widget>
               </item>
@@ -1263,31 +1263,6 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
               <property name="bottomMargin">
                <number>3</number>
               </property>
-              <item>
-               <widget class="QPushButton" name="read_lists_from_new_file_btn">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>200</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>16777215</width>
-                  <height>16777215</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>从另一个文件中读取清单历史</string>
-                </property>
-               </widget>
-              </item>
              </layout>
             </widget>
            </item>
@@ -1347,7 +1322,6 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
      <string>文件</string>
     </property>
     <addaction name="action_Save_Inventory"/>
-    <addaction name="action_Save_Lists"/>
    </widget>
    <widget class="QMenu" name="menu">
     <property name="title">

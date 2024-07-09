@@ -4,7 +4,7 @@
 #include "GlobalVars.h"
 #include "Others/write_error_file.h"
 
-unsigned long int List::num_model_types() const
+unsigned long List::num_model_types() const
 {
     return this->entryList.num_entries();
 }
@@ -96,102 +96,3 @@ QVector<QString> List::describe_this_list() const
     return items;
 }
 
-
-unsigned long int Lists::get_unique_id() const
-{
-    // we go through all lists and find the one with largest id
-    unsigned long long id = 0;
-
-    for(auto& list : lists){
-        if(list->id > id){
-            id = list->id;
-        }
-    }
-
-    return id + 1; // add one more to it
-}
-
-
-void Lists::add_list(ListPtr list_2be_added)
-{
-    if(list_2be_added.isNull()){
-        write_error_file("Lists::add_list: trying to add a null list");
-        return;
-    }
-
-    this->lists.insert(list_2be_added->id, list_2be_added);
-}
-
-
-// remove the list with id and return the corresponding list, null if not exists
-ListPtr Lists::remove_list(unsigned long int id)
-{
-    if(!lists.contains(id)) return nullptr;
-
-    ListPtr list = lists[id];
-    lists.remove(id);
-
-    return list;
-}
-
-
-unsigned long Lists::num_lists() const
-{
-    return this->lists.size();
-}
-
-
-// get the reference to the list with specified id
-ListPtr Lists::get_list(unsigned long id)
-{
-    if(!this->lists.contains(id)) return nullptr;
-    return this->lists[id];
-}
-
-
-// get the lists with their id begin with id_prefix
-// if prefix is empty, we return all lists
-void Lists::get_list(const QString id_prefix, QVector<ListPtr>& candidates, bool sorted)
-{
-    const QString new_str = id_prefix.toUpper().trimmed();
-
-    candidates.clear();
-    candidates.reserve(this->num_lists()/9. + 10);
-
-    // return if id_prefix is empty
-    if(new_str.isEmpty()){
-        for(ListPtr& list : this->lists){
-            candidates.push_back(list);
-        }
-    }
-    else{
-        // for each list in the database, we convert it to a string and testing
-        for(ListPtr& list : this->lists){
-            QString cur_id = QString::number(list->id).toUpper();
-            if(cur_id.startsWith(new_str)){
-                candidates.push_back(list);
-            }
-        }
-    }
-
-    // sort the vector by list ids if needed
-    if(sorted){
-        QuickSorts::QuickSort(candidates);
-    }
-
-    return;
-}
-
-
-// write the list information in a file
-bool Lists::save_2_file(const bool save_path) const
-{
-    return WriteFile::Lists2txt(save_path);
-}
-
-
-void Lists::clear()
-{
-    this->lists.clear();
-
-}

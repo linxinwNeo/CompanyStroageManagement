@@ -46,6 +46,67 @@ bool WriteFile::SaveInventoryAuto(const QString &path, const bool save_path)
     }
 }
 
+
+// 保存一个list文件
+bool WriteFile::Save_list(const ListPtr list){
+    // now, output the list content
+    QString fileName = QString::number(list->id);
+    QDir DirMaker;
+
+    bool success = DirMaker.mkpath(GlobalVars::Lists_DirName);
+    if(!success){
+        write_error_file("WriteFile::Save_list: couldn't create the folder: " + GlobalVars::Lists_DirName);
+        return false;
+    }
+
+    QString path_to_list_file = GlobalVars::Lists_DirName + "/" + fileName + ".txt";
+
+    QFile file(path_to_list_file);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)){
+        write_error_file("WriteFile::Save_list: couldn't create the file: " + path_to_list_file + " \n");
+        return false;
+    }
+
+    QTextStream out(&file);
+
+    out << list->id << split_item;         // 输出清单号
+
+    // 1. 输出创建时间和日期
+    if(list->datetime_created.isNull()){ // if no date time, put current time
+        list->datetime_created = QSharedPointer<QDateTime>::create(QDateTime().currentDateTime());
+    }
+    out << list->datetime_created->toString(GlobalVars::DateTimeFormat) << split_item;
+
+    // output client_info
+    out << list->client_info.CLIENTE << split_item // 2
+        << list->client_info.DOMICILIO << split_item // 3
+        << list->client_info.CIUDAD << split_item // 4
+        << list->client_info.RFC << split_item // 5
+        << list->client_info.AGENTE << split_item // 6
+        << list->client_info.CONDICIONES << split_item // 7
+        << list->client_info.TOTAL_NUM_BOXES << split_item // 8
+        << list->client_info.DISCOUNT << split_item; // 9
+
+    // output num of models in the list
+    out << list->num_model_types() << "\n"; // 10
+
+    for(EntryPtr& entry : list->entryList.entries){
+        out << entry->MODEL_CODE << split_item // 0. 货号
+            << entry->ContainerID << split_item // 1. 集装箱号
+            << entry->NUM_PIECES << split_item // 2. 总个数
+            << entry->NUM_PIECES_PER_BOX << split_item // 3. 每箱几个
+            << entry->Description_SPAN << split_item // 4. 品名（西语）
+            << entry->Description_CN << split_item // 5. 品名（中文）
+            << entry->PRICE_PER_PIECE << split_item // 6. 单价
+            << entry->TOTAL // 7. 总价
+            << "\n"; // 换行
+    }
+
+    file.close();
+
+    return true;
+}
+
 bool WriteFile::Inventory2Txt(const QString &path, const bool save_path)
 {
     QFile file(path);
@@ -190,71 +251,6 @@ bool WriteFile::Inventory2Xlsx(const QString &path, const bool save_path)
     return true;
 }
 
-bool WriteFile::Lists2txt(const bool save_path)
-{
-    return Lists2txt(last_lists_path, save_path);
-}
-
-
-/* write lists to a txt file */
-bool WriteFile::Lists2txt(const QString &path, const bool save_path)
-{
-    QFile file(path);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)){
-        write_error_file("WriteFile::Lists2txt: couldn't create the file: " + path + " \n");
-        return false;
-    }
-
-    QTextStream out(&file);
-
-    // output total number of lists
-    out << QString::number(lists.num_lists()) << "\n\n";
-
-    for(const ListPtr& list : lists.lists){
-        out << list->id << split_item;         // 输出清单号
-
-        // 1. 输出创建时间和日期
-        if(list->datetime_created.isNull()){ // if no date time, put current time
-            list->datetime_created = QSharedPointer<QDateTime>::create(QDateTime().currentDateTime());
-        }
-        out << list->datetime_created->toString(GlobalVars::DateTimeFormat) << split_item;
-
-        // output client_info
-        out << list->client_info.CLIENTE << split_item // 2
-            << list->client_info.DOMICILIO << split_item // 3
-            << list->client_info.CIUDAD << split_item // 4
-            << list->client_info.RFC << split_item // 5
-            << list->client_info.AGENTE << split_item // 6
-            << list->client_info.CONDICIONES << split_item // 7
-            << list->client_info.TOTAL_NUM_BOXES << split_item // 8
-            << list->client_info.DISCOUNT << split_item; // 9
-
-        // output num of models in the list
-        out << list->num_model_types() << "\n"; // 10
-        
-        for(EntryPtr& entry : list->entryList.entries){
-            out << entry->MODEL_CODE << split_item // 0. 货号
-                << entry->ContainerID << split_item // 1. 集装箱号
-                << entry->NUM_PIECES << split_item // 2. 总个数
-                << entry->NUM_PIECES_PER_BOX << split_item // 3. 每箱几个
-                << entry->Description_SPAN << split_item // 4. 品名（西语）
-                << entry->Description_CN << split_item // 5. 品名（中文）
-                << entry->PRICE_PER_PIECE << split_item // 6. 单价
-                << entry->TOTAL // 7. 总价
-                << "\n"; // 换行
-        }
-    }
-
-    file.close();
-
-    if(save_path){
-        last_lists_path = path;
-    }
-
-    return true;
-}
-
-
 // we update the BackUpDate
 bool WriteFile::update_BackUpDate()
 {
@@ -294,10 +290,6 @@ bool WriteFile::save_BackUp_files(const bool save_path)
         return false;
     }
 
-    QString path_to_list_file = GlobalVars::BackUP_DirName + "/" + folderName + "/lists.txt";
-    if( !Lists2txt(path_to_list_file, save_path) )
-        return false;
-
     QString path_to_inventory_file = GlobalVars::BackUP_DirName + "/" + folderName + "/inventory.xlsx";
     if( !SaveInventoryAuto(path_to_inventory_file, save_path) )
         return false;
@@ -323,12 +315,34 @@ bool WriteFile::save_settings_file()
     // write last time opened inventory file path
     out << last_inventory_path << " \n"; // output inventory path
 
-    // write last time opened lists file path
-    out << last_lists_path << " \n"; // output lists path
-
     // write current password
     out << GlobalVars::cur_password << " \n"; // output password
 
     file.close();
     return true;
+}
+
+
+void copyFolder(const QString &sourceFolder, const QString &destinationFolder)
+{
+    QDir sourceDir(sourceFolder);
+    if (!sourceDir.exists())
+        return;
+
+    QDir destDir(destinationFolder);
+    if (!destDir.exists()) {
+        destDir.mkpath(destinationFolder);
+    }
+
+    QFileInfoList fileList = sourceDir.entryInfoList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot | QDir::Hidden | QDir::System);
+    foreach (QFileInfo fileInfo, fileList) {
+        QString srcFilePath = fileInfo.absoluteFilePath();
+        QString destFilePath = destinationFolder + "/" + fileInfo.fileName();
+
+        if (fileInfo.isDir()) {
+            copyFolder(srcFilePath, destFilePath);
+        } else {
+            QFile::copy(srcFilePath, destFilePath);
+        }
+    }
 }

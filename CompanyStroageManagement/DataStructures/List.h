@@ -6,8 +6,7 @@
 
 #include "DataStructures/client_info.h"
 #include "DataStructures/Entrylist.h"
-#include <QDate>
-#include <QTime>
+#include <QDateTime>
 
 #define ListPtr QSharedPointer<List>
 class List
@@ -32,31 +31,5 @@ public:
     QVector<QString> describe_this_list() const;
 };
 
-
-#define ListsPtr QSharedPointer<Lists>
-class Lists
-{
-public:
-    QHash<unsigned long, ListPtr> lists; // <id, list> pairs
-
-    Lists() {};
-    ~Lists() {};
-
-    unsigned long get_unique_id() const;
-
-    void add_list(ListPtr);
-    ListPtr remove_list(unsigned long id);
-
-    unsigned long num_lists() const;
-
-    ListPtr get_list(unsigned long id);
-
-    void get_list(const QString id_prefix, QVector<ListPtr>& candidates, bool sorted);
-
-    bool save_2_file(const bool save_path) const;
-
-    void clear();
-
-};
 
 #endif // LIST_H

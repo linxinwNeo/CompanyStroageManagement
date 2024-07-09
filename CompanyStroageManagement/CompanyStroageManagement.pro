@@ -21,6 +21,7 @@ SOURCES += \
     DataStructures/Entrylist.cpp \
     DataStructures/Inventory.cpp \
     DataStructures/List.cpp \
+    DataStructures/ListManager.cpp \
     DataStructures/Model.cpp \
     DataStructures/client_info.cpp \
     FileLoader/IO_Base.cpp \
@@ -48,6 +49,7 @@ HEADERS += \
     DataStructures/Entrylist.h \
     DataStructures/Inventory.h \
     DataStructures/List.h \
+    DataStructures/ListManager.h \
     DataStructures/Model.h \
     DataStructures/client_info.h \
     FileLoader/IO_Base.h \

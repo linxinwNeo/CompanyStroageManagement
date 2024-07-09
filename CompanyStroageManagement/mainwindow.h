@@ -64,21 +64,19 @@ private slots:
     void on_save_inventory_2_new_file_btn_clicked();
     void on_read_inventory_from_new_file_btn_clicked();
 
-    void on_save_lists_2_new_file_btn_clicked();
-    void on_read_lists_from_new_file_btn_clicked();
-
     // Menu actions
     void on_actionSpanish_triggered();
     void on_actionChinese_triggered();
 
     void on_action_Save_Inventory_triggered();
-    void on_action_Save_Lists_triggered();
 
 
     void on_search_model_result_Table_itemSelectionChanged();
     void on_search_container_result_Table_itemSelectionChanged();
 
     void on_actionChangePassword_triggered();
+
+    void on_button_save_lists_clicked();
 
 private:
     ModelPtr selected_model;

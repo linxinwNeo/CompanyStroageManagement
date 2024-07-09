@@ -148,9 +148,7 @@ void MainWindow::setLanguage()
     this->ui->save_inventory_2_new_file_btn->setText(lan("将库存保存至另一个文件", "guardar el inventario en otro archivo"));
     this->ui->read_inventory_from_new_file_btn->setText(lan("从另一个文件中读取库存", "leer el inventario desde otro archivo"));
 
-
-    this->ui->save_lists_2_new_file_btn->setText(lan("将清单历史文件保存至另一个文件", "Guardar el archivo del historial de listas en otro archivo"));
-    this->ui->read_lists_from_new_file_btn->setText(lan("从另一个文件中读取清单历史文件", "Lectura de un archivo de historial de listas desde otro archivo"));
+    this->ui->button_save_lists->setText(lan("备份清单文件", "Copia de seguridad del archivo de manifiesto"));
 
     // action menu
     this->ui->FileMenu->setTitle(lan("文件", "Archivo"));
@@ -457,7 +455,6 @@ Finish:
 
     // save the inventory and lists
     WriteFile::SaveInventoryAuto(false);
-    WriteFile::Lists2txt(false);
 }
 
 
@@ -589,7 +586,6 @@ void MainWindow::on_delete_model_btn_clicked()
 ret:
     // save the inventory and lists
     WriteFile::SaveInventoryAuto(false);
-    WriteFile::Lists2txt(false);
 }
 
 
@@ -708,85 +704,6 @@ bool MainWindow::is_time_for_backup() const
 }
 
 
-/* Save Lists file to a new path
- */
-void MainWindow::on_save_lists_2_new_file_btn_clicked()
-{
-    // prompt the user to select folder and enter file name
-    QFileDialog dialog;
-    dialog.setFileMode(QFileDialog::AnyFile);
-    dialog.setAcceptMode(QFileDialog::AcceptSave);
-    dialog.setNameFilter("Text files (*.txt)");
-    dialog.setDefaultSuffix("txt");
-    QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
-    dialog.setDirectory(desktopPath);
-
-    // Show the dialog and wait for the user's selection
-    if (dialog.exec()) {
-        QString filePath = dialog.selectedFiles().at(0);
-
-        if(filePath.trimmed().isNull()) return;
-
-        if( !WriteFile::Lists2txt(filePath, true) ){
-            QMessageBox msg(this);
-            msg.setText(lan("保存失败", "no salvar"));
-            msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-            return;
-        }
-    }
-}
-
-
-/* Read Lists file from a new path
- */
-void MainWindow::on_read_lists_from_new_file_btn_clicked()
-{
-    QFileDialog fileDialog;
-    fileDialog.setNameFilter("Text files (*.txt)");
-    fileDialog.setAcceptMode(QFileDialog::AcceptSave);
-    fileDialog.setDefaultSuffix("txt");
-    QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
-    fileDialog.setDirectory(desktopPath);
-    fileDialog.setFileMode(QFileDialog::ExistingFile);
-
-    if (fileDialog.exec())
-    {
-        // Get the selected file
-        QString fileName = fileDialog.selectedFiles().at(0);
-
-        if(fileName.trimmed().isNull()){
-            QMessageBox msg(this);
-            msg.setText(lan(READ_FAIL_MSG_CN, READ_FAIL_MSG_CN));
-            msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-            return;
-        }
-
-        // clear the memory of inventory
-        lists.clear();
-
-        // read the file
-        if( !ReadFile::read_Lists_txt_File(fileName, true) ){
-            QMessageBox* msgBox = new QMessageBox(this);
-            msgBox->setAttribute(Qt::WA_DeleteOnClose);
-            msgBox->setIcon(QMessageBox::Warning);
-            msgBox->setText(lan(READ_FAIL_MSG_CN, READ_FAIL_MSG_CN));
-            msgBox->setStandardButtons(QMessageBox::Ok);
-            msgBox->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-            msgBox->exec();
-            return;
-        }
-
-        QMessageBox* msgBox = new QMessageBox(this);
-        msgBox->setAttribute(Qt::WA_DeleteOnClose);
-        msgBox->setIcon(QMessageBox::Warning);
-        msgBox->setText(lan(READ_SUCCESS_MSG_CN, READ_SUCCESS_MSG_SPAN));
-        msgBox->setStandardButtons(QMessageBox::Ok);
-        msgBox->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-        msgBox->exec();
-    }
-}
-
-
 // when user clicks on the textEdit
 void MainWindow::on_search_model_result_Table_itemSelectionChanged()
 {
@@ -825,4 +742,20 @@ void MainWindow::on_search_container_result_Table_itemSelectionChanged()
     this->show_selected_container();
 }
 
+
+// 备份整个清单文件夹到用户指定的位置
+void MainWindow::on_button_save_lists_clicked()
+{
+    QString destinationPath = QFileDialog::getExistingDirectory(this, lan("选择目标位置", "Seleccione la ubicación de destino"));
+
+    if (!destinationPath.isEmpty()) {
+        QString sourceFolder = GlobalVars::Lists_DirName; // Specify your source folder here
+
+        copyFolder(sourceFolder, destinationPath);
+        QMessageBox::information(this, "Success", "Folder copied successfully!");
+    }
+    else{
+        // do nothing
+    }
+}
 

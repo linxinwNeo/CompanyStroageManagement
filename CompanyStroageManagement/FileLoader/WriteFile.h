@@ -2,6 +2,7 @@
 #define WRITEFILE_H
 
 #include <QString>
+#include "DataStructures/List.h"
 
 class WriteFile {
 public:
@@ -14,13 +15,14 @@ public:
     static bool Inventory2Txt(const QString& path, const bool save_path);
     static bool Inventory2Xlsx(const QString& path, const bool save_path);
 
-    static bool Lists2txt(const bool save_path);
-    static bool Lists2txt(const QString& path, const bool save_path);
-
     static bool update_BackUpDate();
     static bool save_BackUp_files(const bool save_path);
 
     static bool save_settings_file();
+
+    static bool Save_list(const ListPtr list);
 };
+
+void copyFolder(const QString &sourceFolder, const QString &destinationFolder);
 
 #endif // WRITEFILE_H
