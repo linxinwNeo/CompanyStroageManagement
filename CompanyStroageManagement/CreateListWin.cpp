@@ -176,7 +176,7 @@ void CreateListWin::on_generatePDF_btn_clicked()
 
     QMessageBox::StandardButton reply = QMessageBox::question(this, PDF_MSG_1, PDF_MSG_2,
                                                               QMessageBox::Yes|QMessageBox::No);
-    if (reply == QMessageBox::No) goto Finish; // return if the user says no
+    if (reply == QMessageBox::No) goto Fail; // return if the user says no
 
     this->list = ListPtr(new List());
     
@@ -208,8 +208,7 @@ void CreateListWin::on_generatePDF_btn_clicked()
         filePath = saveFileDialog.selectedFiles().at(0).trimmed();
     }
 
-    if(filePath.isEmpty()) goto Finish;
-
+    if(filePath.isEmpty()) goto Fail;
     // create PDF file
     create_pdf(filePath, this->list);
 
@@ -226,7 +225,7 @@ void CreateListWin::on_generatePDF_btn_clicked()
     this->on_model_code_for_search_LE_textChanged(this->ui->model_code_for_search_LE->text()); // 更新<search_models_table>
     this->selected_model_in_search_table = nullptr; // reset selected model
 
-Finish:
+Success:
     // save the inventory and lists
     WriteFile::SaveInventoryAuto(false);
 
@@ -236,6 +235,10 @@ Finish:
 
     // reset client information
     this->clear_client_info();
+    return;
+
+Fail:
+    return;
 }
 
 
