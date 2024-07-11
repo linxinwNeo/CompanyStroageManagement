@@ -9,7 +9,7 @@ QString GlobalVars::BackUP_DirName = "./backUps";
 QString GlobalVars::BackUP_FileName = "BackUpDate.txt";
 unsigned int GlobalVars::backup_every_n_days = 1;
 
-QString GlobalVars::Lists_DirName = "./ListsRecords";
+QString GlobalVars::Lists_DirName = "ListsRecords";
 
 QString GlobalVars::Settings_FileName = "settings.txt";
 

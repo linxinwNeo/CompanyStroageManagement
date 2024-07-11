@@ -32,7 +32,7 @@ void ListManager::update_max_id()
 {
     static QRegularExpressionMatch match;
 
-    QString folderPath = GlobalVars::Lists_DirName;
+    QString folderPath = "./" + GlobalVars::Lists_DirName;
     QDir directory(folderPath);
     // Get the list of all files in the directory
     QStringList files = directory.entryList(QDir::Files);
@@ -55,11 +55,14 @@ void ListManager::update_max_id()
 void ListManager::create_list(ListPtr list_2be_added)
 {
     if(list_2be_added.isNull()){
-        write_error_file("Lists::add_list: trying to add a null list");
+        write_error_file("ListManager::create_list: trying to add a null list");
         return;
     }
 
-    WriteFile::Save_list(list_2be_added);
+    if(!WriteFile::Save_list(list_2be_added)){
+        write_error_file("ListManager::create_list: fail to save a list");
+        return;
+    }
 
     this->update_max_id();
 }
@@ -69,7 +72,7 @@ void ListManager::create_list(ListPtr list_2be_added)
 void ListManager::delete_list(const unsigned long id)
 {
     // create the path
-    const QString filePath = GlobalVars::Lists_DirName + "/" +
+    const QString filePath = "./" + GlobalVars::Lists_DirName + "/" +
                        QString::number(id) + ".txt";
 
     QFile file(filePath);
@@ -112,7 +115,7 @@ void ListManager::get_lists(const QString id_prefix, QVector<ListPtr>& candidate
 
     static QRegularExpressionMatch match;
 
-    QString folderPath = GlobalVars::Lists_DirName;
+    QString folderPath = "./" + GlobalVars::Lists_DirName;
     QDir directory(folderPath);
     // Get the list of all files in the directory
     QStringList files = directory.entryList(QDir::Files);

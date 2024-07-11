@@ -50,8 +50,9 @@ private slots:
 
     void on_list_id_2be_searched_LE_textChanged(const QString &arg1);
     void on_search_result_Table_cellClicked(int row, int column);
-    void on_delete_list_btn_clicked();
-    void on_put_back_list_btn_clicked();
+    void on_pushButton_delete_list_clicked();
+    void on_pushButton_put_back_list_clicked();
+    void on_pushButton_createPDF_clicked();
 };
 
 #endif // SEARCH_LIST_WIN_H

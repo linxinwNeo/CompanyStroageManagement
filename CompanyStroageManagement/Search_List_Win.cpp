@@ -1,12 +1,16 @@
 #include "Search_List_Win.h"
-#include "LanguageStrings.h"
-#include "FileLoader/WriteFile.h"
-#include "GlobalVars.h"
 #include "ui_Search_List_Win.h"
 
 #include <QMessageBox>
 #include <QCloseEvent>
+#include <QFileDialog>
+#include <QStandardPaths>
+
 #include "mainwindow.h"
+#include "FileLoader/WriteFile.h"
+#include "GlobalVars.h"
+#include "LanguageStrings.h"
+#include "Others/create_pdf.h"
 
 Search_List_Win::Search_List_Win(QWidget *parent) :
     QWidget(parent),
@@ -142,9 +146,9 @@ void Search_List_Win::set_GUI_Language()
 
     this->ui->list_items_GB->setTitle(lan("清单里的货物", "Mercancías en la lista"));
 
-    this->ui->delete_list_btn->setText(lan("删除此清单（不退还库存）", "Eliminar esta lista (sin devolver al inventario)"));
+    this->ui->pushButton_delete_list->setText(lan("删除此清单（不退还库存）", "Eliminar esta lista (sin devolver al inventario)"));
 
-    this->ui->put_back_list_btn->setText(lan("退回清单（返还库存）", "Devolver la lista (reintegrar al inventario)"));
+    this->ui->pushButton_put_back_list->setText(lan("退回清单（返还库存）", "Devolver la lista (reintegrar al inventario)"));
 
 
     // 设置 selected_list_entries_Table 的语言
@@ -277,7 +281,7 @@ Finish:
 
 
 // delete the selected list
-void Search_List_Win::on_delete_list_btn_clicked()
+void Search_List_Win::on_pushButton_delete_list_clicked()
 {
     QMessageBox msg;
     msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
@@ -314,7 +318,7 @@ Finish:
 
 
 // put back the list, put back all its items
-void Search_List_Win::on_put_back_list_btn_clicked()
+void Search_List_Win::on_pushButton_put_back_list_clicked()
 {
     QMessageBox msg;
     msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
@@ -354,5 +358,54 @@ void Search_List_Win::on_put_back_list_btn_clicked()
 
 Finish:
     this->selected_list = nullptr;
+}
+
+
+// 生成一个pdf文件
+void Search_List_Win::on_pushButton_createPDF_clicked()
+{
+    if(this->selected_list.isNull()){
+        QMessageBox msg;
+        msg.setText(lan("必须先选中一个清单！", "¡Primero tienes que revisar una lista!"));
+        msg.exec();
+        return;
+    }
+
+    QString filePath;
+    QMessageBox Msgbox;
+    QFileDialog saveFileDialog;
+    QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
+
+
+
+    // ask for the path to store the file
+    saveFileDialog.setFileMode(QFileDialog::AnyFile);
+    saveFileDialog.setDirectory(desktopPath);
+    saveFileDialog.setWindowTitle(lan(WHERE_TO_SAVE_FILE_MESSAGE_CN, WHERE_TO_SAVE_FILE_MESSAGE_SPAN));
+    saveFileDialog.setDefaultSuffix("pdf");
+    saveFileDialog.setNameFilter("PDF (*.pdf)");
+    saveFileDialog.setAcceptMode(QFileDialog::AcceptSave);
+
+    if (saveFileDialog.exec()) {
+        // Do something with the selected file
+        filePath = saveFileDialog.selectedFiles().at(0).trimmed();
+    }
+
+    if(filePath.isEmpty()) goto Fail;
+
+    // create PDF file
+    create_pdf(filePath, this->selected_list);
+
+    goto Success;
+
+
+Success:
+    // display creation success
+    Msgbox.setText(lan("PDF创建成功！", "¡El PDF ha sido creado con éxito!"));
+    Msgbox.exec();
+    return;
+
+Fail:
+    return;
 }
 

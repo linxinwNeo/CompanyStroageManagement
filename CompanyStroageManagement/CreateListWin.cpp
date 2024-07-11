@@ -225,6 +225,8 @@ void CreateListWin::on_generatePDF_btn_clicked()
     this->on_model_code_for_search_LE_textChanged(this->ui->model_code_for_search_LE->text()); // 更新<search_models_table>
     this->selected_model_in_search_table = nullptr; // reset selected model
 
+    goto Success;
+
 Success:
     // save the inventory and lists
     WriteFile::SaveInventoryAuto(false);
@@ -640,3 +642,11 @@ void CreateListWin::on_searched_models_table_itemSelectionChanged()
     this->setEnabled(true);
 }
 
+
+void CreateListWin::clear_table()
+{
+    this->ui->model_code_for_search_LE->setText("");
+    this->on_model_code_for_search_LE_textChanged("");
+
+    this->added_models_table->clearContents();
+}

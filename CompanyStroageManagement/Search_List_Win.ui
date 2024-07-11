@@ -697,7 +697,20 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
           <number>3</number>
          </property>
          <item>
-          <widget class="QPushButton" name="delete_list_btn">
+          <widget class="QPushButton" name="pushButton_createPDF">
+           <property name="maximumSize">
+            <size>
+             <width>300</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>生成PDF</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_delete_list">
            <property name="maximumSize">
             <size>
              <width>300</width>
@@ -710,7 +723,7 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="put_back_list_btn">
+          <widget class="QPushButton" name="pushButton_put_back_list">
            <property name="maximumSize">
             <size>
              <width>300</width>

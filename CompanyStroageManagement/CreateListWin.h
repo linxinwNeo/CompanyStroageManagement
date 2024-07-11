@@ -40,6 +40,8 @@ public:
 
     void clear_client_info();
 
+    void clear_table();
+
 private slots:
     void closeEvent (QCloseEvent *event);
 

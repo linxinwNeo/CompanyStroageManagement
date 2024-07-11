@@ -53,13 +53,13 @@ bool WriteFile::Save_list(const ListPtr list){
     QString fileName = QString::number(list->id);
     QDir DirMaker;
 
-    bool success = DirMaker.mkpath(GlobalVars::Lists_DirName);
+    bool success = DirMaker.mkpath("./" + GlobalVars::Lists_DirName);
     if(!success){
-        write_error_file("WriteFile::Save_list: couldn't create the folder: " + GlobalVars::Lists_DirName);
+        write_error_file("WriteFile::Save_list: couldn't create the folder: ./" + GlobalVars::Lists_DirName);
         return false;
     }
 
-    QString path_to_list_file = GlobalVars::Lists_DirName + "/" + fileName + ".txt";
+    QString path_to_list_file = "./" + GlobalVars::Lists_DirName + "/" + fileName + ".txt";
 
     QFile file(path_to_list_file);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)){

@@ -527,6 +527,8 @@ void MainWindow::on_new_list_btn_clicked()
     this->CreateListWinPtr.set_GUI_Language();
     this->CreateListWinPtr.setWindow();
 
+    this->CreateListWinPtr.clear_table();
+
     this->CreateListWinPtr.show();
 
     this->hide();
@@ -751,8 +753,8 @@ void MainWindow::on_button_save_lists_clicked()
     if (!destinationPath.isEmpty()) {
         QString sourceFolder = GlobalVars::Lists_DirName; // Specify your source folder here
 
-        copyFolder(sourceFolder, destinationPath);
-        QMessageBox::information(this, "Success", "Folder copied successfully!");
+        copyFolder(sourceFolder, destinationPath + "/" + GlobalVars::Lists_DirName);
+        QMessageBox::information(this, "Success", lan("文件夹复制成功！", "¡Carpeta copiada con éxito!"));
     }
     else{
         // do nothing

@@ -278,7 +278,7 @@ bool ReadFile::read_settings_file()
 
 
 bool ReadFile::Read_list(const unsigned long & list_id, ListPtr& list){
-    QString path_to_list_file = GlobalVars::Lists_DirName + "/" +
+    QString path_to_list_file = "./" + GlobalVars::Lists_DirName + "/" +
                                 QString::number(list_id) + ".txt";
 
     QFile file(path_to_list_file);
