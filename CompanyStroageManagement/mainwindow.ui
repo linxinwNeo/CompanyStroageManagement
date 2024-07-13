@@ -69,6 +69,13 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
                 </property>
                </widget>
               </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_search_model">
+                <property name="text">
+                 <string>搜索</string>
+                </property>
+               </widget>
+              </item>
              </layout>
             </widget>
            </item>
@@ -1323,15 +1330,16 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
     </property>
     <addaction name="action_Save_Inventory"/>
    </widget>
-   <widget class="QMenu" name="menu">
+   <widget class="QMenu" name="OthersMenu">
     <property name="title">
      <string>其他</string>
     </property>
     <addaction name="actionChangePassword"/>
+    <addaction name="actionSearchClient"/>
    </widget>
    <addaction name="LanguageMenu"/>
    <addaction name="FileMenu"/>
-   <addaction name="menu"/>
+   <addaction name="OthersMenu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionChinese">
@@ -1359,17 +1367,22 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
     <string>改密码</string>
    </property>
   </action>
+  <action name="actionSearchClient">
+   <property name="text">
+    <string>查询客户</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>EnglishSpinBox</class>
-   <extends>QSpinBox</extends>
-   <header>CustomWidgets/EnglishSpinBox.h</header>
-  </customwidget>
   <customwidget>
    <class>EnglishDoubleSpinBox</class>
    <extends>QDoubleSpinBox</extends>
    <header>CustomWidgets/EnglishDoubleSpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>EnglishSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>CustomWidgets/EnglishSpinBox.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

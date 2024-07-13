@@ -48,7 +48,7 @@ bool WriteFile::SaveInventoryAuto(const QString &path, const bool save_path)
 
 
 // 保存一个list文件
-bool WriteFile::Save_list(const ListPtr list){
+bool WriteFile::Save_List(const ListPtr list){
     // now, output the list content
     QString fileName = QString::number(list->id);
     QDir DirMaker;
@@ -78,17 +78,18 @@ bool WriteFile::Save_list(const ListPtr list){
     out << list->datetime_created->toString(GlobalVars::DateTimeFormat) << split_item;
 
     // output client_info
-    out << list->client_info.CLIENTE << split_item // 2
-        << list->client_info.DOMICILIO << split_item // 3
-        << list->client_info.CIUDAD << split_item // 4
-        << list->client_info.RFC << split_item // 5
-        << list->client_info.AGENTE << split_item // 6
-        << list->client_info.CONDICIONES << split_item // 7
-        << list->client_info.TOTAL_NUM_BOXES << split_item // 8
-        << list->client_info.DISCOUNT << split_item; // 9
+    out << list->client_info.m_ID << split_item // 2
+        << list->client_info.m_clientName << split_item // 3
+        << list->client_info.m_DOMICILIO << split_item // 4
+        << list->client_info.m_CIUDAD << split_item // 5
+        << list->client_info.m_RFC << split_item // 6
+        << list->client_info.m_AGENTE << split_item // 7
+        << list->client_info.m_CONDICIONES << split_item // 8
+        << list->client_info.m_TOTAL_NUM_BOXES << split_item // 9
+        << list->client_info.m_DISCOUNT << split_item; // 10
 
     // output num of models in the list
-    out << list->num_model_types() << "\n"; // 10
+    out << list->num_model_types() << "\n"; // 11
 
     for(EntryPtr& entry : list->entryList.entries){
         out << entry->MODEL_CODE << split_item // 0. 货号
@@ -99,13 +100,45 @@ bool WriteFile::Save_list(const ListPtr list){
             << entry->Description_CN << split_item // 5. 品名（中文）
             << entry->PRICE_PER_PIECE << split_item // 6. 单价
             << entry->TOTAL // 7. 总价
-            << "\n"; // 换行
+            << "\n";
     }
 
     file.close();
 
     return true;
 }
+
+
+bool WriteFile::Save_Clients()
+{
+    QString path_to_clients_file = "./" + GlobalVars::Clients_FileName;
+    QFile file(path_to_clients_file);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)){
+        write_error_file("WriteFile::Save_Clients: couldn't create the file: " + path_to_clients_file + " \n");
+        return false;
+    }
+
+    QTextStream out(&file);
+
+    out << clientManager.num_clients() << "\n"; // 客户数量
+
+    for(const QSharedPointer<Client>& client : clientManager.clients){
+        // output client
+        out << client->m_ID << split_item         // 输出客户号码
+            << client->m_clientName << split_item // 客户名
+            << client->m_DOMICILIO << split_item // 3
+            << client->m_CIUDAD << split_item // 4
+            << client->m_RFC << split_item // 5
+            << client->m_AGENTE << split_item // 6
+            << client->m_CONDICIONES // 7
+            << "\n";
+    }
+
+    file.close();
+
+    return true;
+}
+
 
 bool WriteFile::Inventory2Txt(const QString &path, const bool save_path)
 {

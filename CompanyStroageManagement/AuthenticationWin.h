@@ -15,6 +15,9 @@ public:
     explicit AuthenticationWin(QWidget *parent = nullptr);
     ~AuthenticationWin();
 
+    void set_GUI_Language();
+    void setWindow();
+
     bool password_correct;
 private slots:
     void on_buttonBox_accepted();
@@ -23,6 +26,9 @@ private slots:
 
 private:
     Ui::AuthentucationWin *ui;
+
+    const float widthRatio = 0.2;
+    const float heightRatio = 0.2;
 };
 
 #endif // AUTHENTICATIONWIN_H

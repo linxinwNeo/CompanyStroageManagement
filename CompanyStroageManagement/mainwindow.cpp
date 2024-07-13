@@ -83,7 +83,7 @@ void MainWindow::clear_search_container_result_table()
 // update the GUI
 void MainWindow::update_GUI()
 {
-    this->on_search_MODELCODE_LE_textChanged(this->ui->search_MODELCODE_LE->text());
+    this->on_pushButton_search_model_clicked();
     this->on_search_CONTAINER_ID_LE_textChanged(this->ui->search_CONTAINER_ID_LE->text());
 }
 
@@ -103,7 +103,7 @@ void MainWindow::setLanguage()
     this->ui->search_MODELCODE_LE->setPlaceholderText(lan("在此输入需要查询的货号", "Introduzca aquí el número de artículo sobre el que desea realizar la consulta"));
     this->ui->search_model_result_GB->setTitle(lan("货物查询结果", "Resultados de la consulta sobre cargas"));
 
-    this->ui->search_model_result_Table->setHorizontalHeaderLabels(GlobalVars::table_headers_model);
+    this->ui->search_model_result_Table->setHorizontalHeaderLabels(GlobalVars::table_headers_model());
 
     this->ui->selected_model_GB->setTitle(lan("选中的货物", "las mercancías seleccionadas"));
 
@@ -133,11 +133,11 @@ void MainWindow::setLanguage()
     this->ui->search_CONTAINER_ID_LE->setPlaceholderText(none);
     this->ui->search_container_result_GB->setTitle(lan("搜索结果", "resultados de búsqueda"));
 
-    this->ui->search_container_result_Table->setHorizontalHeaderLabels(GlobalVars::table_headers_container);
+    this->ui->search_container_result_Table->setHorizontalHeaderLabels(GlobalVars::table_headers_container());
 
     this->ui->selected_container_GB->setTitle(lan("该集装箱的货物", "la mercancía en este contenedor"));
 
-    this->ui->selected_container_models_Table->setHorizontalHeaderLabels(GlobalVars::table_headers_model);
+    this->ui->selected_container_models_Table->setHorizontalHeaderLabels(GlobalVars::table_headers_model());
 
     this->ui->start_add_model_btn->setText(lan("添加新货物", "añadir nueva mercancía"));
 
@@ -158,6 +158,12 @@ void MainWindow::setLanguage()
     this->ui->action_Save_Lists->setText(lan("保存清单历史文件", "Guardar archivo de historial de listas"));
 
     this->ui->actionChangePassword->setText(lan("改密码", "Cambia tu contraseña"));
+
+    this->ui->pushButton_search_model->setText(lan("搜索", "Buscar"));
+
+    this->ui->actionSearchClient->setText(lan("查询客户", "Preguntar por el cliente"));
+
+    this->ui->OthersMenu->setTitle(lan("其他", "Otro"));
 
 }
 
@@ -288,63 +294,6 @@ void MainWindow::closeEvent (QCloseEvent *event)
 void MainWindow::set_as_front_window()
 {
     this->show();
-}
-
-
-/* the user is typing in MODELCODE, we need to search the models starting with the same string and display them in
- *  the searchResult table */
-void MainWindow::on_search_MODELCODE_LE_textChanged(const QString& new_str)
-{
-    this->setDisabled(true);
-
-    this->clear_selected_model();
-
-    QString userInput = new_str; // remove useless empty spaces 货号基本大写
-    QVector<ModelPtr> models; // will hold the models that has MODELCODE starts with new_str
-
-    auto table = this->ui->search_model_result_Table;
-    this->clear_search_model_result_table();
-
-    table->clearContents(); // clear the table contents but columns are reserved
-    table->setRowCount(0);
-    if(userInput.isEmpty()){
-        // if input is empty, empty the table and return
-        goto Ret;
-    }
-
-    inventory.searchModel_starts_with(userInput, models);
-
-    // for each model, make a row for it
-    for( unsigned long row = 0; row < models.size(); row++ ){
-        const ModelPtr model = models[row];
-
-        table->insertRow(table->rowCount());
-
-        QVector<QString> items;
-        model->searchResult_Regular(items);
-
-        for( unsigned long col = 0; col < items.size(); col++ ){
-            if (col == 2 || col == 3) { // Replace with QTextEdit when displaying descriptions
-                QTextEdit *textEdit = new QTextEdit();
-                textEdit->setPlainText(items[col]);
-                textEdit->setReadOnly(true); // Optionally make it read-only
-
-                // Set QTextEdit as the cell widget
-                table->setCellWidget(row, col, textEdit);
-            } else {
-                QTableWidgetItem *tableWidgetItem = new QTableWidgetItem();
-                tableWidgetItem->setText( items[col] );
-
-                tableWidgetItem->setTextAlignment(Qt::AlignVCenter);
-
-                table->setItem(row, col, tableWidgetItem);
-            }
-        }
-    }
-
-Ret:
-    this->setEnabled(true);
-    this->ui->search_MODELCODE_LE->setFocus();
 }
 
 
@@ -527,7 +476,7 @@ void MainWindow::on_new_list_btn_clicked()
     this->CreateListWinPtr.set_GUI_Language();
     this->CreateListWinPtr.setWindow();
 
-    this->CreateListWinPtr.clear_table();
+    this->CreateListWinPtr.clear_tables();
 
     this->CreateListWinPtr.show();
 
@@ -541,7 +490,7 @@ void MainWindow::on_search_past_list_btn_clicked()
     this->SearchListWinPtr.setWindow();
     this->SearchListWinPtr.set_GUI_Language();
 
-    this->SearchListWinPtr.update_search_result_Table();
+    this->SearchListWinPtr.clear_tables();
 
     this->SearchListWinPtr.show();
 
@@ -609,7 +558,7 @@ void MainWindow::on_save_inventory_2_new_file_btn_clicked()
 
         if(filePath.trimmed().isNull()) return;
 
-        if( WriteFile::SaveInventoryAuto(filePath, true) )
+        if( WriteFile::SaveInventoryAuto(filePath, false) )
         {
             QMessageBox msg(this);
             msg.setText(lan("保存成功", "Salvar con éxito"));
@@ -690,8 +639,8 @@ bool MainWindow::is_time_for_backup() const
         QDateTime prev_DateTime = QDateTime::fromString(line, GlobalVars::DateTimeFormat_for_backup_file);
         if(prev_DateTime.isValid()){
             QDateTime curDateTime = QDateTime::currentDateTime();
-            unsigned int days = prev_DateTime.daysTo(curDateTime);
-            if(days > GlobalVars::backup_every_n_days){
+            unsigned int hours = prev_DateTime.secsTo(curDateTime) / 3600; // compute hours since last time
+            if(hours > GlobalVars::backup_every_n_hours){
                 return true;
             }
             else
@@ -759,5 +708,63 @@ void MainWindow::on_button_save_lists_clicked()
     else{
         // do nothing
     }
+}
+
+
+void MainWindow::on_pushButton_search_model_clicked()
+{
+    this->setDisabled(true);
+
+    this->clear_selected_model();
+
+    QString userInput = this->ui->search_MODELCODE_LE->text(); // remove useless empty spaces 货号基本大写
+    QVector<ModelPtr> models; // will hold the models that has MODELCODE starts with new_str
+
+    auto table = this->ui->search_model_result_Table;
+    this->clear_search_model_result_table();
+
+    table->clearContents(); // clear the table contents but columns are reserved
+    table->setRowCount(0);
+    if(userInput.isEmpty()){
+        // if input is empty, empty the table and return
+        goto Ret;
+    }
+
+    inventory.searchModel_starts_with(userInput, models);
+
+    if(models.size() > 1000) QMessageBox::information(this, lan("搜索进行中", "La búsqueda está en curso"),
+                                 lan("搜索可能需要花一些时间，请稍等。", "La búsqueda puede llevar algún tiempo, así que espere."));
+
+    // for each model, make a row for it
+    for( unsigned long row = 0; row < models.size(); row++ ){
+        const ModelPtr model = models[row];
+
+        table->insertRow(table->rowCount());
+
+        QVector<QString> items;
+        model->searchResult_Regular(items);
+
+        for( unsigned long col = 0; col < items.size(); col++ ){
+            if (col == 2 || col == 3) { // Replace with QTextEdit when displaying descriptions
+                QTextEdit *textEdit = new QTextEdit();
+                textEdit->setPlainText(items[col]);
+                textEdit->setReadOnly(true); // Optionally make it read-only
+
+                // Set QTextEdit as the cell widget
+                table->setCellWidget(row, col, textEdit);
+            } else {
+                QTableWidgetItem *tableWidgetItem = new QTableWidgetItem();
+                tableWidgetItem->setText( items[col] );
+
+                tableWidgetItem->setTextAlignment(Qt::AlignVCenter);
+
+                table->setItem(row, col, tableWidgetItem);
+            }
+        }
+    }
+
+Ret:
+    this->setEnabled(true);
+    this->ui->search_MODELCODE_LE->setFocus();
 }
 

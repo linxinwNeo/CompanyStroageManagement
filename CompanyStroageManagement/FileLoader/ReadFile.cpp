@@ -14,7 +14,7 @@
 
 ReadFile::ReadFile()
 {
-    inventory = Inventory();
+
 }
 
 ReadFile::~ReadFile()
@@ -277,13 +277,13 @@ bool ReadFile::read_settings_file()
 }
 
 
-bool ReadFile::Read_list(const unsigned long & list_id, ListPtr& list){
+bool ReadFile::Read_List(const unsigned long & list_id, ListPtr& list){
     QString path_to_list_file = "./" + GlobalVars::Lists_DirName + "/" +
                                 QString::number(list_id) + ".txt";
 
     QFile file(path_to_list_file);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)){
-        write_error_file("ReadFile::Read_list: couldn't create the file: " + path_to_list_file + " \n");
+        write_error_file("ReadFile::Read_List: couldn't read the file: " + path_to_list_file + " \n");
         return false;
     }
 
@@ -292,37 +292,71 @@ bool ReadFile::Read_list(const unsigned long & list_id, ListPtr& list){
     QStringList items = in.readLine().trimmed().split(split_item);
     // read list id
     list = ListPtr (new List());
-    list->id = items[0].toULong();
+
+    int idx = 0;
+
+    list->id = items[idx++].toULong();
     list->datetime_created = QSharedPointer<QDateTime>::create(
-        QDateTime::fromString(items[1], GlobalVars::DateTimeFormat)
+        QDateTime::fromString(items[idx++], GlobalVars::DateTimeFormat)
         );
 
-    list->client_info.CLIENTE = items[2];
-    list->client_info.DOMICILIO = items[3];
-    list->client_info.CIUDAD = items[4];
-    list->client_info.RFC = items[5];
-    list->client_info.AGENTE = items[6];
-    list->client_info.CONDICIONES = items[7];
-    list->client_info.TOTAL_NUM_BOXES = items[8].toDouble();
-    list->client_info.DISCOUNT = items[9].toDouble();
-    unsigned long num_model_types = items[10].toDouble();
+    list->client_info.m_ID = items[idx++];
+    list->client_info.m_clientName = items[idx++];
+    list->client_info.m_DOMICILIO = items[idx++];
+    list->client_info.m_CIUDAD = items[idx++];
+    list->client_info.m_RFC = items[idx++];
+    list->client_info.m_AGENTE = items[idx++];
+    list->client_info.m_CONDICIONES = items[idx++];
+    list->client_info.m_TOTAL_NUM_BOXES = items[idx++].toDouble();
+    list->client_info.m_DISCOUNT = items[idx++].toDouble();
+    const unsigned long num_model_types = items[idx++].toDouble();
 
     list->entryList.entries.reserve(num_model_types);
 
     for(unsigned long i = 0; i < num_model_types; i++){
         EntryPtr entry(new Entry());
         QStringList entryItems = in.readLine().trimmed().split(split_item);
-        entry->MODEL_CODE = entryItems[0];
-        entry->ContainerID = entryItems[1];
-        entry->NUM_PIECES = entryItems[2].toULong();
-        entry->NUM_PIECES_PER_BOX = entryItems[3].toULong();
-        entry->Description_SPAN = entryItems[4];
-        entry->Description_CN = entryItems[5];
-        entry->PRICE_PER_PIECE = entryItems[6].toDouble();
-        entry->TOTAL = entryItems[7].toDouble();
+
+        idx = 0;
+        entry->MODEL_CODE = entryItems[idx++];
+        entry->ContainerID = entryItems[idx++];
+        entry->NUM_PIECES = entryItems[idx++].toULong();
+        entry->NUM_PIECES_PER_BOX = entryItems[idx++].toULong();
+        entry->Description_SPAN = entryItems[idx++];
+        entry->Description_CN = entryItems[idx++];
+        entry->PRICE_PER_PIECE = entryItems[idx++].toDouble();
+        entry->TOTAL = entryItems[idx++].toDouble();
         list->add_item(entry);
     }
 
     file.close();
+    return true;
+}
+
+
+bool ReadFile::Read_Clients()
+{
+    QString path_to_clients_file = "./" + GlobalVars::Clients_FileName;
+
+    QFile file(path_to_clients_file);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)){
+        return false;
+    }
+
+    QTextStream in(&file);
+    unsigned long num_clients = in.readLine().trimmed().toULong();
+    clientManager.reserve(num_clients + 1);
+
+    for(unsigned long i = 0; i < num_clients; i++){
+        QStringList clientInfo = in.readLine().trimmed().split(split_item);
+
+        QSharedPointer<Client> client = QSharedPointer<Client>::create( Client(
+            clientInfo[0], clientInfo[1], clientInfo[2], clientInfo[3],
+            clientInfo[4], clientInfo[5], clientInfo[6]
+            ) );
+
+        clientManager.add_client(client);
+    }
+
     return true;
 }

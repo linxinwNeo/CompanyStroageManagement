@@ -27,7 +27,7 @@ public:
 
     void reset_selected_list_info();
     
-    void update_search_result_Table();
+    void clear_tables();
 
     void set_GUI_Language();
     void setWindow();
@@ -48,11 +48,13 @@ private:
 private slots:
     void closeEvent (QCloseEvent *event);
 
-    void on_list_id_2be_searched_LE_textChanged(const QString &arg1);
     void on_search_result_Table_cellClicked(int row, int column);
     void on_pushButton_delete_list_clicked();
     void on_pushButton_put_back_list_clicked();
     void on_pushButton_createPDF_clicked();
+    void on_pushButton_SearchListsByListIDPrefix_clicked();
+    void on_pushButton_SearchListsByClientIDPrefix_clicked();
+    void on_pushButton_SearchListsByClientNamePrefix_clicked();
 };
 
 #endif // SEARCH_LIST_WIN_H

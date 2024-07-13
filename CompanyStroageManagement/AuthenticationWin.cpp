@@ -2,6 +2,7 @@
 #include "ui_AuthenticationWin.h"
 
 #include <QMessageBox>
+#include <QScreen>
 #include "GlobalVars.h"
 
 AuthenticationWin::AuthenticationWin(QWidget *parent)
@@ -11,12 +12,38 @@ AuthenticationWin::AuthenticationWin(QWidget *parent)
     ui->setupUi(this);
 
     password_correct = false;
+
+    this->set_GUI_Language();
+
+    this->setWindow();
 }
 
 AuthenticationWin::~AuthenticationWin()
 {
     delete ui;
 }
+
+
+void AuthenticationWin::setWindow()
+{
+    QScreen *screen = QApplication::screens().at(0);
+    QRect screenSize = screen->availableGeometry();
+
+    int width = static_cast<int>(screenSize.width() * widthRatio);
+    int height = static_cast<int>(screenSize.height() * heightRatio);
+
+    this->resize(width, height);
+
+    this->move(screenSize.width() / 2 - width / 2, screenSize.height() / 2 - height / 2);
+}
+
+
+// set language according to the current language
+void AuthenticationWin::set_GUI_Language()
+{
+    this->ui->lineEdit_password->setPlaceholderText(lan("请在此输入密码","Por favor, introduzca su contraseña aquí"));
+}
+
 
 void AuthenticationWin::on_buttonBox_accepted()
 {

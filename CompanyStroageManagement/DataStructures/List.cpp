@@ -33,7 +33,7 @@ void List::total(double &p1, double &p2) const
         p1 += (entry->TOTAL);
     }
 
-    p2 = (p1 * (1. - this->client_info.DISCOUNT) );
+    p2 = (p1 * (1. - this->client_info.m_DISCOUNT) );
 }
 
 
@@ -86,12 +86,12 @@ QVector<QString> List::describe_this_list() const
     }
     items[1] = this->datetime_created->toString(GlobalVars::DateTimeFormat);
 
-    items[2] = QString::number(this->total_num_boxes(), 'f', 2);
+    items[2] = GlobalVars::locale.toString(this->total_num_boxes(), 'f', 2);
     double p1, p2;
     p1 = p2 = 0;
     this->total(p1, p2);
-    items[3] = QString::number(p2, 'f', 2);
-    items[4] = this->client_info.CLIENTE;
+    items[3] = GlobalVars::locale.toString(p2, 'f', 2);
+    items[4] = this->client_info.m_clientName;
 
     return items;
 }

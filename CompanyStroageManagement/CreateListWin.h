@@ -40,15 +40,15 @@ public:
 
     void clear_client_info();
 
-    void clear_table();
+    void clear_tables();
+
+    void set_clientInfo(QSharedPointer<Client> client);
 
 private slots:
     void closeEvent (QCloseEvent *event);
 
     void on_generatePDF_btn_clicked();
     void on_previewList_btn_clicked();
-
-    void on_model_code_for_search_LE_textChanged(const QString &arg1);
 
     void on_add_selected_model_btn_clicked();
 
@@ -65,6 +65,10 @@ private slots:
     void on_pushButton_edit_selected_model_clicked();
 
     void on_searched_models_table_itemSelectionChanged();
+
+    void on_pushButton_autoFill_clicked();
+
+    void on_pushButton_searchModel_clicked();
 
 private:
     void init();

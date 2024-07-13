@@ -53,28 +53,28 @@ void create_pdf(QString filename, ListPtr list)
     QLocale locale(QLocale::English, QLocale::UnitedStates);
 
     // CLIENTE
-    painter.drawText(QPointF(width * 0.13, height * 0.172), client_info.CLIENTE);
+    painter.drawText(QPointF(width * 0.13, height * 0.172), client_info.m_clientName);
 
     // AGENTE
-    painter.drawText(QPointF(width * 0.78, height * 0.168), client_info.AGENTE);
+    painter.drawText(QPointF(width * 0.78, height * 0.168), client_info.m_AGENTE);
 
     // FECHA
     painter.drawText(QPointF(width * 0.78, height * 0.19), currDate(list->datetime_created));
 
     // DOMICILIO
-    painter.drawText(QPointF(width * 0.13, height * 0.212), client_info.DOMICILIO);
+    painter.drawText(QPointF(width * 0.13, height * 0.212), client_info.m_DOMICILIO);
 
     // CIUDAD
-    painter.drawText(QPointF(width * 0.13, height * 0.23), client_info.CIUDAD);
+    painter.drawText(QPointF(width * 0.13, height * 0.23), client_info.m_CIUDAD);
 
     // Hora
     painter.drawText(QPointF(width * 0.78, height * 0.229), currTime(list->datetime_created));
 
     // RFC
-    painter.drawText(QPointF(width * 0.13, height * 0.2475), client_info.RFC);
+    painter.drawText(QPointF(width * 0.13, height * 0.2475), client_info.m_RFC);
 
     // CONDICIONES
-    painter.drawText(QPointF(width * 0.78, height * 0.25), client_info.CONDICIONES);
+    painter.drawText(QPointF(width * 0.78, height * 0.25), client_info.m_CONDICIONES);
 
     double y = height * 0.31;
 
@@ -137,11 +137,11 @@ void create_pdf(QString filename, ListPtr list)
     painter.drawText(QRect(0, height * 0.907, width * 0.95, height * 0.907), locale.toString(total, 'f', 2), option);
 
     // the total number of boxes
-    painter.drawText(QPointF(width * 0.07, height * 0.91), locale.toString(client_info.TOTAL_NUM_BOXES, 'f', 2));
+    painter.drawText(QPointF(width * 0.07, height * 0.91), locale.toString(client_info.m_TOTAL_NUM_BOXES, 'f', 2));
 
     // the discount percent using thinner font
     painter.setFont(non_bold);
-    painter.drawText(QRect(0, height * 0.84, width * 1.01, height * 0.84), "(" + QString::number(client_info.DISCOUNT * 100.) + "%)", option);
+    painter.drawText(QRect(0, height * 0.84, width * 0.8, height * 0.84), "(" + QString::number(client_info.m_DISCOUNT * 100.) + "%)", option);
 
     // cover the old id with white rect
     painter.setBrush(Qt::SolidPattern);

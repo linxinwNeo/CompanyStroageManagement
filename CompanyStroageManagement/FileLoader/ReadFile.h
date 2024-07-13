@@ -23,7 +23,9 @@ public:
 
     static bool read_settings_file();
 
-    static bool Read_list(const unsigned long & id, ListPtr& list);
+    static bool Read_List(const unsigned long & id, ListPtr& list);
+
+    static bool Read_Clients();
 };
 
 #endif //READFILE_H

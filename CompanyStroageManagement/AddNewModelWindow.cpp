@@ -1,9 +1,10 @@
 #include "AddNewModelWindow.h"
+#include "ui_AddNewModelWindow.h"
 #include <QCloseEvent>
+
 #include "LanguageStrings.h"
 #include "FileLoader/WriteFile.h"
 #include "mainwindow.h"
-#include "ui_AddNewModelWindow.h"
 #include "GlobalVars.h"
 
 

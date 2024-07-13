@@ -7,6 +7,7 @@ void MainWindow::on_actionSpanish_triggered()
 {
     GlobalVars::language_option = 1; // spanish is 1
     this->setLanguage();
+    this->SearchClientWinPtr.set_GUI_Language();
 }
 
 
@@ -15,6 +16,7 @@ void MainWindow::on_actionChinese_triggered()
 {
     GlobalVars::language_option = 0; // chinese is 0
     this->setLanguage();
+    this->SearchClientWinPtr.set_GUI_Language();
 }
 
 
@@ -49,4 +51,10 @@ void MainWindow::on_actionChangePassword_triggered()
     this->hide();
 }
 
+
+void MainWindow::on_actionSearchClient_triggered()
+{
+    this->SearchClientWinPtr.setWindowTitle(lan("查询客户","Preguntar por el cliente"));
+    this->SearchClientWinPtr.show();
+}
 

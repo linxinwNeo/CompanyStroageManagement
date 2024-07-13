@@ -19,12 +19,8 @@ Search_List_Win::Search_List_Win(QWidget *parent) :
     ui->setupUi(this);
     
     search_result_Table = ui->search_result_Table;
-    //search_result_Table->setStyleSheet(table_stylesheet);
 
     selected_list_entries_Table = ui->selected_list_entries_Table;
-    //selected_list_entries_Table->setStyleSheet(table_stylesheet);
-
-    this->on_list_id_2be_searched_LE_textChanged( this->ui->list_id_2be_searched_LE->text() );
 
     this->setWindow();
 
@@ -48,14 +44,15 @@ void Search_List_Win::view_selected_list()
 {
     if(this->selected_list.isNull()) return;
 
-    this->ui->CLIENTE_LE->setText(selected_list->client_info.CLIENTE);
-    this->ui->DOMICILIO_LE->setText(selected_list->client_info.DOMICILIO);
-    this->ui->CIUDAD_LE->setText(selected_list->client_info.CIUDAD);
+    this->ui->lineEdit_ClientID->setText(selected_list->client_info.m_ID);
+    this->ui->lineEdit_CLIENTE->setText(selected_list->client_info.m_clientName);
+    this->ui->lineEdit_DOMICILIO->setText(selected_list->client_info.m_DOMICILIO);
+    this->ui->lineEdit_CIUDAD->setText(selected_list->client_info.m_CIUDAD);
 
-    this->ui->RFC_LE->setText(selected_list->client_info.RFC);
-    this->ui->AGENTE_LE->setText(selected_list->client_info.AGENTE);
-    this->ui->CONDICIONES_LE->setText(selected_list->client_info.CONDICIONES);
-    this->ui->DISCOUNT_LE->setText(QString::number(selected_list->client_info.DISCOUNT));
+    this->ui->lineEdit_RFC->setText(selected_list->client_info.m_RFC);
+    this->ui->lineEdit_AGENTE->setText(selected_list->client_info.m_AGENTE);
+    this->ui->lineEdit_CONDICIONES->setText(selected_list->client_info.m_CONDICIONES);
+    this->ui->lineEdit_DISCOUNT->setText(QString::number(selected_list->client_info.m_DISCOUNT));
 
     // show the models of this entry
     for(EntryPtr& e : selected_list->entryList.entries){
@@ -81,30 +78,39 @@ void Search_List_Win::reset_selected_list_info()
     selected_list_entries_Table->clearContents();
     selected_list_entries_Table->setRowCount(0);
 
-    this->ui->CLIENTE_LE->clear();
-    this->ui->DOMICILIO_LE->clear();
-    this->ui->CIUDAD_LE->clear();
-    this->ui->RFC_LE->clear();
-    this->ui->AGENTE_LE->clear();
-    this->ui->CONDICIONES_LE->clear();
-    this->ui->DISCOUNT_LE->clear();
+    this->ui->lineEdit_ClientID->clear();
+    this->ui->lineEdit_CLIENTE->clear();
+    this->ui->lineEdit_DOMICILIO->clear();
+    this->ui->lineEdit_CIUDAD->clear();
+    this->ui->lineEdit_RFC->clear();
+    this->ui->lineEdit_AGENTE->clear();
+    this->ui->lineEdit_CONDICIONES->clear();
+    this->ui->lineEdit_DISCOUNT->clear();
 }
 
 
 // 更新 search_result_Table
-void Search_List_Win::update_search_result_Table()
+void Search_List_Win::clear_tables()
 {
-    this->ui->list_id_2be_searched_LE->clear();
-    this->on_list_id_2be_searched_LE_textChanged(this->ui->list_id_2be_searched_LE->text());
+    this->ui->lineEdit_list_id_2be_searched->clear();
+    this->ui->lineEdit_ClientIDPrefix->clear();
+    this->ui->lineEdit_ClientNamePrefix->clear();
+
+    this->search_result_Table->clearContents();
+    this->search_result_Table->setRowCount(0);
+
+    this->selected_list = nullptr;
+    this->selected_list_entries_Table->clearContents();
+    this->selected_list_entries_Table->setRowCount(0);
 }
 
 
 // set language
 void Search_List_Win::set_GUI_Language()
 {
-    this->ui->list_id_2be_searched_label->setText(lan("清单号", "número de lista"));
+    this->ui->label_list_id_2be_searched->setText(lan("清单号", "número de lista"));
 
-    this->ui->list_id_2be_searched_LE->setPlaceholderText(lan("在此输入需要查询的清单号", "Ingrese el número de lista que desea consultar aquí"));
+    this->ui->lineEdit_list_id_2be_searched->setPlaceholderText(lan("在此输入需要查询的清单号", "Ingrese el número de lista que desea consultar aquí"));
 
     this->ui->search_list_result_GB->setTitle(lan("清单查询结果", "resultados de la consulta de la lista"));
 
@@ -112,7 +118,7 @@ void Search_List_Win::set_GUI_Language()
        lan("清单号", "Número de lista"),
        lan("创建时间", "Tiempo de creación"),
        lan("总箱数", "Número total de cajas"),
-       lan("总价", "IMPORTE"),
+       lan("总价($)", "IMPORTE($)"),
        lan("客户", "CLIENTE")
     };
     search_result_Table->setHorizontalHeaderLabels(headers);
@@ -123,26 +129,29 @@ void Search_List_Win::set_GUI_Language()
 
     const QString none = lan("暂无", "ingresa aquí");
 
-    this->ui->CLIENTE_label->setText(lan("客户", "CLIENTE"));
-    this->ui->CLIENTE_LE->setPlaceholderText(none);
+    this->ui->label_ClientID->setText(lan("客户号", "Número de cliente"));
+    this->ui->lineEdit_ClientID->setPlaceholderText(none);
 
-    this->ui->DOMICILIO_label->setText(lan("地址", "DOMICILIO"));
-    this->ui->DOMICILIO_LE->setPlaceholderText(none);
+    this->ui->label_CLIENTE->setText(lan("客户", "CLIENTE"));
+    this->ui->lineEdit_CLIENTE->setPlaceholderText(none);
 
-    this->ui->CIUDAD_label->setText(lan("城市", "CIUDAD"));
-    this->ui->CIUDAD_LE->setPlaceholderText(none);
+    this->ui->label_DOMICILIO->setText(lan("地址", "DOMICILIO"));
+    this->ui->lineEdit_DOMICILIO->setPlaceholderText(none);
 
-    this->ui->RFC_label->setText("R.F.C");
-    this->ui->RFC_LE->setPlaceholderText(none);
+    this->ui->label_CIUDAD->setText(lan("城市", "CIUDAD"));
+    this->ui->lineEdit_CIUDAD->setPlaceholderText(none);
 
-    this->ui->AGENTE_label->setText(lan("代理", "AGENTE"));
-    this->ui->AGENTE_LE->setPlaceholderText(none);
+    this->ui->label_RFC->setText("R.F.C");
+    this->ui->lineEdit_RFC->setPlaceholderText(none);
 
-    this->ui->CONDICIONES_label->setText(lan("付款方式", "CONDICIONES DE PAGO"));
-    this->ui->CONDICIONES_LE->setPlaceholderText(none);
+    this->ui->label_AGENTE->setText(lan("代理", "AGENTE"));
+    this->ui->lineEdit_AGENTE->setPlaceholderText(none);
 
-    this->ui->DISCOUNT_label->setText(lan("折扣", "DISCOUNT(%)"));
-    this->ui->DISCOUNT_LE->setPlaceholderText(none);
+    this->ui->label_CONDICIONES->setText(lan("付款方式", "CONDICIONES DE PAGO"));
+    this->ui->lineEdit_CONDICIONES->setPlaceholderText(none);
+
+    this->ui->label_DISCOUNT->setText(lan("折扣(%)", "DISCOUNT(%)"));
+    this->ui->lineEdit_DISCOUNT->setPlaceholderText(none);
 
     this->ui->list_items_GB->setTitle(lan("清单里的货物", "Mercancías en la lista"));
 
@@ -160,8 +169,8 @@ void Search_List_Win::set_GUI_Language()
         lan("箱数", "CAJA"),
         lan("每箱个数", "CANT POR CAJA"),
         lan("个数", "CAMTODAD"),
-        lan("单价", "PRECOP U."),
-        lan("总价", "IMPORTE")
+        lan("单价($)", "PRECOP U.($)"),
+        lan("总价($)", "IMPORTE($)")
     };
     selected_list_entries_Table->setHorizontalHeaderLabels(headers2);
 }
@@ -201,51 +210,10 @@ void Search_List_Win::closeEvent (QCloseEvent *event)
 
             // we want to clear up the content we currently have in this window
             this->reset_selected_list_info();
-            this->ui->list_id_2be_searched_LE->clear();
+            this->ui->lineEdit_list_id_2be_searched->clear();
         }
         event->accept();
     }
-}
-
-
-// user is typing the list id, and we use it to search listManager
-void Search_List_Win::on_list_id_2be_searched_LE_textChanged(const QString & list_id_prefix)
-{
-    // disable the window in case search takes time
-    this->setDisabled(true);
-
-    QString userInput = list_id_prefix.trimmed(); // remove useless empty spaces
-
-    // clear content of <searched_lists_table>
-    search_result_Table->clearContents();
-    search_result_Table->setRowCount(0);
-
-    QVector<ListPtr> candidates;
-    listManager.get_lists(userInput, candidates, true);
-
-    // for each list, make a row for it
-    for( unsigned long row = 0; row < candidates.size(); row++ ){
-        const ListPtr list = candidates[row];
-
-        search_result_Table->insertRow(search_result_Table->rowCount());
-
-        QVector<QString> items = list->describe_this_list();
-
-        for( unsigned long col = 0; col < items.size(); col++ ){
-            QTableWidgetItem *tableWidgetItem = new QTableWidgetItem();
-            tableWidgetItem->setText( items[col] );
-
-            tableWidgetItem->setTextAlignment(Qt::AlignVCenter);
-
-            search_result_Table->setItem(row, col, tableWidgetItem);
-        }
-    }
-
-    // clear the selected list
-    this->reset_selected_list_info();
-
-    this->setEnabled(true);
-    this->ui->list_id_2be_searched_LE->setFocus();
 }
 
 
@@ -302,10 +270,7 @@ void Search_List_Win::on_pushButton_delete_list_clicked()
         // 删除该清单
         listManager.delete_list(this->selected_list->id);
         // 更新GUI
-        this->on_list_id_2be_searched_LE_textChanged(this->ui->list_id_2be_searched_LE->text());
-
-        // 更新 lists存储文件
-        //TODO
+        this->clear_tables();
 
         goto Finish;
     }
@@ -341,7 +306,7 @@ void Search_List_Win::on_pushButton_put_back_list_clicked()
         // 删除该清单
         listManager.delete_list(this->selected_list->id);
         // 更新GUI
-        this->on_list_id_2be_searched_LE_textChanged(this->ui->list_id_2be_searched_LE->text());
+        this->clear_tables();
 
         // save the inventory and lists
         WriteFile::SaveInventoryAuto(false);
@@ -407,5 +372,60 @@ Success:
 
 Fail:
     return;
+}
+
+
+void Search_List_Win::on_pushButton_SearchListsByListIDPrefix_clicked()
+{
+    // disable the window in case search takes time
+    this->setDisabled(true);
+
+    this->ui->lineEdit_ClientIDPrefix->clear();
+    this->ui->lineEdit_ClientNamePrefix->clear();
+
+    QString userInput = this->ui->lineEdit_list_id_2be_searched->text().trimmed(); // remove useless empty spaces
+
+
+    // clear content of <searched_lists_table>
+    this->clear_tables();
+
+    QVector<ListPtr> candidates;
+    listManager.get_lists(userInput, candidates, true);
+
+    // for each list, make a row for it
+    for( unsigned long row = 0; row < candidates.size(); row++ ){
+        const ListPtr list = candidates[row];
+
+        search_result_Table->insertRow(search_result_Table->rowCount());
+
+        QVector<QString> items = list->describe_this_list();
+
+        for( unsigned long col = 0; col < items.size(); col++ ){
+            QTableWidgetItem *tableWidgetItem = new QTableWidgetItem();
+            tableWidgetItem->setText( items[col] );
+
+            tableWidgetItem->setTextAlignment(Qt::AlignVCenter);
+
+            search_result_Table->setItem(row, col, tableWidgetItem);
+        }
+    }
+
+    // clear the selected list
+    this->reset_selected_list_info();
+
+    this->setEnabled(true);
+    this->ui->lineEdit_list_id_2be_searched->setFocus();
+}
+
+
+void Search_List_Win::on_pushButton_SearchListsByClientIDPrefix_clicked()
+{
+
+}
+
+
+void Search_List_Win::on_pushButton_SearchListsByClientNamePrefix_clicked()
+{
+
 }
 

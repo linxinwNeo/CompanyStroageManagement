@@ -1,10 +1,13 @@
 #include "ChangePasswordWin.h"
 #include "ui_ChangePasswordWin.h"
 
+#include <QCloseEvent>
 #include <QMessageBox>
+
 #include "GlobalVars.h"
 #include "FileLoader/WriteFile.h"
 #include "Others/write_error_file.h"
+#include "mainwindow.h"
 
 ChangePasswordWin::ChangePasswordWin(QWidget *parent)
     : QWidget(parent)
@@ -17,6 +20,26 @@ ChangePasswordWin::~ChangePasswordWin()
 {
     delete ui;
 }
+
+
+void ChangePasswordWin::closeEvent(QCloseEvent *event)
+{
+    QMessageBox msg(this);
+    msg.setText(lan("你确定要返回主界面吗？", "¿Seguro que quieres volver a la pantalla principal?"));
+    msg.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
+    msg.setDefaultButton(QMessageBox::Yes);
+    msg.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+
+    int resBtn = msg.exec();
+    if (resBtn == QMessageBox::No) {
+        event->ignore();
+    }
+    else {
+        if(this->parentPtr != nullptr) emit this->parentPtr->set_as_front_window();
+        event->accept();
+    }
+}
+
 
 
 // 检测密码是否合理

@@ -57,8 +57,7 @@ void CreateListWin::update_added_models_table()
 {
     this->setDisabled(true);
 
-    this->added_models_table->clearContents();
-    this->added_models_table->setRowCount(0);
+    this->clear_added_models_table();
 
     // for each entry, make a row for it
     for(unsigned long row = 0; row < cur_list_entries.num_entries(); row++){
@@ -107,25 +106,28 @@ void CreateListWin::set_GUI_Language()
 
     const QString enter_here = lan("在此输入", "ingresa aquí");
 
-    this->ui->CLIENTE_label->setText(lan("客户", "CLIENTE"));
-    this->ui->CLIENTE_LE->setPlaceholderText(enter_here);
+    this->ui->label_CLIENTE->setText(lan("客户名", "CLIENTE"));
+    this->ui->lineEdit_CLIENTE->setPlaceholderText(enter_here);
 
-    this->ui->DOMICILIO_label->setText(lan("地址", "DOMICILIO"));
-    this->ui->DOMICILIO_LE->setPlaceholderText(enter_here);
+    this->ui->label_clientID->setText(lan("客户号码", "Número de cliente"));
+    this->ui->lineEdit_clientID->setPlaceholderText(enter_here);
 
-    this->ui->CIUDAD_label->setText(lan("城市", "CIUDAD"));
-    this->ui->CIUDAD_LE->setPlaceholderText(enter_here);
+    this->ui->label_DOMICILIO->setText(lan("地址", "DOMICILIO"));
+    this->ui->lineEdit_DOMICILIO->setPlaceholderText(enter_here);
 
-    this->ui->RFC_label->setText("R.F.C.");
-    this->ui->RFC_LE->setPlaceholderText(enter_here);
+    this->ui->label_CIUDAD->setText(lan("城市", "CIUDAD"));
+    this->ui->lineEdit_CIUDAD->setPlaceholderText(enter_here);
 
-    this->ui->AGENTE_label->setText(lan("代理", "AGENTE"));
-    this->ui->AGENTE_LE->setPlaceholderText(enter_here);
+    this->ui->label_RFC->setText("R.F.C.");
+    this->ui->lineEdit_RFC->setPlaceholderText(enter_here);
 
-    this->ui->CONDICIONES_label->setText(lan("付款方式", "CONDICIONES DE PAGO"));
-    this->ui->CONDICIONES_LE->setPlaceholderText(enter_here);
+    this->ui->label_AGENTE->setText(lan("代理", "AGENTE"));
+    this->ui->lineEdit_AGENTE->setPlaceholderText(enter_here);
 
-    this->ui->discount_label->setText(lan("折扣(%)", "DISCOUNT(%)"));
+    this->ui->label_CONDICIONES->setText(lan("付款方式", "CONDICIONES DE PAGO"));
+    this->ui->lineEdit_CONDICIONES->setPlaceholderText(enter_here);
+
+    this->ui->label_discount->setText(lan("折扣(%)", "DISCOUNT(%)"));
 
     this->ui->reset_client_info_btn->setText(lan("重置信息", "resetear la información"));
 
@@ -134,7 +136,7 @@ void CreateListWin::set_GUI_Language()
     this->ui->model_code_for_search_label->setText(lan("货号", "MODELO"));
     this->ui->model_code_for_search_LE->setPlaceholderText(lan("在此输入需要搜索的货号 比如 TA-0001", "Introduce el número de referencia que deseas buscar aquí, por ejemplo, TA-0001"));
 
-    this->ui->searched_models_table->setHorizontalHeaderLabels(GlobalVars::table_headers_model);
+    this->ui->searched_models_table->setHorizontalHeaderLabels(GlobalVars::table_headers_model());
 
     this->ui->add_selected_model_btn->setText(lan("添加选中的货物", "añadir los productos seleccionados"));
 
@@ -151,6 +153,8 @@ void CreateListWin::set_GUI_Language()
     this->ui->generatePDF_btn->setText(lan("生成正式清单", "Genere una lista de verificación formal"));
 
     this->ui->pushButton_edit_selected_model->setText(lan("修改选中的货物", "Modificar los productos seleccionados"));
+
+    this->ui->pushButton_searchModel->setText(lan("搜索", "Buscar"));
 }
 
 
@@ -162,9 +166,24 @@ void CreateListWin::on_generatePDF_btn_clicked()
     QMessageBox Msgbox;
     QFileDialog saveFileDialog;
     QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
+    QSharedPointer<Client> new_client = nullptr;
+
+    if(this->ui->lineEdit_clientID->text().trimmed() == "")
+    {
+        Msgbox.setText(lan("客户号码不能为空！", "¡El número de cliente no puede estar vacío!"));
+        Msgbox.exec();
+        return;
+    }
+
+    if(this->ui->lineEdit_CLIENTE->text().trimmed() == "")
+    {
+        Msgbox.setText(lan("客户名不能为空！", "¡El nombre del cliente no puede estar vacío!"));
+        Msgbox.exec();
+        return;
+    }
 
     if(cur_list_entries.num_entries() == 0) {
-        Msgbox.setText(lan("清单是空的", "La lista está vacía"));
+        Msgbox.setText(lan("清单是空的！", "¡La lista está vacía!"));
         Msgbox.exec();
         return;
     }
@@ -183,14 +202,15 @@ void CreateListWin::on_generatePDF_btn_clicked()
     this->list->entryList = cur_list_entries;
 
     // save client info
-    this->list->client_info.CLIENTE = this->ui->CLIENTE_LE->text();
-    this->list->client_info.DOMICILIO = this->ui->DOMICILIO_LE->text();
-    this->list->client_info.CIUDAD = this->ui->CIUDAD_LE->text();
-    this->list->client_info.RFC = this->ui->RFC_LE->text();
-    this->list->client_info.AGENTE = this->ui->AGENTE_LE->text();
-    this->list->client_info.CONDICIONES = this->ui->CONDICIONES_LE->text();
-    this->list->client_info.DISCOUNT = this->ui->discount_SB->value() / 100.; // the value the user is entering is between 0-100
-    this->list->client_info.TOTAL_NUM_BOXES = this->list->total_num_boxes();
+    this->list->client_info.m_ID = this->ui->lineEdit_clientID->text();
+    this->list->client_info.m_clientName = this->ui->lineEdit_CLIENTE->text();
+    this->list->client_info.m_DOMICILIO = this->ui->lineEdit_DOMICILIO->text();
+    this->list->client_info.m_CIUDAD = this->ui->lineEdit_CIUDAD->text();
+    this->list->client_info.m_RFC = this->ui->lineEdit_RFC->text();
+    this->list->client_info.m_AGENTE = this->ui->lineEdit_AGENTE->text();
+    this->list->client_info.m_CONDICIONES = this->ui->lineEdit_CONDICIONES->text();
+    this->list->client_info.m_DISCOUNT = this->ui->doubleSpinBox_discount->value() / 100.; // the value the user is entering is between 0-100
+    this->list->client_info.m_TOTAL_NUM_BOXES = this->list->total_num_boxes();
     this->list->id = unused_unique_id;
 
     this->list->datetime_created = QSharedPointer<QDateTime>::create(QDateTime().currentDateTime());
@@ -220,9 +240,10 @@ void CreateListWin::on_generatePDF_btn_clicked()
 
 
     cur_list_entries.clear_memory();
-    this->added_models_table->clearContents();
-    this->added_models_table->setRowCount(0);
-    this->on_model_code_for_search_LE_textChanged(this->ui->model_code_for_search_LE->text()); // 更新<search_models_table>
+
+    this->clear_added_models_table();
+
+    this->on_pushButton_searchModel_clicked();
     this->selected_model_in_search_table = nullptr; // reset selected model
 
     goto Success;
@@ -235,8 +256,21 @@ Success:
     Msgbox.setText(lan(LIST_CREATED_MSG_CN, LIST_CREATED_MSG_SPAN));
     Msgbox.exec();
 
+    // save client info
+    new_client = QSharedPointer<Client>::create( Client(
+        this->ui->lineEdit_clientID->text().trimmed(),
+        this->ui->lineEdit_CLIENTE->text().trimmed(),
+        this->ui->lineEdit_DOMICILIO->text().trimmed(),
+        this->ui->lineEdit_CIUDAD->text().trimmed(),
+        this->ui->lineEdit_RFC->text().trimmed(),
+        this->ui->lineEdit_AGENTE->text().trimmed(),
+        this->ui->lineEdit_CONDICIONES->text().trimmed()
+        ) );
+    clientManager.add_client(new_client);
+
     // reset client information
     this->clear_client_info();
+
     return;
 
 Fail:
@@ -246,13 +280,14 @@ Fail:
 
 void CreateListWin::clear_client_info()
 {
-    this->ui->CLIENTE_LE->setText("");
-    this->ui->DOMICILIO_LE->setText("");
-    this->ui->CIUDAD_LE->setText("");
-    this->ui->RFC_LE->setText("");
-    this->ui->AGENTE_LE->setText("");
-    this->ui->CONDICIONES_LE->setText("");
-    this->ui->discount_SB->setValue(0.0);
+    this->ui->lineEdit_clientID->setText("");
+    this->ui->lineEdit_CLIENTE->setText("");
+    this->ui->lineEdit_DOMICILIO->setText("");
+    this->ui->lineEdit_CIUDAD->setText("");
+    this->ui->lineEdit_RFC->setText("");
+    this->ui->lineEdit_AGENTE->setText("");
+    this->ui->lineEdit_CONDICIONES->setText("");
+    this->ui->doubleSpinBox_discount->setValue(0.0);
 }
 
 // create a pdf but do not deduct items from the stroage
@@ -281,14 +316,14 @@ void CreateListWin::on_previewList_btn_clicked()
     this->list->entryList = cur_list_entries;
 
     // save client info
-    this->list->client_info.CLIENTE = this->ui->CLIENTE_LE->text();
-    this->list->client_info.DOMICILIO = this->ui->DOMICILIO_LE->text();
-    this->list->client_info.CIUDAD = this->ui->CIUDAD_LE->text();
-    this->list->client_info.RFC = this->ui->RFC_LE->text();
-    this->list->client_info.AGENTE = this->ui->AGENTE_LE->text();
-    this->list->client_info.CONDICIONES = this->ui->CONDICIONES_LE->text();
-    this->list->client_info.DISCOUNT = this->ui->discount_SB->value() / 100.; // the value the user is entering is between 0-100
-    this->list->client_info.TOTAL_NUM_BOXES = this->list->total_num_boxes();
+    this->list->client_info.m_clientName = this->ui->lineEdit_CLIENTE->text();
+    this->list->client_info.m_DOMICILIO = this->ui->lineEdit_DOMICILIO->text();
+    this->list->client_info.m_CIUDAD = this->ui->lineEdit_CIUDAD->text();
+    this->list->client_info.m_RFC = this->ui->lineEdit_RFC->text();
+    this->list->client_info.m_AGENTE = this->ui->lineEdit_AGENTE->text();
+    this->list->client_info.m_CONDICIONES = this->ui->lineEdit_CONDICIONES->text();
+    this->list->client_info.m_DISCOUNT = this->ui->doubleSpinBox_discount->value() / 100.; // the value the user is entering is between 0-100
+    this->list->client_info.m_TOTAL_NUM_BOXES = this->list->total_num_boxes();
     this->list->id = 0; // set id to 0 for preview lists
     this->list->datetime_created = QSharedPointer<QDateTime>::create(QDateTime().currentDateTime());
 
@@ -311,6 +346,7 @@ void CreateListWin::on_previewList_btn_clicked()
 
     // create PDF file
     create_pdf(filePath, this->list);
+
 
     // display creation success
     Msgbox.setText(lan(LIST_CREATED_MSG_CN, LIST_CREATED_MSG_SPAN));
@@ -340,60 +376,6 @@ void CreateListWin::closeEvent (QCloseEvent *event)
 }
 
 
-// 用户输入了要搜索的货号前缀，搜索所有符合的货然后加入到表格里
-void CreateListWin::on_model_code_for_search_LE_textChanged(const QString &new_str)
-{
-    this->setDisabled(true);
-
-    this->selected_model_in_search_table = nullptr;
-
-    QString userInput = new_str.trimmed(); // remove useless empty spaces
-
-    auto table = this->searched_models_table;
-    this->clear_searched_models_table();
-
-    if(userInput.isEmpty()){
-        // if input is empty, empty the table and return
-        this->setEnabled(true);
-        this->ui->model_code_for_search_LE->setFocus();
-        return;
-    }
-
-    QVector<ModelPtr> models; // will hold the models that has MODELCODE starts with new_str
-    inventory.searchModel_starts_with(userInput, models);
-
-    // for each model, make a row for it
-    for(unsigned long row = 0; row < models.size(); row++){
-        const ModelPtr model = models[row];
-
-        table->insertRow(table->rowCount());
-
-        QVector<QString> items;
-        model->searchResult_Regular(items);
-
-        for( unsigned long col = 0; col < items.size(); col++ ){
-            if (col == 2 || col == 3) { // Replace with QTextEdit when col reaches 2 or 3
-                QTextEdit *textEdit = new QTextEdit();
-                textEdit->setPlainText(items[col]);
-                textEdit->setReadOnly(true); // Optionally make it read-only
-
-                table->setCellWidget(row, col, textEdit);
-            } else {
-                QTableWidgetItem *tableWidgetItem = new QTableWidgetItem();
-                tableWidgetItem->setText( items[col] );
-
-                tableWidgetItem->setTextAlignment(Qt::AlignVCenter);
-
-                table->setItem(row, col, tableWidgetItem);
-            }
-        }
-    }
-
-    this->setEnabled(true);
-    this->ui->model_code_for_search_LE->setFocus();
-}
-
-
 // 初始化
 void CreateListWin::init()
 {
@@ -403,13 +385,6 @@ void CreateListWin::init()
     this->selected_model_in_search_table = nullptr;
     this->list = nullptr;
     this->adjust_list_item_win = nullptr;
-
-    //设置表格 style
-//    searched_models_table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-    //searched_models_table->setStyleSheet(table_stylesheet);
-
-//    added_models_table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-    // added_models_table->setStyleSheet(table_stylesheet);
 }
 
 
@@ -419,6 +394,8 @@ void CreateListWin::clear_searched_models_table()
     if(!this->searched_models_table) return;
     searched_models_table->clearContents(); // clear the table contents but columns are reserved
     searched_models_table->setRowCount(0);
+
+    this->selected_model_in_search_table = nullptr;
 }
 
 
@@ -643,10 +620,110 @@ void CreateListWin::on_searched_models_table_itemSelectionChanged()
 }
 
 
-void CreateListWin::clear_table()
+void CreateListWin::clear_tables()
 {
     this->ui->model_code_for_search_LE->setText("");
-    this->on_model_code_for_search_LE_textChanged("");
 
-    this->added_models_table->clearContents();
+    this->clear_added_models_table();
+    this->clear_searched_models_table();
+
 }
+
+void CreateListWin::set_clientInfo(QSharedPointer<Client> client)
+{
+    this->ui->lineEdit_clientID->setText(client->m_ID);
+    this->ui->lineEdit_CLIENTE->setText(client->m_clientName);
+    this->ui->lineEdit_AGENTE->setText(client->m_AGENTE);
+    this->ui->lineEdit_CIUDAD->setText(client->m_CIUDAD);
+    this->ui->lineEdit_CONDICIONES->setText(client->m_CONDICIONES);
+    this->ui->lineEdit_DOMICILIO->setText(client->m_DOMICILIO);
+    this->ui->lineEdit_RFC->setText(client->m_RFC);
+}
+
+
+void CreateListWin::on_pushButton_autoFill_clicked()
+{
+    const QString clientID = this->ui->lineEdit_clientID->text().trimmed();
+    const QString clientName = this->ui->lineEdit_CLIENTE->text().trimmed();
+
+    if(clientID.isEmpty() && clientName.isEmpty()){
+        QMessageBox msg;
+        msg.setText(lan("请输入客户号码或者客户名！", "Por favor, introduzca su número de cliente o nombre de cliente."));
+        msg.exec();
+        return;
+    }
+
+    // 优先使用id
+    if(!clientID.isEmpty()){
+        QSharedPointer<Client> client = clientManager.get_client_by_ID(clientID);
+        if(!client.isNull()){
+            this->set_clientInfo(client);
+        }
+    }
+    else{ // 使用名字搜索客户
+        QVector<QSharedPointer<Client> > candidates;
+        clientManager.get_clients_by_NamePrefix(clientName, candidates);
+        if(candidates.size() != 0){
+            this->set_clientInfo(candidates[0]);
+        }
+    }
+}
+
+
+void CreateListWin::on_pushButton_searchModel_clicked()
+{
+    this->setDisabled(true);
+
+    this->selected_model_in_search_table = nullptr;
+
+    QString userInput = this->ui->model_code_for_search_LE->text().trimmed(); // remove useless empty spaces
+
+    auto table = this->searched_models_table;
+    this->clear_searched_models_table();
+
+    if(userInput.isEmpty()){
+        // if input is empty, empty the table and return
+        this->setEnabled(true);
+        this->ui->model_code_for_search_LE->setFocus();
+        return;
+    }
+
+
+    QVector<ModelPtr> models; // will hold the models that has MODELCODE starts with new_str
+    inventory.searchModel_starts_with(userInput, models);
+
+    // before search begins, display a dialog
+    if(models.size() > 1000) QMessageBox::information(this, lan("搜索进行中", "La búsqueda está en curso"),
+                             lan("搜索可能需要花一些时间，请稍等。", "La búsqueda puede llevar algún tiempo, así que espere."));
+
+    // for each model, make a row for it
+    for(unsigned long row = 0; row < models.size(); row++){
+        const ModelPtr model = models[row];
+
+        table->insertRow(table->rowCount());
+
+        QVector<QString> items;
+        model->searchResult_Regular(items);
+
+        for( unsigned long col = 0; col < items.size(); col++ ){
+            if (col == 2 || col == 3) { // Replace with QTextEdit when col reaches 2 or 3
+                QTextEdit *textEdit = new QTextEdit();
+                textEdit->setPlainText(items[col]);
+                textEdit->setReadOnly(true); // Optionally make it read-only
+
+                table->setCellWidget(row, col, textEdit);
+            } else {
+                QTableWidgetItem *tableWidgetItem = new QTableWidgetItem();
+                tableWidgetItem->setText( items[col] );
+
+                tableWidgetItem->setTextAlignment(Qt::AlignVCenter);
+
+                table->setItem(row, col, tableWidgetItem);
+            }
+        }
+    }
+
+    this->setEnabled(true);
+    this->ui->model_code_for_search_LE->setFocus();
+}
+

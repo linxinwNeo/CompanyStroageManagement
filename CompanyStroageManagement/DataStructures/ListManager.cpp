@@ -59,7 +59,7 @@ void ListManager::create_list(ListPtr list_2be_added)
         return;
     }
 
-    if(!WriteFile::Save_list(list_2be_added)){
+    if(!WriteFile::Save_List(list_2be_added)){
         write_error_file("ListManager::create_list: fail to save a list");
         return;
     }
@@ -95,7 +95,7 @@ void ListManager::delete_list(const unsigned long id)
 ListPtr ListManager::get_list(const unsigned long id)
 {
     ListPtr list = nullptr;
-    ReadFile::Read_list(id, list);
+    ReadFile::Read_List(id, list);
 
     return list;
 }
@@ -142,7 +142,7 @@ void ListManager::get_lists(const QString id_prefix, QVector<ListPtr>& candidate
         if(id.startsWith(new_str)){
             ListPtr list = nullptr;
 
-            ReadFile::Read_list(id.toULong(), list);
+            ReadFile::Read_List(id.toULong(), list);
 
             if(!list.isNull()) candidates.push_back(list);
         }

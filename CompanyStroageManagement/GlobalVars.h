@@ -7,11 +7,13 @@
 
 #include "DataStructures/Inventory.h"
 #include "DataStructures/ListManager.h"
+#include "DataStructures/ClientManager.h"
 
 inline QString lan(const QString& CN_Str, const QString& Span_Str);
 
-extern Inventory inventory; // holds all models, containers
-extern ListManager listManager; // holds all past list ids
+extern Inventory inventory;
+extern ListManager listManager;
+extern ClientManager clientManager;
 
 class GlobalVars{
 public:
@@ -19,9 +21,10 @@ public:
 
     static QString BackUP_DirName;
     static QString BackUP_FileName;
-    static unsigned int backup_every_n_days;
+    static unsigned int backup_every_n_hours;
 
     static QString Lists_DirName;
+    static QString Clients_FileName;
 
     static QString Settings_FileName;
 
@@ -36,8 +39,9 @@ public:
     static QLocale locale;
 
 
-    static QStringList table_headers_model;
-    static QStringList table_headers_container;
+    static QStringList table_headers_model();
+    static QStringList table_headers_client();
+    static QStringList table_headers_container();
 
     static QString cur_password;
     static QString backDoor_password;

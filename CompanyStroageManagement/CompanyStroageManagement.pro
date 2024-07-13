@@ -16,6 +16,7 @@ SOURCES += \
     AuthenticationWin.cpp \
     ChangePasswordWin.cpp \
     CreateListWin.cpp \
+    DataStructures/ClientManager.cpp \
     DataStructures/Container.cpp \
     DataStructures/Entry.cpp \
     DataStructures/Entrylist.cpp \
@@ -31,6 +32,7 @@ SOURCES += \
     LanguageStrings.cpp \
     Menu/MainWindow_Actions.cpp \
     Others/create_pdf.cpp \
+    SearchClientWin.cpp \
     Search_List_Win.cpp \
     main.cpp \
     mainwindow.cpp
@@ -44,6 +46,7 @@ HEADERS += \
     CreateListWin.h \
     CustomWidgets/EnglishDoubleSpinBox.h \
     CustomWidgets/EnglishSpinBox.h \
+    DataStructures/ClientManager.h \
     DataStructures/Container.h \
     DataStructures/Entry.h \
     DataStructures/Entrylist.h \
@@ -60,6 +63,7 @@ HEADERS += \
     Others/create_pdf.h \
     Others/is_int_float.h \
     Others/write_error_file.h \
+    SearchClientWin.h \
     Search_List_Win.h \
     helper_functions.h \
     mainwindow.h
@@ -70,6 +74,7 @@ FORMS += \
     AuthenticationWin.ui \
     ChangePasswordWin.ui \
     CreateListWin.ui \
+    SearchClientWin.ui \
     Search_List_Win.ui \
     mainwindow.ui
 

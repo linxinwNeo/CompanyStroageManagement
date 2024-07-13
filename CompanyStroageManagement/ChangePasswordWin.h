@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+class MainWindow;
+
 namespace Ui {
 class ChangePasswordWin;
 }
@@ -15,9 +17,10 @@ public:
     explicit ChangePasswordWin(QWidget *parent = nullptr);
     ~ChangePasswordWin();
 
-    QWidget* parentPtr;
+    MainWindow* parentPtr;
 
 private slots:
+    void closeEvent (QCloseEvent *event);
     void on_pushButton_finish_clicked();
 
 private:

@@ -11,6 +11,7 @@
 #include "DataStructures/Model.h"
 #include "DataStructures/Container.h"
 #include "Search_List_Win.h"
+#include "SearchClientWin.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -47,8 +48,6 @@ public slots:
 private slots:
     void closeEvent (QCloseEvent *event);
 
-    void on_search_MODELCODE_LE_textChanged(const QString& new_str);
-
     void on_delete_model_btn_clicked();
     void on_update_selected_model_btn_clicked();
 
@@ -78,6 +77,10 @@ private slots:
 
     void on_button_save_lists_clicked();
 
+    void on_pushButton_search_model_clicked();
+
+    void on_actionSearchClient_triggered();
+
 private:
     ModelPtr selected_model;
     ContainerPtr selected_container;
@@ -87,6 +90,7 @@ private:
     CreateListWin CreateListWinPtr;
     Search_List_Win SearchListWinPtr;
     ChangePasswordWin ChangePasswordWinPtr;
+    SearchClientWin SearchClientWinPtr;
 
     bool is_time_for_backup() const;
 

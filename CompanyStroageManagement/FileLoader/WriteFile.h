@@ -20,7 +20,9 @@ public:
 
     static bool save_settings_file();
 
-    static bool Save_list(const ListPtr list);
+    static bool Save_List(const ListPtr list);
+
+    static bool Save_Clients();
 };
 
 void copyFolder(const QString &sourceFolder, const QString &destinationFolder);

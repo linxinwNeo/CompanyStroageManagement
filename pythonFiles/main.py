@@ -4,7 +4,7 @@ from readPrizes import read_Prizes_file
 from save2txt import write2txt
 
 inventory_file_path = 'C:/Users/Neo/Desktop/GithubProjs/CompanyStroageManagement/pythonFiles/raw_data_before_processing/inventory.xlsx'
-prizes_file_path = 'C:/Users/Neo/Desktop/GithubProjs/CompanyStroageManagement/pythonFiles/raw_data_before_processing/prizes.xlsx'
+prizes_file_path = 'C:/Users/Neo/Desktop/GithubProjs/CompanyStroageManagement/pythonFiles/raw_data_before_processing/prices.xlsx'
 
 # a dict of models
 models = {}

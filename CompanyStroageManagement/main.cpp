@@ -7,7 +7,7 @@
 #include "LanguageStrings.h"
 #include "AuthenticationWin.h"
 
-void read_stroage();
+void read_files();
 
 int main(int argc, char *argv[])
 {
@@ -26,8 +26,11 @@ int main(int argc, char *argv[])
         }
     }
 
+    if(!auth_win.password_correct){
+        return 0;
+    }
 
-    read_stroage();
+    read_files();
 
     MainWindow w;
 
@@ -40,7 +43,8 @@ int main(int argc, char *argv[])
 }
 
 
-void read_stroage()
+// read inventory and clients
+void read_files()
 {
     // try to read inventory file
     if( !ReadFile::read_Inventory_File_Auto(false) ) {
@@ -51,6 +55,9 @@ void read_stroage()
         msgBox->setStandardButtons(QMessageBox::Ok);
         msgBox->exec();
     }
+
+    // try to read clients file
+    ReadFile::Read_Clients();
 }
 
 

@@ -15,6 +15,5 @@ inline void write_error_file(const QString message)
 
     qDebug() << dt.toLocalTime().toString() << ": " << message;
 
-    // optional, as QFile destructor will already do it:
     file.close();
 }
