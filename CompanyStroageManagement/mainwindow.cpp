@@ -117,7 +117,7 @@ void MainWindow::setLanguage()
     this->ui->selected_model_NUM_INIT_BOXES_label->setText(lan("进货箱数", "ENTRADAS"));
     this->ui->selected_model_NUM_PIECES_PER_BOX_label->setText(lan("每箱个数", "EMPAQUE"));
 
-    this->ui->selected_model_PRIZE_label->setText(lan("单价", "PRECIO"));
+    this->ui->selected_model_PRIZE_label->setText(lan("单价($)", "PRECIO U.($)"));
     this->ui->selected_model_NUM_SOLD_BOXES_label->setText(lan("已售箱数", "SALIDAS"));
 
     this->ui->selected_model_CONTAINER_label->setText(lan("集装箱号", "Número de contenedor"));
@@ -209,6 +209,8 @@ void MainWindow::clear_search_model_result_table()
     auto table = this->ui->search_model_result_Table;
     table->clearContents(); // clear the table contents but columns are reserved
     table->setRowCount(0);
+
+    this->clear_selected_model();
 }
 
 
@@ -625,6 +627,11 @@ void MainWindow::on_read_inventory_from_new_file_btn_clicked()
         msgBox->setStandardButtons(QMessageBox::Ok);
         msgBox->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
         msgBox->exec();
+
+        this->clear_search_model_result_table();
+        this->clear_search_container_result_table();
+
+        WriteFile::save_settings_file();
     }
 }
 

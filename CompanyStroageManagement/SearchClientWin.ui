@@ -146,11 +146,6 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
      </column>
      <column>
       <property name="text">
-       <string>代理</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
        <string>付款方式</string>
       </property>
      </column>

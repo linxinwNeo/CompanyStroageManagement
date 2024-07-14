@@ -44,13 +44,12 @@ void Search_List_Win::view_selected_list()
 {
     if(this->selected_list.isNull()) return;
 
-    this->ui->lineEdit_SelectedClientID->setText(selected_list->client_info.m_ID);
     this->ui->lineEdit_CLIENTE->setText(selected_list->client_info.m_clientName);
     this->ui->lineEdit_DOMICILIO->setText(selected_list->client_info.m_DOMICILIO);
     this->ui->lineEdit_CIUDAD->setText(selected_list->client_info.m_CIUDAD);
 
     this->ui->lineEdit_RFC->setText(selected_list->client_info.m_RFC);
-    this->ui->lineEdit_AGENTE->setText(selected_list->client_info.m_AGENTE);
+    this->ui->lineEdit_AGENTE->setText(selected_list->client_info.m_ID);
     this->ui->lineEdit_CONDICIONES->setText(selected_list->client_info.m_CONDICIONES);
     this->ui->lineEdit_DISCOUNT->setText(QString::number(selected_list->client_info.m_DISCOUNT));
 
@@ -78,7 +77,6 @@ void Search_List_Win::reset_selected_list_info()
     selected_list_entries_Table->clearContents();
     selected_list_entries_Table->setRowCount(0);
 
-    this->ui->lineEdit_SelectedClientID->clear();
     this->ui->lineEdit_CLIENTE->clear();
     this->ui->lineEdit_DOMICILIO->clear();
     this->ui->lineEdit_CIUDAD->clear();
@@ -132,9 +130,6 @@ void Search_List_Win::set_GUI_Language()
 
     const QString none = lan("暂无", "ingresa aquí");
 
-    this->ui->label_SelectedClientID->setText(lan("客户号", "Número de cliente"));
-    this->ui->lineEdit_SelectedClientID->setPlaceholderText(none);
-
     this->ui->label_CLIENTE->setText(lan("客户", "CLIENTE"));
     this->ui->lineEdit_CLIENTE->setPlaceholderText(none);
 
@@ -147,7 +142,7 @@ void Search_List_Win::set_GUI_Language()
     this->ui->label_RFC->setText("R.F.C");
     this->ui->lineEdit_RFC->setPlaceholderText(none);
 
-    this->ui->label_AGENTE->setText(lan("代理", "AGENTE"));
+    this->ui->label_AGENTE->setText(lan("客户号", "AGENTE"));
     this->ui->lineEdit_AGENTE->setPlaceholderText(none);
 
     this->ui->label_CONDICIONES->setText(lan("付款方式", "CONDICIONES DE PAGO"));

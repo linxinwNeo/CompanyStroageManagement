@@ -56,7 +56,7 @@ void create_pdf(QString filename, ListPtr list)
     painter.drawText(QPointF(width * 0.13, height * 0.172), client_info.m_clientName);
 
     // AGENTE
-    painter.drawText(QPointF(width * 0.78, height * 0.168), client_info.m_AGENTE);
+    painter.drawText(QPointF(width * 0.78, height * 0.168), client_info.m_ID);
 
     // FECHA
     painter.drawText(QPointF(width * 0.78, height * 0.19), currDate(list->datetime_created));

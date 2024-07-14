@@ -33,7 +33,7 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
        </size>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="search_model_tab">
        <attribute name="title">

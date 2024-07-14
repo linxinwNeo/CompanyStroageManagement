@@ -46,7 +46,7 @@ QStringList GlobalVars::table_headers_model(){
         lan("已售个数", "Núm. piezas vend."),
         lan("剩余个数", "EXISTENCIA"),
 
-        lan("单价(%)", "PRECIO U.($)"),
+        lan("单价($)", "PRECIO U.($)"),
         lan("上次修改时间", "Fecha últ. modif."),
         lan("进货时间", "Tiempo de stock")
     };
@@ -55,12 +55,11 @@ QStringList GlobalVars::table_headers_model(){
 QStringList GlobalVars::table_headers_client()
 {
     return {
-        lan("客户号码", "MODELO"),
+        lan("代理", "AGENTE"),
         lan("客户名字", "CLIENTE"),
         lan("联系地址", "DOMICILIO"),
         lan("城市", "CIUDAD"),
         lan("R.F.C.", "R.F.C."),
-        lan("代理", "AGENTE"),
         lan("付款方式", "CONDICIONES DE PAGO")
     };
 };

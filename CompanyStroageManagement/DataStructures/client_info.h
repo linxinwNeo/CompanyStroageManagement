@@ -11,12 +11,10 @@ public:
     QString m_DOMICILIO; // 地址
     QString m_CIUDAD; // 城市
     QString m_RFC;
-    QString m_AGENTE; //代理
     QString m_CONDICIONES; //付款方式
 
-    Client(QString ID = "0", QString CLIENTE = "", QString DOMICILIO = "", QString CIUDAD = "",
-           QString RFC = "", QString AGENTE = "",
-           QString CONDICIONES = "");
+    Client(QString ID = "0", QString ClientName = "", QString DOMICILIO = "", QString CIUDAD = "",
+           QString RFC = "", QString CONDICIONES = "");
 
     void searchResult(QVector<QString>& items) const;
 };
@@ -31,8 +29,8 @@ public:
     // functions
     Client_info(QString ID = "0", QString CLIENTE = "",
                 QString DOMICILIO = "", QString CIUDAD = "",
-                QString RFC = "", QString AGENTE = "",
-                QString CONDICIONES = "", double TOTAL_NUM_BOXES = 0., double DISCOUNT = 0.);
+                QString RFC = "", QString CONDICIONES = "",
+                double TOTAL_NUM_BOXES = 0., double DISCOUNT = 0.);
 };
 
 #endif // CLIENT_INFO_H

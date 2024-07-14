@@ -67,50 +67,6 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QWidget" name="widget_12" native="true">
-                  <layout class="QHBoxLayout" name="horizontalLayout_16">
-                   <property name="spacing">
-                    <number>3</number>
-                   </property>
-                   <property name="leftMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="topMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="rightMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="bottomMargin">
-                    <number>0</number>
-                   </property>
-                   <item>
-                    <widget class="QLabel" name="label_clientID">
-                     <property name="minimumSize">
-                      <size>
-                       <width>100</width>
-                       <height>0</height>
-                      </size>
-                     </property>
-                     <property name="text">
-                      <string>客户号码</string>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignCenter</set>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLineEdit" name="lineEdit_clientID">
-                     <property name="placeholderText">
-                      <string>在此输入</string>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-                <item>
                  <widget class="QWidget" name="widget_15" native="true">
                   <layout class="QHBoxLayout" name="horizontalLayout">
                    <property name="spacing">
@@ -128,6 +84,32 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
                    <property name="bottomMargin">
                     <number>0</number>
                    </property>
+                   <item>
+                    <widget class="QLabel" name="label_AGENTE">
+                     <property name="minimumSize">
+                      <size>
+                       <width>100</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>客户号</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="lineEdit_AGENTE">
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="placeholderText">
+                      <string>在此输入</string>
+                     </property>
+                    </widget>
+                   </item>
                    <item>
                     <widget class="QLabel" name="label_CLIENTE">
                      <property name="minimumSize">
@@ -297,53 +279,6 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
                 </item>
                 <item>
                  <widget class="QLineEdit" name="lineEdit_RFC">
-                  <property name="text">
-                   <string/>
-                  </property>
-                  <property name="placeholderText">
-                   <string>在此输入</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item>
-              <widget class="QWidget" name="CLIENTE_Container_5" native="true">
-               <layout class="QHBoxLayout" name="horizontalLayout_5">
-                <property name="spacing">
-                 <number>3</number>
-                </property>
-                <property name="leftMargin">
-                 <number>0</number>
-                </property>
-                <property name="topMargin">
-                 <number>0</number>
-                </property>
-                <property name="rightMargin">
-                 <number>0</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>0</number>
-                </property>
-                <item>
-                 <widget class="QLabel" name="label_AGENTE">
-                  <property name="minimumSize">
-                   <size>
-                    <width>100</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>代理</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLineEdit" name="lineEdit_AGENTE">
                   <property name="text">
                    <string/>
                   </property>
@@ -667,7 +602,12 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
              </column>
              <column>
               <property name="text">
-               <string>单价</string>
+               <string>单价($)</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>上次修改时间</string>
               </property>
              </column>
              <column>

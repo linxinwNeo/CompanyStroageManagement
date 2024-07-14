@@ -305,7 +305,6 @@ bool ReadFile::Read_List(const unsigned long & list_id, ListPtr& list){
     list->client_info.m_DOMICILIO = items[idx++];
     list->client_info.m_CIUDAD = items[idx++];
     list->client_info.m_RFC = items[idx++];
-    list->client_info.m_AGENTE = items[idx++];
     list->client_info.m_CONDICIONES = items[idx++];
     list->client_info.m_TOTAL_NUM_BOXES = items[idx++].toDouble();
     list->client_info.m_DISCOUNT = items[idx++].toDouble();
@@ -352,7 +351,7 @@ bool ReadFile::Read_Clients()
 
         QSharedPointer<Client> client = QSharedPointer<Client>::create( Client(
             clientInfo[0], clientInfo[1], clientInfo[2], clientInfo[3],
-            clientInfo[4], clientInfo[5], clientInfo[6]
+            clientInfo[4], clientInfo[5]
             ) );
 
         clientManager.add_client(client);

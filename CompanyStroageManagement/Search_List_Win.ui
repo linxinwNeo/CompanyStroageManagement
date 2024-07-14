@@ -261,19 +261,42 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
            <property name="title">
             <string>清单信息</string>
            </property>
-           <layout class="QFormLayout" name="formLayout">
-            <property name="leftMargin">
-             <number>3</number>
-            </property>
-            <property name="topMargin">
-             <number>3</number>
-            </property>
-            <property name="rightMargin">
-             <number>3</number>
-            </property>
-            <property name="bottomMargin">
-             <number>3</number>
-            </property>
+           <layout class="QGridLayout" name="gridLayout_2">
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_AGENTE">
+              <property name="minimumSize">
+               <size>
+                <width>50</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>150</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>客户号</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="lineEdit_AGENTE">
+              <property name="text">
+               <string/>
+              </property>
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+              <property name="placeholderText">
+               <string>暂无</string>
+              </property>
+             </widget>
+            </item>
             <item row="1" column="0">
              <widget class="QLabel" name="label_CLIENTE">
               <property name="minimumSize">
@@ -415,41 +438,6 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
              </widget>
             </item>
             <item row="5" column="0">
-             <widget class="QLabel" name="label_AGENTE">
-              <property name="minimumSize">
-               <size>
-                <width>50</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>150</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>代理</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item row="5" column="1">
-             <widget class="QLineEdit" name="lineEdit_AGENTE">
-              <property name="text">
-               <string/>
-              </property>
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-              <property name="placeholderText">
-               <string>暂无</string>
-              </property>
-             </widget>
-            </item>
-            <item row="6" column="0">
              <widget class="QLabel" name="label_CONDICIONES">
               <property name="minimumSize">
                <size>
@@ -471,7 +459,7 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
               </property>
              </widget>
             </item>
-            <item row="6" column="1">
+            <item row="5" column="1">
              <widget class="QLineEdit" name="lineEdit_CONDICIONES">
               <property name="text">
                <string/>
@@ -484,7 +472,7 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
               </property>
              </widget>
             </item>
-            <item row="7" column="0">
+            <item row="6" column="0">
              <widget class="QLabel" name="label_DISCOUNT">
               <property name="minimumSize">
                <size>
@@ -506,39 +494,13 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
               </property>
              </widget>
             </item>
-            <item row="7" column="1">
+            <item row="6" column="1">
              <widget class="QLineEdit" name="lineEdit_DISCOUNT">
               <property name="readOnly">
                <bool>true</bool>
               </property>
               <property name="placeholderText">
                <string>0</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0">
-             <widget class="QLabel" name="label_SelectedClientID">
-              <property name="minimumSize">
-               <size>
-                <width>50</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>客户号</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QLineEdit" name="lineEdit_SelectedClientID">
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-              <property name="placeholderText">
-               <string>暂无</string>
               </property>
              </widget>
             </item>

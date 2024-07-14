@@ -109,9 +109,6 @@ void CreateListWin::set_GUI_Language()
     this->ui->label_CLIENTE->setText(lan("客户名", "CLIENTE"));
     this->ui->lineEdit_CLIENTE->setPlaceholderText(enter_here);
 
-    this->ui->label_clientID->setText(lan("客户号码", "Número de cliente"));
-    this->ui->lineEdit_clientID->setPlaceholderText(enter_here);
-
     this->ui->label_DOMICILIO->setText(lan("地址", "DOMICILIO"));
     this->ui->lineEdit_DOMICILIO->setPlaceholderText(enter_here);
 
@@ -121,7 +118,7 @@ void CreateListWin::set_GUI_Language()
     this->ui->label_RFC->setText("R.F.C.");
     this->ui->lineEdit_RFC->setPlaceholderText(enter_here);
 
-    this->ui->label_AGENTE->setText(lan("代理", "AGENTE"));
+    this->ui->label_AGENTE->setText(lan("客户号码", "AGENTE"));
     this->ui->lineEdit_AGENTE->setPlaceholderText(enter_here);
 
     this->ui->label_CONDICIONES->setText(lan("付款方式", "CONDICIONES DE PAGO"));
@@ -141,12 +138,12 @@ void CreateListWin::set_GUI_Language()
     const QStringList added_models_table_headers = {
         lan("货号", "MODELO"),
         lan("集装箱号", "Número de contenedor"),
-        lan("品名(中文)）", "Nombre del producto (en chino)"),
+        lan("品名(中文)", "Nombre del producto (en chino)"),
         lan("品名(西语)", "Nombre del producto (en español)"),
         lan("箱数", "CAJA"),
         lan("每箱个数", "CANT POR CAJA"),
         lan("个数", "CANTIDAD"),
-        lan("单价($)）", "PRECIO U.($)"),
+        lan("单价($)", "PRECIO U.($)"),
         lan("总价($)", "IMPORTE($)"),
     };
 
@@ -185,7 +182,7 @@ void CreateListWin::on_generatePDF_btn_clicked()
     QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
     QSharedPointer<Client> new_client = nullptr;
 
-    if(this->ui->lineEdit_clientID->text().trimmed() == "")
+    if(this->ui->lineEdit_AGENTE->text().trimmed() == "")
     {
         Msgbox.setText(lan("客户号码不能为空！", "¡El número de cliente no puede estar vacío!"));
         Msgbox.exec();
@@ -219,12 +216,11 @@ void CreateListWin::on_generatePDF_btn_clicked()
     this->list->entryList = cur_list_entries;
 
     // save client info
-    this->list->client_info.m_ID = this->ui->lineEdit_clientID->text();
+    this->list->client_info.m_ID = this->ui->lineEdit_AGENTE->text();
     this->list->client_info.m_clientName = this->ui->lineEdit_CLIENTE->text();
     this->list->client_info.m_DOMICILIO = this->ui->lineEdit_DOMICILIO->text();
     this->list->client_info.m_CIUDAD = this->ui->lineEdit_CIUDAD->text();
     this->list->client_info.m_RFC = this->ui->lineEdit_RFC->text();
-    this->list->client_info.m_AGENTE = this->ui->lineEdit_AGENTE->text();
     this->list->client_info.m_CONDICIONES = this->ui->lineEdit_CONDICIONES->text();
     this->list->client_info.m_DISCOUNT = this->ui->doubleSpinBox_discount->value() / 100.; // the value the user is entering is between 0-100
     this->list->client_info.m_TOTAL_NUM_BOXES = this->list->total_num_boxes();
@@ -275,12 +271,11 @@ Success:
 
     // save client info
     new_client = QSharedPointer<Client>::create( Client(
-        this->ui->lineEdit_clientID->text().trimmed(),
+        this->ui->lineEdit_AGENTE->text().trimmed(),
         this->ui->lineEdit_CLIENTE->text().trimmed(),
         this->ui->lineEdit_DOMICILIO->text().trimmed(),
         this->ui->lineEdit_CIUDAD->text().trimmed(),
         this->ui->lineEdit_RFC->text().trimmed(),
-        this->ui->lineEdit_AGENTE->text().trimmed(),
         this->ui->lineEdit_CONDICIONES->text().trimmed()
         ) );
     clientManager.add_client(new_client);
@@ -297,7 +292,6 @@ Fail:
 
 void CreateListWin::clear_client_info()
 {
-    this->ui->lineEdit_clientID->setText("");
     this->ui->lineEdit_CLIENTE->setText("");
     this->ui->lineEdit_DOMICILIO->setText("");
     this->ui->lineEdit_CIUDAD->setText("");
@@ -337,7 +331,7 @@ void CreateListWin::on_previewList_btn_clicked()
     this->list->client_info.m_DOMICILIO = this->ui->lineEdit_DOMICILIO->text();
     this->list->client_info.m_CIUDAD = this->ui->lineEdit_CIUDAD->text();
     this->list->client_info.m_RFC = this->ui->lineEdit_RFC->text();
-    this->list->client_info.m_AGENTE = this->ui->lineEdit_AGENTE->text();
+    this->list->client_info.m_ID = this->ui->lineEdit_AGENTE->text();
     this->list->client_info.m_CONDICIONES = this->ui->lineEdit_CONDICIONES->text();
     this->list->client_info.m_DISCOUNT = this->ui->doubleSpinBox_discount->value() / 100.; // the value the user is entering is between 0-100
     this->list->client_info.m_TOTAL_NUM_BOXES = this->list->total_num_boxes();
@@ -652,9 +646,8 @@ void CreateListWin::clear_tables()
 
 void CreateListWin::set_clientInfo(QSharedPointer<Client> client)
 {
-    this->ui->lineEdit_clientID->setText(client->m_ID);
     this->ui->lineEdit_CLIENTE->setText(client->m_clientName);
-    this->ui->lineEdit_AGENTE->setText(client->m_AGENTE);
+    this->ui->lineEdit_AGENTE->setText(client->m_ID);
     this->ui->lineEdit_CIUDAD->setText(client->m_CIUDAD);
     this->ui->lineEdit_CONDICIONES->setText(client->m_CONDICIONES);
     this->ui->lineEdit_DOMICILIO->setText(client->m_DOMICILIO);
@@ -664,7 +657,7 @@ void CreateListWin::set_clientInfo(QSharedPointer<Client> client)
 
 void CreateListWin::on_pushButton_autoFill_clicked()
 {
-    const QString clientID = this->ui->lineEdit_clientID->text().trimmed();
+    const QString clientID = this->ui->lineEdit_AGENTE->text().trimmed();
     const QString clientName = this->ui->lineEdit_CLIENTE->text().trimmed();
 
     if(clientID.isEmpty() && clientName.isEmpty()){

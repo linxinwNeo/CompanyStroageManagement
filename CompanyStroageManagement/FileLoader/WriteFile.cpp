@@ -83,10 +83,9 @@ bool WriteFile::Save_List(const ListPtr list){
         << list->client_info.m_DOMICILIO << split_item // 4
         << list->client_info.m_CIUDAD << split_item // 5
         << list->client_info.m_RFC << split_item // 6
-        << list->client_info.m_AGENTE << split_item // 7
-        << list->client_info.m_CONDICIONES << split_item // 8
-        << list->client_info.m_TOTAL_NUM_BOXES << split_item // 9
-        << list->client_info.m_DISCOUNT << split_item; // 10
+        << list->client_info.m_CONDICIONES << split_item // 7
+        << list->client_info.m_TOTAL_NUM_BOXES << split_item // 8
+        << list->client_info.m_DISCOUNT << split_item; // 9
 
     // output num of models in the list
     out << list->num_model_types() << "\n"; // 11
@@ -129,8 +128,7 @@ bool WriteFile::Save_Clients()
             << client->m_DOMICILIO << split_item // 3
             << client->m_CIUDAD << split_item // 4
             << client->m_RFC << split_item // 5
-            << client->m_AGENTE << split_item // 6
-            << client->m_CONDICIONES // 7
+            << client->m_CONDICIONES // 6
             << "\n";
     }
 
