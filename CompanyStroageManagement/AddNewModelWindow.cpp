@@ -52,7 +52,7 @@ void AddNewModelWindow::set_GUI_Language()
                                                   "Nombre del producto (en español)"));
     this->ui->lineEdit_DESCRIPTION_SPAN->setPlaceholderText(none);
 
-    this->ui->label_PRIZE->setText(lan("单价", "PRECIO"));
+    this->ui->label_PRIZE->setText(lan("单价($)", "PRECIO U.($)"));
 
     this->ui->label_NUM_INIT_BOXES->setText(lan("进货箱数", "ENTRADAS"));
     this->ui->label_NUM_SOLD_BOXES->setText(lan("已售箱数", "SALIDAS"));
