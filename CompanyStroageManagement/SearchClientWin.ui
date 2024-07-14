@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>360</width>
-    <height>350</height>
+    <width>282</width>
+    <height>261</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,14 +24,8 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QGroupBox" name="groupBox">
-     <property name="locale">
-      <locale language="English" country="UnitedStates"/>
-     </property>
-     <property name="title">
-      <string>搜索客户</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
+    <widget class="QWidget" name="widget" native="true">
+     <layout class="QHBoxLayout" name="horizontalLayout">
       <property name="leftMargin">
        <number>3</number>
       </property>
@@ -45,139 +39,121 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
        <number>3</number>
       </property>
       <item>
-       <widget class="QWidget" name="widget" native="true">
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <property name="leftMargin">
-          <number>3</number>
-         </property>
-         <property name="topMargin">
-          <number>3</number>
-         </property>
-         <property name="rightMargin">
-          <number>3</number>
-         </property>
-         <property name="bottomMargin">
-          <number>3</number>
-         </property>
-         <item>
-          <widget class="QLabel" name="label_ClientID">
-           <property name="text">
-            <string>客户号码</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="lineEdit_ClientID">
-           <property name="placeholderText">
-            <string>在此输入</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_SearchByIDPrefix">
-           <property name="text">
-            <string>搜索</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <widget class="Line" name="line">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+       <widget class="QLabel" name="label_ClientID">
+        <property name="text">
+         <string>客户号码</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QWidget" name="widget_2" native="true">
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <property name="leftMargin">
-          <number>3</number>
-         </property>
-         <property name="topMargin">
-          <number>3</number>
-         </property>
-         <property name="rightMargin">
-          <number>3</number>
-         </property>
-         <property name="bottomMargin">
-          <number>3</number>
-         </property>
-         <item>
-          <widget class="QLabel" name="label_ClientName">
-           <property name="text">
-            <string>客户名字</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="lineEdit_ClientName">
-           <property name="placeholderText">
-            <string>在此输入</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_SearchByNamePrefix">
-           <property name="text">
-            <string>搜索</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
+       <widget class="QLineEdit" name="lineEdit_ClientID">
+        <property name="placeholderText">
+         <string>在此输入</string>
+        </property>
        </widget>
       </item>
       <item>
-       <widget class="QTableWidget" name="tableWidget_searchedClients">
-        <property name="selectionMode">
-         <enum>QAbstractItemView::SingleSelection</enum>
+       <widget class="QPushButton" name="pushButton_SearchByIDPrefix">
+        <property name="text">
+         <string>搜索</string>
         </property>
-        <property name="selectionBehavior">
-         <enum>QAbstractItemView::SelectRows</enum>
-        </property>
-        <property name="verticalScrollMode">
-         <enum>QAbstractItemView::ScrollPerPixel</enum>
-        </property>
-        <column>
-         <property name="text">
-          <string>客户号码</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>客户名字</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>联系地址</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>城市</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>R.F.C.</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>代理</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>付款方式</string>
-         </property>
-        </column>
        </widget>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="widget_2" native="true">
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <property name="leftMargin">
+       <number>3</number>
+      </property>
+      <property name="topMargin">
+       <number>3</number>
+      </property>
+      <property name="rightMargin">
+       <number>3</number>
+      </property>
+      <property name="bottomMargin">
+       <number>3</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="label_ClientName">
+        <property name="text">
+         <string>客户名字</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_ClientName">
+        <property name="placeholderText">
+         <string>在此输入</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_SearchByNamePrefix">
+        <property name="text">
+         <string>搜索</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTableWidget" name="tableWidget_searchedClients">
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SingleSelection</enum>
+     </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectRows</enum>
+     </property>
+     <property name="verticalScrollMode">
+      <enum>QAbstractItemView::ScrollPerPixel</enum>
+     </property>
+     <column>
+      <property name="text">
+       <string>客户号码</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>客户名字</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>联系地址</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>城市</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>R.F.C.</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>代理</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>付款方式</string>
+      </property>
+     </column>
     </widget>
    </item>
    <item>

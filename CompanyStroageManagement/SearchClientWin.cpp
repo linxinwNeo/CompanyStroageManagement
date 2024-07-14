@@ -22,8 +22,6 @@ void SearchClientWin::set_GUI_Language()
 {
     const QString enterHere = lan("在此输入", "Entra aquí");
 
-    this->ui->groupBox->setTitle(lan("搜索客户", "Búsqueda de clientes"));
-
     this->ui->label_ClientID->setText(lan("客户号码", "Número de cliente"));
     this->ui->lineEdit_ClientID->setPlaceholderText(enterHere);
 

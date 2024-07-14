@@ -17,6 +17,8 @@ public:
     explicit ChangePasswordWin(QWidget *parent = nullptr);
     ~ChangePasswordWin();
 
+    void set_GUI_Language();
+
     MainWindow* parentPtr;
 
 private slots:

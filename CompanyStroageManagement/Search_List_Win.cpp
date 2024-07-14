@@ -44,7 +44,7 @@ void Search_List_Win::view_selected_list()
 {
     if(this->selected_list.isNull()) return;
 
-    this->ui->lineEdit_ClientID->setText(selected_list->client_info.m_ID);
+    this->ui->lineEdit_SelectedClientID->setText(selected_list->client_info.m_ID);
     this->ui->lineEdit_CLIENTE->setText(selected_list->client_info.m_clientName);
     this->ui->lineEdit_DOMICILIO->setText(selected_list->client_info.m_DOMICILIO);
     this->ui->lineEdit_CIUDAD->setText(selected_list->client_info.m_CIUDAD);
@@ -78,7 +78,7 @@ void Search_List_Win::reset_selected_list_info()
     selected_list_entries_Table->clearContents();
     selected_list_entries_Table->setRowCount(0);
 
-    this->ui->lineEdit_ClientID->clear();
+    this->ui->lineEdit_SelectedClientID->clear();
     this->ui->lineEdit_CLIENTE->clear();
     this->ui->lineEdit_DOMICILIO->clear();
     this->ui->lineEdit_CIUDAD->clear();
@@ -92,10 +92,6 @@ void Search_List_Win::reset_selected_list_info()
 // 更新 search_result_Table
 void Search_List_Win::clear_tables()
 {
-    this->ui->lineEdit_list_id_2be_searched->clear();
-    this->ui->lineEdit_ClientIDPrefix->clear();
-    this->ui->lineEdit_ClientNamePrefix->clear();
-
     this->search_result_Table->clearContents();
     this->search_result_Table->setRowCount(0);
 
@@ -104,13 +100,20 @@ void Search_List_Win::clear_tables()
     this->selected_list_entries_Table->setRowCount(0);
 }
 
+void Search_List_Win::clear_search_criterion()
+{
+    this->ui->lineEdit_ListIDPrefix->clear();
+    this->ui->lineEdit_ClientIDPrefix->clear();
+    this->ui->lineEdit_ClientNamePrefix->clear();
+}
+
 
 // set language
 void Search_List_Win::set_GUI_Language()
 {
-    this->ui->label_list_id_2be_searched->setText(lan("清单号", "número de lista"));
+    this->ui->label_ListIDPrefix->setText(lan("清单号", "número de lista"));
 
-    this->ui->lineEdit_list_id_2be_searched->setPlaceholderText(lan("在此输入需要查询的清单号", "Ingrese el número de lista que desea consultar aquí"));
+    this->ui->lineEdit_ListIDPrefix->setPlaceholderText(lan("在此输入需要查询的清单号", "Ingrese el número de lista que desea consultar aquí"));
 
     this->ui->search_list_result_GB->setTitle(lan("清单查询结果", "resultados de la consulta de la lista"));
 
@@ -129,8 +132,8 @@ void Search_List_Win::set_GUI_Language()
 
     const QString none = lan("暂无", "ingresa aquí");
 
-    this->ui->label_ClientID->setText(lan("客户号", "Número de cliente"));
-    this->ui->lineEdit_ClientID->setPlaceholderText(none);
+    this->ui->label_SelectedClientID->setText(lan("客户号", "Número de cliente"));
+    this->ui->lineEdit_SelectedClientID->setPlaceholderText(none);
 
     this->ui->label_CLIENTE->setText(lan("客户", "CLIENTE"));
     this->ui->lineEdit_CLIENTE->setPlaceholderText(none);
@@ -163,16 +166,29 @@ void Search_List_Win::set_GUI_Language()
     // 设置 selected_list_entries_Table 的语言
     QStringList headers2 = {
         lan("货号", "CLAVE"),
-        lan("集装箱号", "CONTAINER"),
+        lan("集装箱号", "Número de contenedor"),
         lan("品名(中文)", "Nombre del producto (en chino)"),
         lan("品名(西语)", "Nombre del producto (en español)"),
         lan("箱数", "CAJA"),
         lan("每箱个数", "CANT POR CAJA"),
-        lan("个数", "CAMTODAD"),
-        lan("单价($)", "PRECOP U.($)"),
+        lan("个数", "CANTIDAD"),
+        lan("单价($)", "PRECIO U.($)"),
         lan("总价($)", "IMPORTE($)")
     };
     selected_list_entries_Table->setHorizontalHeaderLabels(headers2);
+
+    this->ui->pushButton_SearchListsByListIDPrefix->setText(lan("搜索", "Buscar"));
+    this->ui->pushButton_SearchListsByClientIDPrefix->setText(lan("搜索", "Buscar"));
+    this->ui->pushButton_SearchListsByClientNamePrefix->setText(lan("搜索", "Buscar"));
+
+    this->ui->label_ClientIDPrefix->setText(lan("客户号", "Número de cliente"));
+    this->ui->label_ClientNamePrefix->setText(lan("客户名", "CLIENTE"));
+
+    this->ui->lineEdit_ClientIDPrefix->setPlaceholderText(lan("在此输入需要查询的清单的客户号", "Introduzca el número de cliente de la lista sobre la que desea consultar"));
+    this->ui->lineEdit_ClientNamePrefix->setPlaceholderText(lan("在此输入需要查询的清单的客户名",
+                                                                "Introduzca el nombre del cliente de la lista que se va a consultar"));
+
+    this->ui->pushButton_createPDF->setText(lan("生成PDF", "Generar un PDF"));
 }
 
 
@@ -210,7 +226,7 @@ void Search_List_Win::closeEvent (QCloseEvent *event)
 
             // we want to clear up the content we currently have in this window
             this->reset_selected_list_info();
-            this->ui->lineEdit_list_id_2be_searched->clear();
+            this->ui->lineEdit_ListIDPrefix->clear();
         }
         event->accept();
     }
@@ -383,14 +399,14 @@ void Search_List_Win::on_pushButton_SearchListsByListIDPrefix_clicked()
     this->ui->lineEdit_ClientIDPrefix->clear();
     this->ui->lineEdit_ClientNamePrefix->clear();
 
-    QString userInput = this->ui->lineEdit_list_id_2be_searched->text().trimmed(); // remove useless empty spaces
+    QString userInput = this->ui->lineEdit_ListIDPrefix->text().trimmed(); // remove useless empty spaces
 
 
     // clear content of <searched_lists_table>
     this->clear_tables();
 
     QVector<ListPtr> candidates;
-    listManager.get_lists(userInput, candidates, true);
+    listManager.get_lists_by_listID_prefix(userInput, candidates, true);
 
     // for each list, make a row for it
     for( unsigned long row = 0; row < candidates.size(); row++ ){
@@ -414,18 +430,87 @@ void Search_List_Win::on_pushButton_SearchListsByListIDPrefix_clicked()
     this->reset_selected_list_info();
 
     this->setEnabled(true);
-    this->ui->lineEdit_list_id_2be_searched->setFocus();
 }
 
 
 void Search_List_Win::on_pushButton_SearchListsByClientIDPrefix_clicked()
 {
+    // disable the window in case search takes time
+    this->setDisabled(true);
 
+    this->ui->lineEdit_ListIDPrefix->clear();
+    this->ui->lineEdit_ClientNamePrefix->clear();
+
+    QString ClientIDPrefix = this->ui->lineEdit_ClientIDPrefix->text().trimmed(); // remove useless empty spaces
+
+
+    this->clear_tables();
+
+    QVector<ListPtr> candidates;
+    listManager.get_lists_by_clientID_prefix(ClientIDPrefix, candidates, true);
+
+    // for each list, make a row for it
+    for( unsigned long row = 0; row < candidates.size(); row++ ){
+        const ListPtr list = candidates[row];
+
+        search_result_Table->insertRow(search_result_Table->rowCount());
+
+        QVector<QString> items = list->describe_this_list();
+
+        for( unsigned long col = 0; col < items.size(); col++ ){
+            QTableWidgetItem *tableWidgetItem = new QTableWidgetItem();
+            tableWidgetItem->setText( items[col] );
+
+            tableWidgetItem->setTextAlignment(Qt::AlignVCenter);
+
+            search_result_Table->setItem(row, col, tableWidgetItem);
+        }
+    }
+
+    // clear the selected list
+    this->reset_selected_list_info();
+
+    this->setEnabled(true);
 }
 
 
 void Search_List_Win::on_pushButton_SearchListsByClientNamePrefix_clicked()
 {
+    // disable the window in case search takes time
+    this->setDisabled(true);
 
+    this->ui->lineEdit_ClientIDPrefix->clear();
+    this->ui->lineEdit_ListIDPrefix->clear();
+
+    QString ClientNamePrefix = this->ui->lineEdit_ClientNamePrefix->text().trimmed(); // remove useless empty spaces
+
+
+    this->clear_tables();
+
+    QVector<ListPtr> candidates;
+    listManager.get_lists_by_clientName_prefix(ClientNamePrefix, candidates, true);
+
+    // for each list, make a row for it
+    for( unsigned long row = 0; row < candidates.size(); row++ ){
+        const ListPtr list = candidates[row];
+
+        search_result_Table->insertRow(search_result_Table->rowCount());
+
+        QVector<QString> items = list->describe_this_list();
+
+        for( unsigned long col = 0; col < items.size(); col++ ){
+            QTableWidgetItem *tableWidgetItem = new QTableWidgetItem();
+            tableWidgetItem->setText( items[col] );
+
+            tableWidgetItem->setTextAlignment(Qt::AlignVCenter);
+
+            search_result_Table->setItem(row, col, tableWidgetItem);
+        }
+    }
+
+    // clear the selected list
+    this->reset_selected_list_info();
+
+    this->setEnabled(true);
 }
 

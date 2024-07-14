@@ -29,6 +29,8 @@ public:
     
     void clear_tables();
 
+    void clear_search_criterion();
+
     void set_GUI_Language();
     void setWindow();
 

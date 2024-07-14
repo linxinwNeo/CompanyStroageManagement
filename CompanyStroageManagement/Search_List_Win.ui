@@ -39,7 +39,7 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="1">
-       <widget class="QLineEdit" name="lineEdit_list_id_2be_searched">
+       <widget class="QLineEdit" name="lineEdit_ListIDPrefix">
         <property name="sizePolicy">
          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -95,7 +95,7 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
        </widget>
       </item>
       <item row="0" column="0">
-       <widget class="QLabel" name="label_list_id_2be_searched">
+       <widget class="QLabel" name="label_ListIDPrefix">
         <property name="minimumSize">
          <size>
           <width>100</width>

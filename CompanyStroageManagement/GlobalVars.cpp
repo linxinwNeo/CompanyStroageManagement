@@ -40,13 +40,13 @@ QStringList GlobalVars::table_headers_model(){
         lan("已售箱数", "SALIDAS"),
         lan("剩余箱数", "CAJA"),
 
-        lan("每箱个数", "EMPAQUE"),
+        lan("每箱个数", "CANT POR CAJA"),
 
         lan("进货个数", "Núm. piezas adq."),
         lan("已售个数", "Núm. piezas vend."),
         lan("剩余个数", "EXISTENCIA"),
 
-        lan("单价(%)", "PRECIO($)"),
+        lan("单价(%)", "PRECIO U.($)"),
         lan("上次修改时间", "Fecha últ. modif."),
         lan("进货时间", "Tiempo de stock")
     };

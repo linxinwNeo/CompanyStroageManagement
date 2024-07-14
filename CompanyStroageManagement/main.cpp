@@ -58,6 +58,8 @@ void read_files()
 
     // try to read clients file
     ReadFile::Read_Clients();
+
+    listManager.update_max_id();
 }
 
 

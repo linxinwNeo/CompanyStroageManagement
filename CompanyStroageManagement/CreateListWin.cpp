@@ -138,6 +138,20 @@ void CreateListWin::set_GUI_Language()
 
     this->ui->searched_models_table->setHorizontalHeaderLabels(GlobalVars::table_headers_model());
 
+    const QStringList added_models_table_headers = {
+        lan("货号", "MODELO"),
+        lan("集装箱号", "Número de contenedor"),
+        lan("品名(中文)）", "Nombre del producto (en chino)"),
+        lan("品名(西语)", "Nombre del producto (en español)"),
+        lan("箱数", "CAJA"),
+        lan("每箱个数", "CANT POR CAJA"),
+        lan("个数", "CANTIDAD"),
+        lan("单价($)）", "PRECIO U.($)"),
+        lan("总价($)", "IMPORTE($)"),
+    };
+
+    this->ui->added_models_table->setHorizontalHeaderLabels(added_models_table_headers);
+
     this->ui->add_selected_model_btn->setText(lan("添加选中的货物", "añadir los productos seleccionados"));
 
     this->ui->added_models_GB->setTitle(lan("已添加的货物（双击货物修改数量）", "Productos añadidos (doble clic para modificar la cantidad)"));
@@ -155,6 +169,9 @@ void CreateListWin::set_GUI_Language()
     this->ui->pushButton_edit_selected_model->setText(lan("修改选中的货物", "Modificar los productos seleccionados"));
 
     this->ui->pushButton_searchModel->setText(lan("搜索", "Buscar"));
+
+    this->ui->pushButton_autoFill->setText(lan("自动填充", "Autorrelleno"));
+
 }
 
 
@@ -411,10 +428,14 @@ void CreateListWin::clear_added_models_table()
 /* try to add selected model in to the <added_models_table>, but we need to check if it has been added already */
 void CreateListWin::on_add_selected_model_btn_clicked()
 {
-    if(this->selected_model_in_search_table.isNull()) return;
-
-    // we dont have this selected model anymore
     QMessageBox Msgbox;
+
+    if(this->selected_model_in_search_table.isNull()){
+        Msgbox.setText(lan("请先选中一个货物", "Por favor, seleccione un envío primero"));
+        Msgbox.exec();
+        return;
+    }
+
 
     if(this->selected_model_in_search_table->NUM_LEFT_PIECES() == 0){
         Msgbox.setText(lan(OUT_OF_STOCK_MSG_CN, OUT_OF_STOCK_MSG_SPAN));

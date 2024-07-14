@@ -103,7 +103,7 @@ ListPtr ListManager::get_list(const unsigned long id)
 
 // get the lists with their id begin with id_prefix
 // if prefix is empty, we return all lists
-void ListManager::get_lists(const QString id_prefix, QVector<ListPtr>& candidates, bool sorted)
+void ListManager::get_lists_by_listID_prefix(const QString id_prefix, QVector<ListPtr>& candidates, bool sorted)
 {
     const QString new_str = id_prefix.toUpper().trimmed();
 
@@ -146,6 +146,110 @@ void ListManager::get_lists(const QString id_prefix, QVector<ListPtr>& candidate
 
             if(!list.isNull()) candidates.push_back(list);
         }
+    }
+
+    // sort the vector by list ids if needed
+    if(sorted){
+        QuickSorts::QuickSort(candidates);
+    }
+
+    return;
+}
+
+void ListManager::get_lists_by_clientID_prefix(const QString id_prefix, QVector<QSharedPointer<List> > &candidates, bool sorted)
+{
+    const QString new_str = id_prefix.toUpper().trimmed();
+
+    // if id_prefix is empty we return nothing
+    if(new_str.isEmpty()){
+        candidates.clear();
+        return;
+    }
+
+    static QRegularExpressionMatch match;
+
+    QString folderPath = "./" + GlobalVars::Lists_DirName;
+    QDir directory(folderPath);
+    // Get the list of all files in the directory
+    QStringList files = directory.entryList(QDir::Files);
+
+    QVector<QString> exist_ids;
+    exist_ids.reserve(files.size() + 1);
+
+    candidates.clear();
+    candidates.reserve(files.size() + 1);
+
+    // Iterate and print the file names
+    foreach (QString fileName, files) {
+        match = re.match(fileName);
+
+        if (match.hasMatch()) {
+            QString id = match.captured(1);
+            exist_ids.push_back(id);
+        }
+    }
+
+
+    // for each list , we convert it to a string and testing
+    for(QString& id : exist_ids){
+        ListPtr list = nullptr;
+
+        ReadFile::Read_List(id.toULong(), list);
+
+        if(!list.isNull() && list->client_info.m_ID.toUpper().startsWith(new_str))
+            candidates.push_back(list);
+    }
+
+    // sort the vector by list ids if needed
+    if(sorted){
+        QuickSorts::QuickSort(candidates);
+    }
+
+    return;
+}
+
+void ListManager::get_lists_by_clientName_prefix(const QString name_prefix, QVector<QSharedPointer<List> > &candidates, bool sorted)
+{
+    const QString new_str = name_prefix.toUpper().trimmed();
+
+    // if id_prefix is empty we return nothing
+    if(new_str.isEmpty()){
+        candidates.clear();
+        return;
+    }
+
+    static QRegularExpressionMatch match;
+
+    QString folderPath = "./" + GlobalVars::Lists_DirName;
+    QDir directory(folderPath);
+    // Get the list of all files in the directory
+    QStringList files = directory.entryList(QDir::Files);
+
+    QVector<QString> exist_ids;
+    exist_ids.reserve(files.size() + 1);
+
+    candidates.clear();
+    candidates.reserve(files.size() + 1);
+
+    // Iterate and print the file names
+    foreach (QString fileName, files) {
+        match = re.match(fileName);
+
+        if (match.hasMatch()) {
+            QString id = match.captured(1);
+            exist_ids.push_back(id);
+        }
+    }
+
+
+    // for each list , we convert it to a string and testing
+    for(QString& id : exist_ids){
+        ListPtr list = nullptr;
+
+        ReadFile::Read_List(id.toULong(), list);
+
+        if(!list.isNull() && list->client_info.m_clientName.toUpper().startsWith(new_str))
+            candidates.push_back(list);
     }
 
     // sort the vector by list ids if needed

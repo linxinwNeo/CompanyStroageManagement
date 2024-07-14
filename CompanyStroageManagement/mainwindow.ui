@@ -33,7 +33,7 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
        </size>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="search_model_tab">
        <attribute name="title">
@@ -644,7 +644,7 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
                   <widget class="QPushButton" name="delete_model_btn">
                    <property name="maximumSize">
                     <size>
-                     <width>200</width>
+                     <width>300</width>
                      <height>16777215</height>
                     </size>
                    </property>
@@ -657,7 +657,7 @@ QLineEdit[readOnly=&quot;true&quot;] {color: #808080; background-color: #F0F0F0;
                   <widget class="QPushButton" name="update_selected_model_btn">
                    <property name="maximumSize">
                     <size>
-                     <width>200</width>
+                     <width>300</width>
                      <height>16777215</height>
                     </size>
                    </property>

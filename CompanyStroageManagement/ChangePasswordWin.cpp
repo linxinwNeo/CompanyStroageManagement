@@ -21,6 +21,14 @@ ChangePasswordWin::~ChangePasswordWin()
     delete ui;
 }
 
+// set language according to the current language
+void ChangePasswordWin::set_GUI_Language()
+{
+    this->ui->label_new_password->setText(lan("新密码","Nuevas contraseñas"));
+    this->ui->label_new_password_again->setText(lan("再次输入新密码","Vuelva a introducir la nueva contraseña"));
+    this->ui->pushButton_finish->setText(lan("OK", "OK"));
+}
+
 
 void ChangePasswordWin::closeEvent(QCloseEvent *event)
 {

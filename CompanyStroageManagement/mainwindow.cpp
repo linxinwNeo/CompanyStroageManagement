@@ -26,15 +26,12 @@ MainWindow::MainWindow(QWidget *parent)
     this->setWindow();
 
     // setting up the add new model window
-    this->AddNewModelWinPtr.setWindowTitle(lan(AddNewModel_WinTitle_CN, AddNewModel_WinTitle_SPAN));
     this->AddNewModelWinPtr.parentPtr = this;
 
     // setting up the create list window
-    this->CreateListWinPtr.setWindowTitle(lan(CreateList_WinTitle_CN, CreateList_WinTitle_SPAN));
     this->CreateListWinPtr.parentPtr = this;
 
     // setting up the search list window
-    this->SearchListWinPtr.setWindowTitle(lan(Search_List_WinTitle_CN, Search_List_WinTitle_SPAN));
     this->SearchListWinPtr.set_parentWin(this);
 
     // setting up the change password window
@@ -460,9 +457,9 @@ void MainWindow::on_search_CONTAINER_ID_LE_textChanged(const QString &new_str)
 void MainWindow::on_start_add_model_btn_clicked()
 {
     // init AddNewModelWindow
+    this->AddNewModelWinPtr.setWindowTitle(lan(AddNewModel_WinTitle_CN, AddNewModel_WinTitle_SPAN));
     this->AddNewModelWinPtr.set_GUI_Language();
     this->AddNewModelWinPtr.setWindow();
-
 
     this->AddNewModelWinPtr.show();
 
@@ -473,6 +470,7 @@ void MainWindow::on_start_add_model_btn_clicked()
 // 打开创建新清单的页面
 void MainWindow::on_new_list_btn_clicked()
 {
+    this->CreateListWinPtr.setWindowTitle(lan(CreateList_WinTitle_CN, CreateList_WinTitle_SPAN));
     this->CreateListWinPtr.set_GUI_Language();
     this->CreateListWinPtr.setWindow();
 
@@ -487,10 +485,12 @@ void MainWindow::on_new_list_btn_clicked()
 // 打开<Search_List_Win>
 void MainWindow::on_search_past_list_btn_clicked()
 {
+    this->SearchListWinPtr.setWindowTitle(lan(Search_List_WinTitle_CN, Search_List_WinTitle_SPAN));
     this->SearchListWinPtr.setWindow();
     this->SearchListWinPtr.set_GUI_Language();
 
     this->SearchListWinPtr.clear_tables();
+    this->SearchListWinPtr.clear_search_criterion();
 
     this->SearchListWinPtr.show();
 
@@ -549,6 +549,8 @@ void MainWindow::on_save_inventory_2_new_file_btn_clicked()
     dialog.setAcceptMode(QFileDialog::AcceptSave);
     dialog.setNameFilter("Excel Files (*.xlsx);; Text files (*.txt)");
     dialog.setDefaultSuffix("xlsx");
+    dialog.setWindowTitle(lan("保存库存文件至", "Guardar archivo de inventario en"));
+
     QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
     dialog.setDirectory(desktopPath);
 
@@ -587,6 +589,7 @@ void MainWindow::on_read_inventory_from_new_file_btn_clicked()
     QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
     fileDialog.setDirectory(desktopPath);
     fileDialog.setFileMode(QFileDialog::ExistingFile);
+    fileDialog.setWindowTitle(lan("选择需要读取的库存文件", "Seleccione el archivo de inventario que desea leer"));
 
     if (fileDialog.exec())
     {

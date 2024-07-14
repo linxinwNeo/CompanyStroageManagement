@@ -47,6 +47,7 @@ void MainWindow::on_action_Save_Inventory_triggered()
 void MainWindow::on_actionChangePassword_triggered()
 {
     this->ChangePasswordWinPtr.setWindowTitle(lan("改密码","Cambia tu contraseña"));
+    this->ChangePasswordWinPtr.set_GUI_Language();
     this->ChangePasswordWinPtr.show();
     this->hide();
 }
@@ -55,6 +56,7 @@ void MainWindow::on_actionChangePassword_triggered()
 void MainWindow::on_actionSearchClient_triggered()
 {
     this->SearchClientWinPtr.setWindowTitle(lan("查询客户","Preguntar por el cliente"));
+    this->SearchClientWinPtr.set_GUI_Language();
     this->SearchClientWinPtr.show();
 }
 
