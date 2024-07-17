@@ -646,7 +646,7 @@ bool MainWindow::is_time_for_backup() const
 
         QString line = stream.readLine();
 
-        QDateTime prev_DateTime = QDateTime::fromString(line, GlobalVars::DateTimeFormat_for_backup_file);
+        QDateTime prev_DateTime = QDateTime::fromString(line, GlobalVars::DateTimeFormat_for_file);
         if(prev_DateTime.isValid()){
             QDateTime curDateTime = QDateTime::currentDateTime();
             unsigned int hours = prev_DateTime.secsTo(curDateTime) / 3600; // compute hours since last time

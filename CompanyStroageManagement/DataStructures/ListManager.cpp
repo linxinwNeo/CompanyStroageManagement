@@ -30,21 +30,36 @@ unsigned long int ListManager::get_unique_id() const
 // iterate every list file name and find the one with largest id
 void ListManager::update_max_id()
 {
-    static QRegularExpressionMatch match;
-
-    QString folderPath = "./" + GlobalVars::Lists_DirName;
-    QDir directory(folderPath);
-    // Get the list of all files in the directory
-    QStringList files = directory.entryList(QDir::Files);
-
     unsigned long max = 0;
-    // Iterate and print the file names
-    foreach (QString fileName, files) {
-        match = re.match(fileName);
 
-        if (match.hasMatch()) {
-            unsigned long number = match.captured(1).toULong();
-            if(number > max) max = number;
+    QDateTime DT = QDateTime::currentDateTime();
+
+    const QString folderPath = "./" + GlobalVars::Lists_DirName + "/" +
+                               DT.toString(GlobalVars::DateTimeFormat_year);
+    QDir dir(folderPath);
+
+    QFileInfoList fileInfoList = dir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot); // opens the current year folder
+
+    // Iterate and print the file names
+    foreach (QFileInfo fileInfo, fileInfoList) {
+        QString subFolderPath = fileInfo.absoluteFilePath();
+
+        QDir subDir(subFolderPath);
+        QFileInfoList subFileInfoList = subDir.entryInfoList(QDir::Files | QDir::NoDotAndDotDot); // months
+        foreach (QFileInfo subFileInfo, subFileInfoList) {
+            const QString absPath = subFileInfo.absoluteFilePath();
+
+            ListPtr list = nullptr;
+
+            bool success = ReadFile::Read_List(absPath, list);
+
+            if(success && !list.isNull())
+            {
+                if(list->id > max){
+                    max = list->id;
+                }
+            }
+
         }
     }
 
@@ -69,33 +84,52 @@ void ListManager::create_list(ListPtr list_2be_added)
 
 
 // remove the list with id and return the corresponding list, null if not exists
-void ListManager::delete_list(const unsigned long id)
+bool ListManager::delete_list(const QDateTime& creationDateTime)
 {
-    // create the path
+    // we are looking for the list file with <creationDateTime>.txt
     const QString filePath = "./" + GlobalVars::Lists_DirName + "/" +
-                       QString::number(id) + ".txt";
+                             creationDateTime.toString(GlobalVars::DateTimeFormat_year) + "/" +
+                             creationDateTime.toString(GlobalVars::DateTimeFormat_month) + "/" +
+                             creationDateTime.toString(GlobalVars::DateTimeFormat_for_file) + ".txt";
 
     QFile file(filePath);
     // check if the file exists
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)){
-        // not exists, we do nothing
+        goto Fail;
     }
     else{
-        // file exists, we delete it
-        if(!file.remove()){
-            write_error_file("Fails to delete the list with id: " + QString::number(id));
+        // file exists, we try to delete it
+        if(file.remove()){
+            goto Success;
+        }
+        else{
+            goto Fail;
         }
     }
 
-    return;
+Success:
+    file.close();
+    return true;
+
+Fail:
+    file.close();
+    return false;
 }
 
 
 // get the reference to the list with specified id
-ListPtr ListManager::get_list(const unsigned long id)
+ListPtr ListManager::get_list(const QDateTime& creationDateTime)
 {
+    // we are looking for the list file with <creationDateTime>.txt
+    const QString filePath = "./" + GlobalVars::Lists_DirName + "/" +
+                             creationDateTime.toString(GlobalVars::DateTimeFormat_year) + "/" +
+                             creationDateTime.toString(GlobalVars::DateTimeFormat_month) + "/" +
+                             creationDateTime.toString(GlobalVars::DateTimeFormat_for_file) + ".txt";
+
+
     ListPtr list = nullptr;
-    ReadFile::Read_List(id, list);
+
+    ReadFile::Read_List(filePath, list);
 
     return list;
 }
@@ -105,46 +139,45 @@ ListPtr ListManager::get_list(const unsigned long id)
 // if prefix is empty, we return all lists
 void ListManager::get_lists_by_listID_prefix(const QString id_prefix, QVector<ListPtr>& candidates, bool sorted)
 {
-    const QString new_str = id_prefix.toUpper().trimmed();
+    const QString ID_PREFIX = id_prefix.toUpper().trimmed();
 
-    // if id_prefix is empty we return nothing
-    if(new_str.isEmpty()){
+    // if ID_PREFIX is empty we return nothing
+    if(ID_PREFIX.isEmpty()){
         candidates.clear();
         return;
     }
 
-    static QRegularExpressionMatch match;
-
-    QString folderPath = "./" + GlobalVars::Lists_DirName;
-    QDir directory(folderPath);
-    // Get the list of all files in the directory
-    QStringList files = directory.entryList(QDir::Files);
-
-    QVector<QString> exist_ids;
-    exist_ids.reserve(files.size() + 1);
-
     candidates.clear();
-    candidates.reserve(files.size() + 1);
+    candidates.reserve(500);
 
-    // Iterate and print the file names
-    foreach (QString fileName, files) {
-        match = re.match(fileName);
+    const QString folderPath = "./" + GlobalVars::Lists_DirName;
+    QDir YearsDir(folderPath);
 
-        if (match.hasMatch()) {
-            QString id = match.captured(1);
-            exist_ids.push_back(id);
-        }
-    }
+    QFileInfoList yearFoldersInfoList = YearsDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot); // years folders list
 
+    foreach (QFileInfo yearFolderInfo, yearFoldersInfoList) {
+        QString yearFolderPath = yearFolderInfo.absoluteFilePath(); // e.g., ./ListsRecords/2024
 
-    // for each list , we convert it to a string and testing
-    for(QString& id : exist_ids){
-        if(id.startsWith(new_str)){
-            ListPtr list = nullptr;
+        QDir monthsDir(yearFolderPath);
+        QFileInfoList monthsFolderInfoList = monthsDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot); // months
+        foreach (QFileInfo monthsFolderInfo, monthsFolderInfoList) {
+            const QString absMonthFolderPath = monthsFolderInfo.absoluteFilePath(); // e.g., ./ListsRecords/2024/07
 
-            ReadFile::Read_List(id.toULong(), list);
+            QDir ListsDir(absMonthFolderPath);
+            QFileInfoList listFilesInfoList = ListsDir.entryInfoList(QDir::Files | QDir::NoDotAndDotDot); // list files
 
-            if(!list.isNull()) candidates.push_back(list);
+            foreach (QFileInfo listFileInfo, listFilesInfoList) {
+                ListPtr list = nullptr;
+
+                bool success = ReadFile::Read_List(listFileInfo.absoluteFilePath(), list);
+
+                if(success && !list.isNull() &&
+                    QString::number(list->id).startsWith(ID_PREFIX)
+                )
+                {
+                    candidates.push_back(list);
+                }
+            }
         }
     }
 
@@ -152,112 +185,104 @@ void ListManager::get_lists_by_listID_prefix(const QString id_prefix, QVector<Li
     if(sorted){
         QuickSorts::QuickSort(candidates);
     }
-
-    return;
 }
 
 void ListManager::get_lists_by_clientID_prefix(const QString id_prefix, QVector<QSharedPointer<List> > &candidates, bool sorted)
 {
-    const QString new_str = id_prefix.toUpper().trimmed();
+    const QString ID_PREFIX = id_prefix.toUpper().trimmed();
 
-    // if id_prefix is empty we return nothing
-    if(new_str.isEmpty()){
+    // if ID_PREFIX is empty we return nothing
+    if(ID_PREFIX.isEmpty()){
         candidates.clear();
         return;
     }
 
-    static QRegularExpressionMatch match;
-
-    QString folderPath = "./" + GlobalVars::Lists_DirName;
-    QDir directory(folderPath);
-    // Get the list of all files in the directory
-    QStringList files = directory.entryList(QDir::Files);
-
-    QVector<QString> exist_ids;
-    exist_ids.reserve(files.size() + 1);
-
     candidates.clear();
-    candidates.reserve(files.size() + 1);
+    candidates.reserve(500);
 
-    // Iterate and print the file names
-    foreach (QString fileName, files) {
-        match = re.match(fileName);
+    const QString folderPath = "./" + GlobalVars::Lists_DirName;
+    QDir YearsDir(folderPath);
 
-        if (match.hasMatch()) {
-            QString id = match.captured(1);
-            exist_ids.push_back(id);
+    QFileInfoList yearFoldersInfoList = YearsDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot); // years folders list
+
+    foreach (QFileInfo yearFolderInfo, yearFoldersInfoList) {
+        QString yearFolderPath = yearFolderInfo.absoluteFilePath(); // e.g., ./ListsRecords/2024
+
+        QDir monthsDir(yearFolderPath);
+        QFileInfoList monthsFolderInfoList = monthsDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot); // months
+        foreach (QFileInfo monthsFolderInfo, monthsFolderInfoList) {
+            const QString absMonthFolderPath = monthsFolderInfo.absoluteFilePath(); // e.g., ./ListsRecords/2024/07
+
+            QDir ListsDir(absMonthFolderPath);
+            QFileInfoList listFilesInfoList = ListsDir.entryInfoList(QDir::Files | QDir::NoDotAndDotDot); // list files
+
+            foreach (QFileInfo listFileInfo, listFilesInfoList) {
+                ListPtr list = nullptr;
+
+                bool success = ReadFile::Read_List(listFileInfo.absoluteFilePath(), list);
+
+                if(success && !list.isNull() && list->client_info.m_ID.toUpper().startsWith(ID_PREFIX)
+                )
+                {
+                    candidates.push_back(list);
+                }
+            }
         }
-    }
-
-
-    // for each list , we convert it to a string and testing
-    for(QString& id : exist_ids){
-        ListPtr list = nullptr;
-
-        ReadFile::Read_List(id.toULong(), list);
-
-        if(!list.isNull() && list->client_info.m_ID.toUpper().startsWith(new_str))
-            candidates.push_back(list);
     }
 
     // sort the vector by list ids if needed
     if(sorted){
         QuickSorts::QuickSort(candidates);
     }
-
-    return;
 }
 
 void ListManager::get_lists_by_clientName_prefix(const QString name_prefix, QVector<QSharedPointer<List> > &candidates, bool sorted)
 {
-    const QString new_str = name_prefix.toUpper().trimmed();
+    const QString NAME_PREFIX = name_prefix.toUpper().trimmed();
 
-    // if id_prefix is empty we return nothing
-    if(new_str.isEmpty()){
+    // if ID_PREFIX is empty we return nothing
+    if(NAME_PREFIX.isEmpty()){
         candidates.clear();
         return;
     }
 
-    static QRegularExpressionMatch match;
-
-    QString folderPath = "./" + GlobalVars::Lists_DirName;
-    QDir directory(folderPath);
-    // Get the list of all files in the directory
-    QStringList files = directory.entryList(QDir::Files);
-
-    QVector<QString> exist_ids;
-    exist_ids.reserve(files.size() + 1);
-
     candidates.clear();
-    candidates.reserve(files.size() + 1);
+    candidates.reserve(500);
 
-    // Iterate and print the file names
-    foreach (QString fileName, files) {
-        match = re.match(fileName);
+    const QString folderPath = "./" + GlobalVars::Lists_DirName;
+    QDir YearsDir(folderPath);
 
-        if (match.hasMatch()) {
-            QString id = match.captured(1);
-            exist_ids.push_back(id);
+    QFileInfoList yearFoldersInfoList = YearsDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot); // years folders list
+
+    foreach (QFileInfo yearFolderInfo, yearFoldersInfoList) {
+        QString yearFolderPath = yearFolderInfo.absoluteFilePath(); // e.g., ./ListsRecords/2024
+
+        QDir monthsDir(yearFolderPath);
+        QFileInfoList monthsFolderInfoList = monthsDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot); // months
+        foreach (QFileInfo monthsFolderInfo, monthsFolderInfoList) {
+            const QString absMonthFolderPath = monthsFolderInfo.absoluteFilePath(); // e.g., ./ListsRecords/2024/07
+
+            QDir ListsDir(absMonthFolderPath);
+            QFileInfoList listFilesInfoList = ListsDir.entryInfoList(QDir::Files | QDir::NoDotAndDotDot); // list files
+
+            foreach (QFileInfo listFileInfo, listFilesInfoList) {
+                ListPtr list = nullptr;
+
+                bool success = ReadFile::Read_List(listFileInfo.absoluteFilePath(), list);
+
+                if(success && !list.isNull() && list->client_info.m_clientName.toUpper().startsWith(NAME_PREFIX)
+                    )
+                {
+                    candidates.push_back(list);
+                }
+            }
         }
-    }
-
-
-    // for each list , we convert it to a string and testing
-    for(QString& id : exist_ids){
-        ListPtr list = nullptr;
-
-        ReadFile::Read_List(id.toULong(), list);
-
-        if(!list.isNull() && list->client_info.m_clientName.toUpper().startsWith(new_str))
-            candidates.push_back(list);
     }
 
     // sort the vector by list ids if needed
     if(sorted){
         QuickSorts::QuickSort(candidates);
     }
-
-    return;
 }
 
 

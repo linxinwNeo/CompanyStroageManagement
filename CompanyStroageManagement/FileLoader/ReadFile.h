@@ -23,7 +23,7 @@ public:
 
     static bool read_settings_file();
 
-    static bool Read_List(const unsigned long & id, ListPtr& list);
+    static bool Read_List(const QString& FilePath, ListPtr& list);
 
     static bool Read_Clients();
 };

@@ -5,7 +5,7 @@
 #include <QDateTime>
 #include <QFileDialog>
 #include <QStandardPaths>
-
+#include <QRegularExpression>
 
 #include "GlobalVars.h"
 #include "header/xlsxdocument.h"
@@ -277,13 +277,10 @@ bool ReadFile::read_settings_file()
 }
 
 
-bool ReadFile::Read_List(const unsigned long & list_id, ListPtr& list){
-    QString path_to_list_file = "./" + GlobalVars::Lists_DirName + "/" +
-                                QString::number(list_id) + ".txt";
-
-    QFile file(path_to_list_file);
+bool ReadFile::Read_List(const QString& FilePath, ListPtr& list){
+    QFile file(FilePath);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)){
-        write_error_file("ReadFile::Read_List: couldn't read the file: " + path_to_list_file + " \n");
+        write_error_file("ReadFile::Read_List: couldn't read the file: " + FilePath);
         return false;
     }
 

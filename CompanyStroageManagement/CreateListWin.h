@@ -66,9 +66,11 @@ private slots:
 
     void on_searched_models_table_itemSelectionChanged();
 
-    void on_pushButton_autoFill_clicked();
-
     void on_pushButton_searchModel_clicked();
+
+    void on_pushButton_autoFill_by_ClientName_clicked();
+
+    void on_pushButton_autoFill_by_ClientID_clicked();
 
 private:
     void init();

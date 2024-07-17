@@ -167,7 +167,8 @@ void CreateListWin::set_GUI_Language()
 
     this->ui->pushButton_searchModel->setText(lan("搜索", "Buscar"));
 
-    this->ui->pushButton_autoFill->setText(lan("自动填充", "Autorrelleno"));
+    this->ui->pushButton_autoFill_by_ClientID->setText(lan("自动填充", "Autorrelleno"));
+    this->ui->pushButton_autoFill_by_ClientName->setText(lan("自动填充", "Autorrelleno"));
 
 }
 
@@ -655,35 +656,6 @@ void CreateListWin::set_clientInfo(QSharedPointer<Client> client)
 }
 
 
-void CreateListWin::on_pushButton_autoFill_clicked()
-{
-    const QString clientID = this->ui->lineEdit_AGENTE->text().trimmed();
-    const QString clientName = this->ui->lineEdit_CLIENTE->text().trimmed();
-
-    if(clientID.isEmpty() && clientName.isEmpty()){
-        QMessageBox msg;
-        msg.setText(lan("请输入客户号码或者客户名！", "Por favor, introduzca su número de cliente o nombre de cliente."));
-        msg.exec();
-        return;
-    }
-
-    // 优先使用id
-    if(!clientID.isEmpty()){
-        QSharedPointer<Client> client = clientManager.get_client_by_ID(clientID);
-        if(!client.isNull()){
-            this->set_clientInfo(client);
-        }
-    }
-    else{ // 使用名字搜索客户
-        QVector<QSharedPointer<Client> > candidates;
-        clientManager.get_clients_by_NamePrefix(clientName, candidates);
-        if(candidates.size() != 0){
-            this->set_clientInfo(candidates[0]);
-        }
-    }
-}
-
-
 void CreateListWin::on_pushButton_searchModel_clicked()
 {
     this->setDisabled(true);
@@ -739,5 +711,43 @@ void CreateListWin::on_pushButton_searchModel_clicked()
 
     this->setEnabled(true);
     this->ui->model_code_for_search_LE->setFocus();
+}
+
+
+void CreateListWin::on_pushButton_autoFill_by_ClientName_clicked()
+{
+
+    const QString clientName = this->ui->lineEdit_CLIENTE->text().trimmed();
+
+    if(clientName.isEmpty()){
+        QMessageBox msg;
+        msg.setText(lan("请输入客户名字！", "¡Introduzca el nombre del cliente!"));
+        msg.exec();
+        return;
+    }
+
+    // 使用名字搜索客户
+    QVector<QSharedPointer<Client> > candidates;
+    clientManager.get_clients_by_NamePrefix(clientName, candidates);
+    if(candidates.size() != 0){
+        this->set_clientInfo(candidates[0]);
+    }
+}
+
+
+void CreateListWin::on_pushButton_autoFill_by_ClientID_clicked()
+{
+    const QString clientID = this->ui->lineEdit_AGENTE->text().trimmed();
+    if(clientID.isEmpty()){
+        QMessageBox msg;
+        msg.setText(lan("请输入客户号码！", "¡Por favor, introduzca su número de cliente!"));
+        msg.exec();
+        return;
+    }
+
+    QSharedPointer<Client> client = clientManager.get_client_by_ID(clientID);
+    if(!client.isNull()){
+        this->set_clientInfo(client);
+    }
 }
 

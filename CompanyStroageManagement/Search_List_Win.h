@@ -21,11 +21,11 @@ public:
 
     void set_parentWin(MainWindow* win);
 
-    unsigned int searched_lists_table_list_id_idx = 0;
+    const unsigned int searched_lists_table_CreationDateTime_idx = 1;
 
     void view_selected_list();
 
-    void reset_selected_list_info();
+    void clear_selected_list_info();
     
     void clear_tables();
 

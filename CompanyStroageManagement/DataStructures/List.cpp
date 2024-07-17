@@ -82,9 +82,12 @@ QVector<QString> List::describe_this_list() const
 
     items[0] = QString::number(this->id);
     if(this->datetime_created.isNull()){
-        items[1] = "No Creation Time Recorded.";
+        items[1] = QDateTime().currentDateTime().toString(GlobalVars::DateTimeFormat);
     }
-    items[1] = this->datetime_created->toString(GlobalVars::DateTimeFormat);
+    else{
+        items[1] = this->datetime_created->toString(GlobalVars::DateTimeFormat);
+    }
+
 
     items[2] = GlobalVars::locale.toString(this->total_num_boxes(), 'f', 2);
     double p1, p2;

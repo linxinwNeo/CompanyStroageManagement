@@ -19,7 +19,9 @@ QString GlobalVars::Settings_FileName = "settings.txt";
 QString GlobalVars::EXCEL_FILTER = "Microsoft Excel Open XML Spreadsheet (*.xlsx)";
 
 QString GlobalVars::DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
-QString GlobalVars::DateTimeFormat_for_backup_file = "yyyy-MM-dd-HH-mm-ss";
+QString GlobalVars::DateTimeFormat_year = "yyyy";
+QString GlobalVars::DateTimeFormat_month = "MM";
+QString GlobalVars::DateTimeFormat_for_file = "yyyy-MM-dd-HH-mm-ss";
 
 unsigned int GlobalVars::language_option = 0; // 0 for chinese, 1 for Spanish
 

@@ -16,9 +16,9 @@ public:
     unsigned long get_unique_id() const;
 
     void create_list(ListPtr);
-    void delete_list(const unsigned long id);
+    bool delete_list(const QDateTime& creationDateTime);
 
-    ListPtr get_list(const unsigned long id);
+    ListPtr get_list(const QDateTime& creationDateTime);
 
     void get_lists_by_listID_prefix(const QString id_prefix, QVector<ListPtr>& candidates, bool sorted);
     void get_lists_by_clientID_prefix(const QString id_prefix, QVector<ListPtr>& candidates, bool sorted);

@@ -49,21 +49,23 @@ bool WriteFile::SaveInventoryAuto(const QString &path, const bool save_path)
 
 // 保存一个list文件
 bool WriteFile::Save_List(const ListPtr list){
-    // now, output the list content
-    QString fileName = QString::number(list->id);
     QDir DirMaker;
 
-    bool success = DirMaker.mkpath("./" + GlobalVars::Lists_DirName);
+    const QString folderPath = "./" + GlobalVars::Lists_DirName + "/" +
+                               list->datetime_created->toString(GlobalVars::DateTimeFormat_year) + "/" +
+                               list->datetime_created->toString(GlobalVars::DateTimeFormat_month);
+
+    bool success = DirMaker.mkpath(folderPath);
     if(!success){
-        write_error_file("WriteFile::Save_list: couldn't create the folder: ./" + GlobalVars::Lists_DirName);
+        write_error_file("WriteFile::Save_List: couldn't create the folder: " + folderPath);
         return false;
     }
 
-    QString path_to_list_file = "./" + GlobalVars::Lists_DirName + "/" + fileName + ".txt";
+    const QString path_to_list_file = folderPath + "/" + list->datetime_created->toString(GlobalVars::DateTimeFormat_for_file) + ".txt";
 
     QFile file(path_to_list_file);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)){
-        write_error_file("WriteFile::Save_list: couldn't create the file: " + path_to_list_file + " \n");
+        write_error_file("WriteFile::Save_List: couldn't create the file: " + path_to_list_file + " \n");
         return false;
     }
 
@@ -291,7 +293,7 @@ bool WriteFile::update_BackUpDate()
 
         QDateTime currentDateTime = QDateTime::currentDateTime();
 
-        stream << currentDateTime.toString(GlobalVars::DateTimeFormat_for_backup_file);
+        stream << currentDateTime.toString(GlobalVars::DateTimeFormat_for_file);
 
         // Close the file when done
         file.close();
@@ -310,7 +312,7 @@ bool WriteFile::update_BackUpDate()
 bool WriteFile::save_BackUp_files(const bool save_path)
 {
     QDateTime currentDateTime = QDateTime::currentDateTime();
-    QString folderName = currentDateTime.toString(GlobalVars::DateTimeFormat_for_backup_file);
+    QString folderName = currentDateTime.toString(GlobalVars::DateTimeFormat_for_file);
     QDir timeDir;
 
     // Create the subfolder named by datetime

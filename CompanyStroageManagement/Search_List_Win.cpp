@@ -11,6 +11,7 @@
 #include "GlobalVars.h"
 #include "LanguageStrings.h"
 #include "Others/create_pdf.h"
+#include "Others/write_error_file.h"
 
 Search_List_Win::Search_List_Win(QWidget *parent) :
     QWidget(parent),
@@ -70,7 +71,7 @@ void Search_List_Win::view_selected_list()
 }
 
 
-void Search_List_Win::reset_selected_list_info()
+void Search_List_Win::clear_selected_list_info()
 {
     this->selected_list = nullptr;
 
@@ -220,7 +221,7 @@ void Search_List_Win::closeEvent (QCloseEvent *event)
             this->parentWin->show();
 
             // we want to clear up the content we currently have in this window
-            this->reset_selected_list_info();
+            this->clear_selected_list_info();
             this->ui->lineEdit_ListIDPrefix->clear();
         }
         event->accept();
@@ -240,11 +241,10 @@ void Search_List_Win::on_search_result_Table_cellClicked(int row, int column)
 
     search_result_Table->selectRow(row);
     QList items = search_result_Table->selectedItems();
-    QString list_id = items[searched_lists_table_list_id_idx]->text();
+    QString list_creationDateTime_str = items[searched_lists_table_CreationDateTime_idx]->text();
+    QDateTime list_creationDateTime = QDateTime::fromString(list_creationDateTime_str, GlobalVars::DateTimeFormat);
 
-    const unsigned long list_ID = list_id.toULong();
-
-    ListPtr list = listManager.get_list(list_ID);
+    ListPtr list = listManager.get_list(list_creationDateTime);
     if(list.isNull()){ // no such list exists...but this should not happen
         goto Finish;
     }
@@ -279,11 +279,25 @@ void Search_List_Win::on_pushButton_delete_list_clicked()
 
     if (msg.exec() == QMessageBox::Yes) {
         // 删除该清单
-        listManager.delete_list(this->selected_list->id);
-        // 更新GUI
-        this->clear_tables();
+        if( listManager.delete_list(*(this->selected_list->datetime_created)) ){
+            // 更新GUI
+            this->clear_tables();
+            this->clear_selected_list_info();
 
-        goto Finish;
+            QMessageBox msg;
+            msg.setText(lan("删除成功！", "¡Eliminado con éxito!"));
+            msg.exec();
+            goto Finish;
+        }
+        else{
+            // delete fails
+            write_error_file("删除创建时间为 " + this->selected_list->datetime_created->toString(GlobalVars::DateTimeFormat) + " 的清单失败了!");
+            QMessageBox msg;
+            msg.setText(lan("删除失败！请关闭软件重试。", "¡Error de eliminación! Cierre el software y vuelva a intentarlo."));
+            msg.exec();
+
+            return;
+        }
     }
 Finish:
     this->selected_list = nullptr;
@@ -315,9 +329,10 @@ void Search_List_Win::on_pushButton_put_back_list_clicked()
         this->selected_list->AddBack_Models();
 
         // 删除该清单
-        listManager.delete_list(this->selected_list->id);
+        listManager.delete_list(*(this->selected_list->datetime_created));
         // 更新GUI
         this->clear_tables();
+        this->clear_selected_list_info();
 
         // save the inventory and lists
         WriteFile::SaveInventoryAuto(false);
@@ -422,7 +437,7 @@ void Search_List_Win::on_pushButton_SearchListsByListIDPrefix_clicked()
     }
 
     // clear the selected list
-    this->reset_selected_list_info();
+    this->clear_selected_list_info();
 
     this->setEnabled(true);
 }
@@ -463,7 +478,7 @@ void Search_List_Win::on_pushButton_SearchListsByClientIDPrefix_clicked()
     }
 
     // clear the selected list
-    this->reset_selected_list_info();
+    this->clear_selected_list_info();
 
     this->setEnabled(true);
 }
@@ -504,7 +519,7 @@ void Search_List_Win::on_pushButton_SearchListsByClientNamePrefix_clicked()
     }
 
     // clear the selected list
-    this->reset_selected_list_info();
+    this->clear_selected_list_info();
 
     this->setEnabled(true);
 }

@@ -31,7 +31,9 @@ public:
     static QString EXCEL_FILTER;
 
     static QString DateTimeFormat;
-    static QString DateTimeFormat_for_backup_file;
+    static QString DateTimeFormat_for_file;
+    static QString DateTimeFormat_year;
+    static QString DateTimeFormat_month;
 
     static unsigned int language_option; // 0 for chinese, 1 for Spanish
 
